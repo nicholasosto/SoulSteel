@@ -1,9 +1,12 @@
+import { AnimationIds } from "../Indexes/AssetIndex";
+
 // SkillId could be a string union or just 'string'
 // if you have many dynamically loaded skill IDs
 export type SkillId =
 	| "BasicMelee"
 	| "BasicRanged"
 	| "BasicHold"
+	| "SpiritOrb"
 	| "Teleport"
 	| "Dash"
 	| "MultiJump"
@@ -33,7 +36,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "BasicMelee",
 		description: "Its like boxing but with swords and more ouch .",
 		icon: "rbxassetid://93299862544122",
-		animation: "rbxassetid://137879818226309",
+		animation: AnimationIds.MELEE_Backflip,
 		audio: "rbxassetid://113379107293734",
 		cooldown: 5,
 	},
@@ -43,7 +46,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "BasicRanged",
 		description: "Strike a single target with spirit ball.",
 		icon: "rbxassetid://87692961632175",
-		animation: "rbxassetid://83501648864535",
+		animation: AnimationIds.MELEE_Backflip,
 		audio: "rbxassetid://113379107293734",
 		cooldown: 8,
 	},
@@ -53,9 +56,19 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		skillType: "Hold",
 		description: "Restore your health or an ally’s.",
 		icon: "rbxassetid://123557536413272",
-		animation: "rbxassetid://105644658587176",
+		animation: AnimationIds.MELEE_Backflip,
 		audio: "rbxassetid://113379107293734",
 		cooldown: 10,
+	},
+	SpiritOrb: {
+		displayName: "Spirit Bolt",
+		skillType: "Ranged",
+		wcsSkillId: "BasicRanged",
+		description: "Strike a single target with spirit ball.",
+		icon: "rbxassetid://87692961632175",
+		animation: AnimationIds.MELEE_Backflip,
+		audio: "rbxassetid://113379107293734",
+		cooldown: 8,
 	},
 	Teleport: {
 		displayName: "Teleport",

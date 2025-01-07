@@ -13,19 +13,11 @@ WCSServer.Start();
 StorageManager.Start();
 
 Players.PlayerAdded.Connect((player) => {
-	Logger.Log(script, `Player ${player.Name} has joined the game.`);
-	const robot = StorageManager.LoadFromPackage(PackageIds.AccessoryPackage, "Scythe_Epic_Black") as Model;
-    const robot2 = StorageManager.CloneFromStorage("Scythe_Epic_Black") as Model;
-	Logger.Log(script, `Robot: ${robot} Robot2: ${robot2}`);
-
-    player.CharacterAdded.Connect((character) => {
-        Logger.Log(script, `Character ${character.Name} has spawned.`);
-        new BaseGameCharacter(character as Model);
-    });
+	player.CharacterAdded.Connect((character) => {
+		new BaseGameCharacter(character as Model);
+	});
 });
 
-
 Character.CharacterCreated.Connect((character) => {
-    Logger.Log(script, "WCS Character Created: ", character as unknown as string);
-    
+	Logger.Log(script, "WCS Character Created: ", character as unknown as string);
 });

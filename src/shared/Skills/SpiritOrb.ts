@@ -3,8 +3,8 @@ import { Logger } from "shared/Utility/Logger";
 import { SkillDefinitions } from "shared/_References/Character/Skills";
 
 @SkillDecorator
-export class BasicMelee extends Skill {
-	private _skillInfo = SkillDefinitions.BasicMelee;
+export class SpiritOrb extends Skill {
+	private _skillInfo = SkillDefinitions.SpiritOrb;
 
 	protected OnStartClient(): void {
 		Logger.Log(script, "Client Started: ", this._skillInfo as unknown as string);

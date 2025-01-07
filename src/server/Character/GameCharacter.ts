@@ -12,6 +12,7 @@ import { Logger } from "shared/Utility/Logger";
 import { BasicHold } from "shared/Skills/BasicHold";
 import { BasicRanged } from "shared/Skills/BasicRanged";
 import { BasicMelee } from "shared/Skills/BasicMelee";
+import { SpiritOrb } from "shared/Skills/SpiritOrb";
 
 export type CharacterState =
 	| "Idle"
@@ -46,6 +47,9 @@ export class BaseGameCharacter {
 	// Protected Properties
 	protected _State: CharacterState = "Idle";
 	//protected _Moveset: Moveset;
+
+	// Humanoid Connections
+	private _connectionHumanoidDied: RBXScriptConnection | undefined;
 
 	// WCS Character Connections
 	private _connectionCharacterTakeDamage: RBXScriptConnection | undefined;
@@ -84,6 +88,7 @@ export class BaseGameCharacter {
 		new BasicMelee(this.WCS_Character);
 		new BasicHold(this.WCS_Character);
 		new BasicRanged(this.WCS_Character);
+		new SpiritOrb(this.WCS_Character);
 
 		// Initialize Connections
 		this.initializeConnections();
@@ -161,6 +166,12 @@ export class BaseGameCharacter {
 		this._connectionStatusEffectEnded = this.WCS_Character.StatusEffectEnded.Connect((statusEffect) => {
 			Logger.Log(script, "SuperClass-StatusEffectEnded(): " + statusEffect);
 			this.handleStatusEffectEnded(statusEffect);
+		});
+
+		const humanoid = this.CharacterModel.WaitForChild("Humanoid") as Humanoid;
+		this._connectionHumanoidDied = humanoid.Died.Once(() => {
+			Logger.Log(script, "SuperClass-HumanoidDied()");
+			this.SetState("Dead");
 		});
 	}
 

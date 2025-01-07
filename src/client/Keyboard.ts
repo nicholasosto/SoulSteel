@@ -8,7 +8,7 @@ import { SkillId } from "shared/_References/Character/Skills";
 
 // Set the skills here
 const Skills: Map<Enum.KeyCode, SkillId> = new Map<Enum.KeyCode, SkillId>();
-Skills.set(Enum.KeyCode.Q, "BasicMelee");
+Skills.set(Enum.KeyCode.Q, "SpiritOrb");
 Skills.set(Enum.KeyCode.E, "BasicRanged");
 Skills.set(Enum.KeyCode.R, "BasicHold");
 
