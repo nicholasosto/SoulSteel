@@ -1,4 +1,4 @@
-import { ReplicatedStorage, InsertService } from "@rbxts/services";
+import { ReplicatedStorage, InsertService, RunService, ContextActionService } from "@rbxts/services";
 import { PackageIds } from "../Indexes/AssetIndex";
 import { Logger } from "shared/Utility/Logger";
 
@@ -24,6 +24,12 @@ export class StorageManager {
 	}
 
 	public static LoadFromPackage(packageId: PackageIds, itemName: string): Instance | undefined {
+		const runMode = RunService.IsServer() ? "Server" : "Client";
+
+		if (runMode === "Client") {
+			return StorageManager.CloneFromStorage(itemName);
+		}
+
 		const packageModel = InsertService.LoadAsset(packageId) as Model;
 		if (packageModel === undefined) {
 			Logger.Log(script, `Failed to load package with ID: ${packageId}`);

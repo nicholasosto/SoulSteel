@@ -20,4 +20,5 @@ Players.PlayerAdded.Connect((player) => {
 
 Character.CharacterCreated.Connect((character) => {
 	Logger.Log(script, "WCS Character Created: ", character as unknown as string);
+
 });
