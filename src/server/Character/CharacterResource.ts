@@ -12,6 +12,14 @@ export enum EResourceTypes {
 	DomainEnergy = "DomainEnergy",
 }
 
+export enum EResourceBarNames {
+	Health = "Health Bar",
+	Mana = "Mana Bar",
+	Stamina = "Stamina Bar",
+	Experience = "Experience Bar",
+	DomainEnergy = "Domain Bar",
+}
+
 export class CharacterResourceBar {
 	private _progressBarFrame: Frame;
 
@@ -38,8 +46,8 @@ export class CharacterResource {
 	public AttributeNameMax: string = "DefaultResourceMax";
 
 	// Resource Values
-	private _maxValue: number = 100;
-	private _currentValue: number = 100;
+	public _maxValue: number = 100;
+	public _currentValue: number = 100;
 
 	// Regen Values
 	private _regenRate: number = 1;

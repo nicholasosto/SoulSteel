@@ -1,23 +1,25 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import { CharacterFrame } from "./CharacterFrame/CharacterFrame";
 import { KeyboardController } from "./Keyboard";
 import { CreateClient } from "@rbxts/wcs";
+import CharacterFrame from "./CharacterFrame";
+import { Dialog } from "shared/UI Component Classes/DialogFrame";
 import { Logger } from "shared/Utility/Logger";
-import { FireAuraPack, mapAuraTemplate, applyAuraToCharacter } from "shared/Aura System/Auras";
+import { StorageManager } from "shared/_References/Managers/StorageManager";
+import { DialogTemplateType } from "shared/UI Component Classes/DialogTemplate";
+
 const player = game.GetService("Players").LocalPlayer;
-const character = player.Character || player.CharacterAdded.Wait()[0];
-
-const fireAuraPackClone = FireAuraPack?.Clone();
-
-if (fireAuraPackClone) {
-    fireAuraPackClone.Parent = character;
-    applyAuraToCharacter(character, fireAuraPackClone as Model);
-}
-
-Logger.Log(player, "Client started");
+const playerGui = player.WaitForChild("PlayerGui");
+const HUD = playerGui.WaitForChild("HUD");
 
 const Client = CreateClient();
 Client.RegisterDirectory(ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills"));
 Client.Start();
 
-KeyboardController.Start(); // Start listening for keyboard input
+// Start the Keyboard Controller
+KeyboardController.Start();
+CharacterFrame.Start();
+
+const dialogTemplate = StorageManager.CloneFromStorage("Dialog_Template") as DialogTemplateType;
+
+const dialog = new Dialog(dialogTemplate, "Super Duper", HUD, "Yes", "OK", "You have no choice but to click a button.");
+dialog.Show();

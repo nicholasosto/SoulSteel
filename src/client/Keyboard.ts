@@ -2,6 +2,8 @@
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
+import Remotes, {RemoteNames} from "shared/Remotes";
+import { ItemId } from "shared/_References/Inventory";
 
 import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
 import { SkillId } from "shared/_References/Character/Skills";
@@ -60,6 +62,12 @@ export class KeyboardController {
 					case Enum.KeyCode.R:
 						print("R Pressed");
 						this.toggleSkillOnKeyPress(input.KeyCode, true);
+						break;
+					case Enum.KeyCode.H:
+						Remotes.Client.GetNamespace("Equipment").Get(RemoteNames.EquipItemRequest).SendToServer(ItemId.ShortSword);
+						break
+					case Enum.KeyCode.I:
+						Remotes.Client.GetNamespace("Inventory").Get(RemoteNames.RequestInventory).SendToServer();
 						break;
 					default:
 						KeyboardController.InputBegan(input, isProcessed);
