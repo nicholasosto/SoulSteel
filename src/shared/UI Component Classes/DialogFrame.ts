@@ -1,10 +1,11 @@
-import { DialogTemplateType } from "shared/UI Component Classes/DialogTemplate";
+import { DialogTemplateType } from "shared/UI Component Classes/Types/DialogTemplate";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
+import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { Logger } from "shared/Utility/Logger";
 
 export class Dialog {
 	// Main Template
-	private _dialogFrame: DialogTemplateType;
+	private _dialogFrame: DialogTemplateType = StorageManager.CloneFromStorage("Dialog_Template") as DialogTemplateType;
 
 	// Text Content
 	private _dialogTextBox: Frame;
@@ -96,12 +97,14 @@ export class Dialog {
 		this._dialogFrame.Visible = false;
 	}
 
+	// Destroy Connections
 	private destroyConnections() {
 		this._connectionButton1?.Disconnect();
 		this._connectionButton2?.Disconnect();
 		this._connectionClose?.Disconnect();
 	}
 
+	// Destroy the Dialog
 	public Destroy() {
 		this.destroyConnections();
 		this._dialogFrame.Destroy();

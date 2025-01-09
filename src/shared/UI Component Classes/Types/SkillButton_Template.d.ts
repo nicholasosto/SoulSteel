@@ -1,4 +1,4 @@
-export type AbilityButton_TemplateType = Frame & {
+export type SkillButton_Template = Frame & {
 	UIListLayout: UIListLayout;
 	ImageButton: ImageButton & {
 		UICorner: UICorner;
