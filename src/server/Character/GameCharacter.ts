@@ -2,19 +2,32 @@
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
 import { Players } from "@rbxts/services";
-import { Character, DamageContainer, GetMovesetObjectByName, UnknownStatus } from "@rbxts/wcs";
+import {
+	Character,
+	DamageContainer,
+	GetMovesetObjectByName,
+	GetRegisteredSkillConstructor,
+	UnknownStatus,
+} from "@rbxts/wcs";
 import { CharacterResource } from "./CharacterResource";
 import { CharacterAnimations } from "shared/_References/Animations";
 import { CharacterStats, getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
 import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
 import Remotes, { RemoteNames } from "shared/Remotes";
 
-// Utility Imports
-import { Logger } from "shared/Utility/Logger";
+// Data
+import { IPlayerData } from "shared/_References/PlayerData";
+import { DataCache, DataManager } from "server/PlayerData/DataManager";
+
+// Skill Imports
 import { BasicHold } from "shared/Skills/BasicHold";
 import { BasicRanged } from "shared/Skills/BasicRanged";
 import { BasicMelee } from "shared/Skills/BasicMelee";
 import { SpiritOrb } from "shared/Skills/SpiritOrb";
+
+// Utility Imports
+import { Logger } from "shared/Utility/Logger";
+import { PlayerSkillsData, getDefaultPlayerSkillsData } from "shared/_References/Character/Skills";
 
 export type CharacterState =
 	| "Idle"
@@ -30,6 +43,8 @@ export type CharacterState =
 export class BaseGameCharacter {
 	// Public Properties
 	public Player?: Player;
+	public PlayerDataCache?: DataCache;
+	public SkillData: PlayerSkillsData = getDefaultPlayerSkillsData();
 	// Character Properties
 	public CharacterName: string;
 	public CharacterModel: Model;
@@ -63,16 +78,24 @@ export class BaseGameCharacter {
 	private _connectionStatusEffectEnded: RBXScriptConnection | undefined;
 
 	// Game Character Created/Destroyed Remotes
-	private _remoteGameCharacterCreated = Remotes.Server.GetNamespace("GameCharacter").Get(RemoteNames.GameCharacterCreated);
-	private _remoteGameCharacterDestroyed = Remotes.Server.GetNamespace("GameCharacter").Get(RemoteNames.GameCharacterDestroyed);
-	private _remoteCharacterFrameUpdate = Remotes.Server.GetNamespace("UserInterface").Get(RemoteNames.UIUpdateCharacterFrame);
+	private _remoteGameCharacterCreated = Remotes.Server.GetNamespace("GameCharacter").Get(
+		RemoteNames.GameCharacterCreated,
+	);
+	private _remoteGameCharacterDestroyed = Remotes.Server.GetNamespace("GameCharacter").Get(
+		RemoteNames.GameCharacterDestroyed,
+	);
+	private _remoteCharacterFrameUpdate = Remotes.Server.GetNamespace("UserInterface").Get(
+		RemoteNames.UIUpdateCharacterFrame,
+	);
+	private _remoteSkillBarUpdate = Remotes.Server.GetNamespace("UserInterface").Get(RemoteNames.UIUpdateSkillBar);
+	private _remoteAssignSkills = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.SkillAssignment);
 
 	// Constructor
 	constructor(characterModel: Model, characterName: string = "Default Character Name") {
-
 		// Player if applicable
 		const player = Players.GetPlayerFromCharacter(characterModel);
 		this.Player = player;
+		this.PlayerDataCache = DataManager.GetDataCache(tostring(player?.UserId));
 
 		// Assign Character Name
 		this.CharacterName = characterName;
@@ -80,14 +103,17 @@ export class BaseGameCharacter {
 		// Assign Character Model
 		this.CharacterModel = characterModel;
 
+		// Character Stats
 		this.CharacterStats = getDefaultCharacterStats();
 
 		// Assign Animator
 		this.Animator = this.CharacterModel.FindFirstChild("Animator", true) as Animator;
-		assert(this.Animator, "Animator not found in Character Model");
 
 		// Create WCS Character
 		this.WCS_Character = new Character(characterModel);
+
+		// Assign Skills
+		this._AssignSkills();
 
 		// Attributes
 		this.updateAttributes();
@@ -97,31 +123,36 @@ export class BaseGameCharacter {
 		this.Mana = new CharacterResource(this, "Mana");
 		this.Stamina = new CharacterResource(this, "Stamina");
 
-		this._AssignSkills();
-
 		// Initialize Connections
 		this.initializeConnections();
 
 		// Load Animations
 		this._LoadAnimations();
-
-		// Character Frame Update
-		this.handleCharacterFrameUpdate();
-
-		this.TestResourceChange();
-
-		this.handleCharacterFrameUpdate();
-
 	}
 
+	// Assign Skills
 	protected _AssignSkills() {
-		// TODO: Assign skills via skill names
+		// Player Skills
+		if (this.PlayerDataCache) {
+			// Assign Skills from PlayerDataCache
+			this.SkillData = this.PlayerDataCache._playerData.Skills;
 
-		// Assign Skills
-		new BasicMelee(this.WCS_Character);
-		new BasicHold(this.WCS_Character);
-		new BasicRanged(this.WCS_Character);
-		new SpiritOrb(this.WCS_Character);
+			// Send Skills to Player
+			this._remoteAssignSkills.SendToPlayer(this.Player as Player, this.SkillData);
+
+			Logger.Log(script, "Assign Skills", this.SkillData as unknown as string);
+		} else {
+			Logger.Log(script, "PlayerDataCache is undefined");
+		}
+
+		// Assign Skills to Character
+		assert(this.SkillData.assignedSlots, "Assigned Slots is nil");
+		assert(this.WCS_Character, "WCS Character is nil");
+		const skillIds = this.SkillData.assignedSlots as string[];
+		for (const skillId of skillIds) {
+			const skill = GetRegisteredSkillConstructor(skillId) as unknown as new (character: Character) => unknown;
+			new skill(this.WCS_Character);
+		}
 	}
 
 	// Animation Methods

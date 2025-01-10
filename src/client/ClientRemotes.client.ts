@@ -1,3 +1,4 @@
+/*
 import Remotes, { CharacterFrameData, RemoteNames } from "shared/Remotes";
 import CharacterFrame from "./CharacterFrame";
 import { InventoryType, InventoryItem } from "shared/_References/Inventory";
@@ -50,3 +51,4 @@ _remoteGameCharacterDestroyed.Connect(handleGameCharacterDestroyed);
 
 // UI
 _remoteCharacterFrameUpdate.Connect(handleCharacterFrameUpdate);
+*/

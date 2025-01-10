@@ -1,6 +1,6 @@
-export type SkillButton_Template = Frame & {
+export type TSkillButton = Frame & {
 	UIListLayout: UIListLayout;
-	ImageButton: ImageButton & {
+	SkillButton: ImageButton & {
 		UICorner: UICorner;
 		UIStroke: UIStroke;
 		UIAspectRatioConstraint: UIAspectRatioConstraint;
@@ -58,4 +58,4 @@ export type SkillButton_Template = Frame & {
 			};
 		};
 	};
-}
+};

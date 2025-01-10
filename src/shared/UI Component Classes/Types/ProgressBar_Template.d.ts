@@ -1,4 +1,4 @@
-type ProgressBar_Template = Frame & {
+type TProgressBar = Frame & {
 	Scripts: Folder & {
 		ExtendBar1LocalScript: LocalScript;
 	};

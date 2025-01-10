@@ -1,11 +1,11 @@
-import { DialogTemplateType } from "shared/UI Component Classes/Types/DialogTemplate";
+import { TDialog } from "shared/UI Component Classes/Types/Dialog_Template";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { Logger } from "shared/Utility/Logger";
 
 export class Dialog {
 	// Main Template
-	private _dialogFrame: DialogTemplateType = StorageManager.CloneFromStorage("Dialog_Template") as DialogTemplateType;
+	private _dialogFrame: TDialog = StorageManager.CloneFromStorage("Dialog_Template") as TDialog;
 
 	// Text Content
 	private _dialogTextBox: Frame;
@@ -24,7 +24,7 @@ export class Dialog {
 	private _connectionClose: RBXScriptConnection | undefined;
 
 	constructor(
-		dialogTemplate: DialogTemplateType,
+		dialogTemplate: TDialog,
 		title: string,
 		parent: Instance,
 		button1Name: string,

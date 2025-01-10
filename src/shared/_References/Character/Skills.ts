@@ -14,8 +14,15 @@ export type SkillId =
 	| "Meditate"
 	| "Charge";
 
-
 export type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";
+
+export enum SkillSlot {
+	Slot1 = "Slot1",
+	Slot2 = "Slot2",
+	Slot3 = "Slot3",
+	Slot4 = "Slot4",
+	Slot5 = "Slot5",
+}
 
 export interface SkillDefinition {
 	displayName: string;
@@ -145,20 +152,20 @@ export interface PlayerSkillsData {
 	 * If a slot isn’t assigned, store `undefined`.
 	 */
 	assignedSlots: Array<SkillId | undefined>;
-};
+}
 
 export function getDefaultPlayerSkillsData(): PlayerSkillsData {
 	return {
 		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold", "Teleport", "Dash"],
 		assignedSlots: ["BasicMelee", "BasicRanged", undefined, undefined, undefined],
 	};
-};
+}
 
 export function unlockSkill(skillData: PlayerSkillsData, skillId: SkillId): void {
 	if (!skillData.unlockedSkills.includes(skillId)) {
 		skillData.unlockedSkills.push(skillId);
 	}
-};
+}
 
 export function assignSkillToSlot(skillData: PlayerSkillsData, skillId: SkillId, slotIndex: number): void {
 	// Validate slot index
@@ -171,14 +178,26 @@ export function assignSkillToSlot(skillData: PlayerSkillsData, skillId: SkillId,
 	}
 	// Assign
 	skillData.assignedSlots[slotIndex] = skillId;
-};
+}
+
+export function getSkillNameFromSlotNumber(skillData: PlayerSkillsData, slotIndex: number): string {
+	if (slotIndex < 0 || slotIndex > 4) {
+		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;
+	}
+	const skillId = skillData.assignedSlots[slotIndex];
+	if (!skillId) {
+		return "Empty";
+	}
+	const skillDef = SkillDefinitions[skillId];
+	return skillDef.wcsSkillId;
+}
 
 export function unassignSlot(skillData: PlayerSkillsData, slotIndex: number): void {
 	if (slotIndex < 0 || slotIndex > 4) {
 		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;
 	}
 	skillData.assignedSlots[slotIndex] = undefined;
-};
+}
 
 export function getAssignedSkillDefinitions(skillData: PlayerSkillsData): Array<SkillDefinition> {
 	const returnArray: Array<SkillDefinition> = [];
@@ -192,4 +211,12 @@ export function getAssignedSkillDefinitions(skillData: PlayerSkillsData): Array<
 	});
 
 	return returnArray;
-};
+}
+
+export function getSkillDefinition(skillId: SkillId): SkillDefinition {
+	const skillDef = SkillDefinitions[skillId];
+	if (!skillDef) {
+		throw `Skill definition not found for skill ID: ${skillId}`;
+	}
+	return skillDef;
+}

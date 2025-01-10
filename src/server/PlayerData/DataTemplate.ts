@@ -1,4 +1,4 @@
-import { PlayerData } from "shared/_References/PlayerData";
+import { IPlayerData } from "shared/_References/PlayerData";
 import { getDefaultPlayerSkillsData } from "shared/_References/Character/Skills";
 import { getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
 import { getDefaultProgressionStatsData } from "shared/_References/ProgressionStats";
@@ -10,7 +10,7 @@ export type TEquipmentSlot = {
 	EquipmentId: string;
 };
 
-export const DataTemplate: PlayerData = {
+export const DataTemplate: IPlayerData = {
 	key: "Datatemplate",
 	version: 5,
 

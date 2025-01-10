@@ -4,7 +4,7 @@ import { ProgressionStatsData } from "./ProgressionStats";
 import { ResourceStats } from "./Character/ResourceStats";
 
 // Player Data Interface
-export interface PlayerData {
+export interface IPlayerData {
 	[str: string]: unknown;
 
 	// Datastore Info

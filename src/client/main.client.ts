@@ -1,34 +1,51 @@
+// Roblox Services
 import { ReplicatedStorage } from "@rbxts/services";
-import { KeyboardController } from "./Keyboard";
-import { CreateClient } from "@rbxts/wcs";
-import CharacterFrame from "./CharacterFrame";
-import { Dialog } from "shared/UI Component Classes/DialogFrame";
-import { Logger } from "shared/Utility/Logger";
-import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { DialogTemplateType } from "shared/UI Component Classes/Types/DialogTemplate";
-import { SkillButton } from "shared/UI Component Classes/SkillButton";
-import Remotes, { RemoteNames } from "shared/Remotes";
-import { Character } from "@rbxts/wcs";
 
+// WCS Imports
+import { CreateClient, Character, SkillData } from "@rbxts/wcs";
+
+// Controllers
+import { KeyboardController } from "./Keyboard";
+
+// UI Components
+import CharacterFrame from "./CharacterFrame";
+import { SkillBar } from "client/Classes/SkillBar";
+import { SkillButton } from "client/Classes/SkillButton";
+
+// Utility Imports
+import Remotes, { RemoteNames } from "shared/Remotes";
+import { Logger } from "shared/Utility/Logger";
+import { PlayerSkillsData } from "shared/_References/Character/Skills";
+
+// Player and PlayerGui
 const player = game.GetService("Players").LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");
 const HUD = playerGui.WaitForChild("HUD");
 
+// WCS Client
 const Client = CreateClient();
 Client.RegisterDirectory(ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills"));
 Client.Start();
 
+// Character Created Connection
 Character.CharacterCreated.Connect((character) => {
-    Logger.Log(script, "Character Created");
+	Logger.Log(script, "Character Created");
 
-    character.SkillAdded.Connect((skill) => {
-        Logger.Log(script, "Skill Added Connection", skill.GetName());
-    });
+	// Create the SkillBar
+	const skillBar = new SkillBar(character, HUD);
+
+	character.SkillAdded.Connect((skill) => {
+		Logger.Log(script, "Skill Added Connection", skill.GetName());
+		// const skillButton = new SkillButton(skill, HUD);
+	});
+});
+
+Remotes.Client.GetNamespace("Skills").OnEvent(RemoteNames.SkillAssignment, (skill: PlayerSkillsData) => {
+	Logger.Log(script, "Skill Assignment", skill as unknown as string);
 });
 
 // Start the Keyboard Controller
 KeyboardController.Start();
+
+// Start the Character Frame
 CharacterFrame.Start();
-
-const dialogTemplate = StorageManager.CloneFromStorage("Dialog_Template") as DialogTemplateType;
-

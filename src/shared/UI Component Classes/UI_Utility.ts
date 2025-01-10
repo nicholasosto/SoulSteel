@@ -18,3 +18,7 @@ export function findOrCreateScreenGui(player: Player, name: ScreenGUINames, pare
 	}
 	return screenGui;
 }
+
+export function getPlayersSkillBar(playerGui: PlayerGui) {
+	return playerGui.WaitForChild(ScreenGUINames.HUD).WaitForChild("SkillBar") as Frame;
+}

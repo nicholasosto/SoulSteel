@@ -1,4 +1,4 @@
-export type DialogTemplateType = Frame & {
+export type TDialog = Frame & {
 	["UIStroke "]: UIStroke;
 	Close: Frame & {
 		UIAspectRatioConstraint: UIAspectRatioConstraint;
@@ -121,4 +121,4 @@ export type DialogTemplateType = Frame & {
 			};
 		};
 	};
-}
+};
