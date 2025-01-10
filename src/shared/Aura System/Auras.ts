@@ -1,10 +1,10 @@
 import { AttachmentName } from "../_References/Attachments";
 import { ReplicatedStorage } from "@rbxts/services";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { PackageIds } from "shared/_References/Indexes/AssetIndex";
+import { PackageIndex } from "shared/_References/Indexes/MasterIndex";
 import { Logger } from "shared/Utility/Logger";
 
-export const FireAuraPack = StorageManager.LoadFromPackage(PackageIds.Effects, "Fire_Aura");
+export const FireAuraPack = StorageManager.LoadFromPackage(PackageIndex.PackageIds.Effects, "Fire_Aura");
 
 export type AuraId =
 	| "FIRE_AURA"

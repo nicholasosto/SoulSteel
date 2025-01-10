@@ -5,8 +5,8 @@ import { Logger } from "shared/Utility/Logger";
 import Remotes, {RemoteNames} from "shared/Remotes";
 import { ItemId } from "shared/_References/Inventory";
 
-import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
-import { SkillId } from "shared/_References/Character/Skills";
+import { AnimationIndex } from "shared/_References/Indexes/MasterIndex";
+import { SkillId } from "shared/_References/Skills";
 
 // Set the skills here
 const Skills: Map<Enum.KeyCode, SkillId> = new Map<Enum.KeyCode, SkillId>();
@@ -15,7 +15,7 @@ Skills.set(Enum.KeyCode.E, "BasicRanged");
 Skills.set(Enum.KeyCode.R, "BasicHold");
 
 // Set Animations Here
-const Animations: Map<Enum.KeyCode, AnimationIds> = new Map<Enum.KeyCode, AnimationIds>();
+const Animations: Map<Enum.KeyCode, AnimationIndex.AnimationIds> = new Map<Enum.KeyCode, AnimationIndex.AnimationIds>();
 
 export class KeyboardController {
 	private static instance: KeyboardController;

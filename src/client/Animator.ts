@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
+import { AnimationIndex } from "shared/_References/Indexes/MasterIndex";
 
 export class CharacterAnimator {
 	private _player: Player = Players.LocalPlayer;

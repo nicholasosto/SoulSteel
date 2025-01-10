@@ -15,7 +15,7 @@ import { SkillButton } from "client/Classes/SkillButton";
 // Utility Imports
 import Remotes, { RemoteNames } from "shared/Remotes";
 import { Logger } from "shared/Utility/Logger";
-import { PlayerSkillsData } from "shared/_References/Character/Skills";
+import { PlayerSkillsData } from "shared/_References/Skills";
 
 // Player and PlayerGui
 const player = game.GetService("Players").LocalPlayer;

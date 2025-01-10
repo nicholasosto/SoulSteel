@@ -2,42 +2,21 @@
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
 import { Players } from "@rbxts/services";
-import {
-	Character,
-	DamageContainer,
-	GetMovesetObjectByName,
-	GetRegisteredSkillConstructor,
-	UnknownStatus,
-} from "@rbxts/wcs";
+import { Character, DamageContainer, GetRegisteredSkillConstructor, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource } from "./CharacterResource";
-import { CharacterAnimations } from "shared/_References/Animations";
-import { CharacterStats, getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
-import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
+
+import { CharacterStats, getDefaultCharacterStats } from "shared/_References/CharacterStats";
+import { CharacterState } from "shared/_References/CharacterStates";
+import { AnimationIndex } from "shared/_References/Indexes/MasterIndex";
+import { generateCharacterName } from "shared/Factories/NameFactory";
 import Remotes, { RemoteNames } from "shared/Remotes";
 
 // Data
-import { IPlayerData } from "shared/_References/PlayerData";
 import { DataCache, DataManager } from "server/PlayerData/DataManager";
-
-// Skill Imports
-import { BasicHold } from "shared/Skills/BasicHold";
-import { BasicRanged } from "shared/Skills/BasicRanged";
-import { BasicMelee } from "shared/Skills/BasicMelee";
-import { SpiritOrb } from "shared/Skills/SpiritOrb";
 
 // Utility Imports
 import { Logger } from "shared/Utility/Logger";
-import { PlayerSkillsData, getDefaultPlayerSkillsData } from "shared/_References/Character/Skills";
-
-export type CharacterState =
-	| "Idle"
-	| "Walking"
-	| "Running"
-	| "Jumping"
-	| "Falling"
-	| "Crouching"
-	| "Sprinting"
-	| "Dead";
+import { PlayerSkillsData, getDefaultPlayerSkillsData } from "shared/_References/Skills";
 
 // BaseGameCharacter (NPCs and Players inherit from this)
 export class BaseGameCharacter {
@@ -49,8 +28,8 @@ export class BaseGameCharacter {
 	public CharacterName: string;
 	public CharacterModel: Model;
 	public Animator: Animator;
-	public Animations = CharacterAnimations;
-	public AnimationTracks = new Map<AnimationIds, AnimationTrack>();
+	//public Animations = CharacterAnimations;
+	public AnimationTracks = new Map<AnimationIndex.AnimationIds, AnimationTrack>();
 	public WCS_Character: Character;
 	public Target: Model | undefined;
 
@@ -98,7 +77,8 @@ export class BaseGameCharacter {
 		this.PlayerDataCache = DataManager.GetDataCache(tostring(player?.UserId));
 
 		// Assign Character Name
-		this.CharacterName = characterName;
+		this.CharacterName = generateCharacterName();
+		
 
 		// Assign Character Model
 		this.CharacterModel = characterModel;
@@ -128,6 +108,26 @@ export class BaseGameCharacter {
 
 		// Load Animations
 		this._LoadAnimations();
+
+		this._addBillboardGui();
+	}
+
+	private _addBillboardGui() {
+		const billboardGui = new Instance("BillboardGui");
+		billboardGui.Name = "CharacterName";
+		billboardGui.Parent = this.CharacterModel;
+		billboardGui.Size = new UDim2(0, 100, 0, 40);
+		billboardGui.StudsOffset = new Vector3(0, 3, 0);
+		billboardGui.AlwaysOnTop = true;
+		billboardGui.Adornee = this.CharacterModel.FindFirstChild("Head") as BasePart;
+
+		const textLabel = new Instance("TextLabel");
+		textLabel.Parent = billboardGui;
+		textLabel.Size = new UDim2(1, 0, 1, 0);
+		textLabel.Text = this.CharacterName;
+		textLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
+		textLabel.TextScaled = true;
+		textLabel.BackgroundTransparency = 1;
 	}
 
 	// Assign Skills
@@ -157,13 +157,13 @@ export class BaseGameCharacter {
 
 	// Animation Methods
 	protected _LoadAnimations() {
-		// Load Animations
-		for (const [animationName, animation] of pairs(CharacterAnimations)) {
-			animation.Parent = this.CharacterModel;
-			animation.Name = animationName as string;
-			const animationTrack = this.Animator.LoadAnimation(animation);
-			this.AnimationTracks.set(animationName as AnimationIds, animationTrack);
-		}
+		// // Load Animations
+		// for (const [animationName, animation] of pairs(CharacterAnimations)) {
+		// 	animation.Parent = this.CharacterModel;
+		// 	animation.Name = animationName as string;
+		// 	const animationTrack = this.Animator.LoadAnimation(animation);
+		// 	this.AnimationTracks.set(animationName as AnimationIds, animationTrack);
+		// }
 	}
 
 	// State System Methods

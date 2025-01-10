@@ -1,8 +1,8 @@
 import Net, { Definitions } from "@rbxts/net";
 import { InventoryItem, InventoryType, ItemId } from "./_References/Inventory";
-import { SkillSlot } from "./_References/Character/Skills";
+import { SkillSlot } from "./_References/Skills";
 import { Skill } from "@rbxts/wcs";
-import { PlayerSkillsData } from "./_References/Character/Skills";
+import { PlayerSkillsData } from "./_References/Skills";
 
 export enum RemoteNames {
 	// Inventory

@@ -1,13 +1,19 @@
+//Types
+
+import { Logger } from "shared/Utility/Logger";
+
+// Animation
 export type TAnimation = {
 	[key: string]: Animation;
 };
 
+// Enums
 export enum AnimationIds {
 	MoonPartAnimation = "rbxassetid://82713683056632",
 	SKILL_WCS_Slash = "rbxassetid://77799116860007",
 	SKILL_BasicMelee = "rbxassetid://137879818226309",
-	SKILL_BasicRanged = "rbxassetid://110265290978403",
-	SKILL_BasicHold = "rbxassetid://93554304810930",
+	SKILL_BasicRanged = "rbxassetid://83501648864535",
+	SKILL_BasicHold = "rbxassetid://105644658587176",
 	MELEE_Backflip = "rbxassetid://96927531461522",
 	MELEE_FastKick = "rbxassetid://126544239907410",
 	MELEE_Dodge = "rbxassetid://15547507943",
@@ -23,10 +29,11 @@ export enum AnimationIds {
 	NPC_Attack = "rbxassetid://16579917486",
 }
 
+// Helpers
 export function CreateAnimation(animationId: AnimationIds): Animation {
 	const animation = new Instance("Animation");
+	Logger.Log(script, `AnimationId: ${animationId}`);
 	animation.AnimationId = animationId;
-	animation.Name = [animationId] as unknown as string;
 	return animation;
 }
 
@@ -48,3 +55,13 @@ export const CharacterAnimations: TAnimation = {
 	[AnimationIds.FLIGHT_Right]: CreateAnimation(AnimationIds.FLIGHT_Right),
 	[AnimationIds.FLIGHT_Backward]: CreateAnimation(AnimationIds.FLIGHT_Backward),
 };
+
+export function CreateAnimationTrack(character: Model, animationId: AnimationIds): AnimationTrack {
+	const animation = CreateAnimation(animationId);
+	const Humanoid = character.FindFirstChild("Humanoid");
+	const characterAnimator = Humanoid?.FindFirstChild("Animator") as Animator;
+	assert(characterAnimator, "Animator not found");
+	const animationTrack = characterAnimator.LoadAnimation(animation);
+	animationTrack.Looped = false;
+	return animationTrack;
+}

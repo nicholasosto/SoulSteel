@@ -1,6 +1,6 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/_References/Character/Skills";
+import { SkillDefinitions } from "shared/_References/Skills";
 
 @SkillDecorator
 export class BasicHold extends Skill {

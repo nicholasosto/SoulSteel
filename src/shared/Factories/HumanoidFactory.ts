@@ -1,5 +1,5 @@
 import { CollectionService } from "@rbxts/services";
-import { EHumanoidDescription } from "shared/_References/Indexes/AssetIndex";
+import { EHumanoidDescription } from "shared/_References/Humanoids";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { Logger } from "shared/Utility/Logger";
 
@@ -23,9 +23,9 @@ export class HumanoidDescriptionFactory {
 		});
 
 		CollectionService.GetInstanceAddedSignal("WolfForm").Connect((instance) => {
-			Logger.Log(script, "XXXHumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
 			const humanoid = instance.FindFirstChildOfClass("Humanoid");
 			assert(humanoid !== undefined, "Humanoid not found in instance.");
+
 			const humanoidDescription = humanoid.GetAppliedDescription();
 			assert(humanoidDescription !== undefined, "Humanoid cache not found in storage.");
 			HumanoidDescriptionFactory.ApplyHumanoidDescription(humanoid, EHumanoidDescription.WolfForm);

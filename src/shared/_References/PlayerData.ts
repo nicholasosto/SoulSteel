@@ -1,7 +1,7 @@
-import { PlayerSkillsData } from "./Character/Skills";
-import { CharacterStats } from "./Character/CharacterStats";
+import { PlayerSkillsData } from "./Skills";
+import { CharacterStats } from "./CharacterStats";
 import { ProgressionStatsData } from "./ProgressionStats";
-import { ResourceStats } from "./Character/ResourceStats";
+import { ResourceStats } from "./Resources";
 
 // Player Data Interface
 export interface IPlayerData {

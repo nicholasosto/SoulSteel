@@ -1,4 +1,4 @@
-import { SkillId } from "shared/_References/Character/Skills";
+import { SkillId } from "shared/_References/Skills";
 
 // Inventory Types
 export enum InventoryType {

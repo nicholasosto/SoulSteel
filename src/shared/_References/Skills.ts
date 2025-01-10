@@ -1,5 +1,5 @@
-import { AnimationIds } from "../Indexes/AssetIndex";
-
+import { AnimationIds } from "./Animations";
+import { ImageIds } from "./ImageIds";
 // SkillId could be a string union or just 'string'
 // if you have many dynamically loaded skill IDs
 export type SkillId =
@@ -42,10 +42,11 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		skillType: "Melee",
 		wcsSkillId: "BasicMelee",
 		description: "Its like boxing but with swords and more ouch .",
-		icon: "rbxassetid://93299862544122",
+		icon: ImageIds.BasicMelee,
 		animation: AnimationIds.MELEE_Backflip,
 		audio: "rbxassetid://113379107293734",
 		cooldown: 5,
+		baseDamage: 100,
 	},
 	BasicRanged: {
 		displayName: "Spirit Bolt",
@@ -56,6 +57,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.MELEE_Backflip,
 		audio: "rbxassetid://113379107293734",
 		cooldown: 8,
+		baseDamage: 111,
 	},
 	BasicHold: {
 		displayName: "Heal",

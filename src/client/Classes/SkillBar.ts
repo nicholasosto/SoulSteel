@@ -5,7 +5,7 @@ import {
 	PlayerSkillsData,
 	SkillId,
 	getAssignedSkillDefinitions,
-} from "shared/_References/Character/Skills";
+} from "shared/_References/Skills";
 import { Logger, Printable } from "shared/Utility/Logger";
 import { UnknownSkill, Character, Skill } from "@rbxts/wcs";
 import * as Remote from "client/RemotesIndex";
@@ -35,7 +35,6 @@ export class SkillBar {
 		this._playerSkillsData = getDefaultPlayerSkillsData();
 
 		this.initializeConnections();
-		Logger.Log(script, "SkillBar: Constructed", script as unknown as string);
 	}
 
 	// Assign Skills
@@ -43,6 +42,7 @@ export class SkillBar {
 		const assignedSkills = this._playerSkillsData.assignedSlots;
 
 		assert(this._wcsCharacter, "WCS Character is nil");
+
 		let slotNumber = 0;
 
 		// Assign Skills to Slots
@@ -55,7 +55,6 @@ export class SkillBar {
 
 	// Add Skill to Slot
 	public AddSkillToSlot(slot: number, skill: UnknownSkill) {
-		Logger.Log(script, "Add Skill to Slot", skill as unknown as string);
 		const slotName = `Slot${slot + 1}`;
 		const slotFrame = this._templateClone.ActionBarMain.WaitForChild(slotName);
 		assert(slotFrame, `Slot Frame ${slotName} is nil`);
@@ -74,14 +73,9 @@ export class SkillBar {
 		this.destroyConnections();
 		//Logger.Log(script, "SkillBar: Connection Initialization");
 		this._connectionSkillAssignment = this._remoteSkillAssignment.Connect((skillData: PlayerSkillsData) => {
-			//Logger.Log(script, "Skill Assignment", skillData as unknown as string);
+
 			this._playerSkillsData = skillData;
 			this.AssignSkills();
-			Logger.Log(
-				script,
-				"Client Definitions: ",
-				getAssignedSkillDefinitions(this._playerSkillsData) as unknown as string,
-			);
 		});
 	}
 
