@@ -1,6 +1,11 @@
 import { TSkillBar } from "../../shared/UI Component Classes/Types/SkillBar_Template";
 import { UITemplates } from "client/TemplatesIndex";
-import { getDefaultPlayerSkillsData, PlayerSkillsData, SkillId ,getAssignedSkillDefinitions} from "shared/_References/Character/Skills";
+import {
+	getDefaultPlayerSkillsData,
+	PlayerSkillsData,
+	SkillId,
+	getAssignedSkillDefinitions,
+} from "shared/_References/Character/Skills";
 import { Logger, Printable } from "shared/Utility/Logger";
 import { UnknownSkill, Character, Skill } from "@rbxts/wcs";
 import * as Remote from "client/RemotesIndex";
@@ -25,7 +30,7 @@ export class SkillBar {
 	constructor(wcsCharacter: Character, parent: Instance) {
 		// Clone and Parent the Dialog Template
 		assert(this._templateClone, "Template Clone is nil");
-		this._wcsCharacter = wcsCharacter
+		this._wcsCharacter = wcsCharacter;
 		this._templateClone.Parent = parent;
 		this._playerSkillsData = getDefaultPlayerSkillsData();
 
@@ -54,7 +59,7 @@ export class SkillBar {
 		const slotName = `Slot${slot + 1}`;
 		const slotFrame = this._templateClone.ActionBarMain.WaitForChild(slotName);
 		assert(slotFrame, `Slot Frame ${slotName} is nil`);
-		
+
 		const skillButton = new SkillButton(skill as Skill, slotFrame);
 	}
 
@@ -72,7 +77,11 @@ export class SkillBar {
 			//Logger.Log(script, "Skill Assignment", skillData as unknown as string);
 			this._playerSkillsData = skillData;
 			this.AssignSkills();
-			Logger.Log(script, "Client Definitions: ", getAssignedSkillDefinitions(this._playerSkillsData) as unknown as string);
+			Logger.Log(
+				script,
+				"Client Definitions: ",
+				getAssignedSkillDefinitions(this._playerSkillsData) as unknown as string,
+			);
 		});
 	}
 

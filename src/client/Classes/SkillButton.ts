@@ -46,7 +46,11 @@ export class SkillButton {
 
 	// Handle Button Activation
 	protected _handleButtonActivated() {
-		Logger.Log(script, "Skill Button Activated", getSkillDefinition(this._skill.GetName() as SkillId) as unknown as string);
+		Logger.Log(
+			script,
+			"Skill Button Activated",
+			getSkillDefinition(this._skill.GetName() as SkillId) as unknown as string,
+		);
 		this._skill.Start();
 	}
 

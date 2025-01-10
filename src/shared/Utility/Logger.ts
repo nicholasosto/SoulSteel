@@ -1,7 +1,20 @@
 import { HttpService } from "@rbxts/services";
 import { Skill } from "@rbxts/wcs";
 
-export type Printable = string | number | boolean | undefined | Vector3 | CFrame | Instance | string[] | number[] | boolean[] | Vector3[] | CFrame[] | Instance[];
+export type Printable =
+	| string
+	| number
+	| boolean
+	| undefined
+	| Vector3
+	| CFrame
+	| Instance
+	| string[]
+	| number[]
+	| boolean[]
+	| Vector3[]
+	| CFrame[]
+	| Instance[];
 
 // LogLevel: Enum for logging levels
 export enum LogLevel {
