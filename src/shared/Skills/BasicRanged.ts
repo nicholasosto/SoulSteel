@@ -10,11 +10,11 @@ export class BasicRanged extends Skill {
 	private _animationTrack: AnimationTrack | undefined;
 
 	protected OnConstructServer(): void {
+		const characterModel = this.Character.Instance as Model;
+
 		// Create Animation Track
-		this._animationTrack = CreateAnimationTrack(
-			this.Character.Instance as Model,
-			AnimationIds.SKILL_BasicRanged,
-		) as AnimationTrack;
+		const animationId =  AnimationIds.SKILL_BasicRanged;
+		this._animationTrack = CreateAnimationTrack(characterModel, animationId as AnimationIds);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}

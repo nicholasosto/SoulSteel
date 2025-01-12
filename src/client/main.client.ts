@@ -13,7 +13,7 @@ import { SkillBar } from "client/Classes/SkillBar";
 import { SkillButton } from "client/Classes/SkillButton";
 
 // Utility Imports
-import Remotes, { RemoteNames } from "shared/Remotes";
+import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes";
 import { Logger } from "shared/Utility/Logger";
 import { PlayerSkillsData } from "shared/_References/Skills";
 
@@ -44,8 +44,15 @@ Remotes.Client.GetNamespace("Skills").OnEvent(RemoteNames.SkillAssignment, (skil
 	Logger.Log(script, "Skill Assignment", skill as unknown as string);
 });
 
+
 // Start the Keyboard Controller
 KeyboardController.Start();
 
 // Start the Character Frame
 CharacterFrame.Start();
+
+
+Remotes.Client.GetNamespace("UserInterface").OnEvent(RemoteNames.UIUpdateCharacterFrame, (data: CharacterFrameData) => {
+	Logger.Log(script, "UpdateCharacterFrame", data as unknown as string);
+	CharacterFrame.Update(data);
+});

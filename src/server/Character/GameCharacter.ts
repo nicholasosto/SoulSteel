@@ -1,9 +1,9 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-import { Players } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { Character, DamageContainer, GetRegisteredSkillConstructor, UnknownStatus } from "@rbxts/wcs";
-import { CharacterResource } from "./CharacterResource";
+import { CharacterResource, EResourceBarNames, EResourceTypes, GetResourceBarFrameByName } from "./CharacterResource";
 
 import { CharacterStats, getDefaultCharacterStats } from "shared/_References/CharacterStats";
 import { CharacterState } from "shared/_References/CharacterStates";
@@ -16,7 +16,16 @@ import { DataCache, DataManager } from "server/PlayerData/DataManager";
 
 // Utility Imports
 import { Logger } from "shared/Utility/Logger";
-import { PlayerSkillsData, getDefaultPlayerSkillsData } from "shared/_References/Skills";
+import {
+	PlayerSkillsData,
+	SkillId,
+	SkillResource,
+	getDefaultPlayerSkillsData,
+	getSkillDefinition,
+} from "shared/_References/Skills";
+
+// CONSTANTS
+const UI_UPDATE_RATE = 1;
 
 // BaseGameCharacter (NPCs and Players inherit from this)
 export class BaseGameCharacter {
@@ -24,6 +33,7 @@ export class BaseGameCharacter {
 	public Player?: Player;
 	public PlayerDataCache?: DataCache;
 	public SkillData: PlayerSkillsData = getDefaultPlayerSkillsData();
+	//public dummyDamageContainer: DamageContainer;
 	// Character Properties
 	public CharacterName: string;
 	public CharacterModel: Model;
@@ -45,16 +55,27 @@ export class BaseGameCharacter {
 	protected _State: CharacterState = "Idle";
 	//protected _Moveset: Moveset;
 
+	private _lastUpdateTick: number = 0;
 	// Humanoid Connections
 	private _connectionHumanoidDied: RBXScriptConnection | undefined;
 
 	// WCS Character Connections
+	// Character Connections
 	private _connectionCharacterTakeDamage: RBXScriptConnection | undefined;
 	private _connectionCharacterDealtDamage: RBXScriptConnection | undefined;
+
+	// Skill Connections
+	private _connectionSkillStarted: RBXScriptConnection | undefined;
+	private _connectionSkillEnded: RBXScriptConnection | undefined;
+
+	// Status Effect Connections
 	private _connectionStatusEffectAdded: RBXScriptConnection | undefined;
 	private _connectionStatusEffectRemoved: RBXScriptConnection | undefined;
 	private _connectionStatusEffectStarted: RBXScriptConnection | undefined;
 	private _connectionStatusEffectEnded: RBXScriptConnection | undefined;
+
+	// RunService Connections
+	private _connectionHeartbeat: RBXScriptConnection | undefined;
 
 	// Game Character Created/Destroyed Remotes
 	private _remoteGameCharacterCreated = Remotes.Server.GetNamespace("GameCharacter").Get(
@@ -78,7 +99,6 @@ export class BaseGameCharacter {
 
 		// Assign Character Name
 		this.CharacterName = generateCharacterName();
-		
 
 		// Assign Character Model
 		this.CharacterModel = characterModel;
@@ -99,16 +119,14 @@ export class BaseGameCharacter {
 		this.updateAttributes();
 
 		// Create Resources: Health, Mana, Stamina
-		this.Health = new CharacterResource(this, "Health");
-		this.Mana = new CharacterResource(this, "Mana");
-		this.Stamina = new CharacterResource(this, "Stamina");
+		this.Health = new CharacterResource("Health");
+		this.Mana = new CharacterResource("Mana");
+		this.Stamina = new CharacterResource("Stamina");
 
 		// Initialize Connections
 		this.initializeConnections();
 
-		// Load Animations
-		this._LoadAnimations();
-
+		// BillBoard GUI #TODO: Create health bar and improve display
 		this._addBillboardGui();
 	}
 
@@ -151,19 +169,8 @@ export class BaseGameCharacter {
 		const skillIds = this.SkillData.assignedSlots as string[];
 		for (const skillId of skillIds) {
 			const skill = GetRegisteredSkillConstructor(skillId) as unknown as new (character: Character) => unknown;
-			new skill(this.WCS_Character);
+			new skill(this.WCS_Character) as typeof skill;
 		}
-	}
-
-	// Animation Methods
-	protected _LoadAnimations() {
-		// // Load Animations
-		// for (const [animationName, animation] of pairs(CharacterAnimations)) {
-		// 	animation.Parent = this.CharacterModel;
-		// 	animation.Name = animationName as string;
-		// 	const animationTrack = this.Animator.LoadAnimation(animation);
-		// 	this.AnimationTracks.set(animationName as AnimationIds, animationTrack);
-		// }
 	}
 
 	// State System Methods
@@ -189,77 +196,152 @@ export class BaseGameCharacter {
 		this.CharacterModel.SetAttribute("Speed", this.CharacterStats.Speed);
 	}
 
+	protected spendResource(skillResource: SkillResource) {
+		switch (skillResource.resourceId) {
+			case EResourceTypes.Health:
+				this.Health.SetCurrent(this.Health._currentValue - skillResource.amount);
+				break;
+			case EResourceTypes.Mana:
+				this.Mana.SetCurrent(this.Mana._currentValue - skillResource.amount);
+				break;
+			case EResourceTypes.Stamina:
+				this.Stamina.SetCurrent(this.Stamina._currentValue - skillResource.amount);
+				break;
+		}
+	}
+
 	// Remote Handlers
-	public handleCharacterFrameUpdate() {
-		assert(this.Player, "Player is undefined");
-		this._remoteCharacterFrameUpdate.SendToPlayer(this.Player, {
+	public handleCharacterFrameUpdate(forceUpdate: boolean = false) {
+		// Get the Time Since Last Update
+		const timeSinceLastTick = tick() - this._lastUpdateTick;
+
+		if (timeSinceLastTick < UI_UPDATE_RATE && !forceUpdate) {
+			return;
+		}
+
+		if (this.PlayerDataCache === undefined) {
+			Logger.Log(script, "PlayerDataCache is undefined for: " + this.CharacterName);
+			return;
+		}
+
+		if (this.Player === undefined) {
+			Logger.Log(script, "Player is undefined for: " + this.CharacterName);
+			return;
+		}
+
+		const level = this.PlayerDataCache._playerData.ProgressionStats.Level;
+
+		const experience = {
+			Current: this.PlayerDataCache._playerData.ProgressionStats.Experience,
+			Max: this.PlayerDataCache._playerData.ProgressionStats.ExperienceToNextLevel,
+		};
+
+		const health = {
+			Current: this.Health._currentValue,
+			Max: this.Health._maxValue,
+		};
+
+		const mana = {
+			Current: this.Mana._currentValue,
+			Max: this.Mana._maxValue,
+		};
+
+		const stamina = {
+			Current: this.Stamina._currentValue,
+			Max: this.Stamina._maxValue,
+		};
+
+		const data = {
 			CharacterName: this.CharacterName,
-			Level: 1,
-			Experience: {
-				Current: 0,
-				Max: 100,
-			},
-			Health: {
-				Current: this.Health._currentValue,
-				Max: this.Health._maxValue,
-			},
-			Mana: {
-				Current: this.Mana._currentValue,
-				Max: this.Mana._maxValue,
-			},
-			Stamina: {
-				Current: this.Stamina._currentValue,
-				Max: this.Stamina._maxValue,
-			},
-		});
+			Level: level,
+			Experience: experience,
+			Health: health,
+			Mana: mana,
+			Stamina: stamina,
+		};
+
+		// Send Data to Player (This Updates the Character Frame)
+		this._remoteCharacterFrameUpdate.SendToPlayer(this.Player, data);
+
+		this._regenResources();
+
+		// Reset Last Update Tick
+		this._lastUpdateTick = tick();
+	}
+
+	private _regenResources() {
+		this.Health.regenStep();
+		this.Mana.regenStep();
+		this.Stamina.regenStep();
 	}
 
 	// Initialize Connections
 	private initializeConnections() {
+		// Destroy any existing connections
 		this.destroyConnections();
+
+		// Take Damage
 		this._connectionCharacterTakeDamage = this.WCS_Character.DamageTaken.Connect((damage) => {
 			Logger.Log(script, "SuperClass-TakeDamage(): " + damage);
 			this.handleCharacterTakeDamage(damage);
 		});
 
+		// Dealt Damage
 		this._connectionCharacterDealtDamage = this.WCS_Character.DamageDealt.Connect((enemy, damage) => {
 			Logger.Log(script, "SuperClass-DealDamage(): " + damage);
 			this.handleCharacterDealtDamage(enemy, damage);
 		});
 
+		// Skills
+		this._connectionSkillStarted = this.WCS_Character.SkillStarted.Connect((skill) => {
+			const skillDeffinition = getSkillDefinition(skill.GetName() as SkillId);
+			Logger.Log(script, "SuperClass-SkillStarted(): " + skillDeffinition.resource.amount);
+			this.spendResource(skillDeffinition.resource);
+			this.handleCharacterFrameUpdate(true);
+		});
+		this._connectionSkillEnded = this.WCS_Character.SkillEnded.Connect((skill) => {
+			Logger.Log(script, "SuperClass-SkillEnded(): " + skill);
+		});
+
+		// Status Effects
 		this._connectionStatusEffectAdded = this.WCS_Character.StatusEffectAdded.Connect((statusEffect) => {
 			Logger.Log(script, "SuperClass-StatusEffectAdded(): " + statusEffect);
 			this.handleStatusEffectAdded(statusEffect);
 		});
-
 		this._connectionStatusEffectRemoved = this.WCS_Character.StatusEffectRemoved.Connect((statusEffect) => {
 			Logger.Log(script, "SuperClass-StatusEffectRemoved(): " + statusEffect);
 			this.handleStatusEffectRemoved(statusEffect);
 		});
-
 		this._connectionStatusEffectStarted = this.WCS_Character.StatusEffectStarted.Connect((statusEffect) => {
 			Logger.Log(script, "SuperClass-StatusEffectStarted(): " + statusEffect);
 			this.handleStatusEffectStarted(statusEffect);
 		});
-
 		this._connectionStatusEffectEnded = this.WCS_Character.StatusEffectEnded.Connect((statusEffect) => {
 			Logger.Log(script, "SuperClass-StatusEffectEnded(): " + statusEffect);
 			this.handleStatusEffectEnded(statusEffect);
 		});
 
+		// Humanoid Died
 		const humanoid = this.CharacterModel.WaitForChild("Humanoid") as Humanoid;
 		this._connectionHumanoidDied = humanoid.Died.Once(() => {
 			Logger.Log(script, "SuperClass-HumanoidDied()");
+			this.WCS_Character.Destroy();
 			this.SetState("Dead");
+		});
+
+		// Heartbeat Connection
+		this._connectionHeartbeat = RunService.Heartbeat.Connect(() => {
+			this.handleCharacterFrameUpdate();
 		});
 	}
 
 	// Connection Handlers
 	private handleCharacterTakeDamage(damageContainer: DamageContainer) {
 		Logger.Log(script, "BaseEntity: Take Damage: " + damageContainer.Damage);
-		const currentHealth = this.CharacterModel.GetAttribute("HealthCurrent") as number;
+		const currentHealth = this.Health._currentValue;
 		const newHealth = currentHealth - damageContainer.Damage;
 		this.Health.SetCurrent(newHealth);
+		this.handleCharacterFrameUpdate();
 	}
 
 	// Dealt Damage
@@ -295,21 +377,16 @@ export class BaseGameCharacter {
 		this._connectionStatusEffectRemoved?.Disconnect();
 		this._connectionStatusEffectStarted?.Disconnect();
 		this._connectionStatusEffectEnded?.Disconnect();
+		this._connectionHumanoidDied?.Disconnect();
+		this._connectionHeartbeat?.Disconnect();
 	}
 
 	// Destroy Object
 	public Destroy() {
-		this.Health.Destroy();
-		this.Mana.Destroy();
-		this.Stamina.Destroy();
+		//this.Health.Destroy();
+		//this.Mana.Destroy();
+		//this.Stamina.Destroy();
 		this.destroyConnections();
 		this.WCS_Character.Destroy();
-	}
-
-	// Dummy Method to test resource changes
-	public TestResourceChange() {
-		this.Health.SetCurrent(this.Health._currentValue - 10);
-		this.Mana.SetCurrent(this.Mana._currentValue - 10);
-		this.Stamina.SetCurrent(this.Stamina._currentValue - 10);
 	}
 }

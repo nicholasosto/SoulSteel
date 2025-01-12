@@ -6,14 +6,16 @@ import { Logger } from "shared/Utility/Logger";
 export type TAnimation = {
 	[key: string]: Animation;
 };
-
 // Enums
 export enum AnimationIds {
 	MoonPartAnimation = "rbxassetid://82713683056632",
-	SKILL_WCS_Slash = "rbxassetid://77799116860007",
+	// Skills
+	SKILL_WCS_Slash = "rbxassetid://77799116860007", // Scythe Hand
 	SKILL_BasicMelee = "rbxassetid://137879818226309",
 	SKILL_BasicRanged = "rbxassetid://83501648864535",
-	SKILL_BasicHold = "rbxassetid://105644658587176",
+	SKILL_BasicHold = "rbxassetid://105644658587176", // Robot laser spin
+	SKILL_Fart = "rbxassetid://139880766788985",
+	SKILL_LifeDrain = "rbxassetid://126867232649842",
 	MELEE_Backflip = "rbxassetid://96927531461522",
 	MELEE_FastKick = "rbxassetid://126544239907410",
 	MELEE_Dodge = "rbxassetid://15547507943",
@@ -37,25 +39,6 @@ export function CreateAnimation(animationId: AnimationIds): Animation {
 	return animation;
 }
 
-export const CharacterAnimations: TAnimation = {
-	// Basic Skills
-	[AnimationIds.COMBAT_Damage]: CreateAnimation(AnimationIds.COMBAT_Damage),
-
-	// Melee Animations
-	[AnimationIds.MELEE_Backflip]: CreateAnimation(AnimationIds.MELEE_Backflip),
-	[AnimationIds.MELEE_FastKick]: CreateAnimation(AnimationIds.MELEE_FastKick),
-	[AnimationIds.MELEE_Dodge]: CreateAnimation(AnimationIds.MELEE_Dodge),
-
-	// Character Animations
-	[AnimationIds.CHARACTER_Charging]: CreateAnimation(AnimationIds.CHARACTER_Charging),
-
-	// Flight Animations
-	[AnimationIds.FLIGHT_Up]: CreateAnimation(AnimationIds.FLIGHT_Up),
-	[AnimationIds.FLIGHT_Left]: CreateAnimation(AnimationIds.FLIGHT_Left),
-	[AnimationIds.FLIGHT_Right]: CreateAnimation(AnimationIds.FLIGHT_Right),
-	[AnimationIds.FLIGHT_Backward]: CreateAnimation(AnimationIds.FLIGHT_Backward),
-};
-
 export function CreateAnimationTrack(character: Model, animationId: AnimationIds): AnimationTrack {
 	const animation = CreateAnimation(animationId);
 	const Humanoid = character.FindFirstChild("Humanoid");
@@ -65,3 +48,22 @@ export function CreateAnimationTrack(character: Model, animationId: AnimationIds
 	animationTrack.Looped = false;
 	return animationTrack;
 }
+
+// export const CharacterAnimations: TAnimation = {
+// 	// Basic Skills
+// 	[AnimationIds.COMBAT_Damage]: CreateAnimation(AnimationIds.COMBAT_Damage),
+
+// 	// Melee Animations
+// 	[AnimationIds.MELEE_Backflip]: CreateAnimation(AnimationIds.MELEE_Backflip),
+// 	[AnimationIds.MELEE_FastKick]: CreateAnimation(AnimationIds.MELEE_FastKick),
+// 	[AnimationIds.MELEE_Dodge]: CreateAnimation(AnimationIds.MELEE_Dodge),
+
+// 	// Character Animations
+// 	[AnimationIds.CHARACTER_Charging]: CreateAnimation(AnimationIds.CHARACTER_Charging),
+
+// 	// Flight Animations
+// 	[AnimationIds.FLIGHT_Up]: CreateAnimation(AnimationIds.FLIGHT_Up),
+// 	[AnimationIds.FLIGHT_Left]: CreateAnimation(AnimationIds.FLIGHT_Left),
+// 	[AnimationIds.FLIGHT_Right]: CreateAnimation(AnimationIds.FLIGHT_Right),
+// 	[AnimationIds.FLIGHT_Backward]: CreateAnimation(AnimationIds.FLIGHT_Backward),
+// };

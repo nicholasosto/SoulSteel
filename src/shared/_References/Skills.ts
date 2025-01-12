@@ -1,7 +1,10 @@
 import { AnimationIds } from "./Animations";
 import { ImageIds } from "./ImageIds";
-// SkillId could be a string union or just 'string'
-// if you have many dynamically loaded skill IDs
+import { Skill } from "@rbxts/wcs";
+import { ResourceId } from "./Resources";
+import { ESoundId } from "./Sounds";
+
+// Skill IDs
 export type SkillId =
 	| "BasicMelee"
 	| "BasicRanged"
@@ -14,6 +17,7 @@ export type SkillId =
 	| "Meditate"
 	| "Charge";
 
+// Skill Type
 export type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";
 
 export enum SkillSlot {
@@ -24,6 +28,7 @@ export enum SkillSlot {
 	Slot5 = "Slot5",
 }
 
+// Skill Definition
 export interface SkillDefinition {
 	displayName: string;
 	wcsSkillId: string;
@@ -34,70 +39,89 @@ export interface SkillDefinition {
 	audio: string; // example field
 	skillType: SkillType; // example field
 	baseDamage?: number; // example field
+	resource: SkillResource;
 }
+
+export type SkillResource = {
+	resourceId: ResourceId;
+	amount: number;
+}
+
+const DEFAULT_RESOURCE: SkillResource = {
+	resourceId: "Mana",
+	amount: 10,
+}
+
 // TODO: MAP Asset IDs for Icons, Animations, and Audio
 export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 	BasicMelee: {
-		displayName: "Strike with fury",
+		displayName: "Melee Strike",
 		skillType: "Melee",
 		wcsSkillId: "BasicMelee",
-		description: "Its like boxing but with swords and more ouch .",
+		description: "Strike with fury, Its like boxing but with swords and more ouch .",
 		icon: ImageIds.BasicMelee,
-		animation: AnimationIds.MELEE_Backflip,
-		audio: "rbxassetid://113379107293734",
+		animation: AnimationIds.SKILL_BasicMelee,
+		audio: ESoundId.BasicMelee,
 		cooldown: 5,
 		baseDamage: 100,
+		resource: DEFAULT_RESOURCE,
+
 	},
 	BasicRanged: {
-		displayName: "Spirit Bolt",
+		displayName: "Ranged Attack",
 		skillType: "Ranged",
 		wcsSkillId: "BasicRanged",
 		description: "Strike a single target with spirit ball.",
-		icon: "rbxassetid://87692961632175",
-		animation: AnimationIds.MELEE_Backflip,
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.BasicRanged,
+		animation: AnimationIds.SKILL_BasicRanged,
+		audio: ESoundId.BasicRanged,
 		cooldown: 8,
 		baseDamage: 111,
+		resource: DEFAULT_RESOURCE,
 	},
 	BasicHold: {
-		displayName: "Heal",
+		displayName: "Hold ME",
 		wcsSkillId: "BasicHold",
 		skillType: "Hold",
 		description: "Restore your health or an ally’s.",
-		icon: "rbxassetid://123557536413272",
-		animation: AnimationIds.MELEE_Backflip,
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.BasicHold,
+		animation: AnimationIds.SKILL_LifeDrain,
+		audio: ESoundId.BasicHold,
 		cooldown: 10,
+		resource: DEFAULT_RESOURCE,
 	},
 	SpiritOrb: {
-		displayName: "Spirit Bolt",
+		displayName: "Spirit Orb",
 		skillType: "Ranged",
 		wcsSkillId: "BasicRanged",
 		description: "Strike a single target with spirit ball.",
-		icon: "rbxassetid://87692961632175",
-		animation: AnimationIds.MELEE_Backflip,
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.SimpleSoul,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.SpiritOrb,
 		cooldown: 8,
+		resource: DEFAULT_RESOURCE,
 	},
 	Teleport: {
 		displayName: "Teleport",
 		wcsSkillId: "Teleport",
 		skillType: "Utility",
 		description: "Teleport to a short distance.",
-		icon: "rbxassetid://76927840703129",
-		animation: "rbxassetid://105644658587176",
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.ArmorDK,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Teleport,
 		cooldown: 15,
+		resource: DEFAULT_RESOURCE,
 	},
 	Dash: {
 		displayName: "Dash",
 		wcsSkillId: "Dash",
 		skillType: "Movement",
 		description: "Dash forward quickly.",
-		icon: "rbxassetid://119649862368547",
-		animation: "rbxassetid://87124434257649",
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.ArmorDK,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Dash,
 		cooldown: 12,
+		resource: DEFAULT_RESOURCE,
 	},
 	MultiJump: {
 		displayName: "Double Jump",
@@ -105,43 +129,48 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		skillType: "Movement",
 		description: "Jump in mid-air a second time.",
 		icon: "rbxassetid://139595831174835",
-		animation: "rbxassetid://110159074520244",
-		audio: "rbxassetid://113379107293734",
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Dash,
 		cooldown: 0,
+		resource: DEFAULT_RESOURCE,
 	},
 	Fly: {
 		displayName: "Fly",
 		wcsSkillId: "Fly",
 		skillType: "Movement",
 		description: "Gain the ability to fly.",
-		icon: "rbxassetid://128172931372943",
-		animation: "rbxassetid://12351",
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.ArmorDK,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Fly,
 		cooldown: 30,
+		resource: DEFAULT_RESOURCE,
 	},
 	Meditate: {
 		displayName: "Meditate",
 		wcsSkillId: "Meditate",
 		skillType: "Utility",
 		description: "Regenerate health and mana.",
-		icon: "rbxassetid://12352",
-		animation: "rbxassetid://140479956568725",
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.ArmorDK,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Meditate,
 		cooldown: 20,
+		resource: DEFAULT_RESOURCE,
 	},
 	Charge: {
 		displayName: "Charge",
 		wcsSkillId: "Charge",
 		skillType: "Utility",
 		description: "Charge your mana reserves.",
-		icon: "rbxassetid://12353",
-		animation: "rbxassetid://98363948502311",
-		audio: "rbxassetid://113379107293734",
+		icon: ImageIds.ArmorDK,
+		animation: AnimationIds.SKILL_Fart,
+		audio: ESoundId.Charge,
 		cooldown: 18,
+		resource: DEFAULT_RESOURCE,
 	},
 	// ... add additional skills here
 };
 
+// Player Skills Data
 export interface PlayerSkillsData {
 	/**
 	 * All the skill IDs that this player has unlocked.
@@ -156,19 +185,22 @@ export interface PlayerSkillsData {
 	assignedSlots: Array<SkillId | undefined>;
 }
 
+// Default Player Skills Data
 export function getDefaultPlayerSkillsData(): PlayerSkillsData {
 	return {
-		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold", "Teleport", "Dash"],
-		assignedSlots: ["BasicMelee", "BasicRanged", undefined, undefined, undefined],
+		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold", "Teleport", "Dash", "Charge", "Fly"],
+		assignedSlots: ["BasicMelee", "BasicRanged", "BasicHold", "Charge", "Dash"],
 	};
 }
 
+// Unlock a skill for the player
 export function unlockSkill(skillData: PlayerSkillsData, skillId: SkillId): void {
 	if (!skillData.unlockedSkills.includes(skillId)) {
 		skillData.unlockedSkills.push(skillId);
 	}
 }
 
+// Assign a skill to a slot
 export function assignSkillToSlot(skillData: PlayerSkillsData, skillId: SkillId, slotIndex: number): void {
 	// Validate slot index
 	if (slotIndex < 0 || slotIndex > 4) {
@@ -182,6 +214,15 @@ export function assignSkillToSlot(skillData: PlayerSkillsData, skillId: SkillId,
 	skillData.assignedSlots[slotIndex] = skillId;
 }
 
+// Unassign a skill from a slot
+export function unassignSlot(skillData: PlayerSkillsData, slotIndex: number): void {
+	if (slotIndex < 0 || slotIndex > 4) {
+		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;
+	}
+	skillData.assignedSlots[slotIndex] = undefined;
+}
+
+// Get the name of the skill in a slot
 export function getSkillNameFromSlotNumber(skillData: PlayerSkillsData, slotIndex: number): string {
 	if (slotIndex < 0 || slotIndex > 4) {
 		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;
@@ -194,13 +235,7 @@ export function getSkillNameFromSlotNumber(skillData: PlayerSkillsData, slotInde
 	return skillDef.wcsSkillId;
 }
 
-export function unassignSlot(skillData: PlayerSkillsData, slotIndex: number): void {
-	if (slotIndex < 0 || slotIndex > 4) {
-		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;
-	}
-	skillData.assignedSlots[slotIndex] = undefined;
-}
-
+// Get the skill definitions for all assigned skills
 export function getAssignedSkillDefinitions(skillData: PlayerSkillsData): Array<SkillDefinition> {
 	const returnArray: Array<SkillDefinition> = [];
 
@@ -215,6 +250,7 @@ export function getAssignedSkillDefinitions(skillData: PlayerSkillsData): Array<
 	return returnArray;
 }
 
+// Get the skill definition for a specific skill ID
 export function getSkillDefinition(skillId: SkillId): SkillDefinition {
 	const skillDef = SkillDefinitions[skillId];
 	if (!skillDef) {

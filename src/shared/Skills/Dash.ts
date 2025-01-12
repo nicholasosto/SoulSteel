@@ -4,11 +4,10 @@ import { SkillDefinitions } from "shared/_References/Skills";
 import { AttachEffect, EParticleName } from "shared/_References/Particles";
 import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
 import { EAttachmentName } from "shared/_References/Attachments";
-import { BaseGameCharacter } from "server/Character/GameCharacter";
 
 @SkillDecorator
-export class BasicMelee extends Skill {
-	private _skillDefinition = SkillDefinitions.BasicMelee;
+export class Dash extends Skill {
+	private _skillDefinition = SkillDefinitions.Dash;
 	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
 	private _animationTrack: AnimationTrack | undefined;
 

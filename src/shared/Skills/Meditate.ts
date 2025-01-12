@@ -1,16 +1,22 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { SkillDefinitions } from "shared/_References/Skills";
+import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
 import { Logger } from "shared/Utility/Logger";
 
 @SkillDecorator
 export class Meditate extends Skill {
-	// 00. CONSTRUCT
-	public OnConstruct() {
-		Logger.Log(script, "- Construct");
-	}
+	private _skillDefinition = SkillDefinitions.Meditate;
+	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
+	private _animationTrack: AnimationTrack | undefined;
 
-	public OnConstructServer(): void {
-		Logger.Log(script, " - Server");
-		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
+	protected OnConstructServer(): void {
+		const characterModel = this.Character.Instance as Model;
+
+		// Create Animation Track
+		const animationId =  AnimationIds.SKILL_Fart;
+		this._animationTrack = CreateAnimationTrack(characterModel, animationId as AnimationIds);
+
+		assert(this._animationTrack, "Animation Track is nil");
 	}
 
 	// 01. CONSTRUCT CLIENT
@@ -20,7 +26,7 @@ export class Meditate extends Skill {
 
 	// MOVE START
 	public OnStartServer() {
-		Logger.Log(script, "Start Server");
+		this._animationTrack?.Play();
 	}
 
 	// END SERVER

@@ -1,5 +1,4 @@
-import { AttachmentName } from "../_References/Attachments";
-import { ReplicatedStorage } from "@rbxts/services";
+/*
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { PackageIndex } from "shared/_References/Indexes/MasterIndex";
 import { Logger } from "shared/Utility/Logger";
@@ -62,3 +61,4 @@ export function applyAuraToCharacter(character: Model, auraModel: Model): void {
 	});
 	Logger.Log(script, `AuraMap: ${auraMap}`);
 }
+*/

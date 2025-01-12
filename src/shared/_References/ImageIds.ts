@@ -1,24 +1,24 @@
-const rbxassetid = "rbxgameasset://";
+const rbxassetid = "rbxgameasset://Images/";
 
 export enum ImageIds {
 	// Helmet
-	PumpkinHead = "Images/PumpkinHead",
+	PumpkinHead = rbxassetid + "PumpkinHead",
 
 	// Armor
-	AngelArmor = "Images/BloodDropplet",
-	ArmorBasic = "Images/ArmorBasic",
-	ArmorDK = "Images/Armor DK",
-	ArmorVampire = "Images/ArmorVampire",
+	AngelArmor = rbxassetid + "BloodDropplet",
+	ArmorBasic = rbxassetid + "ArmorBasic",
+	ArmorDK = rbxassetid + "Armor DK",
+	ArmorVampire = rbxassetid + "ArmorVampire",
 
 	// Weapon
-	WeaponBigRed = "Images/WeaponBigRed",
-	WeaponBlackScythe = "Images/Black_Scythe",
+	WeaponBigRed = rbxassetid + "WeaponBigRed",
+	WeaponBlackScythe = rbxassetid + "Black_Scythe",
 
 	// Other
-	SimpleSoul = "Images/SimpleSoul",
+	SimpleSoul = rbxassetid + "SimpleSoul",
 
 	// Skills
-	BasicMelee = rbxassetid + "Images/BasicMelee",
-	BasicRanged = "Images/Ranged_Attack",
-	BasicHold = "Images/Basic Ring",
+	BasicMelee = rbxassetid + "BasicMelee",
+	BasicRanged = rbxassetid + "Ranged_Attack",
+	BasicHold = rbxassetid + "Basic Ring",
 }
