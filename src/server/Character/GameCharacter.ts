@@ -374,7 +374,6 @@ export class BaseGameCharacter {
 
 	// Destroy Connections
 	private destroyConnections() {
-
 		Logger.Log(script, "Destroying Connections");
 		this._connectionCharacterTakeDamage?.Disconnect();
 		this._connectionCharacterDealtDamage?.Disconnect();

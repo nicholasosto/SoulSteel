@@ -20,7 +20,6 @@ export type SkillId =
 // Skill Type
 export type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";
 
-
 // Skill Definition
 export interface SkillDefinition {
 	displayName: string;

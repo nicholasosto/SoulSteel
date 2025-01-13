@@ -35,16 +35,15 @@ let skillsConnection: RBXScriptConnection | undefined;
 
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
-
 	Logger.Log(script, "Character Created");
 
 	skillsConnection?.Disconnect();
-	skillsConnection = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.SkillAssignment).Connect((playerSkillData: PlayerSkillsData) => {
-		Logger.Log(script, "Skill Assignment", playerSkillData as unknown as string);
-		SkillController.AssignSkillData(character,playerSkillData);
-	});
-
-	
+	skillsConnection = Remotes.Client.GetNamespace("Skills")
+		.Get(RemoteNames.SkillAssignment)
+		.Connect((playerSkillData: PlayerSkillsData) => {
+			Logger.Log(script, "Skill Assignment", playerSkillData as unknown as string);
+			SkillController.AssignSkillData(character, playerSkillData);
+		});
 
 	character.Humanoid.Died.Connect(() => {
 		skillsConnection?.Disconnect();

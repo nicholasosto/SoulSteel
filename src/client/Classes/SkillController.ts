@@ -32,7 +32,6 @@ export class SkillController {
 		this.SetUnlockedSkills(skillArray.unlockedSkills);
 
 		this.SetSkillDefinitions();
-
 	}
 
 	private static SetAssignedSkills(wcsCharacter: Character, skillArray: Array<SkillId | undefined>) {
