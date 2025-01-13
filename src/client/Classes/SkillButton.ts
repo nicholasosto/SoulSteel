@@ -1,5 +1,5 @@
 import { ItemId } from "shared/_References/Inventory";
-import {RunService} from "@rbxts/services";
+import { RunService } from "@rbxts/services";
 import { TSkillButton } from "../../shared/UI Component Classes/Types/SkillButton_Template";
 import { SkillDefinition, SkillId, getSkillDefinition } from "shared/_References/Skills";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
@@ -47,6 +47,7 @@ export class SkillButton {
 		this._templateClone.Parent = parent;
 
 		this._initializeConnections();
+		Logger.Log(script, "Skill Button Created");
 		Logger.Log(script, getSkillDefinition(unknownSkill.GetName() as SkillId) as unknown as string);
 	}
 
@@ -54,8 +55,6 @@ export class SkillButton {
 		this._templateClone.SkillButton.Image = this._skillDefinition.icon;
 		this._templateClone.CooldownBar.SetAttribute(EEpicUIAttributes.TextValue, this._skillDefinition.displayName);
 	}
-
-
 
 	// Initialize Connections
 	protected _initializeConnections() {
@@ -82,10 +81,19 @@ export class SkillButton {
 			if (this._cooldownRemaining <= 0) {
 				this._cooldownRemaining = 0;
 				this._connectionCooldown?.Disconnect();
-				this._templateClone.CooldownBar.SetAttribute(EEpicUIAttributes.TextValue, this._skillDefinition.displayName);
+				this._templateClone.CooldownBar.SetAttribute(
+					EEpicUIAttributes.TextValue,
+					this._skillDefinition.displayName,
+				);
 			}
-			this._cooldownBar.SetAttribute(EEpicUIAttributes.TextValue, `${this._skillDefinition.displayName} (${math.ceil(this._cooldownRemaining)})`);
-			this._cooldownBar.SetAttribute(EEpicUIAttributes.BarPercent,(this._cooldownRemaining / this._cooldownTime)*100);
+			this._cooldownBar.SetAttribute(
+				EEpicUIAttributes.TextValue,
+				`${this._skillDefinition.displayName} (${math.ceil(this._cooldownRemaining)})`,
+			);
+			this._cooldownBar.SetAttribute(
+				EEpicUIAttributes.BarPercent,
+				(this._cooldownRemaining / this._cooldownTime) * 100,
+			);
 		});
 	}
 

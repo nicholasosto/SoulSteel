@@ -67,6 +67,10 @@ export class CharacterResource {
 		if (!this._regenActive || this._currentValue >= this._maxValue) {
 			return;
 		}
+		if (this._currentValue + this._regenAmount > this._maxValue) {
+			this.SetCurrent(this._maxValue);
+			return;
+		}
 		this.SetCurrent(this._currentValue + this._regenAmount);
 	}
 }

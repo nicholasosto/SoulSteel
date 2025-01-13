@@ -20,13 +20,6 @@ export type SkillId =
 // Skill Type
 export type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";
 
-export enum SkillSlot {
-	Slot1 = "Slot1",
-	Slot2 = "Slot2",
-	Slot3 = "Slot3",
-	Slot4 = "Slot4",
-	Slot5 = "Slot5",
-}
 
 // Skill Definition
 export interface SkillDefinition {
@@ -45,12 +38,22 @@ export interface SkillDefinition {
 export type SkillResource = {
 	resourceId: ResourceId;
 	amount: number;
-}
+};
 
-const DEFAULT_RESOURCE: SkillResource = {
+const DEFAULT_RESOURCE_MANA: SkillResource = {
 	resourceId: "Mana",
-	amount: 10,
-}
+	amount: 30,
+};
+
+const DEFAULT_RESOURCE_HEALTH: SkillResource = {
+	resourceId: "Health",
+	amount: 20,
+};
+
+const DEFAULT_RESOURCE_STAMINA: SkillResource = {
+	resourceId: "Stamina",
+	amount: 40,
+};
 
 // TODO: MAP Asset IDs for Icons, Animations, and Audio
 export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
@@ -63,9 +66,8 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_BasicMelee,
 		audio: ESoundId.BasicMelee,
 		cooldown: 5,
-		baseDamage: 100,
-		resource: DEFAULT_RESOURCE,
-
+		baseDamage: 8,
+		resource: DEFAULT_RESOURCE_STAMINA,
 	},
 	BasicRanged: {
 		displayName: "Ranged Attack",
@@ -77,7 +79,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		audio: ESoundId.BasicRanged,
 		cooldown: 8,
 		baseDamage: 111,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_STAMINA,
 	},
 	BasicHold: {
 		displayName: "Hold ME",
@@ -88,7 +90,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_LifeDrain,
 		audio: ESoundId.BasicHold,
 		cooldown: 10,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	SpiritOrb: {
 		displayName: "Spirit Orb",
@@ -99,7 +101,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.SpiritOrb,
 		cooldown: 8,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	Teleport: {
 		displayName: "Teleport",
@@ -110,7 +112,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Teleport,
 		cooldown: 15,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	Dash: {
 		displayName: "Dash",
@@ -121,7 +123,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Dash,
 		cooldown: 12,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_STAMINA,
 	},
 	MultiJump: {
 		displayName: "Double Jump",
@@ -132,7 +134,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Dash,
 		cooldown: 0,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	Fly: {
 		displayName: "Fly",
@@ -143,7 +145,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Fly,
 		cooldown: 30,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	Meditate: {
 		displayName: "Meditate",
@@ -154,7 +156,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Meditate,
 		cooldown: 20,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	Charge: {
 		displayName: "Charge",
@@ -165,7 +167,7 @@ export const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: AnimationIds.SKILL_Fart,
 		audio: ESoundId.Charge,
 		cooldown: 18,
-		resource: DEFAULT_RESOURCE,
+		resource: DEFAULT_RESOURCE_MANA,
 	},
 	// ... add additional skills here
 };

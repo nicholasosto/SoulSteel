@@ -1,8 +1,7 @@
 import Net, { Definitions } from "@rbxts/net";
 import { InventoryItem, InventoryType, ItemId } from "./_References/Inventory";
-import { SkillSlot } from "./_References/Skills";
-import { Skill } from "@rbxts/wcs";
 import { PlayerSkillsData } from "./_References/Skills";
+import { Character } from "@rbxts/wcs";
 
 export enum RemoteNames {
 	// Inventory
@@ -45,13 +44,12 @@ export type CharacterFrameData = {
 		Current: number;
 		Max: number;
 	};
-
 };
 const Remotes = Net.Definitions.Create({
-
 	// Inventory
 	Inventory: Definitions.Namespace({
-		[RemoteNames.GetInventory]: Net.Definitions.ServerToClientEvent<[inventory: Map<InventoryType, InventoryItem>]>(),
+		[RemoteNames.GetInventory]:
+			Net.Definitions.ServerToClientEvent<[inventory: Map<InventoryType, InventoryItem>]>(),
 		[RemoteNames.RequestInventory]: Net.Definitions.ClientToServerEvent(),
 	}),
 
@@ -69,7 +67,7 @@ const Remotes = Net.Definitions.Create({
 
 	// Skills
 	Skills: Definitions.Namespace({
-		[RemoteNames.SkillAssignment]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
+		[RemoteNames.SkillAssignment]: Net.Definitions.ServerToClientEvent<[ skillData: PlayerSkillsData]>(),
 	}),
 
 	// User Interface

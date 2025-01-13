@@ -158,7 +158,7 @@ export class BaseGameCharacter {
 			// Send Skills to Player
 			this._remoteAssignSkills.SendToPlayer(this.Player as Player, this.SkillData);
 
-			Logger.Log(script, "Assign Skills", this.SkillData as unknown as string);
+			//Logger.Log(script, "Assign Skills", this.SkillData as unknown as string);
 		} else {
 			Logger.Log(script, "PlayerDataCache is undefined");
 		}
@@ -325,8 +325,7 @@ export class BaseGameCharacter {
 		const humanoid = this.CharacterModel.WaitForChild("Humanoid") as Humanoid;
 		this._connectionHumanoidDied = humanoid.Died.Once(() => {
 			Logger.Log(script, "SuperClass-HumanoidDied()");
-			this.WCS_Character.Destroy();
-			this.SetState("Dead");
+			this.Destroy();
 		});
 
 		// Heartbeat Connection
@@ -342,6 +341,10 @@ export class BaseGameCharacter {
 		const newHealth = currentHealth - damageContainer.Damage;
 		this.Health.SetCurrent(newHealth);
 		this.handleCharacterFrameUpdate();
+
+		if (newHealth <= 0) {
+			this.WCS_Character.Humanoid.Health = 0;
+		}
 	}
 
 	// Dealt Damage
@@ -371,6 +374,8 @@ export class BaseGameCharacter {
 
 	// Destroy Connections
 	private destroyConnections() {
+
+		Logger.Log(script, "Destroying Connections");
 		this._connectionCharacterTakeDamage?.Disconnect();
 		this._connectionCharacterDealtDamage?.Disconnect();
 		this._connectionStatusEffectAdded?.Disconnect();
@@ -383,7 +388,6 @@ export class BaseGameCharacter {
 
 	// Destroy Object
 	public Destroy() {
-		//this.Health.Destroy();
 		//this.Mana.Destroy();
 		//this.Stamina.Destroy();
 		this.destroyConnections();

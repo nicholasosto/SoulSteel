@@ -24,11 +24,12 @@ StorageManager.Start();
 // Player Added Connection
 Players.PlayerAdded.Connect((player) => {
 	player.CharacterAdded.Connect((character) => {
+		//Logger.Log(script, "Server - Character Added: ", character as unknown as string);
 		new BaseGameCharacter(character as Model);
 	});
 });
 
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
-	Logger.Log(script, "WCS Character Created: ", character as unknown as string);
+	//Logger.Log(script, "WCS Character Created: ", character as unknown as string);
 });
