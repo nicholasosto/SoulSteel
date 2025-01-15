@@ -1,6 +1,6 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillDefinitions } from "shared/_References/Skills";
-import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
+import { SkillDefinitions } from "shared/Skills/SkillIndex";
+import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import { Logger } from "shared/Utility/Logger";
 
 @SkillDecorator
@@ -13,8 +13,8 @@ export class Meditate extends Skill {
 		const characterModel = this.Character.Instance as Model;
 
 		// Create Animation Track
-		const animationId =  AnimationIds.SKILL_Fart;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as AnimationIds);
+		const animationId = EAnimationID.SKILL_Fart;
+		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}
@@ -26,7 +26,7 @@ export class Meditate extends Skill {
 
 	// MOVE START
 	public OnStartServer() {
-		this._animationTrack?.Play();
+		//this._animationTrack?.Play();
 	}
 
 	// END SERVER

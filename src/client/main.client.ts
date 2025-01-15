@@ -9,20 +9,20 @@ import { KeyboardController } from "./Keyboard";
 
 // UI Components
 import CharacterFrame from "./CharacterFrame";
-import { SkillController } from "client/Classes/SkillController";
-import { SkillButton } from "client/Classes/SkillButton";
+import { SkillBar } from "client/Classes/SkillBar";
+import { SkillButton } from "shared/Skills/UIClasses/SkillButton";
 
 // Utility Imports
 import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes";
 import { Logger } from "shared/Utility/Logger";
-import { PlayerSkillsData } from "shared/_References/Skills";
+import { PlayerSkillsData } from "shared/Skills/SkillIndex";
 
 // Player and PlayerGui
 const player = game.GetService("Players").LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");
 const HUD = playerGui.WaitForChild("HUD");
 
-SkillController.Initialize();
+SkillBar.Initialize();
 
 //import { RegisterEntity, GetEntity } from "shared/Factories/NameFactory";
 
@@ -39,10 +39,10 @@ Character.CharacterCreated.Connect((character) => {
 
 	skillsConnection?.Disconnect();
 	skillsConnection = Remotes.Client.GetNamespace("Skills")
-		.Get(RemoteNames.SkillAssignment)
+		.Get(RemoteNames.LoadPlayerSkills)
 		.Connect((playerSkillData: PlayerSkillsData) => {
 			Logger.Log(script, "Skill Assignment", playerSkillData as unknown as string);
-			SkillController.AssignSkillData(character, playerSkillData);
+			SkillBar.AssignSkillData(character, playerSkillData);
 		});
 
 	character.Humanoid.Died.Connect(() => {

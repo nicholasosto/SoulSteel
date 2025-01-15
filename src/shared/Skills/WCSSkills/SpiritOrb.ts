@@ -1,7 +1,7 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
+import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import { Logger } from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/_References/Skills";
+import { SkillDefinitions } from "shared/Skills/SkillIndex";
 
 @SkillDecorator
 export class SpiritOrb extends Skill {
@@ -13,14 +13,14 @@ export class SpiritOrb extends Skill {
 		const characterModel = this.Character.Instance as Model;
 
 		// Create Animation Track
-		const animationId = AnimationIds.SKILL_Fart;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as AnimationIds);
+		const animationId = EAnimationID.SKILL_Fart;
+		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}
 
 	protected OnStartServer(): void {
-		this._animationTrack?.Play();
+		//this._animationTrack?.Play();
 	}
 
 	protected OnEndServer(): void {}

@@ -13,6 +13,16 @@ export class CharacterAnimator {
 		//this._initialize();
 	}
 
+	public InitializeAnimations(character: Model) {
+		this._character = character;
+		this._humanoid = character.WaitForChild("Humanoid") as Humanoid;
+		this._animator = this._humanoid.WaitForChild("Animator") as Animator;
+		//const animations = character.WaitForChild("Animations") as Folder;
+		//animations.GetChildren().forEach((animation) => {
+		//	this._animationTracks.set(animation.Name, this._animator.LoadAnimation(animation));
+		//});
+	}
+
 	public PlayAnimation(animation: Animation) {
 		//this._animator.PlayAnimation(animation);
 	}

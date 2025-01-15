@@ -1,6 +1,10 @@
 const rbxassetid = "rbxgameasset://Images/";
 
 export enum ImageIds {
+
+	// Default Icon
+	DefaultIcon = rbxassetid + "Unassigned",
+
 	// Helmet
 	PumpkinHead = rbxassetid + "PumpkinHead",
 

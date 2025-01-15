@@ -1,8 +1,8 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/_References/Skills";
+import { SkillDefinitions } from "shared/Skills/SkillIndex";
 import { AttachEffect, EParticleName } from "shared/_References/Particles";
-import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
+import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import { EAttachmentName } from "shared/_References/Attachments";
 import { Character } from "@rbxts/wcs";
 import { BaseGameCharacter } from "server/Character/GameCharacter";
@@ -18,7 +18,7 @@ export class BasicMelee extends Skill {
 		// Create Animation Track
 		this._animationTrack = CreateAnimationTrack(
 			this.Character.Instance as Model,
-			AnimationIds.SKILL_Fart,
+			EAnimationID.SKILL_Fart,
 		) as AnimationTrack;
 
 		assert(this._animationTrack, "Animation Track is nil");
@@ -53,7 +53,7 @@ export class BasicMelee extends Skill {
 			hitbox.Destroy();
 		});
 
-		this._animationTrack?.Play();
+		//this._animationTrack?.Play();
 	}
 
 	// Server-Side Update

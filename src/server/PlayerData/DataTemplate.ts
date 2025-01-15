@@ -1,5 +1,5 @@
 import { IPlayerData } from "shared/_References/PlayerData";
-import { getDefaultPlayerSkillsData } from "shared/_References/Skills";
+import { getDefaultPlayerSkillsData } from "shared/Skills/SkillIndex";
 import { getDefaultCharacterStats } from "shared/_References/CharacterStats";
 import { getDefaultProgressionStatsData } from "shared/_References/ProgressionStats";
 import { getDefaultResourceStats } from "shared/_References/Resources";

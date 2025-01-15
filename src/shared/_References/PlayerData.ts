@@ -1,4 +1,4 @@
-import { PlayerSkillsData } from "./Skills";
+import { PlayerSkillsData } from "shared/Skills/SkillIndex";
 import { CharacterStats } from "./CharacterStats";
 import { ProgressionStatsData } from "./ProgressionStats";
 import { ResourceStats } from "./Resources";

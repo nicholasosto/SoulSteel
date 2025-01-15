@@ -2,7 +2,7 @@ import { Players } from "@rbxts/services";
 import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { CharacterFrameData } from "shared/Remotes";
-import { TCharacterFrame } from "shared/UI Component Classes/Types/CharacterFrame";
+import { TCharacterFrame } from "shared/UI Component Classes/Character Frame/CharacterFrame";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
 
 export default class CharacterFrame {

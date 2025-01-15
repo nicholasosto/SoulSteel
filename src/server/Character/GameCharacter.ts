@@ -2,12 +2,13 @@
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
 import { Players, RunService } from "@rbxts/services";
-import { Character, DamageContainer, GetRegisteredSkillConstructor, UnknownStatus } from "@rbxts/wcs";
+import { Character, DamageContainer, GetRegisteredSkillConstructor, UnknownSkill, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource, EResourceBarNames, EResourceTypes, GetResourceBarFrameByName } from "./CharacterResource";
 
 import { CharacterStats, getDefaultCharacterStats } from "shared/_References/CharacterStats";
 import { CharacterState } from "shared/_References/CharacterStates";
-import { AnimationIndex } from "shared/_References/Indexes/MasterIndex";
+import { EAnimationID } from "shared/Animation/AnimationIndex";
+import CharacterAnimator from "server/Character/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 import Remotes, { RemoteNames } from "shared/Remotes";
 
@@ -22,7 +23,7 @@ import {
 	SkillResource,
 	getDefaultPlayerSkillsData,
 	getSkillDefinition,
-} from "shared/_References/Skills";
+} from "shared/Skills/SkillIndex";
 
 // CONSTANTS
 const UI_UPDATE_RATE = 1;
@@ -37,9 +38,9 @@ export class BaseGameCharacter {
 	// Character Properties
 	public CharacterName: string;
 	public CharacterModel: Model;
-	public Animator: Animator;
+	public Animator: CharacterAnimator;
 	//public Animations = CharacterAnimations;
-	public AnimationTracks = new Map<AnimationIndex.AnimationIds, AnimationTrack>();
+	public AnimationTracks = new Map<EAnimationID, AnimationTrack>();
 	public WCS_Character: Character;
 	public Target: Model | undefined;
 
@@ -67,6 +68,7 @@ export class BaseGameCharacter {
 	// Skill Connections
 	private _connectionSkillStarted: RBXScriptConnection | undefined;
 	private _connectionSkillEnded: RBXScriptConnection | undefined;
+	private _connectionSkillAdded: RBXScriptConnection | undefined;
 
 	// Status Effect Connections
 	private _connectionStatusEffectAdded: RBXScriptConnection | undefined;
@@ -88,7 +90,7 @@ export class BaseGameCharacter {
 		RemoteNames.UIUpdateCharacterFrame,
 	);
 	private _remoteSkillBarUpdate = Remotes.Server.GetNamespace("UserInterface").Get(RemoteNames.UIUpdateSkillBar);
-	private _remoteAssignSkills = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.SkillAssignment);
+	private _remoteAssignSkills = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.LoadPlayerSkills);
 
 	// Constructor
 	constructor(characterModel: Model, characterName: string = "Default Character Name") {
@@ -103,17 +105,14 @@ export class BaseGameCharacter {
 		// Assign Character Model
 		this.CharacterModel = characterModel;
 
+		// Assign Animator
+		this.Animator = new CharacterAnimator(this.CharacterModel);
+
 		// Character Stats
 		this.CharacterStats = getDefaultCharacterStats();
 
-		// Assign Animator
-		this.Animator = this.CharacterModel.FindFirstChild("Animator", true) as Animator;
-
 		// Create WCS Character
 		this.WCS_Character = new Character(characterModel);
-
-		// Assign Skills
-		this._AssignSkills();
 
 		// Attributes
 		this.updateAttributes();
@@ -125,6 +124,9 @@ export class BaseGameCharacter {
 
 		// Initialize Connections
 		this.initializeConnections();
+
+		// Assign Skills
+		this._AssignSkills();
 
 		// BillBoard GUI #TODO: Create health bar and improve display
 		this._addBillboardGui();
@@ -280,44 +282,36 @@ export class BaseGameCharacter {
 		// Destroy any existing connections
 		this.destroyConnections();
 
-		// Take Damage
+		// Character
 		this._connectionCharacterTakeDamage = this.WCS_Character.DamageTaken.Connect((damage) => {
-			Logger.Log(script, "SuperClass-TakeDamage(): " + damage);
 			this.handleCharacterTakeDamage(damage);
 		});
-
-		// Dealt Damage
 		this._connectionCharacterDealtDamage = this.WCS_Character.DamageDealt.Connect((enemy, damage) => {
-			Logger.Log(script, "SuperClass-DealDamage(): " + damage);
 			this.handleCharacterDealtDamage(enemy, damage);
 		});
 
 		// Skills
 		this._connectionSkillStarted = this.WCS_Character.SkillStarted.Connect((skill) => {
-			const skillDeffinition = getSkillDefinition(skill.GetName() as SkillId);
-			Logger.Log(script, "SuperClass-SkillStarted(): " + skillDeffinition.resource.amount);
-			this.spendResource(skillDeffinition.resource);
-			this.handleCharacterFrameUpdate(true);
+			this.handleSkillStarted(skill);
 		});
 		this._connectionSkillEnded = this.WCS_Character.SkillEnded.Connect((skill) => {
-			Logger.Log(script, "SuperClass-SkillEnded(): " + skill);
+			this.handleSkillEnded(skill);
+		});
+		this._connectionSkillAdded = this.WCS_Character.SkillAdded.Connect((skill) => {
+			this.handleSkillAdded(skill);
 		});
 
 		// Status Effects
 		this._connectionStatusEffectAdded = this.WCS_Character.StatusEffectAdded.Connect((statusEffect) => {
-			Logger.Log(script, "SuperClass-StatusEffectAdded(): " + statusEffect);
 			this.handleStatusEffectAdded(statusEffect);
 		});
 		this._connectionStatusEffectRemoved = this.WCS_Character.StatusEffectRemoved.Connect((statusEffect) => {
-			Logger.Log(script, "SuperClass-StatusEffectRemoved(): " + statusEffect);
 			this.handleStatusEffectRemoved(statusEffect);
 		});
 		this._connectionStatusEffectStarted = this.WCS_Character.StatusEffectStarted.Connect((statusEffect) => {
-			Logger.Log(script, "SuperClass-StatusEffectStarted(): " + statusEffect);
 			this.handleStatusEffectStarted(statusEffect);
 		});
 		this._connectionStatusEffectEnded = this.WCS_Character.StatusEffectEnded.Connect((statusEffect) => {
-			Logger.Log(script, "SuperClass-StatusEffectEnded(): " + statusEffect);
 			this.handleStatusEffectEnded(statusEffect);
 		});
 
@@ -334,7 +328,9 @@ export class BaseGameCharacter {
 		});
 	}
 
-	// Connection Handlers
+	/* Connection Handlers */
+
+	// Character: Take Damage
 	private handleCharacterTakeDamage(damageContainer: DamageContainer) {
 		Logger.Log(script, "BaseEntity: Take Damage: " + damageContainer.Damage);
 		const currentHealth = this.Health._currentValue;
@@ -347,9 +343,32 @@ export class BaseGameCharacter {
 		}
 	}
 
-	// Dealt Damage
+	// Character: Dealt Damage
 	private handleCharacterDealtDamage(enemy: Character | undefined, damageContainer: DamageContainer) {
 		Logger.Log(script, "BaseEntity: Dealt Damage: ", damageContainer.Damage);
+	}
+
+	// Skills - Started
+	private handleSkillStarted(skill: UnknownSkill) {
+		assert(skill.GetName(), "Skill Name is nil");
+		const skillDeffinition = getSkillDefinition(skill.GetName() as SkillId);
+		Logger.Log(script, ("SuperClass-SkillStarted(): " + skillDeffinition) as unknown as string);
+		this.Animator.Play(skillDeffinition.animation as EAnimationID);
+		this.handleCharacterFrameUpdate(true);
+	}
+
+	// Skills - Ended
+	private handleSkillEnded(skill: UnknownSkill) {
+		assert(skill.GetName(), "Skill Name is nil");
+		Logger.Log(script, "BaseEntity: Skill Ended: ", skill.GetName());
+	}
+
+	// Skills - Added
+	private handleSkillAdded(skill: UnknownSkill) {
+		assert(skill.GetName(), "Skill Name is nil");
+		const skillId = skill.GetName() as SkillId;
+		this.Animator.AddAnimationTrack(getSkillDefinition(skillId).animation as EAnimationID);
+		Logger.Log(script, "BaseEntity: Skill Added: ", skill.GetName());
 	}
 
 	// Status Effects - Added
@@ -377,6 +396,9 @@ export class BaseGameCharacter {
 		Logger.Log(script, "Destroying Connections");
 		this._connectionCharacterTakeDamage?.Disconnect();
 		this._connectionCharacterDealtDamage?.Disconnect();
+		this._connectionSkillStarted?.Disconnect();
+		this._connectionSkillEnded?.Disconnect();
+		this._connectionSkillAdded?.Disconnect();
 		this._connectionStatusEffectAdded?.Disconnect();
 		this._connectionStatusEffectRemoved?.Disconnect();
 		this._connectionStatusEffectStarted?.Disconnect();

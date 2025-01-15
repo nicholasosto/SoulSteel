@@ -1,7 +1,7 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/_References/Skills";
-import { CreateAnimationTrack, AnimationIds } from "shared/_References/Animations";
+import { SkillDefinitions } from "shared/Skills/SkillIndex";
+import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 
 @SkillDecorator
 export class BasicRanged extends Skill {
@@ -13,8 +13,8 @@ export class BasicRanged extends Skill {
 		const characterModel = this.Character.Instance as Model;
 
 		// Create Animation Track
-		const animationId =  AnimationIds.SKILL_BasicRanged;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as AnimationIds);
+		const animationId = EAnimationID.SKILL_BasicRanged;
+		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}
@@ -26,7 +26,7 @@ export class BasicRanged extends Skill {
 	protected OnStartServer(): void {
 		Logger.Log(script, "Server Started: ", this._skillDefinition as unknown as string);
 
-		this._animationTrack?.Play();
+		//this._animationTrack?.Play();
 	}
 
 	protected OnEndServer(): void {}

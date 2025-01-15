@@ -1,12 +1,12 @@
 import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { TSkillBar } from "../../shared/UI Component Classes/Types/SkillBar_Template";
-import { SkillDefinition, SkillId, getSkillDefinition } from "shared/_References/Skills";
-import { SkillButton } from "./SkillButton";
+import { TSkillBar } from "../../shared/UI Component Classes/Skill Bar/SkillBar_Template";
+import { SkillDefinition, SkillId, getSkillDefinition } from "shared/Skills/SkillIndex";
+import { SkillButton } from "../../shared/Skills/UIClasses/SkillButton";
 import { Character, Skill } from "@rbxts/wcs";
-import { PlayerSkillsData } from "shared/_References/Skills";
+import { PlayerSkillsData } from "shared/Skills/SkillIndex";
 
-export class SkillController {
+export class SkillBar {
 	// GUI Components
 	private static skillBarFrame: TSkillBar = StorageManager.CloneFromStorage("SkillBar_Template") as TSkillBar;
 	private static skillBarSlots: Map<number, Frame> = new Map();
