@@ -6,11 +6,10 @@ import { CreateClient, Character, SkillData, Skill } from "@rbxts/wcs";
 
 // Controllers
 import { KeyboardController } from "./Keyboard";
+import { SkillController } from "./Remotes/Controllers/SkillController";
 
 // UI Components
 import CharacterFrame from "./CharacterFrame";
-import { SkillBar } from "client/Classes/SkillBar";
-import { SkillButton } from "shared/Skills/UIClasses/SkillButton";
 
 // Utility Imports
 import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes";
@@ -22,8 +21,6 @@ const player = game.GetService("Players").LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");
 const HUD = playerGui.WaitForChild("HUD");
 
-SkillBar.Initialize();
-
 //import { RegisterEntity, GetEntity } from "shared/Factories/NameFactory";
 
 // WCS Client
@@ -31,22 +28,20 @@ const Client = CreateClient();
 Client.RegisterDirectory(ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills"));
 Client.Start();
 
-let skillsConnection: RBXScriptConnection | undefined;
+// Connections
+let _connectionWcsSkillStart: RBXScriptConnection | undefined;
 
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
 	Logger.Log(script, "Character Created");
+	SkillController.Initialize(character);
 
-	skillsConnection?.Disconnect();
-	skillsConnection = Remotes.Client.GetNamespace("Skills")
-		.Get(RemoteNames.LoadPlayerSkills)
-		.Connect((playerSkillData: PlayerSkillsData) => {
-			Logger.Log(script, "Skill Assignment", playerSkillData as unknown as string);
-			SkillBar.AssignSkillData(character, playerSkillData);
-		});
-
+	_connectionWcsSkillStart?.Disconnect();
+	_connectionWcsSkillStart = character.SkillStarted.Connect((unknownSkill) => {
+		Logger.Log(script, "Skill Start", unknownSkill as unknown as string);
+	});
 	character.Humanoid.Died.Connect(() => {
-		skillsConnection?.Disconnect();
+		Logger.Log(script, "Character Died");
 	});
 });
 

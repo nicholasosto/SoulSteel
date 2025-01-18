@@ -10,7 +10,6 @@ export interface ResourceStatDefinition {
 }
 
 export const StatDefinitions: Record<ResourceId, ResourceStatDefinition> = {
-
 	Health: {
 		resourceId: "Health",
 		displayName: "Health",
@@ -45,7 +44,7 @@ export const StatDefinitions: Record<ResourceId, ResourceStatDefinition> = {
 		description: "Class Points",
 		currentValue: 100,
 		maxValue: 100,
-	}
+	},
 };
 
 export interface ResourceStats {
@@ -72,7 +71,7 @@ export interface ResourceStats {
 }
 
 export function getDefaultResourceStats(): ResourceStats {
-	return( {
+	return {
 		Health: {
 			Current: 100,
 			Max: 100,
@@ -93,5 +92,5 @@ export function getDefaultResourceStats(): ResourceStats {
 			Current: 100,
 			Max: 100,
 		},
-	});
+	};
 }

@@ -21,6 +21,7 @@ import {
 	PlayerSkillsData,
 	SkillId,
 	SkillResource,
+	assignSkillToSlot,
 	getDefaultPlayerSkillsData,
 	getSkillDefinition,
 } from "shared/Skills/SkillIndex";
@@ -69,6 +70,11 @@ export class BaseGameCharacter {
 	private _connectionSkillStarted: RBXScriptConnection | undefined;
 	private _connectionSkillEnded: RBXScriptConnection | undefined;
 	private _connectionSkillAdded: RBXScriptConnection | undefined;
+
+	// Skill Remote Connections
+	private _connectionSkillRemoteUnlock: RBXScriptConnection | undefined;
+	private _connectionSkillRemoteAssign: RBXScriptConnection | undefined;
+	private _connectionSkillRemoteUnassign: RBXScriptConnection | undefined;
 
 	// Status Effect Connections
 	private _connectionStatusEffectAdded: RBXScriptConnection | undefined;
@@ -300,6 +306,20 @@ export class BaseGameCharacter {
 		this._connectionSkillAdded = this.WCS_Character.SkillAdded.Connect((skill) => {
 			this.handleSkillAdded(skill);
 		});
+
+		// Skill Remote Connections
+		this._connectionSkillRemoteUnlock = Remotes.Server.GetNamespace("Skills")
+			.Get(RemoteNames.UnlockSkill)
+			.Connect((player, skillId) => {
+				Logger.Log(script, "Unlock Skill: " + skillId);
+			});
+
+		this._connectionSkillRemoteAssign = Remotes.Server.GetNamespace("Skills")
+			.Get(RemoteNames.AssignSkillSlot)
+			.Connect((player, slotId, skillId) => {
+				Logger.Log(script, "Assign Skill: " + skillId + " to Slot: " + slotId);
+				assignSkillToSlot(this.SkillData, skillId as SkillId, slotId);
+			});
 
 		// Status Effects
 		this._connectionStatusEffectAdded = this.WCS_Character.StatusEffectAdded.Connect((statusEffect) => {

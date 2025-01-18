@@ -7,7 +7,12 @@ import { DataManager } from "./PlayerData/DataManager";
 
 // WCS Imports
 import { CreateServer, Character } from "@rbxts/wcs";
-import { BaseGameCharacter } from "./Character/GameCharacter";
+
+//Controller Imports
+import CharacterController from "./Character/CharacterController";
+
+
+//import PlayerCharacter from "./Character/PlayerCharacter";
 
 // Utility Imports
 import { Logger } from "shared/Utility/Logger";
@@ -20,16 +25,18 @@ WCSServer.Start();
 // Start the Managers
 DataManager.Start();
 StorageManager.Start();
-
-// Player Added Connection
+CharacterController.Start();
 Players.PlayerAdded.Connect((player) => {
+	Logger.Log(script, "Player Added");
 	player.CharacterAdded.Connect((character) => {
-		//Logger.Log(script, "Server - Character Added: ", character as unknown as string);
-		new BaseGameCharacter(character as Model);
+		Logger.Log(script, "Character Added");
+		const wcsCharacter = new Character(character);
+		wcsCharacter.Humanoid.Died.Once(() => {
+			Logger.Log(script, "Character Died");
+			wcsCharacter.Destroy();
+		});
 	});
-});
-
-// Character Created Connection
-Character.CharacterCreated.Connect((character) => {
-	//Logger.Log(script, "WCS Character Created: ", character as unknown as string);
+	if (player.Character) {
+		new Character(player.Character);
+	}
 });

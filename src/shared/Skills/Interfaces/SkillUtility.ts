@@ -1,4 +1,5 @@
-import { PlayerSkillsData,  SkillDefinition } from "./SkillInterfaces";
+import { Logger } from "shared/Utility/Logger";
+import { PlayerSkillsData, SkillDefinition } from "./SkillInterfaces";
 import { SkillId } from "./SkillTypes";
 import { SkillDefinitions } from "../Data/SkillDefinitions";
 // Default Player Skills Data
@@ -18,6 +19,7 @@ function unlockSkill(skillData: PlayerSkillsData, skillId: SkillId): void {
 
 // Assign a skill to a slot
 function assignSkillToSlot(skillData: PlayerSkillsData, skillId: SkillId, slotIndex: number): void {
+	Logger.Log("Assigning skill to slot", skillId, slotIndex, skillData as unknown as string);
 	// Validate slot index
 	if (slotIndex < 0 || slotIndex > 4) {
 		throw `Slot index must be between 0 and 4 (got ${slotIndex}).`;

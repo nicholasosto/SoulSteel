@@ -1,6 +1,6 @@
 import Net, { Definitions } from "@rbxts/net";
 import { InventoryItem, InventoryType, ItemId } from "./_References/Inventory";
-import { PlayerSkillsData } from "shared/Skills/SkillIndex";
+import { PlayerSkillsData, SkillId } from "shared/Skills/SkillIndex";
 import { Character } from "@rbxts/wcs";
 
 export enum RemoteNames {
@@ -17,8 +17,10 @@ export enum RemoteNames {
 
 	// Skills
 	LoadPlayerSkills = "SkillAssignment",
+	RequestPlayerSkills = "RequestPlayerSkills",
 	UnlockSkill = "UnlockSkill",
 	AssignSkillSlot = "AssignSkillSlot",
+	AssignSkillResponse = "AssignSkillResponse",
 
 	// User Interface
 	UIUpdateCharacterFrame = "UIUpdateCharacterFrame",
@@ -72,6 +74,7 @@ const Remotes = Net.Definitions.Create({
 		[RemoteNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
 		[RemoteNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
 		[RemoteNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: string]>(),
+		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skillId: string]>(),
 	}),
 
 	// User Interface

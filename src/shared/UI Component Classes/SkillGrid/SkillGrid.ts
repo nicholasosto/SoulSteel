@@ -1,4 +1,5 @@
-import { SkillData, TSkillGrid } from "shared/Skills/SkillIndex";
+import { TSkillGrid } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillData } from "shared/Skills/Interfaces/SkillInterfaces";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import Remotes, { RemoteNames } from "shared/Remotes";
 

@@ -6,7 +6,7 @@ import { SkillType, SkillId, SkillResource, Skill_Assignment_Button, TSkillGrid 
 import { SkillDefinition, PlayerSkillsData, SkillData } from "./Interfaces/SkillInterfaces";
 
 // Classes
-import { SkillGrid } from "./UIClasses/SkillGrid";
+import { SkillGrid } from "../UI Component Classes/SkillGrid/SkillGrid";
 
 // Data
 import { SkillDefinitions } from "./Data/SkillDefinitions";

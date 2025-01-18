@@ -19,6 +19,5 @@ export default class GridItem implements IGridItem {
 
 	constructor(itemId: SkillId | string) {
 		this.isUnlocked = false;
-
 	}
 }

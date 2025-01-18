@@ -16,6 +16,8 @@ Skills.set(Enum.KeyCode.R, "BasicHold");
 
 // Set Animations Here
 const Animations: Map<Enum.KeyCode, EAnimationID> = new Map<Enum.KeyCode, EAnimationID>();
+const _remoteSkillAssignment = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
+
 
 export class KeyboardController {
 	private static instance: KeyboardController;
@@ -53,6 +55,7 @@ export class KeyboardController {
 				switch (input.KeyCode) {
 					case Enum.KeyCode.Q:
 						print("Q Pressed");
+						_remoteSkillAssignment.SendToServer(1, "SpiritOrb");
 						this.toggleSkillOnKeyPress(input.KeyCode, true);
 						break;
 					case Enum.KeyCode.E:
