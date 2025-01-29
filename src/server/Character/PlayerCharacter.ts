@@ -14,7 +14,7 @@ import { SkillData, PlayerSkillsData } from "shared/Skills/Interfaces/SkillInter
 import { IPlayerData } from "shared/_References/PlayerData";
 import { SkillButton } from "shared/UI Component Classes/SkillPanel/SkillButton";
 import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes/Remotes";
-import { EResourceTypes } from "./CharacterResource";
+import { ResourceId } from "shared/_References/Resources";
 
 const PlayerMap = new Map<Player, PlayerCharacter>();
 
@@ -48,8 +48,8 @@ export default class PlayerCharacter extends BaseCharacter {
 	private _skillMap = new Map<SkillId, Skill>();
 
 	// Connections
-
 	private _connectionUpdateCharacterFrame?: RBXScriptConnection;
+
 	// WCS Connections
 	private _connectionCharacterTakeDamage?: RBXScriptConnection;
 	private _connectionCharacterDealtDamage?: RBXScriptConnection;
@@ -68,6 +68,7 @@ export default class PlayerCharacter extends BaseCharacter {
 		// Call the super constructor
 		super(wcsCharacter);
 
+		// Assign the Player
 		this._player = player;
 
 		// Get the DataCache for the player
@@ -100,12 +101,24 @@ export default class PlayerCharacter extends BaseCharacter {
 		});
 	}
 
+	// Get Resource
+	public GetResource(resourceId: ResourceId) {
+		switch (resourceId) {
+			case "Health":
+				return this._HealthResource?._currentValue;
+			case "Mana":
+				return this._ManaResource?._currentValue;
+			case "Stamina":
+				return this._EnergyResource?._currentValue;
+		}
+	}
+
 	// Create Character Resource
 	private _createCharacterResources() {
 		//TODO: Review this
-		this._HealthResource = this._createCharacterResource(EResourceTypes.Health);
-		this._ManaResource = this._createCharacterResource(EResourceTypes.Mana);
-		this._EnergyResource = this._createCharacterResource(EResourceTypes.Stamina);
+		this._HealthResource = this._createCharacterResource("Health");
+		this._ManaResource = this._createCharacterResource("Mana");
+		this._EnergyResource = this._createCharacterResource("Stamina");
 	}
 
 	// Initialize Connections

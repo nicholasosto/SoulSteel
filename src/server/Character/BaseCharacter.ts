@@ -3,11 +3,12 @@
 // PlayerGameCharacter: Player Character
 import { Logger } from "shared/Utility/Logger";
 import { Character } from "@rbxts/wcs";
-import { CharacterResource, EResourceTypes } from "./CharacterResource";
+import { CharacterResource } from "./CharacterResource";
 
 import { CharacterStats } from "shared/_References/CharacterStats";
 import CharacterAnimator from "server/Character/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
+import { ResourceId } from "shared/_References/Resources";
 
 const EntityMap = new Map<Character, BaseCharacter>();
 
@@ -48,7 +49,7 @@ export default class BaseCharacter {
 		Logger.Log(script, "Character Created: ", this.characterName);
 	}
 
-	protected _createCharacterResource(resourceType: EResourceTypes) {
+	protected _createCharacterResource(resourceType: ResourceId) {
 		return new CharacterResource(resourceType);
 	}
 

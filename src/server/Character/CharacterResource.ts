@@ -1,5 +1,5 @@
 // Resource Types
-export enum EResourceTypes {
+enum EResourceTypes {
 	Health = "Health",
 	Mana = "Mana",
 	Stamina = "Stamina",
@@ -8,7 +8,7 @@ export enum EResourceTypes {
 }
 
 // Resource Bar Names
-export enum EResourceBarNames {
+enum EResourceBarNames {
 	Health = "Health Bar",
 	Mana = "Mana Bar",
 	Stamina = "Stamina Bar",
@@ -17,7 +17,7 @@ export enum EResourceBarNames {
 }
 
 // Resource Bar Utility Functions
-export function GetResourceBarFrameByName(player: Player, name: EResourceBarNames): Frame | undefined {
+function GetResourceBarFrameByName(player: Player, name: EResourceBarNames): Frame | undefined {
 	const playerGui = player.WaitForChild("PlayerGui");
 	const screenGui = playerGui.WaitForChild("HUD");
 	const charFrame = screenGui.WaitForChild("CharacterFrame");
