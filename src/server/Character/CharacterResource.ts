@@ -1,3 +1,4 @@
+import { CharacterStatId } from "shared/Character Resources/CharacterResourceTypes";
 import { ResourceId } from "shared/_References/Resources";
 
 // Resource Bar Names
@@ -9,16 +10,14 @@ enum EResourceBarNames {
 	DomainEnergy = "Domain Bar",
 }
 
-// Resource Bar Utility Functions
-function GetResourceBarFrameByName(player: Player, name: EResourceBarNames): Frame | undefined {
-	const playerGui = player.WaitForChild("PlayerGui");
-	const screenGui = playerGui.WaitForChild("HUD");
-	const charFrame = screenGui.WaitForChild("CharacterFrame");
-	const resourceFrame = charFrame.WaitForChild("Bars");
-	const bars = resourceFrame.WaitForChild("Progress");
-	const bar = bars.WaitForChild(name);
-	return bar as Frame;
-}
+type TCharacterResource = {
+	ResourceName: string;
+	PrimaryStat: CharacterStatId;
+	SecondaryStat: CharacterStatId;
+	GetPercentage: () => number;
+	GetLabel: () => string;
+	ActivateRegen: (activate: boolean) => void;
+};
 
 // Character Resource Class
 class CharacterResource {
@@ -31,7 +30,7 @@ class CharacterResource {
 
 	// Regen Values
 	private _regenAmount: number = 10;
-	private _regenActive: boolean = true;
+	private _regenActive: boolean = false;
 
 	// Constructor
 	constructor(resourceName: string) {

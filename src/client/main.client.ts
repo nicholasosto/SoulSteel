@@ -18,6 +18,7 @@ import { Logger } from "shared/Utility/Logger";
 //import { RegisterEntity, GetEntity } from "shared/Factories/NameFactory";
 
 // TEST IMPORTS
+import { GenerateCodon } from "shared/Experiment/Creature";
 import { GetCharacterResource } from "./Remotes/PlayerCharacterRemotes";
 
 // WCS Client
@@ -30,19 +31,10 @@ Client.RegisterDirectory(StatusDirectory);
 Client.Start();
 
 // TEST FUNCTION
-function testRemoteFunction() {
-	const button = Players.LocalPlayer.WaitForChild("PlayerGui").WaitForChild("HUD").WaitForChild("RemoteFunction") as TextButton;
-	assert(button, "Button is nil");
+const button = Players.LocalPlayer.WaitForChild("PlayerGui")
+	.WaitForChild("HUD")
+	.WaitForChild("RemoteFunction") as TextButton;
 
-	button.MouseButton1Click.Connect(() => {
-		Logger.Log(script, "Button Clicked");
-		const barPercentage = GetCharacterResource("Mana");
-		Logger.Log(script, "Bar Percentage", barPercentage as unknown as string);
-	});
-}
-
-// Connections
-let _connectionWcsSkillStart: RBXScriptConnection | undefined;
 
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
@@ -51,21 +43,22 @@ Character.CharacterCreated.Connect((character) => {
 	// Initialize the Skill Controller
 	SkillController.Initialize(character);
 
-	_connectionWcsSkillStart?.Disconnect();
-	_connectionWcsSkillStart = character.SkillStarted.Connect((unknownSkill) => {
-		Logger.Log(script, "Skill Start", unknownSkill as unknown as string);
+	const buttonConnection = button.MouseButton1Click.Connect(() => {
+		Logger.Log(script, "Button Clicked");
+		const barPercentage = GetCharacterResource("Mana");
+		Logger.Log(script, "Bar Percentage", barPercentage as unknown as string);
+		Logger.Log(script, "Codon", GenerateCodon());
 	});
+
 	character.Humanoid.Died.Connect(() => {
+		buttonConnection?.Disconnect();
 		Logger.Log(script, "Character Died");
 	});
-
-	// TEST
-	testRemoteFunction();
 });
 
-Character.CharacterDestroyed.Connect((character) => {
-	Logger.Log(script, "Character Destroyed");
-});
+// Character.CharacterDestroyed.Connect((character) => {
+// 	Logger.Log(script, "Character Destroyed");
+// });
 
 // Start the Keyboard Controller
 KeyboardController.Start();
@@ -77,5 +70,3 @@ Remotes.Client.GetNamespace("UserInterface").OnEvent(RemoteNames.UIUpdateCharact
 	//Logger.Log(script, "UpdateCharacterFrame", data as unknown as string);
 	CharacterFrame.Update(data);
 });
-
-

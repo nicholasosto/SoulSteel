@@ -2,10 +2,10 @@ import { Logger } from "shared/Utility/Logger";
 import { DataCache, DataManager } from "server/PlayerData/DataManager";
 import { Character, DamageContainer, GetRegisteredSkillConstructor, Skill, UnknownSkill } from "@rbxts/wcs";
 import BaseCharacter from "./BaseCharacter";
-import { CreateCharacterResource } from "./CharacterResource";
+import { CharacterResource, CreateCharacterResource } from "./CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes/Remotes";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { ResourceId } from "shared/_References/Resources";
 
 const PlayerMap = new Map<Player, PlayerCharacter>();
@@ -42,24 +42,18 @@ export default class PlayerCharacter extends BaseCharacter {
 	// Private
 	private _player: Player;
 	private _dataCache: DataCache;
-	private _skillSlotMap = new Map<number, Skill>();
-	private _skillMap = new Map<SkillId, Skill>();
 
-	// Connections
-	private _connectionUpdateCharacterFrame?: RBXScriptConnection;
+	// Resources
+	private _HealthResource?: CharacterResource;
+	private _ManaResource?: CharacterResource;
+	private _EnergyResource?: CharacterResource;
+
+	// Skill Slots Map
+	private _skillSlotMap = new Map<number, Skill>();
 
 	// WCS Connections
 	private _connectionCharacterTakeDamage?: RBXScriptConnection;
 	private _connectionCharacterDealtDamage?: RBXScriptConnection;
-	private _connectionSkillStarted?: RBXScriptConnection;
-	private _connectionSkillEnded?: RBXScriptConnection;
-	private _connectionSkillAdded?: RBXScriptConnection;
-	private _connectionStatusEffectAdded?: RBXScriptConnection;
-	private _connectionStatusEffectRemoved?: RBXScriptConnection;
-	private _connectionStatusEffectStarted?: RBXScriptConnection;
-	private _connectionStatusEffectEnded?: RBXScriptConnection;
-	private _connectionHumanoidDied?: RBXScriptConnection;
-	private _connectionHeartbeat?: RBXScriptConnection;
 
 	// Constructor
 	constructor(player: Player, wcsCharacter: Character) {
@@ -69,8 +63,11 @@ export default class PlayerCharacter extends BaseCharacter {
 		// Assign the Player
 		this._player = player;
 
+		// Assign the Character Name
+		this.characterName = player.Name;
+
 		// Get the DataCache for the player
-		this._dataCache = DataManager.GetDataCache(tostring(player.UserId));
+		this._dataCache = DataManager.GetDataCache(tostring(this._player.UserId));
 		assert(this._dataCache, "Data Cache is nil");
 
 		// Assign Initial Skills from the Player Data
@@ -87,16 +84,28 @@ export default class PlayerCharacter extends BaseCharacter {
 	private _assignSkillSlots() {
 		// Get the assigned slots from the player data
 		const assignedSlots = this._dataCache._playerData.Skills.assignedSlots as Array<SkillId>;
+		Logger.Log(script, "Assigned Slots", assignedSlots);
 
 		// Assign the skills to the slots
 		let index = 0;
 		assignedSlots.forEach((skillId) => {
 			if (skillId) {
-				const skill = this._createSkill(skillId);
-				this._skillSlotMap.set(index, skill as Skill);
+				this._assignSkillSlot(skillId, index);
 				index++;
 			}
 		});
+	}
+
+	// Assign Skill Slot
+	private _assignSkillSlot(skillId: SkillId, slot: number) {
+		// Check if the skill is already created
+		//assert(!this._skillMap.has(skillId), "Skill already created");
+
+		// Create the skill
+		const skill = this._createSkill(skillId) as Skill;
+
+		// Assign the skill to the slot
+		this._skillSlotMap.set(slot, skill);
 	}
 
 	// Get Resource
@@ -121,6 +130,7 @@ export default class PlayerCharacter extends BaseCharacter {
 
 	// Initialize Connections
 	private _initializeConnections() {
+		// Destroy Connections if they exist
 		this._destroyConnections();
 
 		// Damage Taken
@@ -138,46 +148,9 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._dataCache.Save();
 	}
 
-	// Update Character Frame
-	// Create Skill
-	private _createSkill(skillId: SkillId): Skill | undefined {
-		// Check if the skill is already created
-		if (this._skillMap.has(skillId)) {
-			return;
-		}
-
-		// Get the Skill Constructor
-		const skillConstructor = GetRegisteredSkillConstructor(skillId);
-		assert(skillConstructor, "Skill Constructor is nil");
-
-		// Create the Skill for the character
-		const newSkill = new skillConstructor(this.wcsCharacter) as Skill;
-		assert(newSkill, "New Skill is nil");
-
-		// Add the skill to the skill map
-		this._skillMap.set(skillId, newSkill);
-
-		return newSkill;
-	}
-
 	// Assign Skill Slot
 	public AssignSkillSlot(skillId: SkillId, slot: number) {
-		Logger.Log(script, "AssignSkillSlot", skillId, slot);
-
-		// Assign the skill to the slot
-		this._dataCache._playerData.Skills.assignedSlots[slot] = skillId;
-		this._dataCache.Save();
-
-		// Check if the skill is already created
-		if (this._skillMap.has(skillId)) {
-			return;
-		}
-
-		// Create the skill
-		const skill = this._createSkill(skillId) as Skill;
-
-		// Assign the skill to the slot
-		this._skillSlotMap.set(slot, skill);
+		this._assignSkillSlot(skillId, slot);
 	}
 
 	//UnAssign Skill Slot
@@ -191,26 +164,17 @@ export default class PlayerCharacter extends BaseCharacter {
 		return this._dataCache._playerData.Skills;
 	}
 
+	// Destroy Connections
 	private _destroyConnections() {
 		Logger.Log(script, "Destroying Connections");
-		this._connectionUpdateCharacterFrame?.Disconnect();
 		this._connectionCharacterTakeDamage?.Disconnect();
 		this._connectionCharacterDealtDamage?.Disconnect();
-		this._connectionSkillStarted?.Disconnect();
-		this._connectionSkillEnded?.Disconnect();
-		this._connectionSkillAdded?.Disconnect();
-		this._connectionStatusEffectAdded?.Disconnect();
-		this._connectionStatusEffectRemoved?.Disconnect();
-		this._connectionStatusEffectStarted?.Disconnect();
-		this._connectionStatusEffectEnded?.Disconnect();
-		this._connectionHumanoidDied?.Disconnect();
-		this._connectionHeartbeat?.Disconnect();
 	}
 
+	// Destroy
 	public Destroy() {
 		Logger.Log(script, "Destroying PlayerCharacter");
 		this._destroyConnections();
-		//this.wcsCharacter.Destroy();
 	}
 }
 

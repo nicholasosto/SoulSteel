@@ -2,13 +2,10 @@
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
 import { Logger } from "shared/Utility/Logger";
-import { Character } from "@rbxts/wcs";
-import { CharacterResource } from "./CharacterResource";
-
-import { CharacterStats } from "shared/_References/CharacterStats";
+import { Character, Skill, GetRegisteredSkillConstructor } from "@rbxts/wcs";
 import CharacterAnimator from "server/Character/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
-import { ResourceId } from "shared/_References/Resources";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 const EntityMap = new Map<Character, BaseCharacter>();
 
@@ -34,12 +31,7 @@ export default class BaseCharacter {
 	protected characterName: string;
 	protected wcsCharacter: Character;
 	protected _animator: CharacterAnimator;
-
-	// Possible Resource Types for NPC and Player Characters
-	protected _characterStats?: CharacterStats;
-	protected _HealthResource?: CharacterResource;
-	protected _ManaResource?: CharacterResource;
-	protected _EnergyResource?: CharacterResource;
+	protected _skillMap = new Map<SkillId, Skill>();
 
 	constructor(wcsCharacter: Character) {
 		this.characterName = generateCharacterName();
@@ -49,8 +41,24 @@ export default class BaseCharacter {
 		Logger.Log(script, "Character Created: ", this.characterName);
 	}
 
-	protected _createCharacterResource(resourceType: ResourceId) {
-		return new CharacterResource(resourceType);
+	protected _createSkill(skillId: SkillId): Skill | undefined {
+		// Check if the skill is already created
+		if (this._skillMap.has(skillId)) {
+			return;
+		}
+
+		// Get the Skill Constructor
+		const skillConstructor = GetRegisteredSkillConstructor(skillId);
+		assert(skillConstructor, "Skill Constructor is nil");
+
+		// Create the Skill for the character
+		const newSkill = new skillConstructor(this.wcsCharacter) as Skill;
+		assert(newSkill, "New Skill is nil");
+
+		// Add the skill to the skill map
+		this._skillMap.set(skillId, newSkill);
+		Logger.Log(script, "Skill Created: ", skillId);
+		return newSkill;
 	}
 
 	// Destroy

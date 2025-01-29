@@ -10,8 +10,9 @@ import SkillController from "server/Services/SkillContoller";
 import { CreateServer, Character } from "@rbxts/wcs";
 
 //Controller Imports
-import CharacterController from "./Character/CharacterController";
+//import CharacterController from "./Character/CharacterController";
 import PlayerCharacter, { CreatePlayerCharacter } from "./Character/PlayerCharacter";
+
 
 //import PlayerCharacter from "./Character/PlayerCharacter";
 
@@ -40,19 +41,15 @@ Players.PlayerAdded.Connect((player) => {
 
 		const wcsCharacter = new Character(character);
 		const playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
+		//const npcCharacter = new NPCCharacter(wcsCharacter);
+
+		//assert(npcCharacter, "NPC Character is nil");
+		//npcCharacter.UseSkill("BasicMelee");
 
 		wcsCharacter.Humanoid.Died.Once(() => {
 			Logger.Log(script, "Character Died");
+			playerCharacter.Destroy();
 			wcsCharacter.Destroy();
 		});
 	});
-	// if (player.Character) {
-	// 	const wcsCharacter = new Character(player.Character);
-	// 	const playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
-
-	// 	wcsCharacter.Humanoid.Died.Once(() => {
-	// 		Logger.Log(script, "Character Died");
-	// 		wcsCharacter.Destroy();
-	// 	});
-	// }
 });
