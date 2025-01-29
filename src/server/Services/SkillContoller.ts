@@ -47,7 +47,6 @@ export default class SkillController {
 
 		// Assign Skill Slot
 		this._assignSkillSlot = this._remoteAssignSkillSlot.Connect((player, slotIndex, skillId) => {
-
 			const _playerCharacter = GetPlayerCharacter(player);
 
 			if (!_playerCharacter) {
@@ -65,7 +64,6 @@ export default class SkillController {
 
 		// UnAssign Skill Slot
 		this._unAssignSkillSlot = this._remoteUnAssignSkillSlot.Connect((player, slotIndex) => {
-			
 			const _playerCharacter = GetPlayerCharacter(player);
 
 			if (!_playerCharacter) {

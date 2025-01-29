@@ -8,7 +8,6 @@ import { CharacterResource, EResourceTypes } from "./CharacterResource";
 import { CharacterStats } from "shared/_References/CharacterStats";
 import CharacterAnimator from "server/Character/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 const EntityMap = new Map<Character, BaseCharacter>();
 

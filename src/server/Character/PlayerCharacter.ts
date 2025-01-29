@@ -44,7 +44,6 @@ export default class PlayerCharacter extends BaseCharacter {
 	// Private
 	private _player: Player;
 	private _dataCache: DataCache;
-	private _skillDataMap = new Map<SkillId, SkillData>();
 	private _skillSlotMap = new Map<number, Skill>();
 	private _skillMap = new Map<SkillId, Skill>();
 
@@ -75,32 +74,41 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._dataCache = DataManager.GetDataCache(tostring(player.UserId));
 		assert(this._dataCache, "Data Cache is nil");
 
-		// Skill Data
+		// Assign Initial Skills from the Player Data
+		this._assignSkillSlots();
+
+		// Create Character Resources
+		this._createCharacterResources();
+
+		// Initialize Connections
+		this._initializeConnections();
+	}
+
+	// Assign Skill Slots
+	private _assignSkillSlots() {
+		// Get the assigned slots from the player data
 		const assignedSlots = this._dataCache._playerData.Skills.assignedSlots as Array<SkillId>;
 
-		Logger.Log(script, "Assigned Slots", assignedSlots as unknown as string);
-
+		// Assign the skills to the slots
 		let index = 0;
 		assignedSlots.forEach((skillId) => {
 			if (skillId) {
-				const skill = this.createSkill(skillId);
+				const skill = this._createSkill(skillId);
 				this._skillSlotMap.set(index, skill as Skill);
 				index++;
 			}
 		});
-
-		Logger.Log(script, "Skill Data Map", this._skillDataMap as unknown as string);
-
-		this._createCharacterResources();
-		this._initializeConnections();
 	}
 
+	// Create Character Resource
 	private _createCharacterResources() {
+		//TODO: Review this
 		this._HealthResource = this._createCharacterResource(EResourceTypes.Health);
 		this._ManaResource = this._createCharacterResource(EResourceTypes.Mana);
 		this._EnergyResource = this._createCharacterResource(EResourceTypes.Stamina);
 	}
 
+	// Initialize Connections
 	private _initializeConnections() {
 		this._destroyConnections();
 
@@ -112,6 +120,7 @@ export default class PlayerCharacter extends BaseCharacter {
 			this._dataCache.Save();
 			this.updateCharacterFrame();
 		});
+
 		// Skill Started
 		this._connectionSkillStarted = this.wcsCharacter?.SkillStarted.Connect((unknownSkill: UnknownSkill) => {
 			const skill = unknownSkill as Skill;
@@ -120,10 +129,9 @@ export default class PlayerCharacter extends BaseCharacter {
 			Logger.Log(script, "Skill Started", skillName);
 			this.updateCharacterFrame();
 		});
-
-		// Update Character Frame
 	}
 
+	// Update Character Frame
 	private updateCharacterFrame() {
 		const playerData = this._dataCache._playerData;
 		const characterFrameData: CharacterFrameData = {
@@ -141,47 +149,56 @@ export default class PlayerCharacter extends BaseCharacter {
 		UIUpdateCharacterFrame.SendToPlayer(this._player, characterFrameData);
 	}
 
-	private createSkill(skillId: SkillId): Skill | undefined {
+	// Create Skill
+	private _createSkill(skillId: SkillId): Skill | undefined {
+		// Check if the skill is already created
 		if (this._skillMap.has(skillId)) {
 			return;
-		} else {
-			const skillConstructor = GetRegisteredSkillConstructor(skillId);
-			assert(skillConstructor, "Skill Constructor is nil");
-			const unknownSkill = new skillConstructor(this.wcsCharacter);
-			Logger.Log(script, "Skill Created", skillId);
-			this._skillMap.set(skillId, unknownSkill as Skill);
-			return unknownSkill as Skill;
 		}
+
+		// Get the Skill Constructor
+		const skillConstructor = GetRegisteredSkillConstructor(skillId);
+		assert(skillConstructor, "Skill Constructor is nil");
+
+		// Create the Skill for the character
+		const newSkill = new skillConstructor(this.wcsCharacter) as Skill;
+		assert(newSkill, "New Skill is nil");
+
+		// Add the skill to the skill map
+		this._skillMap.set(skillId, newSkill);
+
+		return newSkill;
 	}
 
+	// Assign Skill Slot
 	public AssignSkillSlot(skillId: SkillId, slot: number) {
 		Logger.Log(script, "AssignSkillSlot", skillId, slot);
+
+		// Assign the skill to the slot
 		this._dataCache._playerData.Skills.assignedSlots[slot] = skillId;
 		this._dataCache.Save();
+
+		// Check if the skill is already created
 		if (this._skillMap.has(skillId)) {
 			return;
 		}
 
-		const skill = this.createSkill(skillId) as Skill;
+		// Create the skill
+		const skill = this._createSkill(skillId) as Skill;
 
+		// Assign the skill to the slot
 		this._skillSlotMap.set(slot, skill);
 	}
 
+	//UnAssign Skill Slot
 	public UnAssignSkillSlot(slot: number) {
 		Logger.Log(script, "UnAssignSkillSlot", slot);
 		this._dataCache._playerData.Skills.assignedSlots[slot] = undefined;
 	}
 
+	// Get Player Skills Data
 	public GetPlayerSkillsData(): PlayerSkillsData {
 		return this._dataCache._playerData.Skills;
-	}
-
-	public GetSkillDataMap(): Map<SkillId, SkillData> {
-		return this._skillDataMap;
-	}
-
-	public GetSkillMap(): Map<SkillId, Skill> {
-		return this._skillMap;
 	}
 
 	private _destroyConnections() {

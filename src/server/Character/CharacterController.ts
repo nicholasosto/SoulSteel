@@ -1,10 +1,9 @@
 import { Logger } from "shared/Utility/Logger";
-import { Players } from "@rbxts/services";
-import PlayerCharacter, { GetPlayerCharacter, CreatePlayerCharacter } from "./PlayerCharacter";
 import { Character } from "@rbxts/wcs";
+import PlayerCharacter, { CreatePlayerCharacter } from "./PlayerCharacter";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
 
+// Player Character Registry
 const PlayerCharacterRegistry = new Map<Player, PlayerCharacter>();
 
 export default class CharacterController {
@@ -29,6 +28,7 @@ export default class CharacterController {
 		CharacterController._initializeConnections();
 	}
 
+	// Start
 	public static Start() {
 		Logger.Log(script, "CharacterController Started");
 		if (this._instance === undefined) {
@@ -63,6 +63,8 @@ export default class CharacterController {
 
 		// Get the player from the WCS Character
 		const player = wcsCharacter.Player as Player;
+
+		// Check if the character is a player character
 		if (player !== undefined) {
 			// Create a new PlayerCharacter
 			const _playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
@@ -73,7 +75,7 @@ export default class CharacterController {
 			return;
 		}
 
-		// Not a player character
+		// Not a player character #TODO: Create NPC Character
 		Logger.Log(script, "Create NPC Character TODO");
 	}
 
@@ -87,6 +89,7 @@ export default class CharacterController {
 		}
 	}
 
+	// Skill Slot Assignment
 	private static _handleSkillSlotAssignment(player: Player, slot: number, skillId: string) {
 		Logger.Log(script, "Handle Skill Slot Assignment");
 		const playerCharacter = CharacterController._playerCharacterRegistry.get(player);
@@ -96,12 +99,14 @@ export default class CharacterController {
 		//CharacterController._remoteAssignSkillResponse.SendToPlayer(player, slot, skillId);
 	}
 
+	// Destroy Connections
 	private static _destroyConnections() {
 		CharacterController._characterCreatedConnection?.Disconnect();
 		CharacterController._characterDestroyedConnection?.Disconnect();
 		CharacterController._skillSlotAssignmentConnection?.Disconnect();
 	}
 
+	// Get Player Character
 	public static GetPlayerCharacter(player: Player) {
 		return PlayerCharacterRegistry.get(player);
 	}
