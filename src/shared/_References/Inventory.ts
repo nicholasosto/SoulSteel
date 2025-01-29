@@ -1,4 +1,4 @@
-import { SkillId } from "shared/Skills/SkillIndex";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
 
 // Inventory Types
 export enum InventoryType {

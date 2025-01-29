@@ -19,10 +19,16 @@ export enum ImageIds {
 	WeaponBlackScythe = rbxassetid + "Black_Scythe",
 
 	// Other
-	SimpleSoul = rbxassetid + "SimpleSoul",
+	SimpleSoul = rbxassetid + "soul",
 
 	// Skills
 	BasicMelee = rbxassetid + "BasicMelee",
 	BasicRanged = rbxassetid + "Ranged_Attack",
 	BasicHold = rbxassetid + "Basic Ring",
+
+	// Movement
+	Dash = rbxassetid + "Dash",
+	Charge = rbxassetid + "Background_02",
+	Flight = rbxassetid + "Flight",
+	Teleport = rbxassetid + "Spotlights",
 }

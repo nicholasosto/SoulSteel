@@ -1,4 +1,5 @@
-import { SkillId, SkillType, SkillResource } from "../SkillIndex";
+import { SkillType, SkillResource, SkillId } from "./SkillTypes";
+import { ResourceId } from "shared/_References/Resources";
 
 // Player Skills Data
 interface PlayerSkillsData {
@@ -24,7 +25,7 @@ interface SkillData {
 	cooldown: number; // Cooldown time in seconds
 	currentCooldown?: number; // Remaining cooldown time, optional
 	resourceCost: number; // Cost of the resource required to use the skill
-	resourceType: "mana" | "stamina" | "health"; // Type of resource consumed
+	resourceType: ResourceId; // Type of resource consumed
 	isUnlocked: boolean; // Whether the skill is unlocked for use
 	assigned?: boolean; // Whether the skill is assigned to a slot
 	slot?: number; // Optional slot number for assigned skills

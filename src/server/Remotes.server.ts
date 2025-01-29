@@ -1,6 +1,6 @@
 import { ServerListenerEvent } from "@rbxts/net/out/server/ServerEvent";
-import {InventoryItem, InventoryType, ItemId, DefaultInventory } from "shared/_References/Inventory";
-import Remotes, { RemoteNames } from "shared/Remotes";
+import { InventoryItem, InventoryType, ItemId, DefaultInventory } from "shared/_References/Inventory";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { Logger } from "shared/Utility/Logger";
 
 // Events
@@ -28,5 +28,5 @@ function EquipItemRequest(player: Player, itemId: ItemId): void {
 }
 
 // Connect Events
-InventoryConnections.RequestInventory.Connect(RequestInventory)
+InventoryConnections.RequestInventory.Connect(RequestInventory);
 EquipmentConnections.EquipItemRequest.Connect(EquipItemRequest);

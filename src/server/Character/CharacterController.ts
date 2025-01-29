@@ -1,9 +1,9 @@
 import { Logger } from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
-import PlayerCharacter from "./PlayerCharacter";
+import PlayerCharacter, { GetPlayerCharacter, CreatePlayerCharacter } from "./PlayerCharacter";
 import { Character } from "@rbxts/wcs";
-import Remotes, { RemoteNames } from "shared/Remotes";
-import { SkillId } from "shared/Skills/SkillIndex";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
 
 const PlayerCharacterRegistry = new Map<Player, PlayerCharacter>();
 
@@ -15,7 +15,9 @@ export default class CharacterController {
 
 	// Remotes
 	private static _remoteAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
-	private static _remoteAssignSkillResponse = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.AssignSkillResponse);
+	private static _remoteAssignSkillResponse = Remotes.Server.GetNamespace("Skills").Get(
+		RemoteNames.AssignSkillResponse,
+	);
 
 	// Connections
 	private static _characterCreatedConnection: RBXScriptConnection | undefined;
@@ -63,7 +65,7 @@ export default class CharacterController {
 		const player = wcsCharacter.Player as Player;
 		if (player !== undefined) {
 			// Create a new PlayerCharacter
-			const _playerCharacter = new PlayerCharacter(player, wcsCharacter);
+			const _playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
 
 			// Add the PlayerCharacter to the registry
 			CharacterController._playerCharacterRegistry.set(player, _playerCharacter);
@@ -89,9 +91,9 @@ export default class CharacterController {
 		Logger.Log(script, "Handle Skill Slot Assignment");
 		const playerCharacter = CharacterController._playerCharacterRegistry.get(player);
 		assert(playerCharacter !== undefined, "PlayerCharacter not found in registry");
-		playerCharacter.AddSkillToSlot(slot, skillId as SkillId);
+		//playerCharacter.AddSkillToSlot(slot, skillId as SkillId);
 		//TODO: Review this
-		CharacterController._remoteAssignSkillResponse.SendToPlayer(player, slot, skillId);
+		//CharacterController._remoteAssignSkillResponse.SendToPlayer(player, slot, skillId);
 	}
 
 	private static _destroyConnections() {

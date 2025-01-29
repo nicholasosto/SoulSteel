@@ -1,9 +1,10 @@
 import { Players } from "@rbxts/services";
 import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { CharacterFrameData } from "shared/Remotes";
+import { CharacterFrameData } from "shared/Remotes/Remotes";
 import { TCharacterFrame } from "shared/UI Component Classes/Character Frame/CharacterFrame";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 
 export default class CharacterFrame {
 	// Singleton
@@ -22,6 +23,8 @@ export default class CharacterFrame {
 	private static _expBar: Frame;
 	private static _levelText: ImageLabel;
 	private static _nameFrame: Frame;
+
+	private static _connectionUpdateCharacterFrame: RBXScriptConnection | undefined;
 
 	private constructor() {
 		Logger.Log(script, "CharacterFrame created");
@@ -47,6 +50,12 @@ export default class CharacterFrame {
 		assert(CharacterFrame._profileImage !== undefined, "ProfilePic not found");
 
 		CharacterFrame._updateProfileImage();
+
+		CharacterFrame._connectionUpdateCharacterFrame = Remotes.Client.GetNamespace("UserInterface")
+			.Get(RemoteNames.UIUpdateCharacterFrame)
+			.Connect((frameData: CharacterFrameData) => {
+				CharacterFrame.Update(frameData);
+			});
 	}
 
 	public static Start() {

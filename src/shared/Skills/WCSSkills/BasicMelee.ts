@@ -1,11 +1,10 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/Skills/SkillIndex";
+import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
 import { AttachEffect, EParticleName } from "shared/_References/Particles";
 import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import { EAttachmentName } from "shared/_References/Attachments";
 import { Character } from "@rbxts/wcs";
-import { BaseGameCharacter } from "server/Character/GameCharacter";
 
 @SkillDecorator
 export class BasicMelee extends Skill {
@@ -13,6 +12,7 @@ export class BasicMelee extends Skill {
 	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
 	private _animationTrack: AnimationTrack | undefined;
 
+	
 	// Server-Side Construct
 	protected OnConstructServer(): void {
 		// Create Animation Track

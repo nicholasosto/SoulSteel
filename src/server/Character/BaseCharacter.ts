@@ -1,38 +1,41 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-import { Players, RunService } from "@rbxts/services";
-import { Character, DamageContainer, GetRegisteredSkillConstructor, UnknownSkill, UnknownStatus } from "@rbxts/wcs";
-import { CharacterResource, EResourceBarNames, EResourceTypes, GetResourceBarFrameByName } from "./CharacterResource";
+import { Logger } from "shared/Utility/Logger";
+import { Character } from "@rbxts/wcs";
+import { CharacterResource, EResourceTypes } from "./CharacterResource";
 
-import { CharacterStats, getDefaultCharacterStats } from "shared/_References/CharacterStats";
-import { CharacterState } from "shared/_References/CharacterStates";
-import { EAnimationID } from "shared/Animation/AnimationIndex";
+import { CharacterStats } from "shared/_References/CharacterStats";
 import CharacterAnimator from "server/Character/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
-import Remotes, { RemoteNames } from "shared/Remotes";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
-// Data
-import { DataCache, DataManager } from "server/PlayerData/DataManager";
+const EntityMap = new Map<Character, BaseCharacter>();
 
-// Utility Imports
-import { Logger } from "shared/Utility/Logger";
-import {
-	PlayerSkillsData,
-	SkillId,
-	SkillResource,
-	assignSkillToSlot,
-	getDefaultPlayerSkillsData,
-	getSkillDefinition,
-} from "shared/Skills/SkillIndex";
+function CreateBaseCharacter(wcsCharacter: Character) {
+	EntityMap.set(wcsCharacter, new BaseCharacter(wcsCharacter));
+	return new BaseCharacter(wcsCharacter);
+}
+
+function GetBaseCharacter(wcsCharacter: Character) {
+	const character = EntityMap.get(wcsCharacter);
+	assert(character, "Character is nil");
+	return character;
+}
+
+function DestroyBaseCharacter(wcsCharacter: Character) {
+	const character = EntityMap.get(wcsCharacter);
+	assert(character, "Character is nil");
+	character.Destroy();
+	EntityMap.delete(wcsCharacter);
+}
 
 export default class BaseCharacter {
 	protected characterName: string;
 	protected wcsCharacter: Character;
 	protected _animator: CharacterAnimator;
-	protected _assignedSkills: Map<number, SkillId> = new Map();
 
-    // Possible Resource Types for NPC and Player Characters
+	// Possible Resource Types for NPC and Player Characters
 	protected _characterStats?: CharacterStats;
 	protected _HealthResource?: CharacterResource;
 	protected _ManaResource?: CharacterResource;
@@ -46,22 +49,14 @@ export default class BaseCharacter {
 		Logger.Log(script, "Character Created: ", this.characterName);
 	}
 
-	// Skill Assignment
-	protected _addSkillToSlot(slot: number, skillId: SkillId) {
-		Logger.Log(script, "Adding Skill to Slot: ", slot, skillId);
-		this._assignedSkills.set(slot, skillId);
+	protected _createCharacterResource(resourceType: EResourceTypes) {
+		return new CharacterResource(resourceType);
 	}
-
-	protected _removeSkillFromSlot(slot: number) {
-		this._assignedSkills.delete(slot);
-	}
-
-    protected _createCharacterResource(resourceType: EResourceTypes) {
-        return new CharacterResource(EResourceTypes.Health);
-    }
 
 	// Destroy
 	public Destroy() {
-		Logger.Log(script, "Destroying Character: ", this.characterName);
+		Logger.Log(script, "Destroy");
 	}
 }
+
+export { CreateBaseCharacter, GetBaseCharacter, DestroyBaseCharacter };

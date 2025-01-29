@@ -2,7 +2,7 @@
 import { ReplicatedStorage } from "@rbxts/services";
 
 // WCS Imports
-import { CreateClient, Character, SkillData, Skill } from "@rbxts/wcs";
+import { CreateClient, Character } from "@rbxts/wcs";
 
 // Controllers
 import { KeyboardController } from "./Keyboard";
@@ -12,20 +12,18 @@ import { SkillController } from "./Remotes/Controllers/SkillController";
 import CharacterFrame from "./CharacterFrame";
 
 // Utility Imports
-import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes";
+import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes/Remotes";
 import { Logger } from "shared/Utility/Logger";
-import { PlayerSkillsData } from "shared/Skills/SkillIndex";
-
-// Player and PlayerGui
-const player = game.GetService("Players").LocalPlayer;
-const playerGui = player.WaitForChild("PlayerGui");
-const HUD = playerGui.WaitForChild("HUD");
 
 //import { RegisterEntity, GetEntity } from "shared/Factories/NameFactory";
 
 // WCS Client
 const Client = CreateClient();
-Client.RegisterDirectory(ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills"));
+const ParentWCSDirectory = ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills");
+const SkillsDirectorory = ParentWCSDirectory.WaitForChild("WCSSkills");
+const StatusDirectory = ParentWCSDirectory.WaitForChild("WCSStatus");
+Client.RegisterDirectory(SkillsDirectorory);
+Client.RegisterDirectory(StatusDirectory);
 Client.Start();
 
 // Connections
@@ -34,6 +32,8 @@ let _connectionWcsSkillStart: RBXScriptConnection | undefined;
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
 	Logger.Log(script, "Character Created");
+
+	// Initialize the Skill Controller
 	SkillController.Initialize(character);
 
 	_connectionWcsSkillStart?.Disconnect();

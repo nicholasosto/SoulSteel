@@ -31,16 +31,4 @@ type Skill_Assignment_Button = ImageButton & {
 	SkillId: StringValue;
 };
 
-// GUI: Skill Grid
-type TSkillGrid = Frame & {
-	UIGridLayout: UIGridLayout;
-	SkillButtonTemplate: Frame & {
-		Icon: ImageLabel;
-		Name: TextLabel;
-		Description: TextLabel;
-		UnlockButton: TextButton;
-		AssignButton: TextButton;
-	};
-};
-
-export { SkillType, SkillId, SkillResource, Skill_Assignment_Button, TSkillGrid };
+export { SkillType, SkillId, SkillResource, Skill_Assignment_Button };

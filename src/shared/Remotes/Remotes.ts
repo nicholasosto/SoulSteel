@@ -1,7 +1,8 @@
 import Net, { Definitions } from "@rbxts/net";
-import { InventoryItem, InventoryType, ItemId } from "./_References/Inventory";
-import { PlayerSkillsData, SkillId } from "shared/Skills/SkillIndex";
-import { Character } from "@rbxts/wcs";
+import { InventoryItem, InventoryType, ItemId } from "../_References/Inventory";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { PlayerSkillsData, SkillData } from "shared/Skills/Interfaces/SkillInterfaces";
+import { Character, Skill } from "@rbxts/wcs";
 
 export enum RemoteNames {
 	// Inventory
@@ -12,14 +13,15 @@ export enum RemoteNames {
 	EquipItemRequest = "EquipItemRequest",
 
 	// Game Character
-	GameCharacterCreated = "GameCharacterCreated",
-	GameCharacterDestroyed = "GameCharacterDestroyed",
+	PlayerCharacterCreated = "PlayerCharacterCreated",
+	PlayerCharacterDestroyed = "PlayerCharacterDestroyed",
 
 	// Skills
 	LoadPlayerSkills = "SkillAssignment",
 	RequestPlayerSkills = "RequestPlayerSkills",
 	UnlockSkill = "UnlockSkill",
 	AssignSkillSlot = "AssignSkillSlot",
+	UnAssignSkillSlot = "UnAssignSkillSlot",
 	AssignSkillResponse = "AssignSkillResponse",
 
 	// User Interface
@@ -63,18 +65,20 @@ const Remotes = Net.Definitions.Create({
 	}),
 
 	// Game Character
-	GameCharacter: Definitions.Namespace({
+	PlayerCharacter: Definitions.Namespace({
 		// Created/Destroyed
-		[RemoteNames.GameCharacterCreated]: Net.Definitions.ServerToClientEvent(),
-		[RemoteNames.GameCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
+		[RemoteNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
+		[RemoteNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
 	}),
 
 	// Skills
 	Skills: Definitions.Namespace({
 		[RemoteNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
+		[RemoteNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
 		[RemoteNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
-		[RemoteNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: string]>(),
-		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skillId: string]>(),
+		[RemoteNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
+		[RemoteNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
+		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: Skill]>(),
 	}),
 
 	// User Interface

@@ -5,10 +5,22 @@ import { SkillDefinition } from "shared/Skills/SkillIndex";
 type GridItemState = "Locked" | "Unlocked" | "Equipped" | "Selected" | "Disabled";
 
 type GridItemFrame = Frame & {
-	BackgroundFrame: Frame;
-	Frame: Frame;
-	Shudder: Frame;
-	ImageLabel: ImageLabel;
+	GridItemButton: ImageButton & {
+		UICorner: UICorner;
+		TextLabel: TextLabel;
+	};
+	Frame: Frame & {
+		SelectedStroke: UIStroke;
+		Epic: UIGradient;
+		Legendary: UIGradient;
+		Common: UIGradient;
+		Rare: UIGradient;
+	};
+	State: StringValue;
+	Shudder: Frame & {
+		LockedLabel: TextLabel;
+		ImageLabel: ImageLabel;
+	};
 };
 
 interface IGridItem {

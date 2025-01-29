@@ -1,19 +1,18 @@
 import { Logger } from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
-import { SkillGrid } from "shared/UI Component Classes/SkillGrid/SkillGrid";
-import { SkillId, getSkillDefinition, PlayerSkillsData } from "shared/Skills/SkillIndex";
-import { SkillBar } from "../../Classes/SkillBar";
-import Remotes, { RemoteNames } from "shared/Remotes";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { Character } from "@rbxts/wcs";
+import { SkillPanel } from "shared/UI Component Classes/SkillPanel/SkillPanel";
 
 export class SkillController {
-	private static skillGrid: SkillGrid | undefined;
-	private player: Player = Players.LocalPlayer;
-	private skillBar: SkillBar | undefined;
+	private static skillPanel: SkillPanel;
+	private static wcsCharacter: Character;
 
 	// Remotes for Controller
 	public static remoteLoadPlayerSkills = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.LoadPlayerSkills);
-	//public static requestPlayerSkills = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.RequestPlayerSkills);
+	public static requestPlayerSkills = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.RequestPlayerSkills);
 	public static remoteUnlockSkill = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.UnlockSkill);
 	public static remoteAssignSkillSlot = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
 	public static remoteAssignSkillResponse = Remotes.Client.GetNamespace("Skills").Get(
@@ -22,40 +21,38 @@ export class SkillController {
 
 	// Connections
 	private static connectionLoadPlayerSkills: RBXScriptConnection | undefined;
-	private static connectionUnlockSkillResponse: RBXScriptConnection | undefined;
 	private static connectionAssignSlotResponse: RBXScriptConnection | undefined;
 
-
 	public static Initialize(wcsCharacter: Character) {
-		// Listen for the LoadPlayerSkills remote event
-		SkillBar.Initialize();
-		Logger.Log(script, "Skill Controller Initialized");
+		const playerGui = Players.LocalPlayer.WaitForChild("PlayerGui");
+		SkillController.skillPanel = new SkillPanel(playerGui);
+		SkillController.wcsCharacter = wcsCharacter;
+		SkillController._LoadSkillGrid();
+		SkillController._initializeConnections();
+		// Request Player Skills
+		SkillController.requestPlayerSkills.SendToServer();
+	}
 
-		// Load PlayerSkills
-		SkillController?.connectionLoadPlayerSkills?.Disconnect();
+	private static _initializeConnections() {
+		SkillController.connectionLoadPlayerSkills?.Disconnect();
+		SkillController.connectionAssignSlotResponse?.Disconnect();
+
+		// Load Player Skills
 		SkillController.connectionLoadPlayerSkills = SkillController.remoteLoadPlayerSkills.Connect(
 			(playerSkillData: PlayerSkillsData) => {
-				Logger.Log(script, "Skill Assignment", playerSkillData as unknown as string);
-				SkillBar.AssignSkillData(wcsCharacter, playerSkillData);
+				Logger.Log(script, "Load Player Skills", "Creating Skill Panel");
+				SkillController.skillPanel.LoadPlayerSkillData(this.wcsCharacter, playerSkillData);
 			},
 		);
 
-		// Skill Assignment Response
-		SkillController?.connectionAssignSlotResponse?.Disconnect();
-		SkillController.connectionAssignSlotResponse = SkillController.remoteAssignSkillResponse.Connect((slot, skillId) => {
-			SkillBar.AssignSkillToSlot(slot, skillId as SkillId);
-		});
+		SkillController.connectionAssignSlotResponse = SkillController.remoteAssignSkillResponse.Connect(
+			(slot, skill) => {
+				Logger.Log(script, "Assign Slot Response", slot, skill as unknown as string);
+			},
+		);
 	}
 
-	public static UnlockSkill(skillId: SkillId) {}
-
-	public static AssignSkillSlot(slot: number, skillId: SkillId) {}
-
-	public static AssignSkillData(playerSkillData: unknown) {
-		Logger.Log("Assign Skill Data", playerSkillData as unknown as string);
+	private static _LoadSkillGrid() {
+		// Load the skill grid
 	}
-}
-
-function GetWCSSKill(wcsCharacter: Character, skillId: SkillId) {
-	Logger.Log(script, "GetWCSSKill(" + wcsCharacter?.Instance?.Name + ", " + skillId + ")");
 }

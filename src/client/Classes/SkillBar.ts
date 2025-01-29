@@ -1,11 +1,12 @@
 import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { TSkillBar } from "../../shared/UI Component Classes/Skill Bar/SkillBar_Template";
-import { SkillDefinition, SkillId, getSkillDefinition } from "shared/Skills/SkillIndex";
-import { SkillButton } from "../../shared/UI Component Classes/SkillButton/SkillButton";
+import { TSkillBar } from "../../shared/UI Component Classes/SkillPanel/TSkillBar";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillButton } from "../../shared/UI Component Classes/SkillPanel/SkillButton";
 import AssignSlotButton from "shared/UI Component Classes/AssignSlotButton/AssignSlotButton";
 import { Character, Skill } from "@rbxts/wcs";
-import { PlayerSkillsData } from "shared/Skills/SkillIndex";
+import { PlayerSkillsData, SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
+import { getSkillDefinition } from "shared/Skills/Data/SkillDefinitions";
 import { TSlotAssignmentButton } from "shared/UI Component Classes/AssignSlotButton/SlotAssignmentButtonTypes";
 
 export class SkillBar {
@@ -43,6 +44,7 @@ export class SkillBar {
 	public static AssignSkillToSlot(slot: number, skillId: SkillId) {
 		Logger.Log(script, "Assign Skill to Slot: ", slot, skillId);
 		this.assignedSkills[slot] = skillId;
+		this.PopulateGUI();
 	}
 
 	private static SetAssignedSkills(wcsCharacter: Character, skillArray: Array<SkillId | undefined>) {

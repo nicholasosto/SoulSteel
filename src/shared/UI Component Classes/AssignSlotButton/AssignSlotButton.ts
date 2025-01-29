@@ -1,8 +1,8 @@
 import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import Remotes, { RemoteNames } from "shared/Remotes";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";
-import { SkillId } from "shared/Skills/SkillIndex";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
 
 export default class SlotAssignmentButton {
 	public Button: TSlotAssignmentButton = StorageManager.CloneFromStorage(
@@ -26,6 +26,6 @@ export default class SlotAssignmentButton {
 		Logger.Log(this.Button, "Slot Assignment Button Activated");
 		assert(this.Button.SlotId !== undefined, "Slot ID is undefined");
 		assert(this.Button.ItemId !== undefined, "Item ID is undefined");
-		this._remoteAssignSlot.SendToServer(this.Button.SlotId.Value, this.Button.ItemId.Value);
+		//this._remoteAssignSlot.SendToServer(this.Button.SlotId.Value, this.Button.ItemId.Value);
 	}
 }

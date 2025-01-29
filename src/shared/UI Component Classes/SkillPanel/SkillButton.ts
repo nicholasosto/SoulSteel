@@ -1,7 +1,10 @@
 import { ItemId } from "shared/_References/Inventory";
 import { RunService } from "@rbxts/services";
-import { TSkillButton } from "./SkillButton_Template";
-import { SkillDefinition, SkillId, getSkillDefinition } from "shared/Skills/SkillIndex";
+import { TSkillButton } from "./TSkillButton";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
+import { getSkillDefinition } from "shared/Skills/Data/SkillDefinitions";
+
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { Skill, UnknownSkill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
@@ -29,7 +32,9 @@ export class SkillButton {
 	constructor(unknownSkill: Skill, parent: Instance) {
 		// Clone and Parent the Ability Button Template
 		this._templateClone = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
-		this._skillDefinition = getSkillDefinition(unknownSkill.GetName() as SkillId);
+		const name = unknownSkill.GetName();
+		assert(name, "Skill Name is nil");
+		this._skillDefinition = getSkillDefinition(name as SkillId);
 		this._cooldownBar = this._templateClone.CooldownBar;
 		this._cooldownTime = this._skillDefinition.cooldown;
 
@@ -48,7 +53,7 @@ export class SkillButton {
 
 		this._initializeConnections();
 		Logger.Log(script, "Skill Button Created");
-		Logger.Log(script, getSkillDefinition(unknownSkill.GetName() as SkillId) as unknown as string);
+		//Logger.Log(script, getSkillDefinition(unknownSkill.GetName() as SkillId) as unknown as string);
 	}
 
 	protected _setGUIProperties() {

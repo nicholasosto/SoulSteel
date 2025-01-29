@@ -1,13 +1,13 @@
 // Begin: KeyboardController.ts
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
+//import { SkillController } from "./Remotes/Controllers/SkillController";
 import { Logger } from "shared/Utility/Logger";
-import Remotes, {RemoteNames} from "shared/Remotes";
+import Remotes, {RemoteNames} from "shared/Remotes/Remotes";
 import { ItemId } from "shared/_References/Inventory";
 
 import { EAnimationID } from "shared/Animation/AnimationIndex";
-import { SkillId } from "shared/Skills/SkillIndex";
-
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 // Set the skills here
 const Skills: Map<Enum.KeyCode, SkillId> = new Map<Enum.KeyCode, SkillId>();
 Skills.set(Enum.KeyCode.Q, "SpiritOrb");
@@ -17,6 +17,8 @@ Skills.set(Enum.KeyCode.R, "BasicHold");
 // Set Animations Here
 const Animations: Map<Enum.KeyCode, EAnimationID> = new Map<Enum.KeyCode, EAnimationID>();
 const _remoteSkillAssignment = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
+const _remoteSkillUnAssign = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.UnAssignSkillSlot);
+const _requestPlayerSkills = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.RequestPlayerSkills);
 
 
 export class KeyboardController {
@@ -53,13 +55,29 @@ export class KeyboardController {
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan.Connect(
 			(input: InputObject, isProcessed: boolean) => {
 				switch (input.KeyCode) {
+					case Enum.KeyCode.One:
+						_remoteSkillAssignment.SendToServer(1, "BasicMelee");
+						break;
+					case Enum.KeyCode.Two:
+						_remoteSkillAssignment.SendToServer(1, "BasicRanged");
+						break;
+					case Enum.KeyCode.Three:
+						_remoteSkillAssignment.SendToServer(2, "BasicHold");
+						break;
+						case Enum.KeyCode.Four:
+						_remoteSkillAssignment.SendToServer(3, "Charge");
+						break;
+						case Enum.KeyCode.Five:
+						_remoteSkillAssignment.SendToServer(4, "SpiritOrb");
+						break;
 					case Enum.KeyCode.Q:
 						print("Q Pressed");
-						_remoteSkillAssignment.SendToServer(1, "SpiritOrb");
+						_remoteSkillUnAssign.SendToServer(0);
 						this.toggleSkillOnKeyPress(input.KeyCode, true);
 						break;
 					case Enum.KeyCode.E:
 						print("E Pressed");
+						_remoteSkillUnAssign.SendToServer(1);
 						this.toggleSkillOnKeyPress(input.KeyCode, true);
 						break;
 					case Enum.KeyCode.R:
@@ -67,7 +85,8 @@ export class KeyboardController {
 						this.toggleSkillOnKeyPress(input.KeyCode, true);
 						break;
 					case Enum.KeyCode.H:
-						Remotes.Client.GetNamespace("Equipment").Get(RemoteNames.EquipItemRequest).SendToServer(ItemId.ShortSword);
+						_remoteSkillAssignment.SendToServer(0, "Charge");
+						//Remotes.Client.GetNamespace("Equipment").Get(RemoteNames.EquipItemRequest).SendToServer(ItemId.ShortSword);
 						break
 					case Enum.KeyCode.I:
 						Remotes.Client.GetNamespace("Inventory").Get(RemoteNames.RequestInventory).SendToServer();

@@ -1,9 +1,9 @@
 import { EAnimationID } from "../../Animation/AnimationIndex";
 import { ImageIds } from "../../_References/ImageIds";
-import { SkillId, SkillType, SkillResource, SkillDefinition } from "shared/Skills/SkillIndex";
-import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA, DEFAULT_RESOURCE_HEALTH } from "./SkillConstants";
-import { ResourceId } from "../../_References/Resources";
 import { ESoundId } from "../../_References/Sounds";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillData, SkillDefinition, PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
+import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
 const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 	BasicMelee: {
@@ -57,7 +57,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "Teleport",
 		skillType: "Utility",
 		description: "Teleport to a short distance.",
-		icon: ImageIds.ArmorDK,
+		icon: ImageIds.Teleport,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Teleport,
 		cooldown: 15,
@@ -68,7 +68,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "Dash",
 		skillType: "Movement",
 		description: "Dash forward quickly.",
-		icon: ImageIds.ArmorDK,
+		icon: ImageIds.Dash,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Dash,
 		cooldown: 12,
@@ -79,7 +79,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "MultiJump",
 		skillType: "Movement",
 		description: "Jump in mid-air a second time.",
-		icon: "rbxassetid://139595831174835",
+		icon: ImageIds.Dash,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Dash,
 		cooldown: 0,
@@ -90,7 +90,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "Fly",
 		skillType: "Movement",
 		description: "Gain the ability to fly.",
-		icon: ImageIds.ArmorDK,
+		icon: ImageIds.Flight,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Fly,
 		cooldown: 30,
@@ -101,7 +101,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "Meditate",
 		skillType: "Utility",
 		description: "Regenerate health and mana.",
-		icon: ImageIds.ArmorDK,
+		icon: ImageIds.DefaultIcon,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Meditate,
 		cooldown: 20,
@@ -112,7 +112,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		wcsSkillId: "Charge",
 		skillType: "Utility",
 		description: "Charge your mana reserves.",
-		icon: ImageIds.ArmorDK,
+		icon: ImageIds.Charge,
 		animation: EAnimationID.SKILL_Fart,
 		audio: ESoundId.Charge,
 		cooldown: 18,
@@ -121,5 +121,37 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 	// ... add additional skills here
 };
 
+function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
+	const skillDefinitionMap = new Map<SkillId, SkillDefinition>();
+	skillDefinitionMap.set("BasicHold", SkillDefinitions.BasicHold);
+	skillDefinitionMap.set("BasicMelee", SkillDefinitions.BasicMelee);
+	skillDefinitionMap.set("BasicRanged", SkillDefinitions.BasicRanged);
+	skillDefinitionMap.set("SpiritOrb", SkillDefinitions.SpiritOrb);
+	skillDefinitionMap.set("Teleport", SkillDefinitions.Teleport);
+	skillDefinitionMap.set("Dash", SkillDefinitions.Dash);
+	skillDefinitionMap.set("MultiJump", SkillDefinitions.MultiJump);
+	skillDefinitionMap.set("Fly", SkillDefinitions.Fly);
+	skillDefinitionMap.set("Meditate", SkillDefinitions.Meditate);
+	skillDefinitionMap.set("Charge", SkillDefinitions.Charge);
+	// ... add additional skills here
 
-export { SkillDefinitions };
+	return skillDefinitionMap;
+}
+
+function getSkillDefinition(skillId: SkillId): SkillDefinition {
+	const skillDefinition = SkillDefinitions[skillId];
+	if (!skillDefinition) {
+		throw `SkillDefinition not found for skillId: ${skillId}`;
+	}
+	return skillDefinition;
+}
+
+function getDefaultPlayerSkillsData(): PlayerSkillsData {
+	const defaultPlayerSkillsData: PlayerSkillsData = {
+		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold"],
+		assignedSlots: ["BasicMelee", "BasicRanged", undefined, undefined, undefined],
+	};
+	return defaultPlayerSkillsData;
+}
+
+export { SkillDefinitions, getSkillDefinitionMap, getSkillDefinition, getDefaultPlayerSkillsData };
