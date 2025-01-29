@@ -88,7 +88,7 @@ const Remotes = Net.Definitions.Create({
 		[RemoteNames.UIUpdateSkillBar]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
-		[RemoteNames.UICharacterResourceUpdate]: Net.Definitions.ServerAsyncFunction<(resourceId: string) => number>(),
+		[RemoteNames.UICharacterResourceUpdate]: Net.Definitions.ServerAsyncFunction<(resourceId: string) => unknown>(),
 	}),
 });
 

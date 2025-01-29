@@ -1,4 +1,4 @@
-type TProgressBar = Frame & {
+export type TProgressBar = Frame & {
 	Scripts: Folder & {
 		ExtendBar1LocalScript: LocalScript;
 	};

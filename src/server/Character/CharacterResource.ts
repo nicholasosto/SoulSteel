@@ -1,11 +1,4 @@
-// Resource Types
-enum EResourceTypes {
-	Health = "Health",
-	Mana = "Mana",
-	Stamina = "Stamina",
-	Experience = "Experience",
-	DomainEnergy = "DomainEnergy",
-}
+import { ResourceId } from "shared/_References/Resources";
 
 // Resource Bar Names
 enum EResourceBarNames {
@@ -28,13 +21,13 @@ function GetResourceBarFrameByName(player: Player, name: EResourceBarNames): Fra
 }
 
 // Character Resource Class
-export class CharacterResource {
+class CharacterResource {
 	// Resource Name
 	public ResourceName: string = "DefaultResource";
 
 	// Resource Values
-	public _maxValue: number = 100;
-	public _currentValue: number = 100;
+	private _maxValue: number = 100;
+	private _currentValue: number = 100;
 
 	// Regen Values
 	private _regenAmount: number = 10;
@@ -44,6 +37,11 @@ export class CharacterResource {
 	constructor(resourceName: string) {
 		// Attribute Names and Values
 		this.ResourceName = resourceName;
+	}
+
+	// Get Percentage
+	public GetPercentage() {
+		return (this._currentValue / this._maxValue) * 100;
 	}
 
 	// Set Max Value
@@ -74,3 +72,12 @@ export class CharacterResource {
 		this.SetCurrent(this._currentValue + this._regenAmount);
 	}
 }
+
+function CreateCharacterResource(resourceName: ResourceId, characterLevel: number) {
+	const characterResource = new CharacterResource(resourceName);
+	characterResource.SetMax(characterLevel * 100);
+	characterResource.SetCurrent(characterLevel * 100);
+	return characterResource;
+}
+
+export { CharacterResource, CreateCharacterResource };

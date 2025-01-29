@@ -1,36 +1,33 @@
 import { Logger } from "shared/Utility/Logger";
 import { DataCache, DataManager } from "server/PlayerData/DataManager";
-import {
-	Character,
-	DamageContainer,
-	GetRegisteredSkillConstructor,
-	Skill,
-	SkillConstructor,
-	UnknownSkill,
-} from "@rbxts/wcs";
+import { Character, DamageContainer, GetRegisteredSkillConstructor, Skill, UnknownSkill } from "@rbxts/wcs";
 import BaseCharacter from "./BaseCharacter";
+import { CreateCharacterResource } from "./CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillData, PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { IPlayerData } from "shared/_References/PlayerData";
-import { SkillButton } from "shared/UI Component Classes/SkillPanel/SkillButton";
+import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
 import Remotes, { RemoteNames, CharacterFrameData } from "shared/Remotes/Remotes";
 import { ResourceId } from "shared/_References/Resources";
 
 const PlayerMap = new Map<Player, PlayerCharacter>();
 
+// Get Player Character
 function GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
-	const playerCharacter = PlayerMap.get(player);
-	return playerCharacter;
+	return PlayerMap.get(player);
 }
 
+// Create Player Character
 function CreatePlayerCharacter(player: Player, wcsCharacter: Character): PlayerCharacter {
-	//Logger.Log(script, "CreatePlayerCharacter Started", player.Name);
+	// Create the Player Character
 	const playerCharacter = new PlayerCharacter(player, wcsCharacter);
+
+	// Map the Player to the Player Character
 	PlayerMap.set(player, playerCharacter);
-	//Logger.Log(script, "PlayerCharacter Created", playerCharacter as unknown as string);
+
+	// Return the Player Character
 	return playerCharacter;
 }
 
+// Destroy Player Character
 function DestroyPlayerCharacter(player: Player) {
 	const playerCharacter = PlayerMap.get(player);
 	assert(playerCharacter, "PlayerCharacter is nil");
@@ -38,6 +35,7 @@ function DestroyPlayerCharacter(player: Player) {
 	PlayerMap.delete(player);
 }
 
+// UI Update Character Frame: Remote #TODO: Review this for removal
 const UIUpdateCharacterFrame = Remotes.Server.GetNamespace("UserInterface").Get(RemoteNames.UIUpdateCharacterFrame);
 
 export default class PlayerCharacter extends BaseCharacter {
@@ -105,20 +103,20 @@ export default class PlayerCharacter extends BaseCharacter {
 	public GetResource(resourceId: ResourceId) {
 		switch (resourceId) {
 			case "Health":
-				return this._HealthResource?._currentValue;
+				return this._HealthResource;
 			case "Mana":
-				return this._ManaResource?._currentValue;
+				return this._ManaResource;
 			case "Stamina":
-				return this._EnergyResource?._currentValue;
+				return this._EnergyResource;
 		}
 	}
 
 	// Create Character Resource
 	private _createCharacterResources() {
 		//TODO: Review this
-		this._HealthResource = this._createCharacterResource("Health");
-		this._ManaResource = this._createCharacterResource("Mana");
-		this._EnergyResource = this._createCharacterResource("Stamina");
+		this._HealthResource = CreateCharacterResource("Health", this._dataCache._playerData.ProgressionStats.Level);
+		this._ManaResource = CreateCharacterResource("Mana", this._dataCache._playerData.ProgressionStats.Level);
+		this._EnergyResource = CreateCharacterResource("Stamina", this._dataCache._playerData.ProgressionStats.Level);
 	}
 
 	// Initialize Connections
@@ -126,42 +124,21 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._destroyConnections();
 
 		// Damage Taken
-		this._connectionCharacterTakeDamage = this.wcsCharacter?.DamageTaken.Connect((damage: DamageContainer) => {
-			Logger.Log(script, "Damage Taken", damage.Damage);
-			assert(this._HealthResource, "Health Resource is nil");
-			this._HealthResource.SetCurrent(this._HealthResource._currentValue - damage.Damage);
-			this._dataCache.Save();
-			this.updateCharacterFrame();
-		});
+		this._connectionCharacterTakeDamage = this.wcsCharacter?.DamageTaken.Connect(
+			(damageContainer: DamageContainer) => {
+				this._takeDamage(damageContainer);
+			},
+		);
+	}
 
-		// Skill Started
-		this._connectionSkillStarted = this.wcsCharacter?.SkillStarted.Connect((unknownSkill: UnknownSkill) => {
-			const skill = unknownSkill as Skill;
-			const skillName = skill.GetName();
-			assert(skillName, "Skill Name is nil");
-			Logger.Log(script, "Skill Started", skillName);
-			this.updateCharacterFrame();
-		});
+	// Take Damage
+	private _takeDamage(damageContainer: DamageContainer) {
+		assert(this._HealthResource, "Health Resource is nil");
+		Logger.Log(script, "Take Damage", damageContainer.Damage);
+		this._dataCache.Save();
 	}
 
 	// Update Character Frame
-	private updateCharacterFrame() {
-		const playerData = this._dataCache._playerData;
-		const characterFrameData: CharacterFrameData = {
-			Health: playerData.ResourceStats.Health,
-			Mana: playerData.ResourceStats.Mana,
-			Stamina: playerData.ResourceStats.Stamina,
-			Experience: {
-				Current: playerData.ProgressionStats.Experience,
-				Max: playerData.ProgressionStats.ExperienceToNextLevel,
-			},
-			Level: playerData.ProgressionStats.Level,
-			CharacterName: playerData.CharacterName,
-		};
-		Logger.Log(script, "UpdateCharacterFrame", characterFrameData as unknown as string);
-		UIUpdateCharacterFrame.SendToPlayer(this._player, characterFrameData);
-	}
-
 	// Create Skill
 	private _createSkill(skillId: SkillId): Skill | undefined {
 		// Check if the skill is already created
