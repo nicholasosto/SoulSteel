@@ -3,6 +3,7 @@ import { InventoryItem, InventoryType, ItemId } from "../_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData, SkillData } from "shared/Skills/Interfaces/SkillInterfaces";
 import { Character, Skill } from "@rbxts/wcs";
+import { ResourceId } from "shared/_References/Resources";
 
 export enum RemoteNames {
 	// Player
@@ -31,7 +32,7 @@ export enum RemoteNames {
 	AssignSkillResponse = "AssignSkillResponse",
 
 	// User Interface
-	UIUpdateCharacterFrame = "UIUpdateCharacterFrame",
+	//UIUpdateCharacterFrame = "UIUpdateCharacterFrame",
 	UIUpdateSkillBar = "UIUpdateSkillBar",
 	UIUpdateInventory = "UIUpdateInventory",
 	UINotifyPlayer = "UINotifyPlayer",
@@ -47,7 +48,7 @@ const Remotes = Net.Definitions.Create({
 			Net.Definitions.ServerToClientEvent<[name: string, level: number, profilePicId: string]>(),
 		// Resource Update
 		[RemoteNames.PlayerResourceUpdate]:
-			Net.Definitions.ServerToClientEvent<[resourceId: string, current: number, max: number]>(),
+			Net.Definitions.ServerToClientEvent<[resourceId: ResourceId, current: number, max: number]>(),
 		// Stat Update
 		[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
 	}),

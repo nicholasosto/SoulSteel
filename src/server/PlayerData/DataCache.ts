@@ -51,14 +51,7 @@ export class DataCache {
 	// Updates the DataCache with the provided player data
 	public SetDataCache(dataCache: IPlayerData) {
 		this._playerData = dataCache;
-		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
-		if (timeSinceLastSave <= 2) {
-			// Do not save if the last save was less than 2 seconds ago
-			return;
-		}
-		if (timeSinceLastSave >= 60) {
-			this.Save();
-		}
+		this.Save();
 	}
 
 	public GetDataCache(): IPlayerData {

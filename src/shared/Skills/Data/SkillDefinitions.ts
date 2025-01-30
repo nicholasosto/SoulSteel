@@ -15,7 +15,7 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		animation: EAnimationID.SKILL_BasicMelee,
 		audio: ESoundId.BasicMelee,
 		cooldown: 5,
-		baseDamage: 8,
+		baseDamage: 12318,
 		resource: DEFAULT_RESOURCE_STAMINA,
 	},
 	BasicRanged: {

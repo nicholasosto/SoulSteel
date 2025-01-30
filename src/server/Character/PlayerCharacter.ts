@@ -1,4 +1,6 @@
 import { Logger } from "shared/Utility/Logger";
+// Remote Handlers
+import { SendPlayerInfoUpdate, SendPlayerResourceUpdate } from "server/RemoteHandlers/RemoteIndex";
 
 // Data
 import { DataManager } from "server/PlayerData/DataManager";
@@ -100,9 +102,6 @@ export default class PlayerCharacter extends BaseCharacter {
 
 	// Assign Skill Slot
 	private _assignSkillSlot(skillId: SkillId, slot: number) {
-		// Check if the skill is already created
-		//assert(!this._skillMap.has(skillId), "Skill already created");
-
 		// Create the skill
 		const skill = this._createSkill(skillId) as Skill;
 
@@ -110,24 +109,15 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._skillSlotMap.set(slot, skill);
 	}
 
-	// Get Resource
-	public GetResource(resourceId: ResourceId) {
-		switch (resourceId) {
-			case "Health":
-				return this._HealthResource;
-			case "Mana":
-				return this._ManaResource;
-			case "Stamina":
-				return this._EnergyResource;
-		}
-	}
-
 	// Create Character Resource
 	private _createCharacterResources() {
 		//TODO: Review this
-		this._HealthResource = CreateCharacterResource("Health", this._dataCache._playerData.ProgressionStats.Level);
-		this._ManaResource = CreateCharacterResource("Mana", this._dataCache._playerData.ProgressionStats.Level);
-		this._EnergyResource = CreateCharacterResource("Stamina", this._dataCache._playerData.ProgressionStats.Level);
+		this._HealthResource = CreateCharacterResource("Health", this._dataCache?._playerData);
+		SendPlayerResourceUpdate(this._player, this._HealthResource);
+		this._ManaResource = CreateCharacterResource("Mana", this._dataCache?._playerData);
+		SendPlayerResourceUpdate(this._player, this._ManaResource);
+		this._EnergyResource = CreateCharacterResource("Stamina", this._dataCache?._playerData);
+		SendPlayerResourceUpdate(this._player, this._EnergyResource);
 	}
 
 	// Initialize Connections
@@ -146,7 +136,14 @@ export default class PlayerCharacter extends BaseCharacter {
 	// Take Damage
 	private _takeDamage(damageContainer: DamageContainer) {
 		assert(this._HealthResource, "Health Resource is nil");
-		Logger.Log(script, "Take Damage", damageContainer.Damage);
+		this._HealthResource.SetCurrent(this._HealthResource.GetValues()[0] - damageContainer.Damage);
+		Logger.Log(script, "Health", this._HealthResource.GetValues());
+
+		if (this._HealthResource.GetValues()[0] <= 0) {
+			DestroyPlayerCharacter(this._player);
+		}
+
+		SendPlayerResourceUpdate(this._player, this._HealthResource);
 		this._dataCache.Save();
 	}
 
@@ -177,6 +174,11 @@ export default class PlayerCharacter extends BaseCharacter {
 	public Destroy() {
 		Logger.Log(script, "Destroying PlayerCharacter");
 		this._destroyConnections();
+		this.wcsCharacter?.Destroy();
+		const humanoid = this._player.Character?.FindFirstChildOfClass("Humanoid");
+		if (humanoid) {
+			humanoid.Health = 0;
+		}
 	}
 }
 

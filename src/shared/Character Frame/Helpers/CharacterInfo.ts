@@ -1,4 +1,5 @@
 import { ICharacterInfo, TCharacterFrame } from "shared/Character Frame/Index";
+import { Logger } from "shared/Utility/Logger";
 
 export default class CharacterInfo implements ICharacterInfo {
 	characterName: Frame;
@@ -16,6 +17,7 @@ export default class CharacterInfo implements ICharacterInfo {
 	}
 
 	setProfilePic(imageId: string) {
+		Logger.Log(script, "Setting Profile Pic:", imageId);
 		this.profilePic.Image = imageId;
 	}
 

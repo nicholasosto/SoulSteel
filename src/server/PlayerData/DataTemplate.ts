@@ -2,7 +2,7 @@ import { IPlayerData } from "shared/_References/PlayerData";
 import { getDefaultPlayerSkillsData } from "shared/Skills/Data/SkillDefinitions";
 import { getDefaultCharacterStats } from "shared/Character Resources/CharacterResourceUtil";
 import { getDefaultProgressionStatsData } from "shared/_References/ProgressionStats";
-import { getDefaultResourceStats } from "shared/_References/Resources";
+
 
 // Equipment Slot
 export type TEquipmentSlot = {
@@ -12,7 +12,7 @@ export type TEquipmentSlot = {
 
 export const DataTemplate: IPlayerData = {
 	key: "Datatemplate",
-	version: 5,
+	version: 6,
 
 	// Character Name
 	CharacterName: "Default Name",
@@ -30,8 +30,6 @@ export const DataTemplate: IPlayerData = {
 	CharacterStats: getDefaultCharacterStats(),
 	// Progression Stats
 	ProgressionStats: getDefaultProgressionStatsData(),
-	// Resource Stats
-	ResourceStats: getDefaultResourceStats(),
 	// Skills Data
 	Skills: getDefaultPlayerSkillsData(),
 };

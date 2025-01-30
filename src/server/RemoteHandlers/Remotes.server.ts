@@ -28,12 +28,21 @@ let lastUpdate = 0;
 // Heartbeat: Update Loop
 function UpdateLoop(): void {
 	const players = Players.GetPlayers();
-	Logger.Log(script, "Update Loop", players.size());
+	if (players.size() === 0) {
+		return;
+	}
 
 	players.forEach((player) => {
-		Logger.Log(script, "Player: ", player, Players.LocalPlayer);
-		DataManager.GetDataCache(tostring(player.UserId)).Save();
-		PlayerRemotes.PlayerResourceUpdate.SendToPlayer(player, "Health", 100, 400);
+		const playerData = DataManager.GetDataCache(tostring(player.UserId))._playerData;
+		// eslint-disable-next-line prettier/prettier
+		const thumbnail = Players.GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)[0];
+
+		PlayerRemotes.PlayerInfoUpdate.SendToPlayer(
+			player,
+			player.Name,
+			playerData.ProgressionStats.Level,
+			tostring(thumbnail),
+		);
 	});
 }
 

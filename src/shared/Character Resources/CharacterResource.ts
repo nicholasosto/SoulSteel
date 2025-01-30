@@ -1,4 +1,5 @@
 import { CharacterStatId } from "shared/Character Resources/CharacterResourceTypes";
+import { IPlayerData } from "shared/_References/PlayerData";
 import { ResourceId } from "shared/_References/Resources";
 
 // Resource Bar Names
@@ -43,6 +44,11 @@ class CharacterResource {
 		return (this._currentValue / this._maxValue) * 100;
 	}
 
+	// Get Values
+	public GetValues(): [current: number, max: number] {
+		return [this._currentValue, this._maxValue];
+	}
+
 	// Set Max Value
 	public SetMax(value: number) {
 		this._maxValue = value;
@@ -72,10 +78,34 @@ class CharacterResource {
 	}
 }
 
-function CreateCharacterResource(resourceName: ResourceId, characterLevel: number) {
+function CreateCharacterResource(resourceName: ResourceId, playerData: IPlayerData): CharacterResource {
 	const characterResource = new CharacterResource(resourceName);
-	characterResource.SetMax(characterLevel * 100);
-	characterResource.SetCurrent(characterLevel * 100);
+
+	const levelMultiplier = playerData.ProgressionStats.Level * 10;
+	let primaryStatValue = 0;
+	let secondaryStatValue = 0;
+
+	switch (resourceName) {
+		case "Health":
+			primaryStatValue = playerData.CharacterStats.Constitution;
+			secondaryStatValue = playerData.CharacterStats.Strength;
+			break;
+		case "Mana":
+			primaryStatValue = playerData.CharacterStats.Intelligence
+			secondaryStatValue = playerData.CharacterStats.Constitution;
+			break;
+		case "Stamina":
+			primaryStatValue = playerData.CharacterStats.Dexterity;
+			secondaryStatValue = playerData.CharacterStats.Constitution;
+			break;
+	}
+
+	const primaryStatMultiplier = primaryStatValue * 10;
+	const secondaryStatMultiplier = secondaryStatValue * 3;
+
+	characterResource.SetMax(levelMultiplier + primaryStatMultiplier + secondaryStatMultiplier);
+	characterResource.SetCurrent(characterResource.GetValues()[1]);
+	characterResource.RegenToggle(true);
 	return characterResource;
 }
 
