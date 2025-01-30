@@ -5,11 +5,10 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 import { CreateClient, Character } from "@rbxts/wcs";
 
 // Controllers
-import { KeyboardController } from "./Keyboard/Keyboard";
-import { SkillController } from "./Skills Interface/SkillController";
+import KeyboardController from "client/Keyboard/Keyboard";
+import SkillController from "client/Skills Interface/SkillController";
 
 // UI Components
-import CharacterFrame from "./Character Frame/CharacterFrame";
 
 // Utility Imports
 import { Logger } from "shared/Utility/Logger";
@@ -33,6 +32,3 @@ Character.CharacterCreated.Connect((character) => {
 
 // Start the Keyboard Controller
 KeyboardController.Start();
-
-// Start the Character Frame
-CharacterFrame.Start();

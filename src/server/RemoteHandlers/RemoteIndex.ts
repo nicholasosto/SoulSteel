@@ -4,8 +4,8 @@ import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 const nsPlayerRemotes = Remotes.Server.GetNamespace("Player");
 const PlayerRemotes = {
 	PlayerLevelUp: nsPlayerRemotes.Get(RemoteNames.PlayerLevelUp),
-	PlayerExperienceUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerExperienceUpdate),
 	PlayerResourceUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerResourceUpdate),
+	PlayerInfoUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerInfoUpdate),
 	PlayerStatUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerStatUpdate),
 };
 

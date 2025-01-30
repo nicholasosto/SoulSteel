@@ -7,9 +7,9 @@ import { Character, Skill } from "@rbxts/wcs";
 export enum RemoteNames {
 	// Player
 	PlayerLevelUp = "PlayerLevelUp",
-	PlayerExperienceUpdate = "PlayerExperienceUpdate",
 	PlayerResourceUpdate = "PlayerResourceUpdate",
 	PlayerStatUpdate = "PlayerStatUpdate",
+	PlayerInfoUpdate = "PlayerInfoUpdate",
 
 	// Player Character
 	PlayerCharacterCreated = "PlayerCharacterCreated",
@@ -43,9 +43,11 @@ const Remotes = Net.Definitions.Create({
 		// Level Up
 		[RemoteNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<[level: number]>(),
 		// Experience Update
-		[RemoteNames.PlayerExperienceUpdate]: Net.Definitions.ServerToClientEvent<[exp: number]>(),
+		[RemoteNames.PlayerInfoUpdate]:
+			Net.Definitions.ServerToClientEvent<[name: string, level: number, profilePicId: string]>(),
 		// Resource Update
-		[RemoteNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<[resourceId: string, value: number]>(),
+		[RemoteNames.PlayerResourceUpdate]:
+			Net.Definitions.ServerToClientEvent<[resourceId: string, current: number, max: number]>(),
 		// Stat Update
 		[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
 	}),

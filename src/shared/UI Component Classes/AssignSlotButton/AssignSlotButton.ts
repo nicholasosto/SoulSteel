@@ -2,7 +2,7 @@ import { Logger } from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 export default class SlotAssignmentButton {
 	public Button: TSlotAssignmentButton = StorageManager.CloneFromStorage(

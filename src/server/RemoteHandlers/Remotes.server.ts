@@ -33,7 +33,7 @@ function UpdateLoop(): void {
 	players.forEach((player) => {
 		Logger.Log(script, "Player: ", player, Players.LocalPlayer);
 		DataManager.GetDataCache(tostring(player.UserId)).Save();
-		PlayerRemotes.PlayerResourceUpdate.SendToPlayer(player, "Health", 100);
+		PlayerRemotes.PlayerResourceUpdate.SendToPlayer(player, "Health", 100, 400);
 	});
 }
 

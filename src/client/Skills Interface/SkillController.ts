@@ -6,7 +6,7 @@ import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { Character } from "@rbxts/wcs";
 import { SkillPanel } from "shared/UI Component Classes/SkillPanel/SkillPanel";
 
-export class SkillController {
+export default class SkillController {
 	private static skillPanel: SkillPanel;
 	private static wcsCharacter: Character;
 
