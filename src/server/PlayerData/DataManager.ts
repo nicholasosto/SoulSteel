@@ -4,77 +4,16 @@ import { Players, DataStoreService } from "@rbxts/services";
 // My Imports
 import { Logger } from "../../shared/Utility/Logger";
 import { IPlayerData } from "shared/_References/PlayerData";
-import { DataTemplate } from "./DataTemplate";
+import { DataCache } from "./DataCache";
 
-// Data Cache Class for use in the DataManager
-export class DataCache {
-	public _userId: string;
-	public _playerData: IPlayerData;
-	private _lastSaveTimestamp: number = 0;
-	private _minSaveInterval: number = 2;
-	private _dataStore: DataStore;
-
-	constructor(userId: string, dataStore: DataStore) {
-		// Set the properties
-		this._userId = userId;
-		this._dataStore = dataStore;
-
-		// Attempt to load the player data from the DataStore
-		this._playerData = dataStore.GetAsync(userId)[0] as IPlayerData;
-
-		// If the player data is not found, create a new player data based on the DataTemplate
-		if (this._playerData === undefined) {
-			this._playerData = DataTemplate;
-			this.Save();
-		} else {
-			Logger.Log(script, "Data Loaded");
-		}
-	}
-
-	// Save
-	public Save(): string {
-		// Save the player data to the DataStore
-
-		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
-		if (timeSinceLastSave <= this._minSaveInterval) {
-			// Do not save if the last save was less than 2 seconds ago
-			Logger.Log(script, "Skipped Save", timeSinceLastSave);
-			return "Save Skipped";
-		}
-		const success = this._dataStore.SetAsync(this._userId, this._playerData);
-
-		// Update the last save timestamp
-		this._lastSaveTimestamp = os.time();
-
-		return success;
-	}
-
-	// Updates the DataCache with the provided player data
-	public SetDataCache(dataCache: IPlayerData) {
-		this._playerData = dataCache;
-		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
-		if (timeSinceLastSave <= 2) {
-			// Do not save if the last save was less than 2 seconds ago
-			return;
-		}
-		if (timeSinceLastSave >= 60) {
-			this.Save();
-		}
-	}
-
-	public GetDataCache(): IPlayerData {
-		return this._playerData;
-	}
-
-	// Saves the DataCache to the Roblox DataStore
-}
+const PlayerDataRegistry = new Map<string, DataCache>();
 
 export class DataManager {
+
+	// Singleton
 	private static _instance: DataManager;
-	private static DataStoreService = DataStoreService;
 	private static DatastoreId = "SOULSTEEL_2025";
-	private static GameDataStore = DataManager.DataStoreService.GetDataStore(DataManager.DatastoreId);
-	private static PlayerCache: Array<DataCache> = new Array<DataCache>();
+	private static GameDataStore = DataStoreService.GetDataStore(DataManager.DatastoreId);
 	private static AutoSaveInterval = 15;
 	private static playerAddedConnection: RBXScriptConnection;
 
@@ -95,21 +34,29 @@ export class DataManager {
 	public static RegisterPlayer(player: Player): void {
 		// 01 - Get the player data from the DataStore or Cache
 		const userId = tostring(player.UserId);
-		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
+
+		// 02 - Check if the player is already registered
+		if (PlayerDataRegistry.has(userId)) {
+			Logger.Log(script, "Player already registered: ", PlayerDataRegistry.get(userId) as unknown as string);
+			return;
+		}
+
+		// 03 - Create a new DataCache for the player
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
-		//Logger.Log(script,"DM", "Player Registered: ", userId);
-		this.PlayerCache.push(dataCache);
+
+		// 04 - Register the player in the PlayerCache
+		PlayerDataRegistry.set(userId, dataCache);
 	}
 
 	public static GetDataCache(userId: string): DataCache {
-		return DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
+		return PlayerDataRegistry.get(userId) as DataCache;
 	}
 
 	// Called from the Server OnPlayerLeaving event
 	public static OnPlayerLeaving(player: Player): void {
 		// 01 - Get the data cache for the player
 		const userId = tostring(player.UserId);
-		const dataCache = DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
+		const dataCache = PlayerDataRegistry.get(userId) as DataCache;
 		dataCache.Save();
 	}
 }

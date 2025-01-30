@@ -3,7 +3,7 @@ import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 //import { SkillController } from "./Remotes/Controllers/SkillController";
 import { Logger } from "shared/Utility/Logger";
-import Remotes, {RemoteNames} from "shared/Remotes/Remotes";
+import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { ItemId } from "shared/_References/Inventory";
 
 import { EAnimationID } from "shared/Animation/AnimationIndex";
@@ -19,7 +19,6 @@ const Animations: Map<Enum.KeyCode, EAnimationID> = new Map<Enum.KeyCode, EAnima
 const _remoteSkillAssignment = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
 const _remoteSkillUnAssign = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.UnAssignSkillSlot);
 const _requestPlayerSkills = Remotes.Client.GetNamespace("Skills").Get(RemoteNames.RequestPlayerSkills);
-
 
 export class KeyboardController {
 	private static instance: KeyboardController;
@@ -64,10 +63,10 @@ export class KeyboardController {
 					case Enum.KeyCode.Three:
 						_remoteSkillAssignment.SendToServer(2, "BasicHold");
 						break;
-						case Enum.KeyCode.Four:
+					case Enum.KeyCode.Four:
 						_remoteSkillAssignment.SendToServer(3, "Charge");
 						break;
-						case Enum.KeyCode.Five:
+					case Enum.KeyCode.Five:
 						_remoteSkillAssignment.SendToServer(4, "SpiritOrb");
 						break;
 					case Enum.KeyCode.Q:
@@ -86,8 +85,7 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.H:
 						_remoteSkillAssignment.SendToServer(0, "Charge");
-						//Remotes.Client.GetNamespace("Equipment").Get(RemoteNames.EquipItemRequest).SendToServer(ItemId.ShortSword);
-						break
+						break;
 					case Enum.KeyCode.I:
 						Remotes.Client.GetNamespace("Inventory").Get(RemoteNames.RequestInventory).SendToServer();
 						break;
@@ -113,7 +111,6 @@ export class KeyboardController {
 					case Enum.KeyCode.R:
 						print("R Pressed");
 						this.toggleSkillOnKeyPress(input.KeyCode, false);
-
 						break;
 					default:
 						KeyboardController.InputEnded(input, isProcessed);

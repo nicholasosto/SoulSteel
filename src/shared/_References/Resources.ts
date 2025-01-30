@@ -1,7 +1,6 @@
-export type ResourceId = "Health" | "Mana" | "Stamina" | "Domain" | "Class";
-export type CurrentOrMax = "Current" | "Max";
+type ResourceId = "Health" | "Mana" | "Stamina" | "Domain" | "Class";
 
-export interface ResourceStatDefinition {
+interface ResourceStatDefinition {
 	resourceId: ResourceId;
 	displayName: string;
 	description: string;
@@ -9,7 +8,7 @@ export interface ResourceStatDefinition {
 	maxValue: number;
 }
 
-export const StatDefinitions: Record<ResourceId, ResourceStatDefinition> = {
+const StatDefinitions: Record<ResourceId, ResourceStatDefinition> = {
 	Health: {
 		resourceId: "Health",
 		displayName: "Health",
@@ -47,7 +46,7 @@ export const StatDefinitions: Record<ResourceId, ResourceStatDefinition> = {
 	},
 };
 
-export interface ResourceStats {
+interface ResourceStats {
 	Health: {
 		Current: number;
 		Max: number;
@@ -70,7 +69,7 @@ export interface ResourceStats {
 	};
 }
 
-export function getDefaultResourceStats(): ResourceStats {
+function getDefaultResourceStats(): ResourceStats {
 	return {
 		Health: {
 			Current: 100,
@@ -94,3 +93,5 @@ export function getDefaultResourceStats(): ResourceStats {
 		},
 	};
 }
+
+export { ResourceId, StatDefinitions, ResourceStats, getDefaultResourceStats };

@@ -1,9 +1,5 @@
 import { Logger } from "shared/Utility/Logger";
-import { CharacterNames } from "./FactoryIndex";
-
-const firstNames = CharacterNames.FirstNames;
-const lastNames = CharacterNames.LastNames;
-const Monikors = CharacterNames.Monikors;
+import { FirstNames, LastNames, Monikors } from "shared/Factories/FactoryParts/CharacterNames";
 
 const EntityRegistryMap: Map<string, Instance> = new Map();
 let entityIdNum = 0;
@@ -15,8 +11,8 @@ export enum EntityRegistryResponseCode {
 }
 
 export function generateCharacterName(): string {
-	const firstName = firstNames[math.floor(math.random() * firstNames.size())];
-	const lastName = lastNames[math.floor(math.random() * lastNames.size())];
+	const firstName = FirstNames[math.floor(math.random() * FirstNames.size())];
+	const lastName = LastNames[math.floor(math.random() * LastNames.size())];
 	const monikor = Monikors[math.floor(math.random() * Monikors.size())];
 	return `${firstName} ${lastName} ${monikor}`;
 }
@@ -32,7 +28,7 @@ export function GetEntity(entityId: string): Instance | undefined {
 	return EntityRegistryMap.get(entityId);
 }
 
-export function RegisterEntityReference(entityId: string, entity: ObjectValue) : EntityRegistryResponseCode {
+export function RegisterEntityReference(entityId: string, entity: ObjectValue): EntityRegistryResponseCode {
 	const existingEntity = EntityRegistryMap.get(entityId);
 
 	if (existingEntity) {

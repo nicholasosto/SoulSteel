@@ -1,13 +1,18 @@
 import { Logger } from "shared/Utility/Logger";
-import { DataCache, DataManager } from "server/PlayerData/DataManager";
-import { Character, DamageContainer, GetRegisteredSkillConstructor, Skill, UnknownSkill } from "@rbxts/wcs";
+
+// Data
+import { DataManager } from "server/PlayerData/DataManager";
+import { DataCache } from "server/PlayerData/DataCache";
+
 import BaseCharacter from "./BaseCharacter";
-import { CharacterResource, CreateCharacterResource } from "./CharacterResource";
+import { CharacterResource, CreateCharacterResource } from "../../shared/Character Resources/CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { ResourceId } from "shared/_References/Resources";
 
+import { Character, DamageContainer, Skill } from "@rbxts/wcs";
+
+// Player Character Map
 const PlayerMap = new Map<Player, PlayerCharacter>();
 
 // Get Player Character
@@ -34,9 +39,6 @@ function DestroyPlayerCharacter(player: Player) {
 	playerCharacter.Destroy();
 	PlayerMap.delete(player);
 }
-
-// UI Update Character Frame: Remote #TODO: Review this for removal
-const UIUpdateCharacterFrame = Remotes.Server.GetNamespace("UserInterface").Get(RemoteNames.UIUpdateCharacterFrame);
 
 export default class PlayerCharacter extends BaseCharacter {
 	// Private

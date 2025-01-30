@@ -5,16 +5,22 @@ import { PlayerSkillsData, SkillData } from "shared/Skills/Interfaces/SkillInter
 import { Character, Skill } from "@rbxts/wcs";
 
 export enum RemoteNames {
+	// Player
+	PlayerLevelUp = "PlayerLevelUp",
+	PlayerExperienceUpdate = "PlayerExperienceUpdate",
+	PlayerResourceUpdate = "PlayerResourceUpdate",
+	PlayerStatUpdate = "PlayerStatUpdate",
+
+	// Player Character
+	PlayerCharacterCreated = "PlayerCharacterCreated",
+	PlayerCharacterDestroyed = "PlayerCharacterDestroyed",
+
 	// Inventory
 	GetInventory = "GetInventory",
 	RequestInventory = "RequestInventory",
 
 	// Equipment
 	EquipItemRequest = "EquipItemRequest",
-
-	// Game Character
-	PlayerCharacterCreated = "PlayerCharacterCreated",
-	PlayerCharacterDestroyed = "PlayerCharacterDestroyed",
 
 	// Skills
 	LoadPlayerSkills = "SkillAssignment",
@@ -27,32 +33,31 @@ export enum RemoteNames {
 	// User Interface
 	UIUpdateCharacterFrame = "UIUpdateCharacterFrame",
 	UIUpdateSkillBar = "UIUpdateSkillBar",
-	UICharacterResourceUpdate = "UICharacterResourceUpdate",
 	UIUpdateInventory = "UIUpdateInventory",
 	UINotifyPlayer = "UINotifyPlayer",
 }
 
-export type CharacterFrameData = {
-	CharacterName: string;
-	Level: number;
-	Experience: {
-		Current: number;
-		Max: number;
-	};
-	Health: {
-		Current: number;
-		Max: number;
-	};
-	Mana: {
-		Current: number;
-		Max: number;
-	};
-	Stamina: {
-		Current: number;
-		Max: number;
-	};
-};
 const Remotes = Net.Definitions.Create({
+	// Player
+	Player: Definitions.Namespace({
+		// Level Up
+		[RemoteNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<[level: number]>(),
+		// Experience Update
+		[RemoteNames.PlayerExperienceUpdate]: Net.Definitions.ServerToClientEvent<[exp: number]>(),
+		// Resource Update
+		[RemoteNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<[resourceId: string, value: number]>(),
+		// Stat Update
+		[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
+	}),
+
+	// Player Character
+	PlayerCharacter: Definitions.Namespace({
+		// Created
+		[RemoteNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
+		// Destroyed
+		[RemoteNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
+	}),
+
 	// Inventory
 	Inventory: Definitions.Namespace({
 		[RemoteNames.GetInventory]:
@@ -63,13 +68,6 @@ const Remotes = Net.Definitions.Create({
 	// Equipment
 	Equipment: Definitions.Namespace({
 		[RemoteNames.EquipItemRequest]: Net.Definitions.ClientToServerEvent<[itemId: ItemId]>(),
-	}),
-
-	// Game Character
-	PlayerCharacter: Definitions.Namespace({
-		// Created/Destroyed
-		[RemoteNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
-		[RemoteNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
 	}),
 
 	// Skills
@@ -84,11 +82,9 @@ const Remotes = Net.Definitions.Create({
 
 	// User Interface
 	UserInterface: Definitions.Namespace({
-		[RemoteNames.UIUpdateCharacterFrame]: Net.Definitions.ServerToClientEvent<[CharacterFrameData]>(),
 		[RemoteNames.UIUpdateSkillBar]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
-		[RemoteNames.UICharacterResourceUpdate]: Net.Definitions.ServerAsyncFunction<(resourceId: string) => unknown>(),
 	}),
 });
 

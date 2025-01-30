@@ -16,10 +16,13 @@ export interface IPlayerData {
 
 	// Progression Stats
 	ProgressionStats: ProgressionStatsData;
+
 	// Character Stats
 	CharacterStats: CharacterStats;
+
 	// Resource Stats
 	ResourceStats: ResourceStats;
+
 	// Skills Data
 	Skills: PlayerSkillsData;
 }

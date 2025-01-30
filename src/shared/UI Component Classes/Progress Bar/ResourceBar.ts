@@ -1,4 +1,4 @@
-import { TProgressBar } from "./ProgressBar_Template";
+import { TProgressBar } from "./TProgressBar";
 import { ResourceId } from "shared/_References/Resources";
 
 class ResourceBar {
