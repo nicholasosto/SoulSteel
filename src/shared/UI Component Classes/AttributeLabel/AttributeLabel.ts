@@ -1,6 +1,6 @@
 import { AttributeLabel_Template } from "./AttributeLabel_Template";
-import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
-import { StorageManager } from "shared/_References/Managers/StorageManager";
+import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 
 export class AttributeLabelClass {
 	public LabelObject: AttributeLabel_Template;

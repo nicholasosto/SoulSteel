@@ -6,49 +6,49 @@
  * The remotes are then exported to be used in other files.
  */
 
-import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
+import Remotes, { SignalNames } from "shared/Remotes/Remotes";
 
 // Player: Remotes
 const nsPlayerRemotes = Remotes.Server.GetNamespace("Player");
 const PlayerRemotes = {
-	PlayerLevelUp: nsPlayerRemotes.Get(RemoteNames.PlayerLevelUp),
-	PlayerResourceUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerResourceUpdate),
-	PlayerInfoUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerInfoUpdate),
+	PlayerLevelUp: nsPlayerRemotes.Get(SignalNames.PlayerLevelUp),
+	PlayerResourceUpdate: nsPlayerRemotes.Get(SignalNames.PlayerResourceUpdate),
+	PlayerInfoUpdate: nsPlayerRemotes.Get(SignalNames.PlayerInfoUpdate),
 	//PlayerStatUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerStatUpdate),
 };
 
 // Player Character: Remotes
 const nsPlayerCharacter = Remotes.Server.GetNamespace("PlayerCharacter");
 const PlayerCharacterRemotes = {
-	PlayerCharacterCreated: nsPlayerCharacter.Get(RemoteNames.PlayerCharacterCreated),
-	PlayerCharacterDestroyed: nsPlayerCharacter.Get(RemoteNames.PlayerCharacterDestroyed),
+	PlayerCharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
+	PlayerCharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
 };
 
 // Skills Remotes
 const nsSkills = Remotes.Server.GetNamespace("Skills");
 const SkillSignals = {
-	LoadPlayerSkills: nsSkills.Get(RemoteNames.LoadPlayerSkills),
-	RequestPlayerSkills: nsSkills.Get(RemoteNames.RequestPlayerSkills),
-	UnlockSkill: nsSkills.Get(RemoteNames.UnlockSkill),
-	AssignSkillSlot: nsSkills.Get(RemoteNames.AssignSkillSlot),
-	UnAssignSkillSlot: nsSkills.Get(RemoteNames.UnAssignSkillSlot),
-	AssignSkillResponse: nsSkills.Get(RemoteNames.AssignSkillResponse),
+	LoadPlayerSkills: nsSkills.Get(SignalNames.LoadPlayerSkills),
+	RequestPlayerSkills: nsSkills.Get(SignalNames.RequestPlayerSkills),
+	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),
+	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
+	UnAssignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
+	AssignSkillResponse: nsSkills.Get(SignalNames.AssignSkillResponse),
 };
 const SkillRemotes = {
-	GetUnlockedSkills: nsSkills.Get(RemoteNames.crfGetUnlockedSkills),
+	GetUnlockedSkills: nsSkills.Get(SignalNames.crfGetUnlockedSkills),
 };
 
 // Equipment: Remotes
 const nsEquipment = Remotes.Server.GetNamespace("Equipment");
 const EquipmentRemotes = {
-	EquipItemRequest: nsEquipment.Get(RemoteNames.EquipItemRequest),
+	EquipItemRequest: nsEquipment.Get(SignalNames.EquipItemRequest),
 };
 
 // Inventory: Remotes
 const nsInventory = Remotes.Server.GetNamespace("Inventory");
 const InventoryRemotes = {
-	GetInventory: nsInventory.Get(RemoteNames.GetInventory),
-	RequestInventory: nsInventory.Get(RemoteNames.RequestInventory),
+	GetInventory: nsInventory.Get(SignalNames.GetInventory),
+	RequestInventory: nsInventory.Get(SignalNames.RequestInventory),
 };
 
 export { PlayerRemotes, PlayerCharacterRemotes, EquipmentRemotes, InventoryRemotes, SkillSignals, SkillRemotes };

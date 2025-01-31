@@ -1,6 +1,6 @@
 import { Players } from "@rbxts/services";
 import Logger from "shared/Utility/Logger";
-import CharacterFrame from "shared/Character Frame/CharacterFrame";
+import CharacterFrame from "shared/Epic UI/Character Frame/CharacterFrame";
 import { ResourceId } from "shared/_References/Resources";
 import { PlayerRemotes } from "shared/Remotes/ClientRemotes";
 
@@ -13,7 +13,8 @@ if (LocalPlayer.Character) {
 	Logger.Log(script, "Character already exists, creating CharacterFrame instance");
 	CharacterFrameInstance = new CharacterFrame(LocalPlayer);
 }
-// Character Added - Create CharacterFrame Instance
+
+/* Character Connections */
 LocalPlayer.CharacterAdded.Connect(() => {
 	Logger.Log(script, "Character added, creating CharacterFrame instance");
 	CharacterFrameInstance = new CharacterFrame(LocalPlayer);

@@ -5,7 +5,7 @@
  */
 
 /* Imports */
-import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
+import Remotes, { SignalNames } from "shared/Remotes/Remotes";
 
 /* Namespaces */
 const nsPlayer = Remotes.Client.GetNamespace("Player");
@@ -17,37 +17,38 @@ const nsEquipment = Remotes.Client.GetNamespace("Equipment");
 
 /* Player Remotes */
 const PlayerRemotes = {
-	LevelUp: nsPlayer.Get(RemoteNames.PlayerLevelUp),
-	ResourceUpdate: nsPlayer.Get(RemoteNames.PlayerResourceUpdate),
-	InfoUpdate: nsPlayer.Get(RemoteNames.PlayerInfoUpdate),
+	LevelUp: nsPlayer.Get(SignalNames.PlayerLevelUp),
+	ResourceUpdate: nsPlayer.Get(SignalNames.PlayerResourceUpdate),
+	InfoUpdate: nsPlayer.Get(SignalNames.PlayerInfoUpdate),
 };
 
 /* Player Character Remotes */
 const PlayerCharacterRemotes = {
-	CharacterCreated: nsPlayerCharacter.Get(RemoteNames.PlayerCharacterCreated),
-	CharacterDestroyed: nsPlayerCharacter.Get(RemoteNames.PlayerCharacterDestroyed),
+	CharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
+	CharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
 };
 
 /* Inventory Remotes */
 const InventoryRemotes = {
-	GetInventory: nsInventory.Get(RemoteNames.GetInventory),
-	RequestInventory: nsInventory.Get(RemoteNames.RequestInventory),
+	GetInventory: nsInventory.Get(SignalNames.GetInventory),
+	RequestInventory: nsInventory.Get(SignalNames.RequestInventory),
 };
 
 /* Skills Signals and Remotes */
 const SkillSignals = {
-	LoadPlayerSkills: nsSkills.Get(RemoteNames.LoadPlayerSkills),
-	RequestPlayerSkills: nsSkills.Get(RemoteNames.RequestPlayerSkills),
-	UnlockSkill: nsSkills.Get(RemoteNames.UnlockSkill),
+	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
+	LoadPlayerSkills: nsSkills.Get(SignalNames.LoadPlayerSkills),
+	RequestPlayerSkills: nsSkills.Get(SignalNames.RequestPlayerSkills),
+	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),
 };
 const SkillRemotes = {
-	GetUnlockedSkills: nsSkills.Get(RemoteNames.crfGetUnlockedSkills),
+	GetUnlockedSkills: nsSkills.Get(SignalNames.crfGetUnlockedSkills),
 };
 
 /* User Interface Remotes */
 const UIRemotes = {
-	UpdateInventory: nsUI.Get(RemoteNames.UIUpdateInventory),
-	NotifyPlayer: nsUI.Get(RemoteNames.UINotifyPlayer),
+	UpdateInventory: nsUI.Get(SignalNames.UIUpdateInventory),
+	NotifyPlayer: nsUI.Get(SignalNames.UINotifyPlayer),
 };
 
 export { PlayerRemotes, PlayerCharacterRemotes, InventoryRemotes, SkillSignals, SkillRemotes, UIRemotes };

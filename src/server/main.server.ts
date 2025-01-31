@@ -2,7 +2,7 @@
 import { Players, ReplicatedStorage } from "@rbxts/services";
 
 // Manager Imports
-import { StorageManager } from "shared/_References/Managers/StorageManager";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 import { DataManager } from "server/Controllers/DataManager";
 import SkillController from "server/Controllers/SkillContoller";
 import * as SkillHandler from "server/RemoteHandlers/SkillRemoteHandler";

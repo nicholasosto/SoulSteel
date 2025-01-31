@@ -3,13 +3,13 @@
 import { Players } from "@rbxts/services";
 
 /* Interfaces */
-import { TSkillBar } from "shared/Skill Bar/TSkillBar";
+import { TSkillBar } from "shared/Epic UI/Skill Bar/TSkillBar";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 //import { SkillButton } from "./SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";
-import { StorageManager } from "shared/_References/Managers/StorageManager";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 
 /* Main Class: SkillBar */
 export default class SkillBar {

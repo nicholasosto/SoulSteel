@@ -1,14 +1,14 @@
 import { ItemId } from "shared/_References/Inventory";
 import { RunService } from "@rbxts/services";
-import { TSkillButton } from "shared/Skill Bar/TSkillButton";
+import { TSkillButton } from "shared/Epic UI/Skill Bar/TSkillButton";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
 import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
 
-import { StorageManager } from "shared/_References/Managers/StorageManager";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 import { Skill } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
-import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
+import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
 
 export class SkillButton {
 	// Main Template

@@ -11,7 +11,7 @@ interface Payloads {
 	PlayerResourceUpdate: [resourceId: ResourceId, current: number, max: number];
 }
 
-export enum RemoteNames {
+export enum SignalNames {
 	// Player
 	PlayerLevelUp = "PlayerLevelUp",
 	PlayerResourceUpdate = "PlayerResourceUpdate",
@@ -43,15 +43,22 @@ export enum RemoteNames {
 	UINotifyPlayer = "UINotifyPlayer",
 }
 
+enum RemoteNames {
+	UpdatePlayerStat,
+	GetPlayerInventory,
+	
+	
+}
+
 const Remotes = Net.Definitions.Create({
 	// Player
 	Player: Definitions.Namespace({
 		// Level Up
-		[RemoteNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<Payloads["PlayerLevelUp"]>(),
+		[SignalNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<Payloads["PlayerLevelUp"]>(),
 		// Experience Update
-		[RemoteNames.PlayerInfoUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerInfoUpdate"]>(),
+		[SignalNames.PlayerInfoUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerInfoUpdate"]>(),
 		// Resource Update
-		[RemoteNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerResourceUpdate"]>(),
+		[SignalNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerResourceUpdate"]>(),
 		// Stat Update
 		//[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
 	}),
@@ -59,38 +66,38 @@ const Remotes = Net.Definitions.Create({
 	// Player Character
 	PlayerCharacter: Definitions.Namespace({
 		// Created
-		[RemoteNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
 		// Destroyed
-		[RemoteNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
 	}),
 
 	// Inventory
 	Inventory: Definitions.Namespace({
-		[RemoteNames.GetInventory]:
+		[SignalNames.GetInventory]:
 			Net.Definitions.ServerToClientEvent<[inventory: Map<InventoryType, InventoryItem>]>(),
-		[RemoteNames.RequestInventory]: Net.Definitions.ClientToServerEvent(),
+		[SignalNames.RequestInventory]: Net.Definitions.ClientToServerEvent(),
 	}),
 
 	// Equipment
 	Equipment: Definitions.Namespace({
-		[RemoteNames.EquipItemRequest]: Net.Definitions.ClientToServerEvent<[itemId: ItemId]>(),
+		[SignalNames.EquipItemRequest]: Net.Definitions.ClientToServerEvent<[itemId: ItemId]>(),
 	}),
 
 	// Skills
 	Skills: Definitions.Namespace({
-		[RemoteNames.crfGetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => [SkillId] | undefined>(),
-		[RemoteNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
-		[RemoteNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
-		[RemoteNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
-		[RemoteNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
-		[RemoteNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
-		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
+		[SignalNames.crfGetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => [SkillId] | undefined>(),
+		[SignalNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
+		[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
+		[SignalNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
+		[SignalNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
+		[SignalNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
+		[SignalNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
 	}),
 
 	// User Interface
 	UserInterface: Definitions.Namespace({
-		[RemoteNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
-		[RemoteNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
 	}),
 });
 

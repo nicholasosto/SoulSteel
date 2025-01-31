@@ -1,5 +1,5 @@
 import { ReplicatedStorage, InsertService, RunService, ContextActionService } from "@rbxts/services";
-import { PackageIds } from "../Packages";
+import { PackageIds } from "../_References/Packages";
 import Logger from "shared/Utility/Logger";
 
 export class StorageManager {

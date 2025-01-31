@@ -1,7 +1,7 @@
 // Server side skill controller
 
 import Logger from "shared/Utility/Logger";
-import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
+import Remotes, { SignalNames } from "shared/Remotes/Remotes";
 import PlayerCharacter, { GetPlayerCharacter } from "server/Character/PlayerCharacter";
 
 export default class SkillController {
@@ -9,11 +9,11 @@ export default class SkillController {
 
 	// remotes
 	private static _remoteRequestPlayerSkills = Remotes.Server.GetNamespace("Skills").Get(
-		RemoteNames.RequestPlayerSkills,
+		SignalNames.RequestPlayerSkills,
 	);
-	private static _remoteLoadSkills = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.LoadPlayerSkills);
-	private static _remoteAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.AssignSkillSlot);
-	private static _remoteUnAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(RemoteNames.UnAssignSkillSlot);
+	private static _remoteLoadSkills = Remotes.Server.GetNamespace("Skills").Get(SignalNames.LoadPlayerSkills);
+	private static _remoteAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
+	private static _remoteUnAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(SignalNames.UnAssignSkillSlot);
 
 	// connections
 	private static _requestPlayerSkills: RBXScriptConnection | undefined;
