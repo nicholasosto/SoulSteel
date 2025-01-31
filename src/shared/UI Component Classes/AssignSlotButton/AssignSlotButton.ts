@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { StorageManager } from "shared/Storage Manager/StorageManager";
-import Remotes, { SignalNames } from "shared/Remotes/Remotes";
+import Signals, { SignalNames } from "shared/Remotes/Remotes";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
@@ -9,7 +9,7 @@ export default class SlotAssignmentButton {
 		"SlotAssignmentButton_Template",
 	) as TSlotAssignmentButton;
 
-	private _remoteAssignSlot = Remotes.Client.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
+	private _remoteAssignSlot = Signals.Client.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
 
 	constructor(slotId: number, itemId: SkillId) {
 		assert(this.Button.SlotId !== undefined, "Slot ID is undefined");

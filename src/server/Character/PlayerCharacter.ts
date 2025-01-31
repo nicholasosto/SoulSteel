@@ -163,6 +163,22 @@ export default class PlayerCharacter extends BaseCharacter {
 		return this._dataCache._playerData.Skills;
 	}
 
+	public GetSkillSlotMap(): Map<number, SkillId> {
+		const assignedSkills = this.GetPlayerSkillsData().assignedSlots as Array<SkillId>;
+		const skillSlotMap = new Map<number, SkillId>();
+
+		let index = 1;
+
+		assignedSkills.forEach((skillId) => {
+			print(skillId);
+			if (skillId) {
+				skillSlotMap.set(index, skillId);
+				index++;
+			}
+		});
+		return skillSlotMap;
+	}
+
 	// Destroy Connections
 	private _destroyConnections() {
 		Logger.Log(script, "Destroying Connections");

@@ -1,6 +1,9 @@
 export type TSkillButton = Frame & {
 	UIListLayout: UIListLayout;
 	SkillButton: ImageButton & {
+		Image: Frame & {
+			SkillImage: ImageLabel;
+		};
 		UICorner: UICorner;
 		UIStroke: UIStroke;
 		UIAspectRatioConstraint: UIAspectRatioConstraint;

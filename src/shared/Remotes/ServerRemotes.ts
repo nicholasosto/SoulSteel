@@ -6,10 +6,10 @@
  * The remotes are then exported to be used in other files.
  */
 
-import Remotes, { SignalNames } from "shared/Remotes/Remotes";
+import Signals, { SignalNames, RemoteNames } from "shared/Remotes/Remotes";
 
 // Player: Remotes
-const nsPlayerRemotes = Remotes.Server.GetNamespace("Player");
+const nsPlayerRemotes = Signals.Server.GetNamespace("Player");
 const PlayerRemotes = {
 	PlayerLevelUp: nsPlayerRemotes.Get(SignalNames.PlayerLevelUp),
 	PlayerResourceUpdate: nsPlayerRemotes.Get(SignalNames.PlayerResourceUpdate),
@@ -18,15 +18,19 @@ const PlayerRemotes = {
 };
 
 // Player Character: Remotes
-const nsPlayerCharacter = Remotes.Server.GetNamespace("PlayerCharacter");
+const nsPlayerCharacter = Signals.Server.GetNamespace("PlayerCharacter");
 const PlayerCharacterRemotes = {
 	PlayerCharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
 	PlayerCharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
 };
 
 // Skills Remotes
-const nsSkills = Remotes.Server.GetNamespace("Skills");
+const nsSkills = Signals.Server.GetNamespace("Skills");
 const SkillSignals = {
+
+	SkillBarCreated: nsSkills.Get(SignalNames.SkillBarCreated),
+	SendSkillAssignment: nsSkills.Get(SignalNames.SendSkillAssignment),
+
 	LoadPlayerSkills: nsSkills.Get(SignalNames.LoadPlayerSkills),
 	RequestPlayerSkills: nsSkills.Get(SignalNames.RequestPlayerSkills),
 	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),
@@ -34,18 +38,20 @@ const SkillSignals = {
 	UnAssignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
 	AssignSkillResponse: nsSkills.Get(SignalNames.AssignSkillResponse),
 };
+
+const nsSkillRemotes = Signals.Server.GetNamespace("SkillRemotes");
 const SkillRemotes = {
-	GetUnlockedSkills: nsSkills.Get(SignalNames.crfGetUnlockedSkills),
+	GetUnlockedSkills: nsSkillRemotes.Get(RemoteNames.GetUnlockedSkills),
 };
 
 // Equipment: Remotes
-const nsEquipment = Remotes.Server.GetNamespace("Equipment");
+const nsEquipment = Signals.Server.GetNamespace("Equipment");
 const EquipmentRemotes = {
 	EquipItemRequest: nsEquipment.Get(SignalNames.EquipItemRequest),
 };
 
 // Inventory: Remotes
-const nsInventory = Remotes.Server.GetNamespace("Inventory");
+const nsInventory = Signals.Server.GetNamespace("Inventory");
 const InventoryRemotes = {
 	GetInventory: nsInventory.Get(SignalNames.GetInventory),
 	RequestInventory: nsInventory.Get(SignalNames.RequestInventory),

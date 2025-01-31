@@ -29,7 +29,7 @@ WCSServer.RegisterDirectory(StatusDirectory);
 WCSServer.Start();
 
 // Start the Managers
-SkillController.Start();
+//SkillController.Start();
 DataManager.Start();
 StorageManager.Start();
 //CharacterController.Start();

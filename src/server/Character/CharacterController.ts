@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Character } from "@rbxts/wcs";
 import PlayerCharacter, { CreatePlayerCharacter } from "./PlayerCharacter";
-import Remotes, { SignalNames } from "shared/Remotes/Remotes";
+import Signals, { SignalNames } from "shared/Remotes/Remotes";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 // Player Character Registry
@@ -14,8 +14,8 @@ export default class CharacterController {
 	private static _playerCharacterRegistry: Map<Player, PlayerCharacter> = new Map();
 
 	// Remotes
-	private static _remoteAssignSkillSlot = Remotes.Server.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
-	private static _remoteAssignSkillResponse = Remotes.Server.GetNamespace("Skills").Get(
+	private static _remoteAssignSkillSlot = Signals.Server.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
+	private static _remoteAssignSkillResponse = Signals.Server.GetNamespace("Skills").Get(
 		SignalNames.AssignSkillResponse,
 	);
 

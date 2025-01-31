@@ -10,6 +10,24 @@ import { Skill } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
 import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
 
+export class SkillButtonBase {
+	private _instance: TSkillButton = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
+
+	private _skillDefinition: SkillDefinition | undefined;
+
+	constructor(skillId: SkillId, parent?: Instance) {
+		this._skillDefinition = getSkillDefinition(skillId);
+		this._instance.Name = this._skillDefinition.displayName;
+		this._instance.Parent = parent;
+		this._instance.SkillButton.Image.SkillImage.Image = this._skillDefinition.icon;
+		Logger.Log(script, "Skill Button Created", this._skillDefinition.displayName);
+	}
+
+	public Destroy() {
+		this._instance.Destroy();
+	}
+}
+
 export class SkillButton {
 	// Main Template
 	private _templateClone: TSkillButton;
@@ -51,7 +69,7 @@ export class SkillButton {
 	}
 
 	protected _setGUIProperties() {
-		this._templateClone.SkillButton.Image = this._skillDefinition.icon;
+		this._templateClone.SkillButton.Image.SkillImage.Image = this._skillDefinition.icon;
 		this._templateClone.CooldownBar.SetAttribute(EEpicUIAttributes.TextValue, this._skillDefinition.displayName);
 	}
 

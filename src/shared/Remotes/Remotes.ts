@@ -2,7 +2,6 @@ import Net, { Definitions } from "@rbxts/net";
 import { InventoryItem, InventoryType, ItemId } from "../_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { Skill } from "@rbxts/wcs";
 import { ResourceId } from "shared/_References/Resources";
 
 interface Payloads {
@@ -11,7 +10,7 @@ interface Payloads {
 	PlayerResourceUpdate: [resourceId: ResourceId, current: number, max: number];
 }
 
-export enum SignalNames {
+enum SignalNames {
 	// Player
 	PlayerLevelUp = "PlayerLevelUp",
 	PlayerResourceUpdate = "PlayerResourceUpdate",
@@ -31,6 +30,11 @@ export enum SignalNames {
 
 	// Skills
 	crfGetUnlockedSkills = "crfGetUnlockedSkills",
+
+
+	SkillBarCreated = "SkillBarCreated", // Notifies the server that the skill bar has been created
+	SendSkillAssignment = "SendSkillAssignment", // Sends skill assignment data to the client
+
 	LoadPlayerSkills = "SkillAssignment",
 	RequestPlayerSkills = "RequestPlayerSkills",
 	UnlockSkill = "UnlockSkill",
@@ -44,8 +48,9 @@ export enum SignalNames {
 }
 
 enum RemoteNames {
-	UpdatePlayerStat,
-	GetPlayerInventory,
+	UpdatePlayerStat = "UpdatePlayerStat",
+	GetPlayerInventory = "GetPlayerInventory",
+	GetUnlockedSkills = "GetUnlockedSkills",
 }
 
 const Remotes = Net.Definitions.Create({
@@ -83,13 +88,21 @@ const Remotes = Net.Definitions.Create({
 
 	// Skills
 	Skills: Definitions.Namespace({
-		[SignalNames.crfGetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => [SkillId] | undefined>(),
+
+		[SignalNames.SendSkillAssignment]: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
+		[SignalNames.SkillBarCreated]: Net.Definitions.ClientToServerEvent<[]>(),
+
+
 		[SignalNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
 		[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
 		[SignalNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
 		[SignalNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
 		[SignalNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
 		[SignalNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
+	}),
+
+	SkillRemotes: Definitions.Namespace({
+		[RemoteNames.GetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => SkillId[] | undefined>(),
 	}),
 
 	// User Interface
@@ -100,3 +113,5 @@ const Remotes = Net.Definitions.Create({
 });
 
 export default Remotes;
+
+export { SignalNames, RemoteNames };
