@@ -1,9 +1,28 @@
-import { TCharacterFrame, ICharacterInfo, IProgressBar, ICharacterFrame } from "./Index";
+/* File: CharacterFrame.ts */
+// This file is used to create the Character Frame for the players UI.
+// The Character Frame consists of the following:
+// - Progress Bars (Health, Mana, Stamina, Experience)
+// - Character Info (Name, Level, Profile Picture)
+// The Character Frame is created when the player character is added to the game and is destroyed when the player character is removed from the game.
+
+/* Imports */
+
+// Interfaces
+import { TCharacterFrame, ICharacterInfo, IProgressBar, ICharacterFrame } from "./iCharacterFrame";
+
+// Utility
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import ProgressBar from "shared/Character Frame/Helpers/ResourceBar";
+
+// Sub-Modules
+import ProgressBar from "shared/Character Frame/Helpers/ProgressBar";
 import CharacterInfo from "shared/Character Frame/Helpers/CharacterInfo";
 
+/* Main Class: CharacterFrame */
 export default class CharacterFrame implements ICharacterFrame {
+	// Instance
+	instance: TCharacterFrame = StorageManager.CloneFromStorage("CharacterFrame_Template") as TCharacterFrame;
+
+	// Progress Bars
 	bars: {
 		stamina: IProgressBar;
 		health: IProgressBar;
@@ -11,20 +30,29 @@ export default class CharacterFrame implements ICharacterFrame {
 		experience: IProgressBar;
 	};
 
+	// Character Info
 	info: ICharacterInfo;
 
+	// Constructor
 	constructor(player: Player) {
-		const frame = StorageManager.CloneFromStorage("CharacterFrame_Template") as TCharacterFrame;
-		const playerHUD = player.WaitForChild("PlayerGui").WaitForChild("HUD");
-		frame.Parent = playerHUD;
+		// Set the Parent
+		this.instance.Parent = player.WaitForChild("PlayerGui").WaitForChild("HUD");
 
+		// Create the Resource Bars
 		this.bars = {
-			stamina: new ProgressBar(frame.Bars.Progress["Stamina Bar"]),
-			health: new ProgressBar(frame.Bars.Progress["Health Bar"]),
-			mana: new ProgressBar(frame.Bars.Progress["Mana Bar"]),
-			experience: new ProgressBar(frame.Bars.Progress["Experience Bar"]),
+			stamina: new ProgressBar(this.instance.Bars.Progress["Stamina Bar"]),
+			health: new ProgressBar(this.instance.Bars.Progress["Health Bar"]),
+			mana: new ProgressBar(this.instance.Bars.Progress["Mana Bar"]),
+			experience: new ProgressBar(this.instance.Bars.Progress["Experience Bar"]),
 		};
 
-		this.info = new CharacterInfo(frame.Info);
+		// Create the Character Info
+		this.info = new CharacterInfo(this.instance.Info);
+	}
+
+	// Destroy the Character Frame instance
+	public Destroy() {
+		// Destroy the Character Frame
+		this.instance.Destroy();
 	}
 }

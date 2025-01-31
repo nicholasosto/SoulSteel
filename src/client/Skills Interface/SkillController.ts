@@ -4,7 +4,7 @@ import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { Character } from "@rbxts/wcs";
-import SkillBar from "shared/UI Component Classes/Skill Bar/SkillBar";
+import SkillBar from "shared/Skill Bar/SkillBar";
 
 export default class SkillController {
 	private static skillBar: SkillBar;

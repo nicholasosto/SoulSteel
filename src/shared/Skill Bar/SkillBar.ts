@@ -1,12 +1,19 @@
-import { Players } from "@rbxts/services";
-import { TSkillBar } from "shared/UI Component Classes/Skill Bar/TSkillBar";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillButton } from "./SkillButton";
 
+/* Roblox Services */
+import { Players } from "@rbxts/services";
+
+/* Interfaces */
+import { TSkillBar } from "shared/Skill Bar/TSkillBar";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+//import { SkillButton } from "./SkillButton";
+
+/* Utility */
 import Logger from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 
+/* Main Class: SkillBar */
 export default class SkillBar {
+	// Instance
 	private skillBarFrame: TSkillBar = StorageManager.CloneFromStorage("SkillBar_Template") as TSkillBar;
 	private player = Players.LocalPlayer;
 	private HUD = this.player.WaitForChild("PlayerGui").WaitForChild("HUD");

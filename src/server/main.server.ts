@@ -5,6 +5,7 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { DataManager } from "server/Controllers/DataManager";
 import SkillController from "server/Controllers/SkillContoller";
+import * as SkillHandler from "server/RemoteHandlers/SkillRemoteHandler";
 
 // WCS Imports
 import { CreateServer, Character } from "@rbxts/wcs";

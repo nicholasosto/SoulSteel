@@ -1,6 +1,5 @@
 import { IPlayerData } from "shared/_References/PlayerData";
 import { getDefaultPlayerSkillsData } from "shared/Skills/Data/SkillHelpers";
-import { getDefaultCharacterStats } from "shared/Character Resources/CharacterResourceUtil";
 import { getDefaultProgressionStatsData } from "shared/_References/ProgressionStats";
 
 // Equipment Slot
@@ -26,7 +25,13 @@ export const DataTemplate: IPlayerData = {
 	},
 
 	// Character Stats
-	CharacterStats: getDefaultCharacterStats(),
+	CharacterStats: {
+		Strength: 14,
+		Dexterity: 3,
+		Intelligence: 5,
+		Constitution: 7,
+		Speed: 9,
+	},
 	// Progression Stats
 	ProgressionStats: getDefaultProgressionStatsData(),
 	// Skills Data

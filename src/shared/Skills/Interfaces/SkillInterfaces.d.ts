@@ -17,19 +17,19 @@ interface PlayerSkillsData {
 }
 
 // Skill Data
-interface SkillData {
-	id: string; // Unique identifier for the skill
-	name: string; // Display name of the skill
-	description: string; // Brief description of the skill
-	icon: string; // Path or key for the skill's icon
-	cooldown: number; // Cooldown time in seconds
-	currentCooldown?: number; // Remaining cooldown time, optional
-	resourceCost: number; // Cost of the resource required to use the skill
-	resourceType: ResourceId; // Type of resource consumed
-	isUnlocked: boolean; // Whether the skill is unlocked for use
-	assigned?: boolean; // Whether the skill is assigned to a slot
-	slot?: number; // Optional slot number for assigned skills
-}
+// interface SkillData {
+// 	id: string; // Unique identifier for the skill
+// 	name: string; // Display name of the skill
+// 	description: string; // Brief description of the skill
+// 	icon: string; // Path or key for the skill's icon
+// 	cooldown: number; // Cooldown time in seconds
+// 	currentCooldown?: number; // Remaining cooldown time, optional
+// 	resourceCost: number; // Cost of the resource required to use the skill
+// 	resourceType: ResourceId; // Type of resource consumed
+// 	isUnlocked: boolean; // Whether the skill is unlocked for use
+// 	assigned?: boolean; // Whether the skill is assigned to a slot
+// 	slot?: number; // Optional slot number for assigned skills
+// }
 
 // Skill Definition
 interface SkillDefinition {
@@ -45,4 +45,4 @@ interface SkillDefinition {
 	resource: SkillResource;
 }
 
-export { PlayerSkillsData, SkillDefinition, SkillData };
+export { PlayerSkillsData, SkillDefinition};

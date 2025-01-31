@@ -26,13 +26,16 @@ const PlayerCharacterRemotes = {
 
 // Skills Remotes
 const nsSkills = Remotes.Server.GetNamespace("Skills");
-const SkillsRemotes = {
+const SkillSignals = {
 	LoadPlayerSkills: nsSkills.Get(RemoteNames.LoadPlayerSkills),
 	RequestPlayerSkills: nsSkills.Get(RemoteNames.RequestPlayerSkills),
 	UnlockSkill: nsSkills.Get(RemoteNames.UnlockSkill),
 	AssignSkillSlot: nsSkills.Get(RemoteNames.AssignSkillSlot),
 	UnAssignSkillSlot: nsSkills.Get(RemoteNames.UnAssignSkillSlot),
 	AssignSkillResponse: nsSkills.Get(RemoteNames.AssignSkillResponse),
+};
+const SkillRemotes = {
+	GetUnlockedSkills: nsSkills.Get(RemoteNames.crfGetUnlockedSkills),
 };
 
 // Equipment: Remotes
@@ -48,4 +51,4 @@ const InventoryRemotes = {
 	RequestInventory: nsInventory.Get(RemoteNames.RequestInventory),
 };
 
-export { PlayerRemotes, PlayerCharacterRemotes, EquipmentRemotes, InventoryRemotes, SkillsRemotes };
+export { PlayerRemotes, PlayerCharacterRemotes, EquipmentRemotes, InventoryRemotes, SkillSignals, SkillRemotes };

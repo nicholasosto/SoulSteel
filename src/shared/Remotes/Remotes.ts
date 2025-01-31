@@ -30,6 +30,7 @@ export enum RemoteNames {
 	EquipItemRequest = "EquipItemRequest",
 
 	// Skills
+	crfGetUnlockedSkills = "crfGetUnlockedSkills",
 	LoadPlayerSkills = "SkillAssignment",
 	RequestPlayerSkills = "RequestPlayerSkills",
 	UnlockSkill = "UnlockSkill",
@@ -38,7 +39,6 @@ export enum RemoteNames {
 	AssignSkillResponse = "AssignSkillResponse",
 
 	// User Interface
-	UIUpdateSkillBar = "UIUpdateSkillBar",
 	UIUpdateInventory = "UIUpdateInventory",
 	UINotifyPlayer = "UINotifyPlayer",
 }
@@ -78,17 +78,17 @@ const Remotes = Net.Definitions.Create({
 
 	// Skills
 	Skills: Definitions.Namespace({
+		[RemoteNames.crfGetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => [SkillId] | undefined>(),
 		[RemoteNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
 		[RemoteNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
 		[RemoteNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
 		[RemoteNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
 		[RemoteNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
-		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: Skill]>(),
+		[RemoteNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
 	}),
 
 	// User Interface
 	UserInterface: Definitions.Namespace({
-		[RemoteNames.UIUpdateSkillBar]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
 		[RemoteNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
 	}),

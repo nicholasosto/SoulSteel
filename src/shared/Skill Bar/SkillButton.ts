@@ -1,6 +1,6 @@
 import { ItemId } from "shared/_References/Inventory";
 import { RunService } from "@rbxts/services";
-import { TSkillButton } from "shared/UI Component Classes/Skill Bar/TSkillButton";
+import { TSkillButton } from "shared/Skill Bar/TSkillButton";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
 import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";

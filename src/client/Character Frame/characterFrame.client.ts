@@ -19,6 +19,12 @@ LocalPlayer.CharacterAdded.Connect(() => {
 	CharacterFrameInstance = new CharacterFrame(LocalPlayer);
 });
 
+LocalPlayer.CharacterRemoving.Connect(() => {
+	Logger.Log(script, "Character removed, destroying CharacterFrame instance");
+	CharacterFrameInstance?.Destroy();
+	CharacterFrameInstance = undefined;
+});
+
 // Resource Bar Update
 PlayerRemotes.ResourceUpdate.Connect((resourceId: ResourceId, current: number, max: number) => {
 	Logger.Log(script, "Updating resource");

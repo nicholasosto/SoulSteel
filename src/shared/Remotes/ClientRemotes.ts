@@ -34,18 +34,20 @@ const InventoryRemotes = {
 	RequestInventory: nsInventory.Get(RemoteNames.RequestInventory),
 };
 
-/* Skills Remotes */
-const SkillsRemotes = {
+/* Skills Signals and Remotes */
+const SkillSignals = {
 	LoadPlayerSkills: nsSkills.Get(RemoteNames.LoadPlayerSkills),
 	RequestPlayerSkills: nsSkills.Get(RemoteNames.RequestPlayerSkills),
 	UnlockSkill: nsSkills.Get(RemoteNames.UnlockSkill),
 };
+const SkillRemotes = {
+	GetUnlockedSkills: nsSkills.Get(RemoteNames.crfGetUnlockedSkills),
+};
 
 /* User Interface Remotes */
 const UIRemotes = {
-	UpdateSkillBar: nsUI.Get(RemoteNames.UIUpdateSkillBar),
 	UpdateInventory: nsUI.Get(RemoteNames.UIUpdateInventory),
 	NotifyPlayer: nsUI.Get(RemoteNames.UINotifyPlayer),
 };
 
-export { PlayerRemotes, PlayerCharacterRemotes, InventoryRemotes, SkillsRemotes };
+export { PlayerRemotes, PlayerCharacterRemotes, InventoryRemotes, SkillSignals, SkillRemotes, UIRemotes };

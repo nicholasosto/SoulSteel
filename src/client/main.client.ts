@@ -1,31 +1,23 @@
 // Roblox Services
 import { Players, ReplicatedStorage } from "@rbxts/services";
 
+// Utility Imports
+import Logger from "shared/Utility/Logger";
+
 // WCS Imports
-import { CreateClient, Character } from "@rbxts/wcs";
+import { Character } from "@rbxts/wcs";
+import WcsClient from "./WCS Helpers/WCSClient";
+WcsClient.Start();
 
 // Controllers
 import KeyboardController from "client/Keyboard/Keyboard";
 import SkillController from "client/Skills Interface/SkillController";
-
-// UI Components
-
-// Utility Imports
-import Logger from "shared/Utility/Logger";
-
-// WCS Client
-const Client = CreateClient();
-const ParentWCSDirectory = ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills");
-const SkillsDirectorory = ParentWCSDirectory.WaitForChild("WCSSkills");
-const StatusDirectory = ParentWCSDirectory.WaitForChild("WCSStatus");
-Client.RegisterDirectory(SkillsDirectorory);
-Client.RegisterDirectory(StatusDirectory);
-Client.Start();
+import { GetUnlockedSkills } from "client/RemoteHandlers/SkillHandler";
 
 // Character Created Connection
 Character.CharacterCreated.Connect((character) => {
 	Logger.Log(script, "Character Created");
-
+	GetUnlockedSkills();
 	// Initialize the Skill Controller
 	SkillController.Initialize(character);
 });

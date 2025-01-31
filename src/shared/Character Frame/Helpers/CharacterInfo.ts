@@ -1,4 +1,4 @@
-import { ICharacterInfo, TCharacterFrame } from "shared/Character Frame/Index";
+import { ICharacterInfo, TCharacterFrame } from "shared/Character Frame/iCharacterFrame";
 import Logger from "shared/Utility/Logger";
 
 export default class CharacterInfo implements ICharacterInfo {

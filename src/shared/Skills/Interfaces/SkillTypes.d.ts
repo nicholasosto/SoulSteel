@@ -21,14 +21,4 @@ type SkillResource = {
 	amount: number;
 };
 
-// GUI:  Skill Assignment Button
-type Skill_Assignment_Button = ImageButton & {
-	Hover: ImageLabel;
-	Scripts: Folder & {
-		ExtendTextButtonLocalScript: LocalScript;
-	};
-	SlotNumber: NumberValue;
-	SkillId: StringValue;
-};
-
-export { SkillType, SkillId, SkillResource, Skill_Assignment_Button };
+export { SkillType, SkillId, SkillResource };

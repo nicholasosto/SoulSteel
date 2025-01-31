@@ -1,4 +1,4 @@
-import { IProgressBar } from "shared/Character Frame/Index";
+import { IProgressBar } from "shared/Character Frame/iCharacterFrame";
 
 export default class ProgressBar implements IProgressBar {
 	frame: Frame;
