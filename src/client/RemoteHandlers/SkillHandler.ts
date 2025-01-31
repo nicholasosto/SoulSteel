@@ -4,5 +4,4 @@ function GetUnlockedSkills() {
 	SkillRemotes.GetUnlockedSkills.CallServerAsync();
 }
 
-
 export { GetUnlockedSkills };

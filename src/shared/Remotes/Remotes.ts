@@ -46,8 +46,6 @@ export enum SignalNames {
 enum RemoteNames {
 	UpdatePlayerStat,
 	GetPlayerInventory,
-	
-	
 }
 
 const Remotes = Net.Definitions.Create({
