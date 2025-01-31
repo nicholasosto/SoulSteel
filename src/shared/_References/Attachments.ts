@@ -10,12 +10,11 @@ export enum ECharacterPartName {
 }
 
 export enum EAttachmentName {
-
 	// Head
 	Hat = "HatAttachment",
 	FaceFront = "FaceFrontAttachment",
 	FaceCenterAttachment = "FaceCenterAttachment",
-	
+
 	// Upper
 	LeftShoulder = "LeftShoulderAttachment",
 	RightShoulder = "RightShoulderAttachment",
@@ -39,4 +38,3 @@ export enum EAttachmentName {
 	LeftAnkle = "LeftAnkleAttachment",
 	RightAnkle = "RightAnkleAttachment",
 }
-

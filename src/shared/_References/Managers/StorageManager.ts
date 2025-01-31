@@ -1,5 +1,5 @@
 import { ReplicatedStorage, InsertService, RunService, ContextActionService } from "@rbxts/services";
-import { PackageIndex } from "../Indexes/MasterIndex";
+import { PackageIds } from "../Packages";
 import Logger from "shared/Utility/Logger";
 
 export class StorageManager {
@@ -23,7 +23,7 @@ export class StorageManager {
 		return item?.Clone();
 	}
 
-	public static LoadFromPackage(packageId: PackageIndex.PackageIds, itemName: string): Instance | undefined {
+	public static LoadFromPackage(packageId: PackageIds, itemName: string): Instance | undefined {
 		const runMode = RunService.IsServer() ? "Server" : "Client";
 
 		if (runMode === "Client") {
