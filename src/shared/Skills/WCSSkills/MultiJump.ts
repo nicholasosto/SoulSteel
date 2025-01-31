@@ -1,7 +1,7 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
 import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 @SkillDecorator
 export class MultiJump extends Skill {

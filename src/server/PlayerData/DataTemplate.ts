@@ -1,8 +1,7 @@
 import { IPlayerData } from "shared/_References/PlayerData";
-import { getDefaultPlayerSkillsData } from "shared/Skills/Data/SkillDefinitions";
+import { getDefaultPlayerSkillsData } from "shared/Skills/Data/SkillHelpers";
 import { getDefaultCharacterStats } from "shared/Character Resources/CharacterResourceUtil";
 import { getDefaultProgressionStatsData } from "shared/_References/ProgressionStats";
-
 
 // Equipment Slot
 export type TEquipmentSlot = {

@@ -1,7 +1,7 @@
 import { TDialog } from "shared/UI Component Classes/DialogFrame/Dialog_Template";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 export class Dialog {
 	// Main Template

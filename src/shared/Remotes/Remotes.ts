@@ -1,9 +1,15 @@
 import Net, { Definitions } from "@rbxts/net";
 import { InventoryItem, InventoryType, ItemId } from "../_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { PlayerSkillsData, SkillData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { Character, Skill } from "@rbxts/wcs";
+import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
+import { Skill } from "@rbxts/wcs";
 import { ResourceId } from "shared/_References/Resources";
+
+interface Payloads {
+	PlayerLevelUp: [level: number];
+	PlayerInfoUpdate: [name: string, level: number, profilePicId: string];
+	PlayerResourceUpdate: [resourceId: ResourceId, current: number, max: number];
+}
 
 export enum RemoteNames {
 	// Player
@@ -32,7 +38,6 @@ export enum RemoteNames {
 	AssignSkillResponse = "AssignSkillResponse",
 
 	// User Interface
-	//UIUpdateCharacterFrame = "UIUpdateCharacterFrame",
 	UIUpdateSkillBar = "UIUpdateSkillBar",
 	UIUpdateInventory = "UIUpdateInventory",
 	UINotifyPlayer = "UINotifyPlayer",
@@ -42,15 +47,13 @@ const Remotes = Net.Definitions.Create({
 	// Player
 	Player: Definitions.Namespace({
 		// Level Up
-		[RemoteNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<[level: number]>(),
+		[RemoteNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<Payloads["PlayerLevelUp"]>(),
 		// Experience Update
-		[RemoteNames.PlayerInfoUpdate]:
-			Net.Definitions.ServerToClientEvent<[name: string, level: number, profilePicId: string]>(),
+		[RemoteNames.PlayerInfoUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerInfoUpdate"]>(),
 		// Resource Update
-		[RemoteNames.PlayerResourceUpdate]:
-			Net.Definitions.ServerToClientEvent<[resourceId: ResourceId, current: number, max: number]>(),
+		[RemoteNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerResourceUpdate"]>(),
 		// Stat Update
-		[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
+		//[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
 	}),
 
 	// Player Character

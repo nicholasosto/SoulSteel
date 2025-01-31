@@ -1,13 +1,13 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { Character } from "@rbxts/wcs";
-import { SkillPanel } from "shared/UI Component Classes/SkillPanel/SkillPanel";
+import SkillBar from "shared/UI Component Classes/Skill Bar/SkillBar";
 
 export default class SkillController {
-	private static skillPanel: SkillPanel;
+	private static skillBar: SkillBar;
 	private static wcsCharacter: Character;
 
 	// Remotes for Controller
@@ -25,7 +25,7 @@ export default class SkillController {
 
 	public static Initialize(wcsCharacter: Character) {
 		const playerGui = Players.LocalPlayer.WaitForChild("PlayerGui");
-		SkillController.skillPanel = new SkillPanel(playerGui);
+		SkillController.skillBar = new SkillBar();
 		SkillController.wcsCharacter = wcsCharacter;
 		SkillController._LoadSkillGrid();
 		SkillController._initializeConnections();
@@ -41,7 +41,7 @@ export default class SkillController {
 		SkillController.connectionLoadPlayerSkills = SkillController.remoteLoadPlayerSkills.Connect(
 			(playerSkillData: PlayerSkillsData) => {
 				Logger.Log(script, "Load Player Skills", "Creating Skill Panel");
-				SkillController.skillPanel.LoadPlayerSkillData(this.wcsCharacter, playerSkillData);
+				//SkillController.skillBar.LoadSkills(playerSkillData);
 			},
 		);
 

@@ -1,7 +1,7 @@
 /*
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { PackageIndex } from "shared/_References/Indexes/MasterIndex";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 export const FireAuraPack = StorageManager.LoadFromPackage(PackageIndex.PackageIds.Effects, "Fire_Aura");
 

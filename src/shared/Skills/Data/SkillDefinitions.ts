@@ -1,8 +1,8 @@
-import { EAnimationID } from "../../Animation/AnimationIndex";
-import { ImageIds } from "../../_References/ImageIds";
-import { ESoundId } from "../../_References/Sounds";
+import { EAnimationID } from "shared/Animation/AnimationIndex";
+import { ImageIds } from "shared/_References/ImageIds";
+import { ESoundId } from "shared/_References/Sounds";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillData, SkillDefinition, PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
+import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
 const SkillDefinitions: Record<SkillId, SkillDefinition> = {
@@ -121,37 +121,4 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 	// ... add additional skills here
 };
 
-function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
-	const skillDefinitionMap = new Map<SkillId, SkillDefinition>();
-	skillDefinitionMap.set("BasicHold", SkillDefinitions.BasicHold);
-	skillDefinitionMap.set("BasicMelee", SkillDefinitions.BasicMelee);
-	skillDefinitionMap.set("BasicRanged", SkillDefinitions.BasicRanged);
-	skillDefinitionMap.set("SpiritOrb", SkillDefinitions.SpiritOrb);
-	skillDefinitionMap.set("Teleport", SkillDefinitions.Teleport);
-	skillDefinitionMap.set("Dash", SkillDefinitions.Dash);
-	skillDefinitionMap.set("MultiJump", SkillDefinitions.MultiJump);
-	skillDefinitionMap.set("Fly", SkillDefinitions.Fly);
-	skillDefinitionMap.set("Meditate", SkillDefinitions.Meditate);
-	skillDefinitionMap.set("Charge", SkillDefinitions.Charge);
-	// ... add additional skills here
-
-	return skillDefinitionMap;
-}
-
-function getSkillDefinition(skillId: SkillId): SkillDefinition {
-	const skillDefinition = SkillDefinitions[skillId];
-	if (!skillDefinition) {
-		throw `SkillDefinition not found for skillId: ${skillId}`;
-	}
-	return skillDefinition;
-}
-
-function getDefaultPlayerSkillsData(): PlayerSkillsData {
-	const defaultPlayerSkillsData: PlayerSkillsData = {
-		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold"],
-		assignedSlots: ["BasicMelee", "BasicRanged", undefined, undefined, undefined],
-	};
-	return defaultPlayerSkillsData;
-}
-
-export { SkillDefinitions, getSkillDefinitionMap, getSkillDefinition, getDefaultPlayerSkillsData };
+export { SkillDefinitions };

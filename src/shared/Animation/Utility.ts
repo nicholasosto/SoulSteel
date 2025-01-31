@@ -1,6 +1,6 @@
 import { Character } from "@rbxts/wcs";
 import { EAnimationID } from "./AnimationIndex";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
 	const model = instanceToAnimate instanceof Character ? instanceToAnimate.Instance : instanceToAnimate;

@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { TReferenceBlock } from "../References/ReferenceBlock";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import { Debris, RunService } from "@rbxts/services";

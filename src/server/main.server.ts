@@ -3,8 +3,8 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 
 // Manager Imports
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { DataManager } from "./PlayerData/DataManager";
-import SkillController from "server/RemoteHandlers/SkillContoller";
+import { DataManager } from "server/Controllers/DataManager";
+import SkillController from "server/Controllers/SkillContoller";
 
 // WCS Imports
 import { CreateServer, Character } from "@rbxts/wcs";
@@ -13,11 +13,10 @@ import { CreateServer, Character } from "@rbxts/wcs";
 //import CharacterController from "./Character/CharacterController";
 import PlayerCharacter, { CreatePlayerCharacter } from "./Character/PlayerCharacter";
 
-
 //import PlayerCharacter from "./Character/PlayerCharacter";
 
 // Utility Imports
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 // Create the WCS Server
 const WCSServer = CreateServer();

@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { FirstNames, LastNames, Monikors } from "shared/Factories/FactoryParts/CharacterNames";
 
 const EntityRegistryMap: Map<string, Instance> = new Map();

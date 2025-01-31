@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { StorageManager } from "shared/_References/Managers/StorageManager";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";

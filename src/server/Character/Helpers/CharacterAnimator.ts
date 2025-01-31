@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { CreateAnimation, GetAnimator, EAnimationID } from "shared/Animation/AnimationIndex";
 
 export default class WCSCharacterAnimator {

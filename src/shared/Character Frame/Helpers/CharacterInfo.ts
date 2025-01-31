@@ -1,5 +1,5 @@
 import { ICharacterInfo, TCharacterFrame } from "shared/Character Frame/Index";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 export default class CharacterInfo implements ICharacterInfo {
 	characterName: Frame;

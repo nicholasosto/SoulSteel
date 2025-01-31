@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { IPlayerData } from "shared/_References/PlayerData";
 import { DataTemplate } from "./DataTemplate";
 

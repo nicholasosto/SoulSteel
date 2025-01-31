@@ -3,7 +3,7 @@ import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 
 import { SkillKeyMap } from "./KeyboardMaps";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 // Set the skills here
 export default class KeyboardController {
 	private static instance: KeyboardController;

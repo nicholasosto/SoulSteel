@@ -1,4 +1,4 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { EAttachmentName } from "./Attachments";
 import { StorageManager } from "./Managers/StorageManager";
 import { Debris } from "@rbxts/services";

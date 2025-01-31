@@ -1,12 +1,12 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 // Remote Handlers
-import { SendPlayerInfoUpdate, SendPlayerResourceUpdate } from "server/RemoteHandlers/RemoteIndex";
+import { SendPlayerInfoUpdate, SendPlayerResourceUpdate } from "server/RemoteHandlers/PlayerRemoteHandler";
 
 // Data
-import { DataManager } from "server/PlayerData/DataManager";
+import { DataManager } from "server/Controllers/DataManager";
 import { DataCache } from "server/PlayerData/DataCache";
 
-import BaseCharacter from "./BaseCharacter";
+import BaseCharacter from "./Helpers/BaseCharacter";
 import { CharacterResource, CreateCharacterResource } from "../../shared/Character Resources/CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
@@ -48,9 +48,9 @@ export default class PlayerCharacter extends BaseCharacter {
 	private _dataCache: DataCache;
 
 	// Resources
-	private _HealthResource?: CharacterResource;
-	private _ManaResource?: CharacterResource;
-	private _EnergyResource?: CharacterResource;
+	private _HealthResource: CharacterResource;
+	private _ManaResource: CharacterResource;
+	private _EnergyResource: CharacterResource;
 
 	// Skill Slots Map
 	private _skillSlotMap = new Map<number, Skill>();
@@ -74,34 +74,38 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._dataCache = DataManager.GetDataCache(tostring(this._player.UserId));
 		assert(this._dataCache, "Data Cache is nil");
 
+		// Create the Resources
+		this._HealthResource = CreateCharacterResource("Health", this._dataCache?._playerData);
+		this._ManaResource = CreateCharacterResource("Mana", this._dataCache?._playerData);
+		this._EnergyResource = CreateCharacterResource("Stamina", this._dataCache?._playerData);
+
 		// Assign Initial Skills from the Player Data
 		this._assignSkillSlots();
 
-		// Create Character Resources
-		this._createCharacterResources();
-
 		// Initialize Connections
 		this._initializeConnections();
+
+		// Create Character Resources
+		this._sendAllUpdates();
 	}
 
 	// Assign Skill Slots
 	private _assignSkillSlots() {
 		// Get the assigned slots from the player data
 		const assignedSlots = this._dataCache._playerData.Skills.assignedSlots as Array<SkillId>;
-		Logger.Log(script, "Assigned Slots", assignedSlots);
 
 		// Assign the skills to the slots
 		let index = 0;
 		assignedSlots.forEach((skillId) => {
 			if (skillId) {
-				this._assignSkillSlot(skillId, index);
+				this.AssignSkillSlot(skillId, index);
 				index++;
 			}
 		});
 	}
 
 	// Assign Skill Slot
-	private _assignSkillSlot(skillId: SkillId, slot: number) {
+	public AssignSkillSlot(skillId: SkillId, slot: number) {
 		// Create the skill
 		const skill = this._createSkill(skillId) as Skill;
 
@@ -109,15 +113,18 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._skillSlotMap.set(slot, skill);
 	}
 
+	//UnAssign Skill Slot
+	public UnAssignSkillSlot(slot: number) {
+		Logger.Log(script, "UnAssignSkillSlot", slot);
+		this._dataCache._playerData.Skills.assignedSlots[slot] = undefined;
+	}
+
 	// Create Character Resource
-	private _createCharacterResources() {
-		//TODO: Review this
-		this._HealthResource = CreateCharacterResource("Health", this._dataCache?._playerData);
+	private _sendAllUpdates() {
 		SendPlayerResourceUpdate(this._player, this._HealthResource);
-		this._ManaResource = CreateCharacterResource("Mana", this._dataCache?._playerData);
 		SendPlayerResourceUpdate(this._player, this._ManaResource);
-		this._EnergyResource = CreateCharacterResource("Stamina", this._dataCache?._playerData);
 		SendPlayerResourceUpdate(this._player, this._EnergyResource);
+		SendPlayerInfoUpdate(this._player, this.characterName, this._dataCache._playerData.ProgressionStats.Level);
 	}
 
 	// Initialize Connections
@@ -126,17 +133,21 @@ export default class PlayerCharacter extends BaseCharacter {
 		this._destroyConnections();
 
 		// Damage Taken
-		this._connectionCharacterTakeDamage = this.wcsCharacter?.DamageTaken.Connect(
-			(damageContainer: DamageContainer) => {
-				this._takeDamage(damageContainer);
-			},
-		);
+
+		this._connectionCharacterTakeDamage = this.wcsCharacter?.DamageTaken.Connect((dc: DamageContainer) => {
+			this.TakeDamage(dc);
+		});
 	}
 
 	// Take Damage
-	private _takeDamage(damageContainer: DamageContainer) {
-		assert(this._HealthResource, "Health Resource is nil");
-		this._HealthResource.SetCurrent(this._HealthResource.GetValues()[0] - damageContainer.Damage);
+	public TakeDamage(damageContainer: DamageContainer | number) {
+		let damage = 1;
+		if (typeIs(damageContainer, "table")) {
+			damage = damageContainer.Damage;
+		} else {
+			damage = damageContainer;
+		}
+		this._HealthResource.SetCurrent(this._HealthResource.GetValues()[0] - damage);
 		Logger.Log(script, "Health", this._HealthResource.GetValues());
 
 		if (this._HealthResource.GetValues()[0] <= 0) {
@@ -145,17 +156,6 @@ export default class PlayerCharacter extends BaseCharacter {
 
 		SendPlayerResourceUpdate(this._player, this._HealthResource);
 		this._dataCache.Save();
-	}
-
-	// Assign Skill Slot
-	public AssignSkillSlot(skillId: SkillId, slot: number) {
-		this._assignSkillSlot(skillId, slot);
-	}
-
-	//UnAssign Skill Slot
-	public UnAssignSkillSlot(slot: number) {
-		Logger.Log(script, "UnAssignSkillSlot", slot);
-		this._dataCache._playerData.Skills.assignedSlots[slot] = undefined;
 	}
 
 	// Get Player Skills Data

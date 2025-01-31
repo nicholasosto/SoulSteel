@@ -24,7 +24,7 @@ export enum LogLevel {
 }
 
 // Logger: Utility class for logging
-export class Logger {
+export default class Logger {
 	// Private Variables
 	private static _logger: Logger = new Logger();
 	private static _logLevel: LogLevel = LogLevel.Info;

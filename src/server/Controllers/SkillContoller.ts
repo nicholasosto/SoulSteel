@@ -1,6 +1,6 @@
 // Server side skill controller
 
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
 import PlayerCharacter, { GetPlayerCharacter } from "server/Character/PlayerCharacter";
 

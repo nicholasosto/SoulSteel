@@ -1,13 +1,13 @@
 import { ItemId } from "shared/_References/Inventory";
 import { RunService } from "@rbxts/services";
-import { TSkillButton } from "./TSkillButton";
+import { TSkillButton } from "shared/UI Component Classes/Skill Bar/TSkillButton";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
-import { getSkillDefinition } from "shared/Skills/Data/SkillDefinitions";
+import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
 
 import { StorageManager } from "shared/_References/Managers/StorageManager";
-import { Skill, UnknownSkill } from "@rbxts/wcs";
-import { Logger } from "shared/Utility/Logger";
+import { Skill } from "@rbxts/wcs";
+import Logger from "shared/Utility/Logger";
 import { EEpicUIAttributes } from "shared/_References/EpicUIAttributes";
 
 export class SkillButton {
@@ -25,11 +25,8 @@ export class SkillButton {
 	private _connectionButton: RBXScriptConnection | undefined;
 	private _connectionCooldown: RBXScriptConnection | undefined;
 
-	// Public Properties
-	public Parent: Instance;
-
 	// Constructor
-	constructor(unknownSkill: Skill, parent: Instance) {
+	constructor(unknownSkill: Skill) {
 		// Clone and Parent the Ability Button Template
 		this._templateClone = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
 		const name = unknownSkill.GetName();
@@ -48,9 +45,6 @@ export class SkillButton {
 
 		this._setGUIProperties();
 
-		this.Parent = parent;
-		this._templateClone.Parent = parent;
-
 		this._initializeConnections();
 		Logger.Log(script, "Skill Button Created");
 		//Logger.Log(script, getSkillDefinition(unknownSkill.GetName() as SkillId) as unknown as string);
@@ -59,6 +53,10 @@ export class SkillButton {
 	protected _setGUIProperties() {
 		this._templateClone.SkillButton.Image = this._skillDefinition.icon;
 		this._templateClone.CooldownBar.SetAttribute(EEpicUIAttributes.TextValue, this._skillDefinition.displayName);
+	}
+
+	public SetParent(parent: Instance) {
+		this._templateClone.Parent = parent;
 	}
 
 	// Initialize Connections

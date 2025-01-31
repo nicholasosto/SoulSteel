@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 const LocalPlayer = Players.LocalPlayer;
 const PlayerGui = LocalPlayer.WaitForChild("PlayerGui");

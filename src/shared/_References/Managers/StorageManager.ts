@@ -1,6 +1,6 @@
 import { ReplicatedStorage, InsertService, RunService, ContextActionService } from "@rbxts/services";
 import { PackageIndex } from "../Indexes/MasterIndex";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 export class StorageManager {
 	private static _instance: StorageManager;

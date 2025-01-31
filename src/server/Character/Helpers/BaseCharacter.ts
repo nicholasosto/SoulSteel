@@ -1,9 +1,9 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { Character, Skill, GetRegisteredSkillConstructor } from "@rbxts/wcs";
-import CharacterAnimator from "server/Character/CharacterAnimator";
+import CharacterAnimator from "server/Character/Helpers/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 

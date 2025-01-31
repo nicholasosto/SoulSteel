@@ -1,5 +1,5 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
 import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 

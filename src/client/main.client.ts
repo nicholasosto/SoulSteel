@@ -11,7 +11,7 @@ import SkillController from "client/Skills Interface/SkillController";
 // UI Components
 
 // Utility Imports
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 
 // WCS Client
 const Client = CreateClient();

@@ -1,7 +1,8 @@
-import { Logger } from "shared/Utility/Logger";
+import Logger from "shared/Utility/Logger";
 import { Character } from "@rbxts/wcs";
 import PlayerCharacter, { CreatePlayerCharacter } from "./PlayerCharacter";
 import Remotes, { RemoteNames } from "shared/Remotes/Remotes";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 // Player Character Registry
 const PlayerCharacterRegistry = new Map<Player, PlayerCharacter>();
@@ -93,10 +94,7 @@ export default class CharacterController {
 	private static _handleSkillSlotAssignment(player: Player, slot: number, skillId: string) {
 		Logger.Log(script, "Handle Skill Slot Assignment");
 		const playerCharacter = CharacterController._playerCharacterRegistry.get(player);
-		assert(playerCharacter !== undefined, "PlayerCharacter not found in registry");
-		//playerCharacter.AddSkillToSlot(slot, skillId as SkillId);
-		//TODO: Review this
-		//CharacterController._remoteAssignSkillResponse.SendToPlayer(player, slot, skillId);
+		playerCharacter?.AssignSkillSlot(skillId as SkillId, slot);
 	}
 
 	// Destroy Connections
