@@ -3,7 +3,7 @@
 // PlayerGameCharacter: Player Character
 import Logger from "shared/Utility/Logger";
 import { Character, Skill, GetRegisteredSkillConstructor } from "@rbxts/wcs";
-import CharacterAnimator from "server/Character/Helpers/CharacterAnimator";
+import CharacterAnimator from "server/Helpers/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
@@ -22,7 +22,9 @@ function GetBaseCharacter(wcsCharacter: Character) {
 
 function DestroyBaseCharacter(wcsCharacter: Character) {
 	const character = EntityMap.get(wcsCharacter);
-	assert(character, "Character is nil");
+	if (character === undefined) {
+		return;
+	}
 	character.Destroy();
 	EntityMap.delete(wcsCharacter);
 }

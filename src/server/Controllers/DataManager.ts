@@ -3,7 +3,6 @@ import { Players, DataStoreService } from "@rbxts/services";
 
 // My Imports
 import Logger from "shared/Utility/Logger";
-import { IPlayerData } from "shared/_References/PlayerData";
 import { DataCache } from "server/PlayerData/DataCache";
 
 const PlayerDataRegistry = new Map<string, DataCache>();

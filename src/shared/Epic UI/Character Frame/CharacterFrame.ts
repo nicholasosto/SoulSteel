@@ -14,8 +14,8 @@ import { TCharacterFrame, ICharacterInfo, IProgressBar, ICharacterFrame } from "
 import { StorageManager } from "shared/Storage Manager/StorageManager";
 
 // Sub-Modules
-import ProgressBar from "shared/Epic UI/Character Frame/Helpers/ProgressBar";
-import CharacterInfo from "shared/Epic UI/Character Frame/Helpers/CharacterInfo";
+import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import CharacterInfo from "shared/Epic UI/Character Frame/CharacterInfo";
 
 /* Main Class: CharacterFrame */
 export default class CharacterFrame implements ICharacterFrame {

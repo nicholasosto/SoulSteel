@@ -5,7 +5,7 @@
  */
 
 // Custom Imports
-import BaseCharacter from "../Helpers/BaseCharacter";
+import BaseCharacter from "./BaseCharacter";
 import Logger from "shared/Utility/Logger";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 

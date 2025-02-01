@@ -4,48 +4,51 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 // Manager Imports
 import { StorageManager } from "shared/Storage Manager/StorageManager";
 import { DataManager } from "server/Controllers/DataManager";
-import SkillController from "server/Controllers/SkillContoller";
-import * as SkillHandler from "server/RemoteHandlers/SkillRemoteHandler";
 
+// Remote Handler Imports
+import "server/RemoteHandlers/PlayerRemoteHandler";
+import { SkillRemoteStart } from "./RemoteHandlers/SkillRemoteHandler";
 // WCS Imports
 import { CreateServer, Character } from "@rbxts/wcs";
 
-//Controller Imports
-//import CharacterController from "./Character/CharacterController";
-import PlayerCharacter, { CreatePlayerCharacter } from "./Character/PlayerCharacter";
-
-//import PlayerCharacter from "./Character/PlayerCharacter";
+// Player Character Imports
+import { CreatePlayerCharacter } from "./Character/PlayerCharacter";
 
 // Utility Imports
 import Logger from "shared/Utility/Logger";
 
 // Create the WCS Server
 const WCSServer = CreateServer();
+
+// Reference the Parent WCS Directory
 const ParentWCSDirectory = ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills");
+
+// WCS Directories
 const SkillsDirectorory = ParentWCSDirectory.WaitForChild("WCSSkills");
 const StatusDirectory = ParentWCSDirectory.WaitForChild("WCSStatus");
+
+// Register the WCS Directories
 WCSServer.RegisterDirectory(SkillsDirectorory);
 WCSServer.RegisterDirectory(StatusDirectory);
+
+// Start the WCS Server
 WCSServer.Start();
 
 // Start the Managers
-//SkillController.Start();
+SkillRemoteStart();
 DataManager.Start();
 StorageManager.Start();
-//CharacterController.Start();
+
+// Player Added Connection
 Players.PlayerAdded.Connect((player) => {
-	Logger.Log(script, "Player Added");
-
 	player.CharacterAdded.Connect((character) => {
-		Logger.Log(script, "Character Added");
-
+		// Create the WCS Character
 		const wcsCharacter = new Character(character);
+
+		// Create the Player Character
 		const playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
-		//const npcCharacter = new NPCCharacter(wcsCharacter);
 
-		//assert(npcCharacter, "NPC Character is nil");
-		//npcCharacter.UseSkill("BasicMelee");
-
+		// Humanoid Died Connection
 		wcsCharacter.Humanoid.Died.Once(() => {
 			Logger.Log(script, "Character Died");
 			playerCharacter.Destroy();

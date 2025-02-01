@@ -6,11 +6,11 @@ import { SendPlayerInfoUpdate, SendPlayerResourceUpdate } from "server/RemoteHan
 import { DataManager } from "server/Controllers/DataManager";
 import { DataCache } from "server/PlayerData/DataCache";
 
-import BaseCharacter from "./Helpers/BaseCharacter";
+import BaseCharacter from "./BaseCharacter";
 import { CharacterResource, CreateCharacterResource } from "../../shared/Character Resources/CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { ResourceId } from "shared/_References/Resources";
+import { CreateSkillFromId } from "server/Helpers/WCSHelper";
 
 import { Character, DamageContainer, Skill } from "@rbxts/wcs";
 
@@ -53,7 +53,7 @@ export default class PlayerCharacter extends BaseCharacter {
 	private _EnergyResource: CharacterResource;
 
 	// Skill Slots Map
-	private _skillSlotMap = new Map<number, Skill>();
+	private _skillSlotMap = new Map<number, SkillId>();
 
 	// WCS Connections
 	private _connectionCharacterTakeDamage?: RBXScriptConnection;
@@ -93,7 +93,7 @@ export default class PlayerCharacter extends BaseCharacter {
 	private _assignSkillSlots() {
 		// Get the assigned slots from the player data
 		const assignedSlots = this._dataCache._playerData.Skills.assignedSlots as Array<SkillId>;
-
+		Logger.Log(script, "Assigned Slots", assignedSlots);
 		// Assign the skills to the slots
 		let index = 0;
 		assignedSlots.forEach((skillId) => {
@@ -108,9 +108,9 @@ export default class PlayerCharacter extends BaseCharacter {
 	public AssignSkillSlot(skillId: SkillId, slot: number) {
 		// Create the skill
 		const skill = this._createSkill(skillId) as Skill;
-
+		Logger.Log(script, "AssignSkillSlot", skill.GetName(), slot);
 		// Assign the skill to the slot
-		this._skillSlotMap.set(slot, skill);
+		this._skillSlotMap.set(slot, skillId);
 	}
 
 	//UnAssign Skill Slot
@@ -121,9 +121,12 @@ export default class PlayerCharacter extends BaseCharacter {
 
 	// Create Character Resource
 	private _sendAllUpdates() {
+		// Resources
 		SendPlayerResourceUpdate(this._player, this._HealthResource);
 		SendPlayerResourceUpdate(this._player, this._ManaResource);
 		SendPlayerResourceUpdate(this._player, this._EnergyResource);
+
+		// Player Info
 		SendPlayerInfoUpdate(this._player, this.characterName, this._dataCache._playerData.ProgressionStats.Level);
 	}
 
@@ -132,8 +135,7 @@ export default class PlayerCharacter extends BaseCharacter {
 		// Destroy Connections if they exist
 		this._destroyConnections();
 
-		// Damage Taken
-
+		// Damage Taken Connection
 		this._connectionCharacterTakeDamage = this.wcsCharacter?.DamageTaken.Connect((dc: DamageContainer) => {
 			this.TakeDamage(dc);
 		});
@@ -164,7 +166,7 @@ export default class PlayerCharacter extends BaseCharacter {
 	}
 
 	public GetSkillSlotMap(): Map<number, SkillId> {
-		const assignedSkills = this.GetPlayerSkillsData().assignedSlots as Array<SkillId>;
+		const assignedSkills = this._dataCache._playerData.Skills.assignedSlots as Array<SkillId>;
 		const skillSlotMap = new Map<number, SkillId>();
 
 		let index = 1;

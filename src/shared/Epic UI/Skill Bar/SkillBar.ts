@@ -6,7 +6,7 @@ import { TSkillBar } from "shared/Epic UI/Skill Bar/TSkillBar";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 /* Modules */
-import { SkillButton, SkillButtonBase } from "./SkillButton";
+import { SkillButtonBase } from "./SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";

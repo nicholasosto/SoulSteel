@@ -1,9 +1,12 @@
 import { IProgressBar } from "shared/Epic UI/Character Frame/iCharacterFrame";
+import Logger from "shared/Utility/Logger";
+
 
 export default class ProgressBar implements IProgressBar {
 	frame: Frame;
 
 	constructor(frame: Frame) {
+		Logger.Log(script, "Progress Bar Created: ", frame.Name);
 		this.frame = frame;
 	}
 

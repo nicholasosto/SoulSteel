@@ -1,7 +1,7 @@
 export type TSkillButton = Frame & {
 	UIListLayout: UIListLayout;
 	SkillButton: ImageButton & {
-		Image: Frame & {
+		ImageFrame: Frame & {
 			SkillImage: ImageLabel;
 		};
 		UICorner: UICorner;
