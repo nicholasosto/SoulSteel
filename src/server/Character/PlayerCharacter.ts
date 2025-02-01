@@ -10,7 +10,7 @@ import BaseCharacter from "./BaseCharacter";
 import { CharacterResource, CreateCharacterResource } from "../../shared/Character Resources/CharacterResource";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { CreateSkillFromId } from "server/Helpers/WCSHelper";
+import { CreateSkillFromId } from "shared/Skills/WCSHelper";
 
 import { Character, DamageContainer, Skill } from "@rbxts/wcs";
 
@@ -99,6 +99,7 @@ export default class PlayerCharacter extends BaseCharacter {
 		assignedSlots.forEach((skillId) => {
 			if (skillId) {
 				this.AssignSkillSlot(skillId, index);
+				this._createSkill(skillId);
 				index++;
 			}
 		});

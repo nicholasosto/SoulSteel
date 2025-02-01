@@ -1,5 +1,5 @@
 // Roblox Services
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 
 // Manager Imports
 import { StorageManager } from "shared/Storage Manager/StorageManager";
@@ -39,14 +39,26 @@ SkillRemoteStart();
 DataManager.Start();
 StorageManager.Start();
 
+const NPCTestModel = Workspace.FindFirstChild("NPCTest", true) as Model;
+if (NPCTestModel === undefined) {
+	error("NPCTest Model is nil");
+}
+
+
 // Player Added Connection
 Players.PlayerAdded.Connect((player) => {
 	player.CharacterAdded.Connect((character) => {
 		// Create the WCS Character
 		const wcsCharacter = new Character(character);
 
+
 		// Create the Player Character
 		const playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
+
+		task.spawn(() => {
+			const npcHumanoid = NPCTestModel.FindFirstChildWhichIsA("Humanoid") as Humanoid;
+			npcHumanoid?.MoveTo(player.Character?.GetPivot().Position ?? new Vector3());
+		});
 
 		// Humanoid Died Connection
 		wcsCharacter.Humanoid.Died.Once(() => {
@@ -56,3 +68,11 @@ Players.PlayerAdded.Connect((player) => {
 		});
 	});
 });
+
+
+const NPCTestCharacter = new Character(NPCTestModel);
+NPCTestCharacter.DamageTaken.Connect((damageContainer) => {
+	Logger.Log(script, "NPC Took Damage: ", damageContainer.Damage);
+});
+
+NPCTestCharacter.TakeDamage({ Damage: 10, Source: undefined });

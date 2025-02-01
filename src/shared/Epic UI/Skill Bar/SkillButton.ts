@@ -1,172 +1,115 @@
+// Utility
 import Logger from "shared/Utility/Logger";
-import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 
+// Types
 import { TSkillButton } from "shared/Epic UI/Skill Bar/TSkillButton";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
+import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+
+// Functions
 import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import { Skill } from "@rbxts/wcs";
 
+export class SkillButton {
+	// Button Frame Instance
+	public _instance: TSkillButton = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
 
-export class SkillButtonBase {
-	private _instance: TSkillButton = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
-	private _skillButton = this._instance.SkillButton;
+	// Button
+	public ButtonInstance = this._instance.SkillButton;
+
+	// Cooldown Bar
 	private _cooldownBar = new ProgressBar(this._instance.CooldownBar);
-	private _connectionButton: RBXScriptConnection | undefined;
+	private _cooldownTime = 0;
+	private _cooldownRemaining = 0;
 
+	// Skill Definition
 	private _skillDefinition: SkillDefinition | undefined;
+	private _skill: Skill | undefined;
 
-	constructor(skillId: SkillId, parent?: Instance) {
-		this._skillDefinition = getSkillDefinition(skillId);
+	// Constructor
+	constructor(skillId: SkillId) {
+		// Set the Skill Definition
+		this._skillDefinition = getSkillDefinition(skillId) as SkillDefinition;
 
-		this._instance.Parent = parent;
+		// Set the Cooldown Time
+		this._cooldownTime = this._skillDefinition.cooldown;
+
+		// Set the Skill Id
 		this._instance.Name = this._skillDefinition.wcsSkillId;
 
-		this._instance.SkillButton.ImageFrame.SkillImage.Image = this._skillDefinition.icon;
-		this.InitializeButton();
-		Logger.Log(script, "Skill Button BASE! Created", this._skillDefinition.displayName);
+		/* Cooldown Bar */
+		// Set the Text
+		this._cooldownBar.setText(this._skillDefinition.displayName);
+
+		// Set the Cooldown Value
+		this._cooldownBar.setPercent(100);
+
+		/* Button */
+		// Set the Image
+		this._setImage(this._skillDefinition.icon);
 	}
 
-	private InitializeButton() {
-		let count = 0;
-		this._connectionButton?.Disconnect();
-		this._connectionButton = this._skillButton.Activated.Connect(() => {
-			this.Activate();
-			count++;
+	// Start Cooldown
+	public StartCooldown() {
+		if (this._cooldownRemaining > 0) {
+			return;
+		}
 
-			if (count > 1) {
-				Logger.Log(script, "Skill Button Activated Multiple Times", this._skillDefinition?.cooldown);
+		Logger.Log(script, "Starting Cooldown");
+
+		task.spawn(() => {
+			this._cooldownRemaining = this._cooldownTime;
+			let lastTick = tick(); // Initialize lastTick at the start of the cooldown
+
+			while (this._cooldownRemaining > 0) {
+				const currentTick = tick();
+				const deltaTime = currentTick - lastTick;
+				lastTick = currentTick;
+
+				// Decrement the remaining cooldown by the time since the last check
+				this._cooldownRemaining -= deltaTime;
+
+				// Clamp to 0 so it doesn't go negative
+				if (this._cooldownRemaining < 0) {
+					this._cooldownRemaining = 0;
+				}
+
+				this._updateCooldown(this._cooldownRemaining, this._cooldownTime);
+				task.wait(0.2);
 			}
+
+			// Ensure the progress bar shows full progress when cooldown is finished
+			this._cooldownBar.setPercent(100);
 		});
 	}
 
-	public SetImage(image: string) {
-		this._instance.SkillButton.ImageFrame.SkillImage.Image = image;
-	}
-
-	public SetText(text: string) {
-		this._cooldownBar.setText(text);
-	}
-
-	public Activate() {
-		Logger.Log(script, "Skill Button Activated");
-	}
-
-	public SetCooldownValue(current: number, max: number) {
+	// Set Cooldown Value
+	private _updateCooldown(current: number, max: number) {
 		const percent = (current / max) * 100;
 		this._cooldownBar.setPercent(percent);
 	}
 
+	// Set Image
+	private _setImage(image: string) {
+		this._instance.SkillButton.ImageFrame.SkillImage.Image = image;
+	}
+
+	// Set Text
+	public SetText(text: string) {
+		this._cooldownBar.setText(text);
+	}
+
+	// Set Skill
+	public SetSkill(skillId: SkillId) {
+		this._skillDefinition = getSkillDefinition(skillId) as SkillDefinition;
+		this._setImage(this._skillDefinition.icon);
+		this._cooldownTime = this._skillDefinition.cooldown;
+	}
+
+	// Set Parent
 	public Destroy() {
-		this._connectionButton?.Disconnect();
 		this._instance.Destroy();
 	}
 }
-
-// export class SkillButton {
-// 	// Main Template
-// 	private _templateClone: TSkillButton;
-// 	private _skillDefinition: SkillDefinition;
-// 	private _skill: Skill;
-
-// 	// Cooldown
-// 	private _cooldownBar: TSkillButton["CooldownBar"];
-// 	private _cooldownTime: number = 0;
-// 	private _cooldownRemaining = 0;
-
-// 	// Connections
-// 	private _connectionButton: RBXScriptConnection | undefined;
-// 	private _connectionCooldown: RBXScriptConnection | undefined;
-
-// 	// Constructor
-// 	constructor(unknownSkill: Skill) {
-// 		// Clone and Parent the Ability Button Template
-// 		this._templateClone = StorageManager.CloneFromStorage("SkillButton_Template") as TSkillButton;
-// 		const name = unknownSkill.GetName();
-// 		assert(name, "Skill Name is nil");
-// 		this._skillDefinition = getSkillDefinition(name as SkillId);
-// 		this._cooldownBar = this._templateClone.CooldownBar;
-// 		this._cooldownTime = this._skillDefinition.cooldown;
-
-// 		// Setup the Skill Button
-// 		this._skill = unknownSkill;
-
-// 		assert(this._skillDefinition, "Skill Definition is nil");
-// 		assert(this._templateClone, "Template Clone is nil");
-// 		assert(this._skill, "Skill is nil");
-// 		assert(this._cooldownBar, "Cooldown Bar is nil");
-
-// 		this._setGUIProperties();
-
-// 		this._initializeConnections();
-// 		Logger.Log(script, "Skill Button Created");
-// 		//Logger.Log(script, getSkillDefinition(unknownSkill.GetName() as SkillId) as unknown as string);
-// 	}
-
-// 	protected _setGUIProperties() {
-// 		this._templateClone.SkillButton.Image.SkillImage.Image = this._skillDefinition.icon;
-// 		this._templateClone.CooldownBar.SetAttribute(EEpicUIAttributes.TextValue, this._skillDefinition.displayName);
-// 	}
-
-// 	public SetParent(parent: Instance) {
-// 		this._templateClone.Parent = parent;
-// 	}
-
-// 	// Initialize Connections
-// 	protected _initializeConnections() {
-// 		assert(this._templateClone.SkillButton, "Skill Button is nil");
-// 		this._destroyConnections();
-// 		this._connectionButton = this._templateClone.SkillButton.Activated.Connect(() => {
-// 			this._handleButtonActivated();
-// 		});
-// 	}
-
-// 	// Destroy Connections
-// 	protected _destroyConnections() {
-// 		this._connectionButton?.Disconnect();
-// 	}
-
-// 	// Update Cooldown Bar
-// 	protected _updateCooldownBar() {
-// 		if (this._connectionCooldown) {
-// 			this._connectionCooldown.Disconnect();
-// 		}
-
-// 		this._connectionCooldown = RunService.RenderStepped.Connect(() => {
-// 			this._cooldownRemaining -= 0.016;
-// 			if (this._cooldownRemaining <= 0) {
-// 				this._cooldownRemaining = 0;
-// 				this._connectionCooldown?.Disconnect();
-// 				this._templateClone.CooldownBar.SetAttribute(
-// 					EEpicUIAttributes.TextValue,
-// 					this._skillDefinition.displayName,
-// 				);
-// 			}
-// 			this._cooldownBar.SetAttribute(
-// 				EEpicUIAttributes.TextValue,
-// 				`${this._skillDefinition.displayName} (${math.ceil(this._cooldownRemaining)})`,
-// 			);
-// 			this._cooldownBar.SetAttribute(
-// 				EEpicUIAttributes.BarPercent,
-// 				(this._cooldownRemaining / this._cooldownTime) * 100,
-// 			);
-// 		});
-// 	}
-
-// 	// Handle Button Activation
-// 	protected _handleButtonActivated() {
-// 		if (this._cooldownRemaining > 0) {
-// 			return;
-// 		}
-// 		this._skill.Start();
-// 		this._cooldownRemaining = this._cooldownTime;
-// 		this._updateCooldownBar();
-// 		this._skill.GetDebounceEndTimestamp();
-// 	}
-
-// 	// Destroy the Ability Button
-// 	public Destroy() {
-// 		this._destroyConnections();
-// 		this._templateClone.Destroy();
-// 	}
-// }

@@ -4,11 +4,10 @@ import CharacterFrame from "shared/Epic UI/Character Frame/CharacterFrame";
 import { ResourceId } from "shared/_References/Resources";
 import { PlayerRemotes } from "shared/Remotes/ClientRemotes";
 
-const CharacterFrameInstance = new CharacterFrame(Players.LocalPlayer);
 let _connectionResourceUpdate: RBXScriptConnection | undefined;
 let _connectionInfoUpdate: RBXScriptConnection | undefined;
 
-function StartCharacterFrame() {
+function StartCharacterFrame(CharacterFrameInstance?: CharacterFrame) {
 	// Character Info Updated
 	_connectionInfoUpdate?.Disconnect();
 	_connectionInfoUpdate = PlayerRemotes.InfoUpdate.Connect((name: string, level: number, profilePicId: string) => {

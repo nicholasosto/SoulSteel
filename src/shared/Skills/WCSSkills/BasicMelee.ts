@@ -1,16 +1,22 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { TweenService } from "@rbxts/services";
 import Logger from "shared/Utility/Logger";
 import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
 import { AttachEffect, EParticleName } from "shared/_References/Particles";
 import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import { EAttachmentName } from "shared/_References/Attachments";
 import { Character } from "@rbxts/wcs";
+import { explosion_01 } from "shared/Skills/SkillParts/Projectiles";
+import { StorageManager } from "shared/Storage Manager/StorageManager";
 
 @SkillDecorator
 export class BasicMelee extends Skill {
 	private _skillDefinition = SkillDefinitions.BasicMelee;
 	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
+	private _connectionHitbox: RBXScriptConnection | undefined;
 	private _animationTrack: AnimationTrack | undefined;
+
+	private projectile: Model | undefined;
 
 	// Server-Side Construct
 	protected OnConstructServer(): void {
@@ -19,6 +25,8 @@ export class BasicMelee extends Skill {
 			this.Character.Instance as Model,
 			EAnimationID.SKILL_Fart,
 		) as AnimationTrack;
+
+		this.projectile = StorageManager.CloneFromStorage("Projectile_Explosion_01") as Model;
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}
@@ -34,23 +42,38 @@ export class BasicMelee extends Skill {
 	// Server-Side Start
 	protected OnStartServer(): void {
 		Logger.Log(script, "Server Started: ", this._skillDefinition.displayName);
-		const hitbox = this.createHitbox();
-		let hitCharacter = false;
-		hitbox.Touched.Connect((hit) => {
-			const characterModel = hit.FindFirstAncestorWhichIsA("Model") as Model;
-			if (characterModel === undefined) return;
 
-			const character = Character.GetCharacterFromInstance(characterModel);
+		// Create the Projectile
+		const projectile = explosion_01.Clone();
+		const hitbox = projectile.FindFirstChild("HitPart") as Part;
+		const charPivot = (this.Character.Instance as Model).GetPivot() as CFrame;
 
-			if (!hitCharacter) {
-				character?.TakeDamage(this._damageContainer);
-				hitCharacter = true;
+		// Set the Projectile Properties
+		projectile.Parent = game.Workspace;
+		projectile.PivotTo(charPivot.mul(new CFrame(0, 0, -6)));
+
+		this._connectionHitbox?.Disconnect();
+		this._connectionHitbox = hitbox.Touched.Connect((hit) => {
+			Logger.Log(script, "Hit: ", hit);
+			const characterModel = hit?.Parent as Model;
+			const wcsCharacter = Character.GetCharacterFromInstance(characterModel);
+			if (wcsCharacter !== this.Character) {
+				Logger.Log(script, "Hit: ", "Self");
+				wcsCharacter?.TakeDamage({ Damage: 40, Source: this });
+				return;
 			}
-
-			Logger.Log(script, "Hit: " + characterModel.Name);
-
-			hitbox.Destroy();
 		});
+
+		const explosionTI = new TweenInfo(3.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false);
+		const explosionTween = TweenService.Create(hitbox, explosionTI, {
+			CFrame: projectile.GetPivot().mul(new CFrame(0, 0, -22)),
+		});
+
+		explosionTween.Completed.Connect(() => {
+			projectile.Destroy();
+		});
+
+		explosionTween.Play();
 
 		//this._animationTrack?.Play();
 	}
@@ -73,20 +96,4 @@ export class BasicMelee extends Skill {
 
 		return hitbox;
 	}
-}
-
-export function GameOfLife(character: Model) {
-	Logger.Log(script, "Game of Life");
-	let startCFrame = character.GetPivot();
-	startCFrame = startCFrame.mul(new CFrame(0, 0, -10));
-	const partTemplate = new Instance("Part");
-	partTemplate.Size = new Vector3(3, 3, 3);
-	partTemplate.Anchored = true;
-	partTemplate.CanCollide = false;
-	partTemplate.Material = Enum.Material.Neon;
-	partTemplate.BrickColor = new BrickColor("Bright red");
-	partTemplate.Transparency = 0.5;
-	partTemplate.Shape = Enum.PartType.Block;
-	partTemplate.Parent = game.Workspace;
-	partTemplate.PivotTo(startCFrame);
 }
