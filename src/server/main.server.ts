@@ -44,13 +44,11 @@ if (NPCTestModel === undefined) {
 	error("NPCTest Model is nil");
 }
 
-
 // Player Added Connection
 Players.PlayerAdded.Connect((player) => {
 	player.CharacterAdded.Connect((character) => {
 		// Create the WCS Character
 		const wcsCharacter = new Character(character);
-
 
 		// Create the Player Character
 		const playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
@@ -69,10 +67,17 @@ Players.PlayerAdded.Connect((player) => {
 	});
 });
 
-
 const NPCTestCharacter = new Character(NPCTestModel);
 NPCTestCharacter.DamageTaken.Connect((damageContainer) => {
 	Logger.Log(script, "NPC Took Damage: ", damageContainer.Damage);
 });
 
 NPCTestCharacter.TakeDamage({ Damage: 10, Source: undefined });
+
+
+// Create a part to indicate that this script has run for the tests.server.ts file
+const donePart = new Instance("Part");
+donePart.Size = new Vector3(1, 1, 1);
+donePart.Position = new Vector3(0, 10, 0);
+donePart.Name = "MainServerDone";
+donePart.Parent = Workspace;

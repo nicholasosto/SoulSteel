@@ -1,6 +1,5 @@
 // Utility Imports
 import Logger from "shared/Utility/Logger";
-
 // WCS Imports
 import WcsClient from "./WCS Helpers/WCSClient";
 WcsClient.Start();

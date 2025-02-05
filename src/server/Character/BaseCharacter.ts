@@ -6,6 +6,7 @@ import { Character, Skill, GetRegisteredSkillConstructor } from "@rbxts/wcs";
 import CharacterAnimator from "server/Helpers/CharacterAnimator";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { TGameCharacter } from "shared/Game Character/TGameCharacter";
 
 const EntityMap = new Map<Character, BaseCharacter>();
 
@@ -31,6 +32,7 @@ function DestroyBaseCharacter(wcsCharacter: Character) {
 
 export default class BaseCharacter {
 	protected characterName: string;
+	protected characterModel?: TGameCharacter;
 	protected wcsCharacter: Character;
 	protected _animator: CharacterAnimator;
 	protected _skillMap = new Map<SkillId, Skill>();
@@ -38,7 +40,8 @@ export default class BaseCharacter {
 	constructor(wcsCharacter: Character) {
 		this.characterName = generateCharacterName();
 		this.wcsCharacter = wcsCharacter;
-		this._animator = new CharacterAnimator(this.wcsCharacter.Instance as Model);
+		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
+		this._animator = new CharacterAnimator(this.characterModel);
 		assert(this._animator, "WCS Character/Animator is nil");
 		Logger.Log(script, "Character Created: ", this.characterName);
 	}

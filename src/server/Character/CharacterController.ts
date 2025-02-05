@@ -3,6 +3,7 @@ import { Character } from "@rbxts/wcs";
 import PlayerCharacter, { CreatePlayerCharacter } from "./PlayerCharacter";
 import Signals, { SignalNames } from "shared/Remotes/Remotes";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import NPCCharacter from "./NPCCharacter";
 
 // Player Character Registry
 const PlayerCharacterRegistry = new Map<Player, PlayerCharacter>();
@@ -67,6 +68,7 @@ export default class CharacterController {
 
 		// Check if the character is a player character
 		if (player !== undefined) {
+			Logger.Log(script, "Create Player Character");
 			// Create a new PlayerCharacter
 			const _playerCharacter = CreatePlayerCharacter(player, wcsCharacter);
 
@@ -77,7 +79,8 @@ export default class CharacterController {
 		}
 
 		// Not a player character #TODO: Create NPC Character
-		Logger.Log(script, "Create NPC Character TODO");
+		const npcCharacter = new NPCCharacter(wcsCharacter, 10);
+		Logger.Log(script, "NPC Character Created");
 	}
 
 	// WCS Character Destroyed

@@ -8,6 +8,8 @@ import { EAttachmentName } from "shared/_References/Attachments";
 import { Character } from "@rbxts/wcs";
 import { explosion_01 } from "shared/Skills/SkillParts/Projectiles";
 import { StorageManager } from "shared/Storage Manager/StorageManager";
+import ExplosiveProjectile from "shared/Projectile Factory/Projectiles/ExplosiveProjectile";
+import { TGameCharacter } from "shared/Game Character/TGameCharacter";
 
 @SkillDecorator
 export class BasicMelee extends Skill {
@@ -42,16 +44,25 @@ export class BasicMelee extends Skill {
 	// Server-Side Start
 	protected OnStartServer(): void {
 		Logger.Log(script, "Server Started: ", this._skillDefinition.displayName);
+		//dummy test
+		const gamecharacterModel = this.Character.Instance as TGameCharacter;
+		gamecharacterModel.Humanoid.WalkSpeed = 0;
+
+		// Get the Character Model and CFrame
+		const characterModel: Model = this.Character.Instance as Model;
+		assert(characterModel !== undefined, "Character Model is nil");
+		const characterCFrame: CFrame = characterModel.GetPivot();
 
 		// Create the Projectile
 		const projectile = explosion_01.Clone();
-		const hitbox = projectile.FindFirstChild("HitPart") as Part;
-		const charPivot = (this.Character.Instance as Model).GetPivot() as CFrame;
+		const hitbox = this.createHitbox();
+		const projectileInstance = new ExplosiveProjectile(hitbox, new Vector3(0, 0, -1), 50, 40, 10);
 
 		// Set the Projectile Properties
 		projectile.Parent = game.Workspace;
-		projectile.PivotTo(charPivot.mul(new CFrame(0, 0, -6)));
+		projectile.PivotTo(characterCFrame.mul(new CFrame(0, 0, -6)));
 
+		// Connect the Hitbox
 		this._connectionHitbox?.Disconnect();
 		this._connectionHitbox = hitbox.Touched.Connect((hit) => {
 			Logger.Log(script, "Hit: ", hit);
@@ -59,27 +70,21 @@ export class BasicMelee extends Skill {
 			const wcsCharacter = Character.GetCharacterFromInstance(characterModel);
 			if (wcsCharacter !== this.Character) {
 				Logger.Log(script, "Hit: ", "Self");
+				projectileInstance.onCollision(hit);
 				wcsCharacter?.TakeDamage({ Damage: 40, Source: this });
 				return;
 			}
+			wcsCharacter?.TakeDamage(this._damageContainer);
 		});
 
-		const explosionTI = new TweenInfo(3.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false);
-		const explosionTween = TweenService.Create(hitbox, explosionTI, {
-			CFrame: projectile.GetPivot().mul(new CFrame(0, 0, -22)),
-		});
-
-		explosionTween.Completed.Connect(() => {
-			projectile.Destroy();
-		});
-
-		explosionTween.Play();
-
-		//this._animationTrack?.Play();
+		// play the animation
+		this._animationTrack?.Play();
 	}
 
 	// Server-Side Update
-	protected OnEndServer(): void {}
+	protected OnEndServer(): void {
+		Logger.Log(script, "Server Ended: ", this._skillDefinition.displayName);
+	}
 
 	protected createHitbox(): Part {
 		const hitbox = new Instance("Part");
