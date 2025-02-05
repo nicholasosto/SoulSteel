@@ -1,7 +1,5 @@
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";;
-
 // Inventory Types
-export enum InventoryType {
+enum InventoryType {
 	Weapon = "Weapon",
 	Armor = "Armor",
 	Helmet = "Helmet",
@@ -12,7 +10,7 @@ export enum InventoryType {
 	Other = "Other",
 }
 
-export enum ItemId {
+enum ItemId {
 	// Weapons
 	ShortSword = "ShortSword",
 	LongSword = "LongSword",
@@ -22,23 +20,22 @@ export enum ItemId {
 	// Helmets
 	LeatherHelmet = "LeatherHelmet",
 	ChainHelmet = "ChainHelmet",
-	// Familiars
-	// Accessories
-	// Skills
-	// SkillId
-	// SkillId
-	// SkillId
-	// SkillId
-	// SkillId
 }
 
-export interface IInventoryItem {
+interface IInventoryItem {
 	inventoryType: InventoryType;
 	itemId: ItemId;
 	imageAssetId: string;
 }
 
-export class InventoryItem implements IInventoryItem {
+// Temp Types for now
+type EquipmentId = string; //TODO: Add EquipmentId's
+type EquipmentSlotId = string; //TODO: Add EquipmentSlotId's
+type FamiliarId = string; //TODO: Add FamiliarId's
+type AccessoryId = string; //TODO: Add AccessoryId's
+type WeaponId = string; //TODO: Add WeaponId's
+
+class InventoryItem implements IInventoryItem {
 	public inventoryType: InventoryType;
 	public itemId: ItemId;
 	public imageAssetId: string;
@@ -50,54 +47,49 @@ export class InventoryItem implements IInventoryItem {
 	}
 }
 
-export const DefaultInventory: Map<InventoryType, InventoryItem> = new Map([
-	[InventoryType.Weapon, new InventoryItem(InventoryType.Weapon, ItemId.ShortSword, "rbxassetid://0")],
-	[InventoryType.Armor, new InventoryItem(InventoryType.Armor, ItemId.LeatherArmor, "rbxassetid://0")],
-	[InventoryType.Helmet, new InventoryItem(InventoryType.Helmet, ItemId.LeatherHelmet, "rbxassetid://0")],
-	[InventoryType.Familiar, new InventoryItem(InventoryType.Familiar, ItemId.LeatherHelmet, "rbxassetid://0")],
-	[InventoryType.Accessory, new InventoryItem(InventoryType.Accessory, ItemId.LeatherHelmet, "rbxassetid://0")],
-	[InventoryType.Skill, new InventoryItem(InventoryType.Skill, ItemId.LeatherArmor, "rbxassetid://0")],
-	[InventoryType.Consumable, new InventoryItem(InventoryType.Consumable, ItemId.LeatherHelmet, "rbxassetid://0")],
-	[InventoryType.Other, new InventoryItem(InventoryType.Other, ItemId.LeatherHelmet, "rbxassetid://0")],
-]);
+export { InventoryType, ItemId, InventoryItem, EquipmentId, EquipmentSlotId, FamiliarId, AccessoryId, WeaponId };
 
-export type Weapon = {
-	inventoryType: InventoryType.Weapon;
-};
-// Temp Types for now
-//TODO: Move to shared
-export type EquipmentId = string;
-export type FamiliarId = string;
-export type AccessoryId = string;
-export type WeaponId = string;
-//Move to shared END
+// const DefaultInventory: Map<InventoryType, InventoryItem> = new Map([
+// 	[InventoryType.Weapon, new InventoryItem(InventoryType.Weapon, ItemId.ShortSword, "rbxassetid://0")],
+// 	[InventoryType.Armor, new InventoryItem(InventoryType.Armor, ItemId.LeatherArmor, "rbxassetid://0")],
+// 	[InventoryType.Helmet, new InventoryItem(InventoryType.Helmet, ItemId.LeatherHelmet, "rbxassetid://0")],
+// 	[InventoryType.Familiar, new InventoryItem(InventoryType.Familiar, ItemId.LeatherHelmet, "rbxassetid://0")],
+// 	[InventoryType.Accessory, new InventoryItem(InventoryType.Accessory, ItemId.LeatherHelmet, "rbxassetid://0")],
+// 	[InventoryType.Skill, new InventoryItem(InventoryType.Skill, ItemId.LeatherArmor, "rbxassetid://0")],
+// 	[InventoryType.Consumable, new InventoryItem(InventoryType.Consumable, ItemId.LeatherHelmet, "rbxassetid://0")],
+// 	[InventoryType.Other, new InventoryItem(InventoryType.Other, ItemId.LeatherHelmet, "rbxassetid://0")],
+// ]);
 
-// INVENTORY Events
-export enum EInventoryEvent {
-	EquipRequest = "INVENTORY_EquipRequest",
-	UnequipRequest = "INVENTORY_UnequipRequest",
-	EquipResponse = "INVENTORY_EquipResponse",
-	UnequipResponse = "INVENTORY_UnequipResponse",
-	UnlockRequest = "INVENTORY_UnlockRequest",
-	UnlockResponse = "INVENTORY_UnlockResponse",
-}
+// type Weapon = {
+// 	inventoryType: InventoryType.Weapon;
+// };
+
+// // INVENTORY Events
+// enum EInventoryEvent {
+// 	EquipRequest = "INVENTORY_EquipRequest",
+// 	UnequipRequest = "INVENTORY_UnequipRequest",
+// 	EquipResponse = "INVENTORY_EquipResponse",
+// 	UnequipResponse = "INVENTORY_UnequipResponse",
+// 	UnlockRequest = "INVENTORY_UnlockRequest",
+// 	UnlockResponse = "INVENTORY_UnlockResponse",
+// }
 
 // Attachment Names
-export enum EInventorySlot {
-	LeftHand = "LeftGripAttachment",
-	RightHand = "RightGripAttachment",
-	Helmet = "HatAttachment",
-	Body = "BodyFrontAttachment",
-	Familiar = "RightAnkleRigAttachment",
-	Accessory = "BodyBackAttachment",
-}
+// enum EInventorySlot {
+// 	LeftHand = "LeftGripAttachment",
+// 	RightHand = "RightGripAttachment",
+// 	Helmet = "HatAttachment",
+// 	Body = "BodyFrontAttachment",
+// 	Familiar = "RightAnkleRigAttachment",
+// 	Accessory = "BodyBackAttachment",
+// }
 
 // Inventory Mappping
-export enum EInventoryNames {
-	Skills = "SkillInventory",
-	Weapon = "WeaponInventory",
-	Armor = "ArmorInventory",
-	Helmet = "HelmetInventory",
-	Familiar = "FamiliarInventory",
-	Accessory = "AccessoryInventory",
-}
+// enum EInventoryNames {
+// 	Skills = "SkillInventory",
+// 	Weapon = "WeaponInventory",
+// 	Armor = "ArmorInventory",
+// 	Helmet = "HelmetInventory",
+// 	Familiar = "FamiliarInventory",
+// 	Accessory = "AccessoryInventory",
+// }

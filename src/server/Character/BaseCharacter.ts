@@ -65,6 +65,9 @@ export default class BaseCharacter {
 		Logger.Log(script, "Skill Created: ", skillId);
 		return newSkill;
 	}
+	public GetCharacterId() {
+		return this.characterName;
+	}
 
 	// Destroy
 	public Destroy() {

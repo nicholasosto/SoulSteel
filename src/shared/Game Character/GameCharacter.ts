@@ -1,16 +1,18 @@
 import { Character } from "@rbxts/wcs";
 import { TGameCharacter } from "./TGameCharacter";
-import { IGameCharacter } from "./IGameCharacter";
+import { IGameCharacter } from "./Interfaces";
 
 export default class GameCharacter implements IGameCharacter {
-	characterName: string;
+	characterId: string;
+	displayName: string;
 	characterModel?: TGameCharacter;
 	wcsCharacter: Character;
 	target?: TGameCharacter;
 	rewardMap: Map<string, number> = new Map<string, number>();
 
 	constructor(wcsCharacter: Character) {
-		this.characterName = "GameCharacter";
+		this.characterId = wcsCharacter.Instance?.GetFullName() || "nil";
+		this.displayName = "GameCharacter";
 		this.wcsCharacter = wcsCharacter;
 		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
 	}
@@ -33,5 +35,9 @@ export default class GameCharacter implements IGameCharacter {
 
 	clearTarget(): void {
 		// Clear Target
+	}
+
+	Destroy(): void {
+		// Destroy
 	}
 }

@@ -15,34 +15,28 @@ import { CreateSkillFromId } from "shared/Skills/WCSHelper";
 import { Character, DamageContainer, Skill } from "@rbxts/wcs";
 
 // Player Character Map
-const PlayerMap = new Map<Player, PlayerCharacter>();
+//const PlayerMap = new Map<Player, PlayerCharacter>();
 
-// Get Player Character
-function GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
-	return PlayerMap.get(player);
-}
+// // Get Player Character
+// function GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
+// 	return PlayerMap.get(player);
+// }
 
-// Create Player Character
-function CreatePlayerCharacter(player: Player, wcsCharacter: Character): PlayerCharacter {
-	// Create the Player Character
-	const playerCharacter = new PlayerCharacter(player, wcsCharacter);
+// // Create Player Character
+// function CreatePlayerCharacter(player: Player, wcsCharacter: Character): PlayerCharacter {
+// 	// Create the Player Character
+// 	const playerCharacter = new PlayerCharacter(player, wcsCharacter);
 
-	// Map the Player to the Player Character
-	PlayerMap.set(player, playerCharacter);
+// 	// Map the Player to the Player Character
+// 	PlayerMap.set(player, playerCharacter);
 
-	// Return the Player Character
-	return playerCharacter;
-}
+// 	// Return the Player Character
+// 	return playerCharacter;
+// }
 
 // Destroy Player Character
-function DestroyPlayerCharacter(player: Player) {
-	const playerCharacter = PlayerMap.get(player);
-	assert(playerCharacter, "PlayerCharacter is nil");
-	playerCharacter.Destroy();
-	PlayerMap.delete(player);
-}
 
-export default class PlayerCharacter extends BaseCharacter {
+export default class PlayerCharacterZ extends BaseCharacter {
 	// Private
 	private _player: Player;
 	private _dataCache: DataCache;
@@ -154,7 +148,7 @@ export default class PlayerCharacter extends BaseCharacter {
 		Logger.Log(script, "Health", this._HealthResource.GetValues());
 
 		if (this._HealthResource.GetValues()[0] <= 0) {
-			DestroyPlayerCharacter(this._player);
+			//DestroyPlayerCharacter(this._player);
 		}
 
 		SendPlayerResourceUpdate(this._player, this._HealthResource);
@@ -200,5 +194,3 @@ export default class PlayerCharacter extends BaseCharacter {
 		}
 	}
 }
-
-export { GetPlayerCharacter, CreatePlayerCharacter, DestroyPlayerCharacter };

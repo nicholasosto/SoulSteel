@@ -1,23 +1,6 @@
 import { IPlayerData } from "shared/_References/PlayerData";
 import { ResourceId } from "shared/_References/Resources";
 
-// Resource Bar Names
-// enum EResourceBarNames {
-// 	Health = "Health Bar",
-// 	Mana = "Mana Bar",
-// 	Stamina = "Stamina Bar",
-// 	Experience = "Experience Bar",
-// 	DomainEnergy = "Domain Bar",
-// }
-
-// type TCharacterResource = {
-// 	ResourceName: string;
-// 	PrimaryStat: CharacterStatId;
-// 	SecondaryStat: CharacterStatId;
-// 	GetPercentage: () => number;
-// 	GetLabel: () => string;
-// 	ActivateRegen: (activate: boolean) => void;
-// };
 
 // Character Resource Class
 class CharacterResource {
