@@ -7,7 +7,6 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 // Manager Imports
 import { StorageManager } from "shared/Storage Manager/StorageManager";
 import { DataManager } from "server/Controllers/DataManager";
-import { SkillRemoteStart } from "server/RemoteHandlers/SkillRemoteHandler";
 
 // Controllers
 import GameCharacterController from "./Controllers/GameCharacterController";
@@ -33,8 +32,6 @@ WCSServer.RegisterDirectory(StatusDirectory);
 WCSServer.Start();
 
 // Start the Managers
-SkillRemoteStart();
-
 DataManager.Start();
 StorageManager.Start();
 GameCharacterController.Start();

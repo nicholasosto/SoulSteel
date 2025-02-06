@@ -1,11 +1,20 @@
-import GameCharacter from "./GameCharacter";
-import { Character, DamageContainer } from "@rbxts/wcs";
-import { IPlayerCharacter } from "./Interfaces";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import Logger from "shared/Utility/Logger";
+
+// External Modules
+import { Character, DamageContainer } from "@rbxts/wcs";
+
+// Interfaces and Types
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
-import { IPlayerData } from "shared/_References/PlayerData";
 import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
+import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+
+// Classes
+import GameCharacter from "./GameCharacter";
+import { CharacterResource } from "shared/Character Resources/CharacterResource";
+
+//NET
+import { SendPlayerResourceUpdate } from "server/net/ServerCalls";
 
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
@@ -16,6 +25,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public unlockedSkills: SkillId[] = [];
 	public equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
 	public statsMap = new Map<CharacterStatId, number>();
+
+	public HealthResource: CharacterResource = new CharacterResource("Health");
 
 	constructor(
 		player: Player,
@@ -33,6 +44,11 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		this.displayName = player.Name;
 
+		// Load Skills
+		skillSlotMap.forEach((skillId, slot) => {
+			this.RegisterSkill(skillId);
+		});
+
 		Logger.Log(script, `Player Character ${this.displayName} Created`);
 	}
 
@@ -43,7 +59,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	}
 
 	public AssignSkillToSlot(slot: number, skillId: SkillId): void {
-		Logger.Log(script, `Assigning Skill ${skillId} to Slot ${slot}`);
+		Logger.Log(script, `[NEW STYLE]: Assigning Skill ${skillId} to Slot ${slot}`);
+		this.RegisterSkill(skillId);
 		this.skillSlotMap.set(slot, skillId);
 		// TODO: Update playerUI
 	}
@@ -82,6 +99,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	public OnTakeDamage(DamageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Took Damage");
+		this.HealthResource.SetCurrent(this.HealthResource.Current - DamageContainer.Damage);
+		SendPlayerResourceUpdate(this.player, "Health", this.HealthResource.Current, this.HealthResource.MaxValue);
 	}
 
 	public Destroy(): void {

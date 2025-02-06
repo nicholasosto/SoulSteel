@@ -1,9 +1,9 @@
 import Logger from "shared/Utility/Logger";
 import { CollectionService } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
-import GameCharacter from "shared/Game Character/GameCharacter";
-import PlayerCharacter from "shared/Game Character/PlayerCharacter";
-import NPCCharacter from "shared/Game Character/NPCCharacter";
+import PlayerCharacter from "server/Character/PlayerCharacter";
+import GameCharacter from "server/Character/GameCharacter";
+import NPCCharacter from "server/Character/NPCCharacter";
 import { IPlayerData, GetSkillSlotMap } from "shared/_References/PlayerData";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";

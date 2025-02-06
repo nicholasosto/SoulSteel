@@ -40,7 +40,7 @@ import Logger from "shared/Utility/Logger";
 
 // GUI Components
 import SkillBar from "shared/Epic UI/Skill Bar/SkillBar";
-import { StartSkillBar } from "client/UI Controller/SkillBarHandler";
+//import { StartSkillBar } from "client/UI Controller/SkillBarHandler";
 import CharacterFrame from "shared/Epic UI/Character Frame/CharacterFrame";
 import { StartCharacterFrame } from "client/UI Controller/CharacterFrameHandler";
 
@@ -57,12 +57,8 @@ let connectionCharacterDestroyed: RBXScriptConnection | undefined;
 
 // Character Created Event Handler
 function HandleCharacterCreated(wcsCharacter: Character) {
-	SkillBarInstance = new SkillBar(wcsCharacter);
 	CharacterFrameInstance = new CharacterFrame(Players.LocalPlayer);
 	StartCharacterFrame(CharacterFrameInstance);
-	StartSkillBar(SkillBarInstance);
-
-	SkillBarInstance.SetSlot(1, "SpiritOrb");
 }
 
 function StarUI() {

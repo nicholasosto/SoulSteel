@@ -50,25 +50,28 @@ export default class KeyboardController {
 
 	// Input Began
 	private static InputBegan(input: InputObject, isProcessed: boolean) {
+		if (isProcessed) return; // If the input is processed by another UI, return;
 		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, true);
 	}
 
 	// Input Ended
 	private static InputEnded(input: InputObject, isProcessed: boolean) {
+		if (isProcessed) return; // If the input is processed by another UI, return;
 		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, false);
 	}
 
-	private static toggleSkillEquipped(key: Enum.KeyCode, begin: boolean): void {}
-
 	// Main Function: onKeyPress
 	private static toggleSkillOnKeyPress(key: Enum.KeyCode, begin: boolean): void {
+		Logger.Log(script, "Key Pressed: " + key.Name);
 		const skillName = SkillKeyMap.get(key) as string;
+		if (skillName === undefined) return;
 		const character = Character.GetLocalCharacter() as Character;
 
 		// Gets the skill from the character
 		const skill = character?.GetSkillFromString(skillName) as Skill;
 		if (skill === undefined) {
 			Logger.Log(script, "Character or Skill is not assigned to Character");
+			return;
 		}
 
 		if (begin) {

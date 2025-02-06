@@ -28,15 +28,18 @@ const PlayerCharacterRemotes = {
 // Skills Remotes
 const nsSkills = Signals.Server.GetNamespace("Skills");
 const SkillSignals = {
-
+	// Skill Bar Instance Created Client and Server
 	SkillBarCreated: nsSkills.Get(SignalNames.SkillBarCreated),
 	SendSkillAssignment: nsSkills.Get(SignalNames.SendSkillAssignment),
 
-	LoadPlayerSkills: nsSkills.Get(SignalNames.LoadPlayerSkills),
-	RequestPlayerSkills: nsSkills.Get(SignalNames.RequestPlayerSkills),
+	// Unlock Skill
 	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),
+
+	// Skill Assignment Client to Server
 	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
 	UnAssignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
+
+	// Skill Assignment Server to Client
 	AssignSkillResponse: nsSkills.Get(SignalNames.AssignSkillResponse),
 };
 
@@ -45,17 +48,4 @@ const SkillRemotes = {
 	GetUnlockedSkills: nsSkillRemotes.Get(RemoteNames.GetUnlockedSkills),
 };
 
-// Equipment: Remotes
-const nsEquipment = Signals.Server.GetNamespace("Equipment");
-const EquipmentRemotes = {
-	EquipItemRequest: nsEquipment.Get(SignalNames.EquipItemRequest),
-};
-
-// Inventory: Remotes
-const nsInventory = Signals.Server.GetNamespace("Inventory");
-const InventoryRemotes = {
-	GetInventory: nsInventory.Get(SignalNames.GetInventory),
-	RequestInventory: nsInventory.Get(SignalNames.RequestInventory),
-};
-
-export { PlayerRemotes, PlayerCharacterRemotes, EquipmentRemotes, InventoryRemotes, SkillSignals, SkillRemotes };
+export { PlayerRemotes, PlayerCharacterRemotes, SkillSignals, SkillRemotes };

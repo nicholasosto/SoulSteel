@@ -3,8 +3,8 @@ import * as ServerRemotes from "shared/Remotes/ServerRemotes";
 import GameCharacterController from "server/Controllers/GameCharacterController";
 import { Players } from "@rbxts/services";
 import Logger from "shared/Utility/Logger";
-import PlayerCharacter from "shared/Game Character/PlayerCharacter";
-import GameCharacter from "shared/Game Character/GameCharacter";
+import PlayerCharacter from "server/Character/PlayerCharacter";
+import GameCharacter from "server/Character/GameCharacter";
 
 // Target Selected
 ServerRemotes.PlayerCharacterRemotes.TargetSelected.Connect((player, target) => {

@@ -8,8 +8,8 @@ class CharacterResource {
 	public ResourceName: string = "DefaultResource";
 
 	// Resource Values
-	private _maxValue: number = 100;
-	private _currentValue: number = 100;
+	public MaxValue: number = 100;
+	public Current: number = 100;
 
 	// Regen Values
 	private _regenAmount: number = 10;
@@ -23,22 +23,22 @@ class CharacterResource {
 
 	// Get Percentage
 	public GetPercentage() {
-		return (this._currentValue / this._maxValue) * 100;
+		return (this.Current / this.MaxValue) * 100;
 	}
 
 	// Get Values
 	public GetValues(): [current: number, max: number] {
-		return [this._currentValue, this._maxValue];
+		return [this.Current, this.MaxValue];
 	}
 
 	// Set Max Value
 	public SetMax(value: number) {
-		this._maxValue = value;
+		this.MaxValue = value;
 	}
 
 	// Set Current Value
 	public SetCurrent(value: number) {
-		this._currentValue = value;
+		this.Current = value;
 	}
 
 	// Regen Toggle: Activates or deactivates the regen step
@@ -49,14 +49,14 @@ class CharacterResource {
 	// Regen Step:
 	public regenStep() {
 		// Check if regen is active and if the max value is not reached
-		if (!this._regenActive || this._currentValue >= this._maxValue) {
+		if (!this._regenActive || this.Current >= this.MaxValue) {
 			return;
 		}
-		if (this._currentValue + this._regenAmount > this._maxValue) {
-			this.SetCurrent(this._maxValue);
+		if (this.Current + this._regenAmount > this.MaxValue) {
+			this.SetCurrent(this.MaxValue);
 			return;
 		}
-		this.SetCurrent(this._currentValue + this._regenAmount);
+		this.SetCurrent(this.Current + this._regenAmount);
 	}
 }
 

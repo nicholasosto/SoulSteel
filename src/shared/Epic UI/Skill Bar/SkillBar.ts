@@ -11,7 +11,6 @@ import { SkillButton } from "./SkillButton";
 /* Utility */
 import Logger from "shared/Utility/Logger";
 import { StorageManager } from "shared/Storage Manager/StorageManager";
-import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
 import { Character } from "@rbxts/wcs";
 
 /* References */
@@ -27,7 +26,6 @@ export default class SkillBar {
 	private wcsCharacter: Character;
 
 	// Skill Maps
-	private _skillFrameMap = new Map<number, Frame>();
 	private _skillButtonMap = new Map<number, SkillButton>();
 	private _skillConnectionMap = new Map<number, RBXScriptConnection>();
 

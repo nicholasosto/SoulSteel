@@ -1,6 +1,5 @@
 import { Character, DamageContainer, Skill } from "@rbxts/wcs";
 import { TGameCharacter } from "./TGameCharacter";
-import GameCharacter from "./GameCharacter";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
 import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
@@ -11,18 +10,17 @@ export interface IGameCharacter {
 	displayName: string;
 	characterModel?: TGameCharacter;
 	wcsCharacter: Character;
-	target?: GameCharacter;
-	rewardMap: Map<string, number>;
+	target?: IGameCharacter;
+	rewardMap: Map<IGameCharacter, number>;
 	// Constructor
 	// Skills
 	RegisterSkill(skillId: SkillId): void;
 	RemoveSkills(): void;
 	TakeDamage(damage: DamageContainer): void;
-	SetTarget(target: GameCharacter): void;
+	SetTarget(target: IGameCharacter): void;
 	ClearTarget(): void;
 	Destroy(): void;
 }
-
 
 /* IPlayerCharacter */
 export interface IPlayerCharacter extends IGameCharacter {

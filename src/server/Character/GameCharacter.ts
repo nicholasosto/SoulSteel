@@ -1,6 +1,6 @@
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { TGameCharacter } from "./TGameCharacter";
-import { IGameCharacter } from "./Interfaces";
+import { TGameCharacter } from "../../shared/Game Character/TGameCharacter";
+import { IGameCharacter } from "../../shared/Game Character/Interfaces";
 import { GetRegisteredSkillConstructor } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
 
@@ -9,8 +9,8 @@ export default class GameCharacter implements IGameCharacter {
 	displayName: string;
 	characterModel?: TGameCharacter;
 	wcsCharacter: Character;
-	target?: GameCharacter;
-	rewardMap: Map<string, number> = new Map<string, number>();
+	target?: IGameCharacter;
+	rewardMap: Map<IGameCharacter, number> = new Map<IGameCharacter, number>();
 
 	constructor(wcsCharacter: Character) {
 		this.characterId = wcsCharacter.Instance?.GetFullName() || "nil";
@@ -22,6 +22,7 @@ export default class GameCharacter implements IGameCharacter {
 
 	RegisterSkill(skillId: string): void {
 		// Register Skill to the Character
+		Logger.Log(script, `[NEW STYLE]: Registering Skill ${skillId}`);
 		const skillConstructor = GetRegisteredSkillConstructor(skillId);
 		assert(skillConstructor, "Skill Constructor is nil");
 		const newSkill = new skillConstructor(this.wcsCharacter);
@@ -36,7 +37,7 @@ export default class GameCharacter implements IGameCharacter {
 		Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
 	}
 
-	SetTarget(target: GameCharacter): void {
+	SetTarget(target: IGameCharacter): void {
 		Logger.Log(script, "[Super]: Setting Target", target as unknown as string);
 		this.target = target;
 	}

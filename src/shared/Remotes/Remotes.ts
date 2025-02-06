@@ -14,7 +14,6 @@ enum SignalNames {
 	// Player
 	PlayerLevelUp = "PlayerLevelUp",
 	PlayerResourceUpdate = "PlayerResourceUpdate",
-	PlayerStatUpdate = "PlayerStatUpdate",
 	PlayerInfoUpdate = "PlayerInfoUpdate",
 
 	// Player Character
@@ -30,12 +29,12 @@ enum SignalNames {
 	EquipItemRequest = "EquipItemRequest",
 
 	// Skills
-	crfGetUnlockedSkills = "crfGetUnlockedSkills",
+	//crfGetUnlockedSkills = "crfGetUnlockedSkills",
 
 	SkillBarCreated = "SkillBarCreated", // Notifies the server that the skill bar has been created
 	SendSkillAssignment = "SendSkillAssignment", // Sends skill assignment data to the client
 
-	LoadPlayerSkills = "SkillAssignment",
+	//LoadPlayerSkills = "SkillAssignment",
 	RequestPlayerSkills = "RequestPlayerSkills",
 	UnlockSkill = "UnlockSkill",
 	AssignSkillSlot = "AssignSkillSlot",
@@ -75,27 +74,15 @@ const Remotes = Net.Definitions.Create({
 		// Target Selected
 		[SignalNames.PlayerCharacterTargetSelected]: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
 	}),
-
-	// Inventory
-	Inventory: Definitions.Namespace({
-		[SignalNames.GetInventory]:
-			Net.Definitions.ServerToClientEvent<[inventory: Map<InventoryType, InventoryItem>]>(),
-		[SignalNames.RequestInventory]: Net.Definitions.ClientToServerEvent(),
-	}),
-
-	// Equipment
-	Equipment: Definitions.Namespace({
-		[SignalNames.EquipItemRequest]: Net.Definitions.ClientToServerEvent<[itemId: ItemId]>(),
-	}),
-
 	// Skills
 	Skills: Definitions.Namespace({
 		[SignalNames.SendSkillAssignment]: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
 		[SignalNames.SkillBarCreated]: Net.Definitions.ClientToServerEvent<[]>(),
 
-		[SignalNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
-		[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
+		//[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
 		[SignalNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
+
+		// Assign and Unassign Skill Slot
 		[SignalNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
 		[SignalNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
 		[SignalNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
