@@ -5,6 +5,9 @@ import GameCharacter from "shared/Game Character/GameCharacter";
 import PlayerCharacter from "shared/Game Character/PlayerCharacter";
 import NPCCharacter from "shared/Game Character/NPCCharacter";
 import { IPlayerData } from "shared/_References/PlayerData";
+import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
 
 export default class GameCharacterController {
 	// Static Instance
@@ -20,7 +23,6 @@ export default class GameCharacterController {
 		Logger.Log(script, "NPC Models", NPCModels);
 	}
 
-
 	// Start
 	public static Start() {
 		if (this._instance === undefined) {
@@ -31,20 +33,50 @@ export default class GameCharacterController {
 	// WCS Character Created
 	public static CreateGameCharacter(wcsCharacter: Character, playerData?: IPlayerData) {
 		Logger.Log(script, "[EVENT]: On WCS Character Created", playerData as unknown as string);
-		// Get the player from the WCS Character
-		const gameChartacter = undefined;
-
 		// Check if the character is a player character
 		if (wcsCharacter.Player !== undefined) {
 			// Create a new PlayerCharacter
 			assert(playerData !== undefined, "Player Data is nil");
-			const playerCharacter = new PlayerCharacter(wcsCharacter.Player, wcsCharacter, playerData);
-			this._gameCharacters.set(tostring(wcsCharacter.Player.UserId), playerCharacter);
+			this.CreatePlayerCharacter(wcsCharacter, playerData);
 		} else {
 			Logger.Log(script, "NPC Character Created");
 			const npcCharacter = new NPCCharacter(wcsCharacter, 10);
 			this._gameCharacters.set(npcCharacter.characterId, npcCharacter);
 		}
+	}
+
+	private static CreatePlayerCharacter(wcsCharacter: Character, playerData: IPlayerData) {
+		Logger.Log(script, "Create Player Character", playerData as unknown as string);
+		assert(wcsCharacter.Player !== undefined, "Player is nil");
+
+		// Setup Maps
+		const skillMap = this._createSkillMapFromData(playerData);
+		const equipmentMap = new Map<EquipmentSlotId, EquipmentId>();
+		const statsMap = new Map<CharacterStatId, number>();
+
+		const playerCharacter = new PlayerCharacter(
+			wcsCharacter.Player,
+			wcsCharacter,
+			skillMap,
+			equipmentMap,
+			statsMap,
+			playerData.ProgressionStats.Level,
+		);
+		this._gameCharacters.set(tostring(wcsCharacter.Player.UserId), playerCharacter);
+	}
+
+	private static _createSkillMapFromData(playerData: IPlayerData) {
+		const equippedSkills = playerData.Skills.assignedSlots as SkillId[];
+		assert(equippedSkills !== undefined, "Equipped Skills is nil");
+		const skillMap = new Map<number, SkillId>();
+
+		let index = 1;
+		equippedSkills.forEach((skillId) => {
+			skillMap.set(index, skillId);
+			index++;
+		});
+
+		return skillMap;
 	}
 
 	// Get Game Character

@@ -16,10 +16,22 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
 	public statsMap = new Map<CharacterStatId, number>();
 
-	constructor(player: Player, wcsCharacter: Character, data: IPlayerData) {
+	constructor(
+		player: Player,
+		wcsCharacter: Character,
+		skillSlotMap: Map<number, SkillId>,
+		equipmentSlotMap: Map<EquipmentSlotId, EquipmentId>,
+		statsMap: Map<CharacterStatId, number>,
+		level: number = 1,
+	) {
 		super(wcsCharacter);
 		this.player = player;
+		this.skillSlotMap = skillSlotMap;
+		this.equipmentSlotMap = equipmentSlotMap;
+		this.statsMap = statsMap;
+
 		this.displayName = player.Name;
+
 		Logger.Log(script, `Player Character ${this.displayName} Created`);
 	}
 

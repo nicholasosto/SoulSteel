@@ -67,6 +67,7 @@ function StarUI() {
 
 	SkillBarInstance?.Destroy();
 	CharacterFrameInstance?.Destroy();
+
 	const localCharacter = Character.GetLocalCharacter();
 	if (localCharacter !== undefined) {
 		HandleCharacterCreated(localCharacter);
