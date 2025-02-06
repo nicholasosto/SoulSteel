@@ -27,6 +27,7 @@ const PlayerRemotes = {
 const PlayerCharacterRemotes = {
 	CharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
 	CharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
+	TargetSelected: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
 };
 
 /* Inventory Remotes */
@@ -43,6 +44,7 @@ const SkillRemotes = {
 	SendSkillAssignment: nsSkills.Get(SignalNames.SendSkillAssignment),
 
 	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
+	UnassignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
 	LoadPlayerSkills: nsSkills.Get(SignalNames.LoadPlayerSkills),
 	RequestPlayerSkills: _requestPlayerSkills,
 	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),

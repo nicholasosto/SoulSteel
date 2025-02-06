@@ -20,6 +20,7 @@ enum SignalNames {
 	// Player Character
 	PlayerCharacterCreated = "PlayerCharacterCreated",
 	PlayerCharacterDestroyed = "PlayerCharacterDestroyed",
+	PlayerCharacterTargetSelected = "TargetSelected",
 
 	// Inventory
 	GetInventory = "GetInventory",
@@ -30,7 +31,6 @@ enum SignalNames {
 
 	// Skills
 	crfGetUnlockedSkills = "crfGetUnlockedSkills",
-
 
 	SkillBarCreated = "SkillBarCreated", // Notifies the server that the skill bar has been created
 	SendSkillAssignment = "SendSkillAssignment", // Sends skill assignment data to the client
@@ -72,6 +72,8 @@ const Remotes = Net.Definitions.Create({
 		[SignalNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
 		// Destroyed
 		[SignalNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
+		// Target Selected
+		[SignalNames.PlayerCharacterTargetSelected]: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
 	}),
 
 	// Inventory
@@ -88,10 +90,8 @@ const Remotes = Net.Definitions.Create({
 
 	// Skills
 	Skills: Definitions.Namespace({
-
 		[SignalNames.SendSkillAssignment]: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
 		[SignalNames.SkillBarCreated]: Net.Definitions.ClientToServerEvent<[]>(),
-
 
 		[SignalNames.LoadPlayerSkills]: Net.Definitions.ServerToClientEvent<[skillData: PlayerSkillsData]>(),
 		[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),

@@ -58,14 +58,17 @@ export default class KeyboardController {
 		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, false);
 	}
 
+	private static toggleSkillEquipped(key: Enum.KeyCode, begin: boolean): void {}
+
 	// Main Function: onKeyPress
 	private static toggleSkillOnKeyPress(key: Enum.KeyCode, begin: boolean): void {
 		const skillName = SkillKeyMap.get(key) as string;
 		const character = Character.GetLocalCharacter() as Character;
 
+		// Gets the skill from the character
 		const skill = character?.GetSkillFromString(skillName) as Skill;
 		if (skill === undefined) {
-			return;
+			Logger.Log(script, "Character or Skill is not assigned to Character");
 		}
 
 		if (begin) {

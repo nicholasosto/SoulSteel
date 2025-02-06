@@ -11,16 +11,15 @@ export interface IGameCharacter {
 	displayName: string;
 	characterModel?: TGameCharacter;
 	wcsCharacter: Character;
-	target?: TGameCharacter;
+	target?: GameCharacter;
 	rewardMap: Map<string, number>;
 	// Constructor
 	// Skills
-	addSkill(skillId: string): void;
-	removeSkill(skillId: string): void;
-
-	takeDamage(damage: number): void;
-	setTarget(target: Character): void;
-	clearTarget(): void;
+	RegisterSkill(skillId: SkillId): void;
+	RemoveSkills(): void;
+	TakeDamage(damage: DamageContainer): void;
+	SetTarget(target: GameCharacter): void;
+	ClearTarget(): void;
 	Destroy(): void;
 }
 

@@ -1,13 +1,15 @@
-import { Character } from "@rbxts/wcs";
+import { Character, DamageContainer } from "@rbxts/wcs";
 import { TGameCharacter } from "./TGameCharacter";
 import { IGameCharacter } from "./Interfaces";
+import { GetRegisteredSkillConstructor } from "@rbxts/wcs";
+import Logger from "shared/Utility/Logger";
 
 export default class GameCharacter implements IGameCharacter {
 	characterId: string;
 	displayName: string;
 	characterModel?: TGameCharacter;
 	wcsCharacter: Character;
-	target?: TGameCharacter;
+	target?: GameCharacter;
 	rewardMap: Map<string, number> = new Map<string, number>();
 
 	constructor(wcsCharacter: Character) {
@@ -15,29 +17,35 @@ export default class GameCharacter implements IGameCharacter {
 		this.displayName = "GameCharacter";
 		this.wcsCharacter = wcsCharacter;
 		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
+		this.characterModel.AddTag("GameCharacter");
 	}
 
-	addSkill(skillId: string): void {
-		// Add Skill to the Character
+	RegisterSkill(skillId: string): void {
+		// Register Skill to the Character
+		const skillConstructor = GetRegisteredSkillConstructor(skillId);
+		assert(skillConstructor, "Skill Constructor is nil");
+		const newSkill = new skillConstructor(this.wcsCharacter);
+		assert(newSkill, "New Skill is nil");
 	}
 
-	removeSkill(skillId: string): void {
-		// Remove Skill from the Character
+	RemoveSkills(): void {
+		this.wcsCharacter.ClearMoveset();
 	}
 
-	takeDamage(damage: number): void {
-		// Take Damage
+	TakeDamage(damageContainer: DamageContainer): void {
+		Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
 	}
 
-	setTarget(target: Character): void {
-		// Set Target
+	SetTarget(target: GameCharacter): void {
+		Logger.Log(script, "[Super]: Setting Target", target as unknown as string);
+		this.target = target;
 	}
 
-	clearTarget(): void {
-		// Clear Target
+	ClearTarget(): void {
+		this.target = undefined;
 	}
 
 	Destroy(): void {
-		// Destroy
+		this.wcsCharacter.Destroy();
 	}
 }

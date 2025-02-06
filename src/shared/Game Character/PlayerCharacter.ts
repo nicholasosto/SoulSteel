@@ -13,6 +13,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public currentExperience: number = 0;
 
 	public skillSlotMap = new Map<number, SkillId>();
+	public unlockedSkills: SkillId[] = [];
 	public equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
 	public statsMap = new Map<CharacterStatId, number>();
 
@@ -33,6 +34,12 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.displayName = player.Name;
 
 		Logger.Log(script, `Player Character ${this.displayName} Created`);
+	}
+
+	public SetTarget(target: GameCharacter): void {
+		super.SetTarget(target);
+
+		Logger.Log(script, `[Player]: Setting Target ${target}`);
 	}
 
 	public AssignSkillToSlot(slot: number, skillId: SkillId): void {
@@ -79,5 +86,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	public Destroy(): void {
 		Logger.Log(script, "Destroying Player Character");
+		super.Destroy();
 	}
 }

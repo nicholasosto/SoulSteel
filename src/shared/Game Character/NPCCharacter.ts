@@ -33,5 +33,6 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 
 	public Destroy(): void {
 		Logger.Log(script, "Destroying Player Character");
+		super.Destroy();
 	}
 }

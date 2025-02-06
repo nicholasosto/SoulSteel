@@ -40,19 +40,22 @@ import Logger from "shared/Utility/Logger";
 
 // GUI Components
 import SkillBar from "shared/Epic UI/Skill Bar/SkillBar";
-import { StartSkillBar } from "client/RemoteHandlers/SkillBarHandler";
+import { StartSkillBar } from "client/UI Controller/SkillBarHandler";
 import CharacterFrame from "shared/Epic UI/Character Frame/CharacterFrame";
-import { StartCharacterFrame } from "client/RemoteHandlers/CharacterFrameHandler";
+import { StartCharacterFrame } from "client/UI Controller/CharacterFrameHandler";
 
 // WCS Imports
 import { Character } from "@rbxts/wcs";
 
+// Instances
 let SkillBarInstance: SkillBar | undefined;
 let CharacterFrameInstance: CharacterFrame | undefined;
 
+// Connections
 let connectionCharacterCreated: RBXScriptConnection | undefined;
 let connectionCharacterDestroyed: RBXScriptConnection | undefined;
 
+// Character Created Event Handler
 function HandleCharacterCreated(wcsCharacter: Character) {
 	SkillBarInstance = new SkillBar(wcsCharacter);
 	CharacterFrameInstance = new CharacterFrame(Players.LocalPlayer);
@@ -65,18 +68,22 @@ function HandleCharacterCreated(wcsCharacter: Character) {
 function StarUI() {
 	Logger.Log(script, "Starting UI");
 
+	// Destroy the UI Components if they exist
 	SkillBarInstance?.Destroy();
 	CharacterFrameInstance?.Destroy();
 
+	// Check if the local character exists
 	const localCharacter = Character.GetLocalCharacter();
 	if (localCharacter !== undefined) {
 		HandleCharacterCreated(localCharacter);
 	}
 
+	// Character Created Connection
 	connectionCharacterCreated = Character.CharacterCreated.Connect((wcsCharacter) => {
 		HandleCharacterCreated(wcsCharacter);
 	});
 
+	// Character Destroyed Connection
 	connectionCharacterDestroyed = Character.CharacterDestroyed.Connect(() => {
 		Logger.Log(script, "Character Destroyed");
 		SkillBarInstance?.Destroy();

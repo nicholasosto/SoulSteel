@@ -22,6 +22,7 @@ const nsPlayerCharacter = Signals.Server.GetNamespace("PlayerCharacter");
 const PlayerCharacterRemotes = {
 	PlayerCharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
 	PlayerCharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
+	TargetSelected: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
 };
 
 // Skills Remotes

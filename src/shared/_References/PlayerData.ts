@@ -1,9 +1,10 @@
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
 import { CharacterStats } from "shared/Character Resources/iCharacterResource";
 import { ProgressionStatsData } from "./ProgressionStats";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 // Player Data Interface
-export interface IPlayerData {
+interface IPlayerData {
 	[str: string]: unknown;
 
 	// Datastore Info
@@ -22,3 +23,19 @@ export interface IPlayerData {
 	// Skills Data
 	Skills: PlayerSkillsData;
 }
+
+function GetSkillSlotMap(playerData: IPlayerData): Map<number, string> {
+	const equippedSkills = playerData.Skills.assignedSlots as SkillId[];
+	assert(equippedSkills !== undefined, "Equipped Skills is nil");
+	const skillMap = new Map<number, SkillId>();
+
+	let index = 1;
+	equippedSkills.forEach((skillId) => {
+		skillMap.set(index, skillId);
+		index++;
+	});
+
+	return skillMap;
+}
+
+export { IPlayerData, GetSkillSlotMap };

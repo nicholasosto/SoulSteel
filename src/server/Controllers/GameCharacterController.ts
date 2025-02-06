@@ -4,7 +4,7 @@ import { Character } from "@rbxts/wcs";
 import GameCharacter from "shared/Game Character/GameCharacter";
 import PlayerCharacter from "shared/Game Character/PlayerCharacter";
 import NPCCharacter from "shared/Game Character/NPCCharacter";
-import { IPlayerData } from "shared/_References/PlayerData";
+import { IPlayerData, GetSkillSlotMap } from "shared/_References/PlayerData";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
@@ -21,6 +21,12 @@ export default class GameCharacterController {
 		Logger.Log(script, "GameCharacterController Constructor");
 		const NPCModels = CollectionService.GetTagged("NPCCharacter");
 		Logger.Log(script, "NPC Models", NPCModels);
+		NPCModels.forEach((npcModel) => {
+			const humanoid = npcModel.WaitForChild("Humanoid");
+			assert(humanoid !== undefined, "Humanoid is nil");
+			const wcsCharacter = new Character(npcModel);
+			GameCharacterController.CreateNPCCharacter(wcsCharacter, 1);
+		});
 	}
 
 	// Start
@@ -30,7 +36,7 @@ export default class GameCharacterController {
 		}
 	}
 
-	// WCS Character Created
+	// Create Character (Player or NPC)
 	public static CreateGameCharacter(wcsCharacter: Character, playerData?: IPlayerData) {
 		Logger.Log(script, "[EVENT]: On WCS Character Created", playerData as unknown as string);
 		// Check if the character is a player character
@@ -38,19 +44,27 @@ export default class GameCharacterController {
 			// Create a new PlayerCharacter
 			assert(playerData !== undefined, "Player Data is nil");
 			this.CreatePlayerCharacter(wcsCharacter, playerData);
+			Logger.Log(script, "CurrentCharacters", this._gameCharacters as unknown as string);
 		} else {
-			Logger.Log(script, "NPC Character Created");
-			const npcCharacter = new NPCCharacter(wcsCharacter, 10);
-			this._gameCharacters.set(npcCharacter.characterId, npcCharacter);
+			this.CreateNPCCharacter(wcsCharacter, 1);
 		}
 	}
 
+	// Create NPC Character
+	private static CreateNPCCharacter(wcsCharacter: Character, level: number) {
+		Logger.Log(script, "Create NPC Character", level);
+		const npcCharacter = new NPCCharacter(wcsCharacter, level);
+		this._gameCharacters.set(npcCharacter.characterId, npcCharacter);
+	}
+
+	// Create Player Character
 	private static CreatePlayerCharacter(wcsCharacter: Character, playerData: IPlayerData) {
 		Logger.Log(script, "Create Player Character", playerData as unknown as string);
 		assert(wcsCharacter.Player !== undefined, "Player is nil");
 
 		// Setup Maps
-		const skillMap = this._createSkillMapFromData(playerData);
+		//const skillMap = this._createSkillMapFromData(playerData);
+		const skillMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
 		const equipmentMap = new Map<EquipmentSlotId, EquipmentId>();
 		const statsMap = new Map<CharacterStatId, number>();
 
@@ -63,20 +77,6 @@ export default class GameCharacterController {
 			playerData.ProgressionStats.Level,
 		);
 		this._gameCharacters.set(tostring(wcsCharacter.Player.UserId), playerCharacter);
-	}
-
-	private static _createSkillMapFromData(playerData: IPlayerData) {
-		const equippedSkills = playerData.Skills.assignedSlots as SkillId[];
-		assert(equippedSkills !== undefined, "Equipped Skills is nil");
-		const skillMap = new Map<number, SkillId>();
-
-		let index = 1;
-		equippedSkills.forEach((skillId) => {
-			skillMap.set(index, skillId);
-			index++;
-		});
-
-		return skillMap;
 	}
 
 	// Get Game Character
@@ -99,6 +99,7 @@ export default class GameCharacterController {
 		return playerCharacter as PlayerCharacter;
 	}
 
+	// Destroy Game Character
 	public static DestroyGameCharacter(characterId: string) {
 		Logger.Log(script, "Destroy Game Character", characterId);
 		const gameCharacter = GameCharacterController._gameCharacters.get(characterId);
