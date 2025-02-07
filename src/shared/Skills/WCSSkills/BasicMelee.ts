@@ -23,10 +23,8 @@ export class BasicMelee extends Skill {
 	// Server-Side Construct
 	protected OnConstructServer(): void {
 		// Create Animation Track
-		this._animationTrack = CreateAnimationTrack(
-			this.Character.Instance as Model,
-			EAnimationID.SKILL_Fart,
-		) as AnimationTrack;
+		const animationId = this._skillDefinition.animation as EAnimationID;
+		this._animationTrack = CreateAnimationTrack(this.Character, animationId);
 
 		this.projectile = StorageManager.CloneFromStorage("Projectile_Explosion_01") as Model;
 

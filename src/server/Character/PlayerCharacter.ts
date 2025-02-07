@@ -7,6 +7,7 @@ import { Character, DamageContainer } from "@rbxts/wcs";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
 import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
 import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+import { IPlayerData, GetSkillSlotMap } from "shared/_References/PlayerData";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 // Classes
@@ -28,24 +29,17 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	public HealthResource: CharacterResource = new CharacterResource("Health");
 
-	constructor(
-		player: Player,
-		wcsCharacter: Character,
-		skillSlotMap: Map<number, SkillId>,
-		equipmentSlotMap: Map<EquipmentSlotId, EquipmentId>,
-		statsMap: Map<CharacterStatId, number>,
-		level: number = 1,
-	) {
+	constructor(player: Player, wcsCharacter: Character, playerData: IPlayerData) {
 		super(wcsCharacter);
 		this.player = player;
-		this.skillSlotMap = skillSlotMap;
-		this.equipmentSlotMap = equipmentSlotMap;
-		this.statsMap = statsMap;
+		this.skillSlotMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
+		this.equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
+		this.statsMap = new Map<CharacterStatId, number>();
 
 		this.displayName = player.Name;
 
 		// Load Skills
-		skillSlotMap.forEach((skillId, slot) => {
+		this.skillSlotMap.forEach((skillId, slot) => {
 			this.RegisterSkill(skillId);
 		});
 
@@ -64,12 +58,13 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		Logger.Log(script, `[NEW STYLE]: Assigning Skill ${skillId} to Slot ${slot}`);
 		this.RegisterSkill(skillId);
 		this.skillSlotMap.set(slot, skillId);
-		// TODO: Update playerUI
+		Responses.SkillSlotAssignmentResponse.SendToPlayer(this.player, slot, skillId);
 	}
 
 	public RemoveSkillFromSlot(slot: number): void {
 		Logger.Log(script, `Removing Skill from Slot ${slot}`);
 		this.skillSlotMap.delete(slot);
+		this.AssignSkillToSlot(slot, "None");
 	}
 
 	public GetSkillSlotMap(): Map<number, SkillId> {

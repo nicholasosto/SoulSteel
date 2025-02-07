@@ -13,13 +13,16 @@ export default class GameCharacter implements IGameCharacter {
 	rewardMap: Map<IGameCharacter, number> = new Map<IGameCharacter, number>();
 
 	constructor(wcsCharacter: Character) {
-		this.characterId = wcsCharacter.Instance?.GetFullName() || "nil";
+		const fullName = wcsCharacter.Instance?.GetFullName();
+		assert(fullName, "Instance is nil");
+		this.characterId = fullName;
 		this.displayName = "GameCharacter";
 		this.wcsCharacter = wcsCharacter;
 		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
 		this.characterModel.AddTag("GameCharacter");
 	}
 
+	/* Register Skill */
 	RegisterSkill(skillId: string): void {
 		// Register Skill to the Character
 		Logger.Log(script, `[NEW STYLE]: Registering Skill ${skillId}`);
@@ -29,23 +32,28 @@ export default class GameCharacter implements IGameCharacter {
 		assert(newSkill, "New Skill is nil");
 	}
 
+	/* Remove all skills from the character */
 	RemoveSkills(): void {
 		this.wcsCharacter.ClearMoveset();
 	}
 
+	/* Take Damage */
 	TakeDamage(damageContainer: DamageContainer): void {
 		Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
 	}
 
+	/* Set Target */
 	SetTarget(target: IGameCharacter): void {
 		Logger.Log(script, "[Super]: Setting Target", target as unknown as string);
 		this.target = target;
 	}
 
+	/* Clear Target */
 	ClearTarget(): void {
 		this.target = undefined;
 	}
 
+	/* Destroy */
 	Destroy(): void {
 		this.wcsCharacter.Destroy();
 	}

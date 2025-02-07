@@ -18,9 +18,10 @@ export default class GameCharacterController {
 
 	// Constructor
 	private constructor() {
-		Logger.Log(script, "GameCharacterController Constructor");
+		Logger.Log(script, "Constructor Start");
+
+		/* Get tagged NPC Characters */
 		const NPCModels = CollectionService.GetTagged("NPCCharacter");
-		Logger.Log(script, "NPC Models", NPCModels);
 		NPCModels.forEach((npcModel) => {
 			const humanoid = npcModel.WaitForChild("Humanoid");
 			assert(humanoid !== undefined, "Humanoid is nil");
@@ -36,7 +37,7 @@ export default class GameCharacterController {
 		}
 	}
 
-	// Create Character (Player or NPC)
+	/* Create Game Character */
 	public static CreateGameCharacter(wcsCharacter: Character, playerData?: IPlayerData) {
 		Logger.Log(script, "[EVENT]: On WCS Character Created", playerData as unknown as string);
 		// Check if the character is a player character
@@ -50,46 +51,41 @@ export default class GameCharacterController {
 		}
 	}
 
-	// Create NPC Character
+	/* Create NPC Character */
 	private static CreateNPCCharacter(wcsCharacter: Character, level: number) {
 		Logger.Log(script, "Create NPC Character", level);
 		const npcCharacter = new NPCCharacter(wcsCharacter, level);
 		this._gameCharacters.set(npcCharacter.characterId, npcCharacter);
 	}
 
-	// Create Player Character
+	/* Create Player Character */
 	private static CreatePlayerCharacter(wcsCharacter: Character, playerData: IPlayerData) {
-		Logger.Log(script, "Create Player Character", playerData as unknown as string);
+		Logger.Log(script, "Creating Player Character");
 		assert(wcsCharacter.Player !== undefined, "Player is nil");
 
 		// Setup Maps
-		//const skillMap = this._createSkillMapFromData(playerData);
 		const skillMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
 		const equipmentMap = new Map<EquipmentSlotId, EquipmentId>();
 		const statsMap = new Map<CharacterStatId, number>();
 
-		const playerCharacter = new PlayerCharacter(
-			wcsCharacter.Player,
-			wcsCharacter,
-			skillMap,
-			equipmentMap,
-			statsMap,
-			playerData.ProgressionStats.Level,
-		);
+		// Create Player Character
+		const playerCharacter = new PlayerCharacter(wcsCharacter.Player, wcsCharacter, playerData);
+
+		// Update Player Character Maps
 		this._gameCharacters.set(tostring(wcsCharacter.Player.UserId), playerCharacter);
 	}
 
-	// Get Game Character
+	/* Get Game Character */
 	public static GetGameCharacter(characterId: string) {
 		return GameCharacterController._gameCharacters.get(characterId);
 	}
 
-	// Get NPC Character
+	/* Get NPC Character */
 	public static GetNPCCharacter(characterId: string): NPCCharacter | undefined {
 		return GameCharacterController._gameCharacters.get(characterId) as NPCCharacter;
 	}
 
-	// Get Player Game Character
+	/* Get Player Character */
 	public static GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
 		const playerCharacter = GameCharacterController._gameCharacters.get(tostring(player.UserId));
 		if (playerCharacter === undefined) {

@@ -16,18 +16,25 @@ function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false
 }
 
 function CreateAnimation(animationID: EAnimationID): Animation {
+	Logger.Log(script, "Create Animation", animationID);
 	const animation = new Instance("Animation");
 	animation.Name = animationID;
 	animation.AnimationId = animationID;
 	return animation;
 }
 
-function CreateAnimationTrack(character: Model, animationID: EAnimationID): AnimationTrack {
+function CreateAnimationTrack(character: Character, animationID: EAnimationID): AnimationTrack | undefined {
+	const characterModel = character.Instance as Model;
+	if (characterModel === undefined) return;
+
 	const animation = CreateAnimation(animationID);
-	const animator = GetAnimator(character);
+	const animator = GetAnimator(characterModel);
 	const animationTrack = animator?.LoadAnimation(animation);
-	assert(animationTrack, "Animation Track not found");
-	animationTrack.Looped = false;
+	if (animationTrack === undefined) {
+		Logger.Log(script, "Animation Track is nil");
+		return;
+	}
+
 	return animationTrack;
 }
 

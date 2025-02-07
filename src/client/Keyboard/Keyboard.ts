@@ -1,7 +1,8 @@
 // Begin: KeyboardController.ts
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
-
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { Requests } from "shared/Remotes/ClientRemotes";
 import { SkillKeyMap } from "./KeyboardMaps";
 import Logger from "shared/Utility/Logger";
 // Set the skills here
@@ -51,6 +52,20 @@ export default class KeyboardController {
 	// Input Began
 	private static InputBegan(input: InputObject, isProcessed: boolean) {
 		if (isProcessed) return; // If the input is processed by another UI, return;
+
+		switch (input.KeyCode) {
+			case Enum.KeyCode.KeypadOne:
+				Requests.SkillSlotAssignmentRequest.SendToServer(4, "Meditate");
+				break;
+			case Enum.KeyCode.KeypadZero:
+				Requests.UnAssignSkillSlotRequest.SendToServer(2);
+				break;
+			case Enum.KeyCode.R:
+				Logger.Log(script, "R Pressed");
+				break;
+			default:
+				break;
+		}
 		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, true);
 	}
 

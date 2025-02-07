@@ -8,4 +8,5 @@ export enum ESoundId {
 	Fly = "rbxassetid://3",
 	Meditate = "rbxassetid://4",
 	Charge = "rbxassetid://5",
+	None = "rbxassetid://6",
 }

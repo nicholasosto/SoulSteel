@@ -21,4 +21,5 @@ export enum EAnimationID {
 	NPC_Patrol = "rbxassetid://16579917495",
 	NPC_Chase = "rbxassetid://94119052222051",
 	NPC_Attack = "rbxassetid://16579917486",
+	EMOTE_SHRUG = "rbxassetid://16467614967",
 }

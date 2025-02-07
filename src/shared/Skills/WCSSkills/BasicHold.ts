@@ -13,7 +13,7 @@ export class BasicHold extends Skill {
 
 		// Create Animation Track
 		const animationId = EAnimationID.SKILL_Fart;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
+		this._animationTrack = CreateAnimationTrack(this.Character, animationId as EAnimationID);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}

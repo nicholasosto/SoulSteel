@@ -10,13 +10,7 @@ export class Fly extends Skill {
 	private _animationTrack: AnimationTrack | undefined;
 
 	protected OnConstructServer(): void {
-		const characterModel = this.Character.Instance as Model;
-
-		// Create Animation Track
-		const animationId = EAnimationID.SKILL_BasicHold;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
-
-		assert(this._animationTrack, "Animation Track is nil");
+		Logger.Log(script, "Constructing Skill ");
 	}
 
 	// 01. CONSTRUCT CLIENT

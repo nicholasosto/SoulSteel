@@ -55,6 +55,11 @@ Responses.SkillMapResponse.Connect((skillSlotMap: Map<number, SkillId>) => {
 	SkillBarInstance.LoadSkills(skillSlotMap);
 });
 
+Responses.SkillSlotAssignmentResponse.Connect((slot: number, skillId: SkillId) => {
+	Logger.Log(script, "[NEW STYLE]: Skill Slot Assignment Response", slot, skillId);
+	SkillBarInstance.AssignSkillToSlot(slot, skillId);
+});
+
 /* ==== Player Events ==== */
 /* Player Info Update */
 Responses.PlayerInfoResponse.Connect((name, level, profilePicId) => {

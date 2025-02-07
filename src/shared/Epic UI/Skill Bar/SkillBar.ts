@@ -36,7 +36,12 @@ export default class SkillBar {
 
 	// Public:  Assign Skill to Slot
 	public AssignSkillToSlot(slot: number, skillId: SkillId) {
-		this._skillButtonMap.get(slot)?.SetSkill(skillId);
+		const currentButton = this._skillButtonMap.get(slot);
+		if (currentButton === undefined) {
+			this._createSkillButton(slot, skillId);
+		} else {
+			currentButton.SetSkill(skillId);
+		}
 	}
 
 	// Public:  Load Skills
@@ -55,9 +60,9 @@ export default class SkillBar {
 	}
 
 	// Public:  Set Slot
-	public SetSlot(slotNumber: number, skillId: SkillId) {
-		this._skillButtonMap.get(slotNumber)?.SetSkill(skillId);
-	}
+	// public SetSlot(slotNumber: number, skillId: SkillId) {
+	// 	this._skillButtonMap.get(slotNumber)?.SetSkill(skillId);
+	// }
 
 	public ClearSlot(slotNumber: number) {
 		this._skillButtonMap.get(slotNumber)?.Destroy();

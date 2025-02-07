@@ -118,6 +118,17 @@ const SkillDefinitions: Record<SkillId, SkillDefinition> = {
 		cooldown: 18,
 		resource: DEFAULT_RESOURCE_MANA,
 	},
+	None: {
+		displayName: "Unassigned",
+		wcsSkillId: "None",
+		skillType: "Utility",
+		description: "No skill assigned.",
+		icon: ImageIds.DefaultIcon,
+		animation: EAnimationID.EMOTE_SHRUG,
+		audio: ESoundId.None,
+		cooldown: 0,
+		resource: DEFAULT_RESOURCE_MANA,
+	},
 	// ... add additional skills here
 };
 

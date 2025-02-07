@@ -108,6 +108,10 @@ export class SkillButton {
 		this._cooldownTime = this._skillDefinition.cooldown;
 	}
 
+	public ClearSkill() {
+		this.SetSkill("None");
+	}
+
 	// Set Parent
 	public Destroy() {
 		this._instance.Destroy();

@@ -14,7 +14,8 @@ type SkillId =
 	| "MultiJump"
 	| "Fly"
 	| "Meditate"
-	| "Charge";
+	| "Charge"
+	| "None";
 
 type SkillResource = {
 	resourceId: ResourceId;

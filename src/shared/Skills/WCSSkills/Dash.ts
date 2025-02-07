@@ -13,13 +13,7 @@ export class Dash extends Skill {
 
 	// Server-Side Construct
 	protected OnConstructServer(): void {
-		// Create Animation Track
-		this._animationTrack = CreateAnimationTrack(
-			this.Character.Instance as Model,
-			EAnimationID.SKILL_Fart,
-		) as AnimationTrack;
-
-		assert(this._animationTrack, "Animation Track is nil");
+		Logger.Log(script, "Constructing Skill ");
 	}
 
 	// Client-Side Start

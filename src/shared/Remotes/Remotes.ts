@@ -35,7 +35,6 @@ enum SignalNames {
 
 /* Remotes */
 const Remotes = Net.Definitions.Create({
-
 	// Player Character
 	PlayerCharacter: Definitions.Namespace({
 		// Level Up
@@ -50,7 +49,7 @@ const Remotes = Net.Definitions.Create({
 		[SignalNames.GameCharacterDestroyedResponse]: Net.Definitions.ServerToClientEvent(),
 		// Target Selected
 		[SignalNames.PlayerCharacterTargetSelected]: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
-	
+
 		[SignalNames.NotifyPlayerResponse]: Net.Definitions.ServerToClientEvent(),
 	}),
 	// Skills
@@ -64,9 +63,8 @@ const Remotes = Net.Definitions.Create({
 		[SignalNames.UnlockSkillResponse]: Net.Definitions.ServerToClientEvent<[skillId: SkillId]>(),
 
 		/* Assign Skill Slot */
-		[SignalNames.SkillSlotAssignmentRequest]:
-			Net.Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
-		[SignalNames.SkillSlotAssignmentResponse]: Net.Definitions.ServerToClientEvent<[] | [error: string]>(),
+		[SignalNames.SkillSlotAssignmentRequest]: Net.Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
+		[SignalNames.SkillSlotAssignmentResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skillId: SkillId]>(),
 
 		/* Unassign Skill Slot */
 		[SignalNames.UnAssignSkillSlotRequest]: Net.Definitions.ClientToServerEvent<[slot: number]>(),

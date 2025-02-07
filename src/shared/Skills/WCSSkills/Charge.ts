@@ -13,8 +13,6 @@ export class Charge extends Skill {
 		const characterModel = this.Character.Instance as Model;
 
 		// Create Animation Track
-		const animationId = EAnimationID.SKILL_BasicHold;
-		this._animationTrack = CreateAnimationTrack(characterModel, animationId as EAnimationID);
 
 		assert(this._animationTrack, "Animation Track is nil");
 	}
