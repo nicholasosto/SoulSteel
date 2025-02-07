@@ -1,8 +1,7 @@
 import { Character, DamageContainer } from "@rbxts/wcs";
 import { TGameCharacter } from "../../shared/Game Character/TGameCharacter";
-import { IGameCharacter } from "../../shared/Game Character/Interfaces";
+import { IGameCharacter } from "../../shared/Game Character/ICharacter";
 import { CreateSkillFromId } from "shared/Skills/WCSHelper";
-import { GetRegisteredSkillConstructor } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 

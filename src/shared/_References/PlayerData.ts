@@ -1,5 +1,5 @@
 import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { CharacterStats } from "shared/Character Resources/iCharacterResource";
+import { CharacterStats } from "shared/Game Character/Character Resources/iCharacterResource";
 import { ProgressionStatsData } from "./ProgressionStats";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 

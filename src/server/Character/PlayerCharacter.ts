@@ -5,14 +5,14 @@ import { Character, DamageContainer } from "@rbxts/wcs";
 
 // Interfaces and Types
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
-import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
-import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+import { CharacterStatId } from "shared/Game Character/Character Resources/iCharacterResource";
+import { IPlayerCharacter } from "shared/Game Character/ICharacter";
 import { IPlayerData, GetSkillSlotMap } from "shared/_References/PlayerData";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 // Classes
 import GameCharacter from "./GameCharacter";
-import { CharacterResource } from "shared/Character Resources/CharacterResource";
+import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
 
 //NET
 import { Responses } from "shared/Remotes/ServerRemotes";

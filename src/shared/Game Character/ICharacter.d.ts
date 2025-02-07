@@ -2,7 +2,7 @@ import { Character, DamageContainer, Skill } from "@rbxts/wcs";
 import { TGameCharacter } from "./TGameCharacter";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
-import { CharacterStatId } from "shared/Character Resources/iCharacterResource";
+import { CharacterStatId } from "shared/Game Character/Character Resources/iCharacterResource";
 
 /* IGameCharacter */
 export interface IGameCharacter {

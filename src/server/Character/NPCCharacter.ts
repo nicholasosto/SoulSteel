@@ -1,6 +1,6 @@
 import GameCharacter from "./GameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { INPCCharacter } from "shared/Game Character/Interfaces";
+import { INPCCharacter } from "shared/Game Character/ICharacter";
 //import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import Logger from "shared/Utility/Logger";
 
