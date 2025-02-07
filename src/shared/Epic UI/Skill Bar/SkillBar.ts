@@ -47,8 +47,6 @@ export default class SkillBar {
 
 	// Public:  Load Skills
 	public LoadSkills(skillSlotMap: Map<number, SkillId>) {
-		Logger.Log(script, "Load Skills", skillSlotMap as unknown as string);
-
 		// Loop through the Skill Slot Map
 		for (const [slot, skillId] of skillSlotMap) {
 			this._createSkillButton(slot, skillId);
@@ -71,7 +69,6 @@ export default class SkillBar {
 	// Private:  createSkillButton
 	private _createSkillButton(slot: number, skillId: SkillId) {
 		let parent: Frame | undefined;
-		Logger.Log(script, "Create Skill Button", slot, skillId);
 		// Get the Parent Frame
 		switch (slot) {
 			case 1:

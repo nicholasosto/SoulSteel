@@ -2,7 +2,7 @@
 import Logger from "shared/Utility/Logger";
 
 // Roblox Services
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage } from "@rbxts/services";
 
 // Manager Imports
 import StorageManager from "shared/Storage Manager/StorageManager";
@@ -16,7 +16,7 @@ import StartPlayerListeners from "server/net/PlayerListeners";
 import GameCharacterController from "./Controllers/GameCharacterController";
 
 // WCS Imports
-import { CreateServer, Character } from "@rbxts/wcs";
+import { CreateServer } from "@rbxts/wcs";
 
 // Create the WCS Server
 const WCSServer = CreateServer();

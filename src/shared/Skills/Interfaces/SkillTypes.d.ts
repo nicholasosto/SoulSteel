@@ -1,4 +1,4 @@
-import { ResourceId } from "../../_References/Resources";
+import { ResourceId } from "../../Game Character/Character Resources/Resources";
 
 // Skill Type
 type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";

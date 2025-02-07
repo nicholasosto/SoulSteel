@@ -1,6 +1,6 @@
 import { EAnimationID } from "shared/Animation/AnimationIndex";
-import { ImageIds } from "shared/_References/ImageIds";
-import { ESoundId } from "shared/_References/Sounds";
+import { ImageIds } from "shared/Epic UI/ImageIds";
+import { ESoundId } from "shared/Audio/Sounds";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";

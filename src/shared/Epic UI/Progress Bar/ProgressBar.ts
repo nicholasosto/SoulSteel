@@ -6,7 +6,6 @@ export default class ProgressBar implements IProgressBar {
 	frame: Frame;
 
 	constructor(frame: Frame) {
-		Logger.Log(script, "Progress Bar Created: ", frame.Name);
 		this.frame = frame;
 	}
 

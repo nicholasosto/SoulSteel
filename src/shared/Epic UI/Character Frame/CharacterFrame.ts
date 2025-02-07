@@ -18,7 +18,7 @@ import StorageManager from "shared/Storage Manager/StorageManager";
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
 import CharacterInfo from "shared/Epic UI/Character Frame/CharacterInfo";
 import Logger from "shared/Utility/Logger";
-import { ResourceId } from "shared/_References/Resources";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 /* Main Class: CharacterFrame */
 export default class CharacterFrame implements ICharacterFrame {

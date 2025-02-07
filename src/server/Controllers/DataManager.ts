@@ -12,7 +12,6 @@ export default class DataManager {
 	private static _instance: DataManager;
 	private static DatastoreId = "SOULSTEEL_2025";
 	private static GameDataStore = DataStoreService.GetDataStore(DataManager.DatastoreId);
-	private static AutoSaveInterval = 15;
 	private static playerAddedConnection: RBXScriptConnection;
 
 	private constructor() {

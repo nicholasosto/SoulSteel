@@ -2,7 +2,7 @@
 import Logger from "shared/Utility/Logger";
 import KeyboardController from "client/Keyboard/Keyboard";
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
-import WcsClient from "./WCS Helpers/WCSClient";
+import WcsClient from "./_WCS/WCSClient";
 
 // Enable Target Selection
 initializeTargetSelection();

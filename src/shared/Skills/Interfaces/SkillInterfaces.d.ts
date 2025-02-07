@@ -1,5 +1,5 @@
 import { SkillType, SkillResource, SkillId } from "./SkillTypes";
-import { ResourceId } from "shared/_References/Resources";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 // Player Skills Data
 interface PlayerSkillsData {

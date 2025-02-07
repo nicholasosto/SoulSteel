@@ -4,10 +4,8 @@ import { Character } from "@rbxts/wcs";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import GameCharacter from "server/Character/GameCharacter";
 import NPCCharacter from "server/Character/NPCCharacter";
-import { IPlayerData } from "shared/_References/PlayerData";
-import { TGameCharacter } from "shared/Game Character/TGameCharacter";
-import { Responses } from "shared/Remotes/ServerRemotes";
-import { IPlayerCharacter, IGameCharacter } from "shared/Game Character/ICharacter";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { TGameCharacter } from "shared/Game Character/CharacterIndex";
 
 export default class GameCharacterController {
 	// Static Instance
@@ -59,7 +57,7 @@ export default class GameCharacterController {
 			const tModel = npcModel as TGameCharacter;
 			const level = npcModel.GetAttribute("Level") as number | 1;
 			assert(tModel.Humanoid !== undefined, "Humanoid is nil");
-			const wcsCharacter = GameCharacterController.CreateNPCCharacter(tModel, level);
+			GameCharacterController.CreateNPCCharacter(tModel, level);
 		});
 
 		const CurrentNPCModels = CollectionService.GetTagged("NPCCharacter");
@@ -68,7 +66,7 @@ export default class GameCharacterController {
 			const tModel = npcModel as TGameCharacter;
 			const level = npcModel.GetAttribute("Level") as number | 1;
 			assert(tModel.Humanoid !== undefined, "Humanoid is nil");
-			const wcsCharacter = GameCharacterController.CreateNPCCharacter(tModel, level);
+			GameCharacterController.CreateNPCCharacter(tModel, level);
 		});
 	}
 

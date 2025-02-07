@@ -1,5 +1,5 @@
-import { IPlayerData } from "shared/_References/PlayerData";
-import { ResourceId } from "shared/_References/Resources";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 
 // Character Resource Class

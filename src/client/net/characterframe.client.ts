@@ -6,29 +6,23 @@ import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 
 /* Remotes */
-import { Requests, Responses } from "shared/Remotes/ClientRemotes";
+import { Responses } from "shared/Remotes/ClientRemotes";
 
 /* GUI Components */
-
 import CharacterFrame from "shared/Epic UI/Character Frame/CharacterFrame";
-
-/* Interfaces */
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 /* WCS Module*/
 import { Character } from "@rbxts/wcs";
-import { ResourceId } from "shared/_References/Resources";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 /*================== Objects  ================================= */
 
 /* Remotes */
 
-/* Local Player and WCS Character */
-const localPlayer = Players.LocalPlayer;
+/* WCS Character */
 let _wcsCharacter: Character | undefined;
 
-/* GUI Component Instances */
-
+/* Character Frame Instance */
 const CharacterFrameInstance = new CharacterFrame();
 
 /*================== Event Handlers  ================================= */
@@ -36,7 +30,6 @@ const CharacterFrameInstance = new CharacterFrame();
 /* ==== Character Events ==== */
 /* Character Created */
 Character.CharacterCreated.Connect((wcsCharacter) => {
-	Logger.Log(script, "[NEW STYLE]: Character Created");
 	_wcsCharacter = wcsCharacter;
 });
 

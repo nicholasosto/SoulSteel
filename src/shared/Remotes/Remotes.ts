@@ -1,6 +1,6 @@
 import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { ResourceId } from "shared/_References/Resources";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 /* Payloads */
 interface Payloads {

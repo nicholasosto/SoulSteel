@@ -19,7 +19,4 @@ const StatusDirectory = ParentWCSDirectory.WaitForChild("WCSStatus");
 WcsClient.RegisterDirectory(SkillsDirectorory);
 WcsClient.RegisterDirectory(StatusDirectory);
 
-// Start the Client
-Logger.Log(script, "WCS Client Started: ", WcsClient as unknown as string);
-
 export default WcsClient;

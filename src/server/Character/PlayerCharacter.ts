@@ -4,10 +4,9 @@ import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 
 // Interfaces and Types
-import { IPlayerCharacter } from "shared/Game Character/ICharacter";
-import { IPlayerData } from "shared/_References/PlayerData";
+import { IPlayerCharacter, ISkillManager } from "shared/Game Character/CharacterIndex";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { ISkillManager } from "shared/Game Character/ICharacter";
 
 // Classes
 import GameCharacter from "./GameCharacter";
@@ -18,11 +17,8 @@ import SkillsManager from "server/Character/Managers/SkillsManager";
 
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
-	public level: number;
 	public currentExperience: number;
 
-	//public skillSlotMap = new Map<number, SkillId>();
-	public unlockedSkills: SkillId[] = [];
 	/* Managers */
 	public skillManager: ISkillManager;
 
@@ -31,17 +27,16 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	constructor(player: Player, wcsCharacter: Character, playerData: IPlayerData) {
 		super(wcsCharacter);
+		// Set Player
 		this.player = player;
-
-		// Managers #TODO - Add Progression, Equipment, Inventory, etc.
-		this.skillManager = new SkillsManager(wcsCharacter);
 
 		// Initialize the Player Character
 		this.level = playerData.ProgressionStats.Level;
 		this.currentExperience = playerData.ProgressionStats.Experience;
-
 		this.displayName = player.Name;
-		// Initialize the Skills
+
+		// Managers #TODO - Add Progression, Equipment, Inventory, etc.
+		this.skillManager = new SkillsManager(wcsCharacter);
 		this.skillManager.InitializeSkills(playerData);
 	}
 
@@ -56,6 +51,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.HealthResource.SetCurrent(this.HealthResource.Current - DamageContainer.Damage);
 	}
 
+	/* Destroy */
 	public Destroy(): void {
 		Logger.Log(script, "Destroying Player Character");
 		super.Destroy();

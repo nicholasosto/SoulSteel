@@ -12,7 +12,6 @@ import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 /* WCS Module*/
 import { Character } from "@rbxts/wcs";
-import { ResourceId } from "shared/_References/Resources";
 
 /*==================   Objects       ================================= */
 
@@ -26,7 +25,6 @@ const SkillBarInstance = new SkillBar();
 
 /* Character Created */
 Character.CharacterCreated.Connect((wcsCharacter) => {
-	Logger.Log(script, "[NEW STYLE]: Character Created");
 	_wcsCharacter = wcsCharacter;
 	SkillBarInstance.SetWCSCharacter(_wcsCharacter);
 	Requests.SkillMapRequest.SendToServer();
@@ -39,13 +37,11 @@ Character.CharacterDestroyed.Connect(() => {
 
 /* Skill Map  */
 Responses.SkillMapResponse.Connect((skillSlotMap: Map<number, SkillId>) => {
-	Logger.Log(script, "[NEW STYLE]: Skill Assignment Response", skillSlotMap as unknown as string);
 	SkillBarInstance.LoadSkills(skillSlotMap);
 });
 
 /* Skill Slot Assignment */
 Responses.SkillSlotAssignmentResponse.Connect((slot: number, skillId: SkillId) => {
-	Logger.Log(script, "[NEW STYLE]: Skill Slot Assignment Response", slot, skillId);
 	SkillBarInstance.AssignSkillToSlot(slot, skillId);
 	Requests.SkillMapRequest.SendToServer();
 });

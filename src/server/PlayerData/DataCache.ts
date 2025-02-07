@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { IPlayerData } from "shared/_References/PlayerData";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 import { DataTemplate } from "./DataTemplate";
 
 // Data Cache Class for use in the DataManager

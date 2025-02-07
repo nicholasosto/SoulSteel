@@ -48,32 +48,33 @@ export default function StartSkillListeners() {
 	});
 }
 
-export function SendCharacterFrameUpdate(player: Player): void {
-	// Get the player character
-	const playerCharacter = GameCharacterController.GetGameCharacter<IGameCharacter>(
-		tostring(player.UserId),
-	) as IPlayerCharacter;
-	// Update the character frame
-	Responses.PlayerInfoResponse.SendToPlayer(
-		player,
-		playerCharacter.displayName,
-		playerCharacter.level,
-		"ProfilePicId",
-	);
-	// Update the health resource
-	Responses.PlayerResourceResponse.SendToPlayer(
-		player,
-		"Health",
-		playerCharacter.HealthResource.Current,
-		playerCharacter.HealthResource.MaxValue,
-	);
-}
+/* Send Character Frame Update */
+// export function SendCharacterFrameUpdate(player: Player): void {
+// 	// Get the player character
+// 	const playerCharacter = GameCharacterController.GetGameCharacter<IGameCharacter>(
+// 		tostring(player.UserId),
+// 	) as IPlayerCharacter;
+// 	// Update the character frame
+// 	Responses.PlayerInfoResponse.SendToPlayer(
+// 		player,
+// 		playerCharacter.displayName,
+// 		playerCharacter.level,
+// 		"ProfilePicId",
+// 	);
+// 	// Update the health resource
+// 	Responses.PlayerResourceResponse.SendToPlayer(
+// 		player,
+// 		"Health",
+// 		playerCharacter.HealthResource.Current,
+// 		playerCharacter.HealthResource.MaxValue,
+// 	);
+// }
 
-export function SendSkillBarMap(player: Player): void {
-	// Get the player character
-	const playerCharacter = GameCharacterController.GetGameCharacter<IGameCharacter>(
-		tostring(player.UserId),
-	) as IPlayerCharacter;
-	// Update the skill bar
-	Responses.SkillMapResponse.SendToPlayer(player, playerCharacter.skillManager.SkillMap);
-}
+// export function SendSkillBarMap(player: Player): void {
+// 	// Get the player character
+// 	const playerCharacter = GameCharacterController.GetGameCharacter<IGameCharacter>(
+// 		tostring(player.UserId),
+// 	) as IPlayerCharacter;
+// 	// Update the skill bar
+// 	Responses.SkillMapResponse.SendToPlayer(player, playerCharacter.skillManager.SkillMap);
+// }

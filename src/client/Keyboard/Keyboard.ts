@@ -83,7 +83,6 @@ export default class KeyboardController {
 
 	// Main Function: onKeyPress
 	private static toggleSkillOnKeyPress(key: Enum.KeyCode, begin: boolean): void {
-		Logger.Log(script, "Key Pressed: " + key.Name);
 		const skillName = SkillKeyMap.get(key) as string;
 		if (skillName === undefined) return;
 		const character = Character.GetLocalCharacter() as Character;

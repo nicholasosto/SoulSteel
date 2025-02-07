@@ -1,53 +1,53 @@
-// Inventory Types
-enum InventoryType {
-	Weapon = "Weapon",
-	Armor = "Armor",
-	Helmet = "Helmet",
-	Familiar = "Familiar",
-	Accessory = "Accessory",
-	Skill = "Skill",
-	Consumable = "Consumable",
-	Other = "Other",
-}
+// // Inventory Types
+// enum InventoryType {
+// 	Weapon = "Weapon",
+// 	Armor = "Armor",
+// 	Helmet = "Helmet",
+// 	Familiar = "Familiar",
+// 	Accessory = "Accessory",
+// 	Skill = "Skill",
+// 	Consumable = "Consumable",
+// 	Other = "Other",
+// }
 
-enum ItemId {
-	// Weapons
-	ShortSword = "ShortSword",
-	LongSword = "LongSword",
-	// Armor
-	LeatherArmor = "LeatherArmor",
-	ChainMail = "ChainMail",
-	// Helmets
-	LeatherHelmet = "LeatherHelmet",
-	ChainHelmet = "ChainHelmet",
-}
+// enum ItemId {
+// 	// Weapons
+// 	ShortSword = "ShortSword",
+// 	LongSword = "LongSword",
+// 	// Armor
+// 	LeatherArmor = "LeatherArmor",
+// 	ChainMail = "ChainMail",
+// 	// Helmets
+// 	LeatherHelmet = "LeatherHelmet",
+// 	ChainHelmet = "ChainHelmet",
+// }
 
-interface IInventoryItem {
-	inventoryType: InventoryType;
-	itemId: ItemId;
-	imageAssetId: string;
-}
+// interface IInventoryItem {
+// 	inventoryType: InventoryType;
+// 	itemId: ItemId;
+// 	imageAssetId: string;
+// }
 
-// Temp Types for now
-type EquipmentId = string; //TODO: Add EquipmentId's
-type EquipmentSlotId = string; //TODO: Add EquipmentSlotId's
-type FamiliarId = string; //TODO: Add FamiliarId's
-type AccessoryId = string; //TODO: Add AccessoryId's
-type WeaponId = string; //TODO: Add WeaponId's
+// // Temp Types for now
+// type EquipmentId = string; //TODO: Add EquipmentId's
+// type EquipmentSlotId = string; //TODO: Add EquipmentSlotId's
+// type FamiliarId = string; //TODO: Add FamiliarId's
+// type AccessoryId = string; //TODO: Add AccessoryId's
+// type WeaponId = string; //TODO: Add WeaponId's
 
-class InventoryItem implements IInventoryItem {
-	public inventoryType: InventoryType;
-	public itemId: ItemId;
-	public imageAssetId: string;
+// class InventoryItem implements IInventoryItem {
+// 	public inventoryType: InventoryType;
+// 	public itemId: ItemId;
+// 	public imageAssetId: string;
 
-	constructor(inventoryType: InventoryType, itemId: ItemId, imageAssetId: string) {
-		this.inventoryType = inventoryType;
-		this.itemId = itemId;
-		this.imageAssetId = imageAssetId;
-	}
-}
+// 	constructor(inventoryType: InventoryType, itemId: ItemId, imageAssetId: string) {
+// 		this.inventoryType = inventoryType;
+// 		this.itemId = itemId;
+// 		this.imageAssetId = imageAssetId;
+// 	}
+// }
 
-export { InventoryType, ItemId, InventoryItem, EquipmentId, EquipmentSlotId, FamiliarId, AccessoryId, WeaponId };
+// export { InventoryType, ItemId, InventoryItem, EquipmentId, EquipmentSlotId, FamiliarId, AccessoryId, WeaponId };
 
 // const DefaultInventory: Map<InventoryType, InventoryItem> = new Map([
 // 	[InventoryType.Weapon, new InventoryItem(InventoryType.Weapon, ItemId.ShortSword, "rbxassetid://0")],

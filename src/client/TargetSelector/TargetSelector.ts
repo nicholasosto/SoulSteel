@@ -1,5 +1,5 @@
 // TargetSelector.ts
-import { Players, Workspace, UserInputService, CollectionService } from "@rbxts/services";
+import { Players, Workspace, UserInputService } from "@rbxts/services";
 import { Requests } from "shared/Remotes/ClientRemotes";
 import Logger from "shared/Utility/Logger";
 
