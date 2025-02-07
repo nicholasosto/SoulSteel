@@ -1,6 +1,6 @@
 import { CollectionService } from "@rbxts/services";
 import { EHumanoidDescription } from "shared/Humanoid Factory/Humanoids";
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
 import Logger from "shared/Utility/Logger";
 
 export class HumanoidDescriptionFactory {

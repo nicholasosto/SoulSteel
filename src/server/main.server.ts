@@ -5,8 +5,12 @@ import Logger from "shared/Utility/Logger";
 import { Players, ReplicatedStorage } from "@rbxts/services";
 
 // Manager Imports
-import { StorageManager } from "shared/Storage Manager/StorageManager";
-import { DataManager } from "server/Controllers/DataManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
+import DataManager from "server/Controllers/DataManager";
+
+// Event Listeners
+import StartSkillListeners from "server/net/SkillListeners";
+import StartPlayerListeners from "server/net/PlayerListeners";
 
 // Controllers
 import GameCharacterController from "./Controllers/GameCharacterController";
@@ -31,24 +35,11 @@ WCSServer.RegisterDirectory(StatusDirectory);
 // Start the WCS Server
 WCSServer.Start();
 
+// Start the Player Listeners
+StartPlayerListeners();
+StartSkillListeners();
+
 // Start the Managers
 DataManager.Start();
 StorageManager.Start();
 GameCharacterController.Start();
-
-// Player Added Connection
-Players.PlayerAdded.Connect((player) => {
-	player.CharacterAdded.Connect((character) => {
-		//Create the WCS Character
-		const wcsCharacter = new Character(character);
-
-		const playerData = DataManager.GetDataCache(tostring(player.UserId));
-		GameCharacterController.CreateGameCharacter(wcsCharacter, playerData._playerData);
-
-		// Humanoid Died Connection
-		wcsCharacter.Humanoid.Died.Once(() => {
-			Logger.Log(script, "Character Died");
-			GameCharacterController.DestroyGameCharacter(tostring(player.UserId));
-		});
-	});
-});

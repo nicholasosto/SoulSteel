@@ -19,7 +19,7 @@ import { Responses } from "shared/Remotes/ServerRemotes";
 
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
-	public level: number = 1;
+	public level: number;
 	public currentExperience: number = 0;
 
 	public skillSlotMap = new Map<number, SkillId>();
@@ -28,10 +28,17 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public statsMap = new Map<CharacterStatId, number>();
 
 	public HealthResource: CharacterResource = new CharacterResource("Health");
+	public ExpericenceResource: CharacterResource = new CharacterResource("Experience");
 
 	constructor(player: Player, wcsCharacter: Character, playerData: IPlayerData) {
 		super(wcsCharacter);
 		this.player = player;
+		this.level = playerData.ProgressionStats.Level;
+		this.currentExperience = playerData.ProgressionStats.Experience;
+		this.ExpericenceResource.SetCurrent(this.currentExperience);
+		this.ExpericenceResource.SetMax(playerData.ProgressionStats.ExperienceToNextLevel);
+		this.HealthResource.SetCurrent(playerData.CharacterStats.Constitution * 10);
+		this.HealthResource.SetMax(playerData.CharacterStats.Constitution * 10);
 		this.skillSlotMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
 		this.equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
 		this.statsMap = new Map<CharacterStatId, number>();
@@ -45,7 +52,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		Logger.Log(script, `Player Character ${this.displayName} Created`);
 
-		Responses.PlayerInfoResponse.SendToPlayer(this.player, this.displayName, this.level, "ProfilePicId");
+		this._updateSkillBar();
+		this._updateCharacterFrame();
 	}
 
 	public SetTarget(target: GameCharacter): void {
@@ -55,10 +63,16 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	}
 
 	public AssignSkillToSlot(slot: number, skillId: SkillId): void {
-		Logger.Log(script, `[NEW STYLE]: Assigning Skill ${skillId} to Slot ${slot}`);
-		this.RegisterSkill(skillId);
+		Logger.Log(script, `[ AssignSkillToSlot() ]: Assigning Skill ${skillId} to Slot ${slot}`);
+
+		/* Register Skill if needed */
+		if (this.wcsCharacter.GetSkillFromString(skillId) === undefined) this.RegisterSkill(skillId);
+
+		/* Assign Skill to Slot */
 		this.skillSlotMap.set(slot, skillId);
-		Responses.SkillSlotAssignmentResponse.SendToPlayer(this.player, slot, skillId);
+
+		/* Update Skill Bar */
+		this._updateSkillBar();
 	}
 
 	public RemoveSkillFromSlot(slot: number): void {
@@ -102,6 +116,26 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			"Health",
 			this.HealthResource.Current,
 			this.HealthResource.MaxValue,
+		);
+	}
+
+	private _updateSkillBar(): void {
+		Responses.SkillMapResponse.SendToPlayer(this.player, this.GetSkillSlotMap());
+	}
+
+	private _updateCharacterFrame(): void {
+		Responses.PlayerInfoResponse.SendToPlayer(this.player, this.displayName, this.level, "ProfilePicId");
+		Responses.PlayerResourceResponse.SendToPlayer(
+			this.player,
+			"Health",
+			this.HealthResource.Current,
+			this.HealthResource.MaxValue,
+		);
+		Responses.PlayerResourceResponse.SendToPlayer(
+			this.player,
+			"Experience",
+			this.ExpericenceResource.Current,
+			this.ExpericenceResource.MaxValue,
 		);
 	}
 

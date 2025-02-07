@@ -1,33 +1,39 @@
-import { Skill, SkillDecorator } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
-import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
+import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
+import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+
+const skillDefinition = SkillDefinitions.BasicRanged;
+const baseDamage = skillDefinition.baseDamage ?? 14;
+const animaionObject = (new Instance("Animation").AnimationId = SkillDefinitions.BasicRanged.animation);
+
+let textTest = "TextTest: ";
 
 @SkillDecorator
 export class BasicRanged extends Skill {
 	private _skillDefinition = SkillDefinitions.BasicRanged;
-	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
+	private _damageContainer = this.CreateDamageContainer(baseDamage);
 	private _animationTrack: AnimationTrack | undefined;
 
+	protected OnConstruct(): void {
+		Logger.Log(script, "[RANGED]: Construct", textTest);
+		super.OnConstruct();
+	}
+
 	protected OnConstructServer(): void {
-		const characterModel = this.Character.Instance as Model;
 
-		// Create Animation Track
-		const animationId = EAnimationID.SKILL_BasicRanged;
-		this._animationTrack = CreateAnimationTrack(this.Character, animationId as EAnimationID);
-
-		assert(this._animationTrack, "Animation Track is nil");
+		textTest += " [On Construct Server], ";
 	}
 
 	protected OnStartClient(): void {
-		Logger.Log(script, "Client Started: ", this._skillDefinition.displayName);
+		Logger.Log(script, "RANGED [Clinet-Start]:", textTest);
 	}
 
 	protected OnStartServer(): void {
-		Logger.Log(script, "Server Started: ", this._skillDefinition as unknown as string);
-
-		//this._animationTrack?.Play();
+		Logger.Log(script, "RANGED [Server-Start]:", textTest);
 	}
 
-	protected OnEndServer(): void {}
+	protected OnEndServer(): void {
+		Logger.Log(script, "RANGED [Server-End]:", textTest);
+	}
 }

@@ -1,8 +1,6 @@
-import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
-import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import Logger from "shared/Utility/Logger";
-
+import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
 @SkillDecorator
 export class MultiJump extends Skill {
 	private _skillDefinition = SkillDefinitions.MultiJump;

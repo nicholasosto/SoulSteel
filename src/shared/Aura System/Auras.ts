@@ -1,5 +1,5 @@
 /*
-import { StorageManager } from "shared/_References/Managers/StorageManager";
+import StorageManager from "shared/_References/Managers/StorageManager";
 import { PackageIndex } from "shared/_References/Indexes/MasterIndex";
 import Logger from "shared/Utility/Logger";
 

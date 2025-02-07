@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
 import Signals, { SignalNames } from "shared/Remotes/Remotes";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";

@@ -10,7 +10,7 @@ import { SkillButton } from "./SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
 import { Character } from "@rbxts/wcs";
 
 /* References */
@@ -38,6 +38,7 @@ export default class SkillBar {
 	public AssignSkillToSlot(slot: number, skillId: SkillId) {
 		const currentButton = this._skillButtonMap.get(slot);
 		if (currentButton === undefined) {
+			Logger.Log(script, "No Button Found creating new one");
 			this._createSkillButton(slot, skillId);
 		} else {
 			currentButton.SetSkill(skillId);
@@ -59,14 +60,12 @@ export default class SkillBar {
 		this.wcsCharacter = wcsCharacter;
 	}
 
-	// Public:  Set Slot
-	// public SetSlot(slotNumber: number, skillId: SkillId) {
-	// 	this._skillButtonMap.get(slotNumber)?.SetSkill(skillId);
-	// }
-
-	public ClearSlot(slotNumber: number) {
-		this._skillButtonMap.get(slotNumber)?.Destroy();
-		// TODO:  Remove the skill from the slots ect
+	public ClearSlot(slot: number) {
+		const skillButton = this._skillButtonMap.get(slot);
+		if (skillButton !== undefined) {
+			skillButton.Destroy();
+		}
+		this._createSkillButton(slot, "None");
 	}
 
 	// Private:  createSkillButton
@@ -101,7 +100,6 @@ export default class SkillBar {
 
 		// Connect the Skill Button and add it to the map
 		this._skillConnectionMap.get(slot)?.Disconnect();
-
 		const connection = this._skillButtonMap.get(slot)?.ButtonInstance.Activated.Connect(() => {
 			this._skillButtonMap.get(slot)?.StartCooldown();
 			this.wcsCharacter?.GetSkillFromString(skillId)?.Start();
@@ -112,6 +110,9 @@ export default class SkillBar {
 
 	// Destroy
 	public Destroy() {
+		this._skillConnectionMap.forEach((connection) => {
+			connection?.Disconnect();
+		});
 		this._instance.Destroy();
 	}
 }

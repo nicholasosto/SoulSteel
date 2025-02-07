@@ -1,7 +1,6 @@
-import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
-import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import Logger from "shared/Utility/Logger";
+import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
 
 @SkillDecorator
 export class Charge extends Skill {
@@ -9,26 +8,24 @@ export class Charge extends Skill {
 	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
 	private _animationTrack: AnimationTrack | undefined;
 
+	protected OnConstruct(): void {
+		Logger.Log(script, "Shared Construct", this._skillDefinition as unknown as string);
+	}
+
 	protected OnConstructServer(): void {
-		const characterModel = this.Character.Instance as Model;
-
-		// Create Animation Track
-
-		assert(this._animationTrack, "Animation Track is nil");
+		Logger.Log(script, "Server Constructor", this._skillDefinition as unknown as string);
+		//super.OnConstructServer();
 	}
 
-	// 01. CONSTRUCT CLIENT
-	public OnConstructClient(): void {
-		Logger.Log(script, "- Client");
+	protected OnStartClient(): void {
+		Logger.Log(script, "Client Start", this._skillDefinition as unknown as string);
 	}
 
-	// MOVE START
-	public OnStartServer() {
-		//this._animationTrack?.Play();
+	protected OnStartServer(): void {
+		Logger.Log(script, "Server Started: ");
 	}
 
-	// END SERVER
-	public OnEndServer() {
-		Logger.Log(script, "End Server");
+	protected OnEndServer(): void {
+		Logger.Log(script, "Server Ended: ");
 	}
 }

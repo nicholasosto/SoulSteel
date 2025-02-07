@@ -1,9 +1,6 @@
-import { Skill, SkillDecorator } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";;
-import { AttachEffect, EParticleName } from "shared/_References/Particles";
-import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
-import { EAttachmentName } from "shared/_References/Attachments";
+import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
 
 @SkillDecorator
 export class Dash extends Skill {
@@ -11,25 +8,24 @@ export class Dash extends Skill {
 	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
 	private _animationTrack: AnimationTrack | undefined;
 
-	// Server-Side Construct
+	protected OnConstruct(): void {
+		Logger.Log(script, "Shared Construct", this._skillDefinition as unknown as string);
+	}
+
 	protected OnConstructServer(): void {
-		Logger.Log(script, "Constructing Skill ");
+		Logger.Log(script, "Server Constructor", this._skillDefinition as unknown as string);
+		//super.OnConstructServer();
 	}
 
-	// Client-Side Start
 	protected OnStartClient(): void {
-		Logger.Log(script, "Client Started: ", this._skillDefinition.displayName);
-		const characterModel = this.Character.Instance as Model;
-
-		AttachEffect(characterModel, EParticleName.Blood_Wound, EAttachmentName.FaceFront, 3);
+		Logger.Log(script, "Client Start", this._skillDefinition as unknown as string);
 	}
 
-	// Server-Side Start
 	protected OnStartServer(): void {
-		Logger.Log(script, "Server Started: ", this._skillDefinition.displayName);
-		//this._animationTrack?.Play();
+		Logger.Log(script, "Server Started: ");
 	}
 
-	// Server-Side Update
-	protected OnEndServer(): void {}
+	protected OnEndServer(): void {
+		Logger.Log(script, "Server Ended: ");
+	}
 }

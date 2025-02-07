@@ -1,6 +1,6 @@
 // Utility
 import Logger from "shared/Utility/Logger";
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
 
 // Types
 import { TSkillButton } from "shared/Epic UI/Skill Bar/TSkillButton";

@@ -14,6 +14,7 @@ function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
 	skillDefinitionMap.set("Fly", SkillDefinitions.Fly);
 	skillDefinitionMap.set("Meditate", SkillDefinitions.Meditate);
 	skillDefinitionMap.set("Charge", SkillDefinitions.Charge);
+	skillDefinitionMap.set("None", SkillDefinitions.None);
 	// ... add additional skills here
 
 	return skillDefinitionMap;

@@ -7,7 +7,7 @@ import { DataCache } from "server/PlayerData/DataCache";
 
 const PlayerDataRegistry = new Map<string, DataCache>();
 
-export class DataManager {
+export default class DataManager {
 	// Singleton
 	private static _instance: DataManager;
 	private static DatastoreId = "SOULSTEEL_2025";

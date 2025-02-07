@@ -4,7 +4,7 @@
 // import { PlayerSkillsData, SkillData } from "shared/Skills/Interfaces/SkillInterfaces";
 // import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 // import { getSkillDefinitionMap } from "shared/Skills/Data/SkillHelpers";
-// import { StorageManager } from "shared/_References/Managers/StorageManager";
+// import StorageManager from "shared/_References/Managers/StorageManager";
 // import { Character, Skill } from "@rbxts/wcs";
 // import { GridItemFrame } from "../GridItem/GridItemIndex";
 

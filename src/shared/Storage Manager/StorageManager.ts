@@ -2,7 +2,7 @@ import { ReplicatedStorage, InsertService, RunService, ContextActionService } fr
 import { PackageIds } from "../_References/Packages";
 import Logger from "shared/Utility/Logger";
 
-export class StorageManager {
+export default class StorageManager {
 	private static _instance: StorageManager;
 	private _fullyLoaded: boolean = false;
 

@@ -1,8 +1,10 @@
 import { Character, DamageContainer } from "@rbxts/wcs";
 import { TGameCharacter } from "../../shared/Game Character/TGameCharacter";
 import { IGameCharacter } from "../../shared/Game Character/Interfaces";
+import { CreateSkillFromId } from "shared/Skills/WCSHelper";
 import { GetRegisteredSkillConstructor } from "@rbxts/wcs";
 import Logger from "shared/Utility/Logger";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 export default class GameCharacter implements IGameCharacter {
 	characterId: string;
@@ -23,13 +25,13 @@ export default class GameCharacter implements IGameCharacter {
 	}
 
 	/* Register Skill */
-	RegisterSkill(skillId: string): void {
+	RegisterSkill(skillId: SkillId): void {
 		// Register Skill to the Character
-		Logger.Log(script, `[NEW STYLE]: Registering Skill ${skillId}`);
-		const skillConstructor = GetRegisteredSkillConstructor(skillId);
-		assert(skillConstructor, "Skill Constructor is nil");
-		const newSkill = new skillConstructor(this.wcsCharacter);
-		assert(newSkill, "New Skill is nil");
+		if (this.wcsCharacter.GetSkillFromString(skillId)) {
+			Logger.Log(script, `[NEW STYLE]: Skill ${skillId} already registered`);
+			return;
+		}
+		CreateSkillFromId(skillId, this.wcsCharacter);
 	}
 
 	/* Remove all skills from the character */

@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { EAttachmentName } from "./Attachments";
-import { StorageManager } from "../Storage Manager/StorageManager";
+import StorageManager from "../Storage Manager/StorageManager";
 import { Debris } from "@rbxts/services";
 
 // Particle Names

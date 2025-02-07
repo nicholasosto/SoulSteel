@@ -12,7 +12,7 @@ import { Players } from "@rbxts/services";
 import { TCharacterFrame, ICharacterInfo, IProgressBar, ICharacterFrame } from "./iCharacterFrame";
 
 // Utility
-import { StorageManager } from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage Manager/StorageManager";
 
 // Sub-Modules
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
