@@ -63,8 +63,10 @@ const Remotes = Net.Definitions.Create({
 		[SignalNames.UnlockSkillResponse]: Net.Definitions.ServerToClientEvent<[skillId: SkillId]>(),
 
 		/* Assign Skill Slot */
-		[SignalNames.SkillSlotAssignmentRequest]: Net.Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
-		[SignalNames.SkillSlotAssignmentResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skillId: SkillId]>(),
+		[SignalNames.SkillSlotAssignmentRequest]:
+			Net.Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
+		[SignalNames.SkillSlotAssignmentResponse]:
+			Net.Definitions.ServerToClientEvent<[slot: number, skillId: SkillId]>(),
 
 		/* Unassign Skill Slot */
 		[SignalNames.UnAssignSkillSlotRequest]: Net.Definitions.ClientToServerEvent<[slot: number]>(),

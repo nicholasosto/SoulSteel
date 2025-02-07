@@ -6,6 +6,7 @@ import Logger from "shared/Utility/Logger";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 export default class GameCharacter implements IGameCharacter {
+	level: number = 1;
 	characterId: string;
 	displayName: string;
 	characterModel?: TGameCharacter;

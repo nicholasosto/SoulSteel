@@ -3,9 +3,12 @@ import { TGameCharacter } from "./TGameCharacter";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { EquipmentId, EquipmentSlotId } from "shared/_References/Inventory";
 import { CharacterStatId } from "shared/Game Character/Character Resources/iCharacterResource";
+import { CharacterResource } from "./Character Resources/CharacterResource";
+import { IPlayerData } from "shared/_References/PlayerData";
 
 /* IGameCharacter */
 export interface IGameCharacter {
+	level: number;
 	characterId: string;
 	displayName: string;
 	characterModel?: TGameCharacter;
@@ -22,6 +25,16 @@ export interface IGameCharacter {
 	Destroy(): void;
 }
 
+/* Test Interface for SkillManager */
+export interface ISkillManager {
+	// Skills
+	SkillMap: Map<number, SkillId>;
+	UnlockedSkills: Array<SkillId>;
+	InitializeSkills(playerData: IPlayerData): void;
+	AssignSkillToSlot(slot: number, skillId: SkillId): void;
+	RemoveSkillFromSlot(slot: number): void;
+}
+
 /* IPlayerCharacter */
 export interface IPlayerCharacter extends IGameCharacter {
 	// Player
@@ -29,26 +42,13 @@ export interface IPlayerCharacter extends IGameCharacter {
 	level: number;
 	currentExperience: number;
 
-	/* Holds the equipped skills for the player */
-	skillSlotMap: Map<number, SkillId>;
+	// Resources
+	HealthResource: CharacterResource;
 
-	/* Holds the equipped equipment for the player */
-	equipmentSlotMap: Map<EquipmentSlotId, EquipmentId>;
-
-	/* Holds the player's core stats/character attributes */
-	statsMap: Map<CharacterStatId, number>;
+	// Managers
+	skillManager: ISkillManager;
 
 	// Skills
-	AssignSkillToSlot(slot: number, skillId: SkillId): void;
-	RemoveSkillFromSlot(slot: number): void;
-	GetSkillSlotMap(): Map<number, SkillId>;
-	GetUnlockedSkills(): Array<SkillId>;
-
-	// Equipment
-	EquipItem(equipmentId: EquipmentId): void;
-	UnequipItem(equipmentSlot: EquipmentSlotId): void;
-	//GetEquippedItems(): Array<Item>;
-
 	// Combat
 	OnDeath(): void;
 	OnTakeDamage(DamageContainer: DamageContainer): void;
