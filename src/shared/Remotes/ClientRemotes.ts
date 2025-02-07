@@ -5,35 +5,34 @@
  */
 
 /* Imports */
-import Remotes, { SignalNames, RemoteNames } from "shared/Remotes/Remotes";
+import Remotes, { SignalNames } from "shared/Remotes/Remotes";
 
 /* Namespaces */
-const nsPlayer = Remotes.Client.GetNamespace("Player");
 const nsPlayerCharacter = Remotes.Client.GetNamespace("PlayerCharacter");
 const nsSkills = Remotes.Client.GetNamespace("Skills");
 
-/* Player Remotes */
-const PlayerRemotes = {
-	LevelUp: nsPlayer.Get(SignalNames.PlayerLevelUp),
-	ResourceUpdate: nsPlayer.Get(SignalNames.PlayerResourceUpdate),
-	InfoUpdate: nsPlayer.Get(SignalNames.PlayerInfoUpdate),
+/* Skill Responses */
+const Responses = {
+	/* Skills */
+	SkillMapResponse: nsSkills.Get(SignalNames.SkillMapResponse),
+	SkillSlotAssignmentResponse: nsSkills.Get(SignalNames.SkillSlotAssignmentResponse),
+
+	/* Player Info */
+	PlayerInfoResponse: nsPlayerCharacter.Get(SignalNames.PlayerInfoResponse),
+	PlayerLevelUpResponse: nsPlayerCharacter.Get(SignalNames.PlayerLevelUpResponse),
+	PlayerResourceResponse: nsPlayerCharacter.Get(SignalNames.PlayerResourceResponse),
 };
 
-/* Player Character Remotes */
-const PlayerCharacterRemotes = {
-	CharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
-	CharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
-	TargetSelected: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
+/* Skill Requests */
+const Requests = {
+	/* Player Character */
+	TargetSelectionRequest: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
+
+	/* Skills */
+	SkillMapRequest: nsSkills.Get(SignalNames.SkillMapRequest),
+	UnlockSkillRequest: nsSkills.Get(SignalNames.UnlockSkillRequest),
+	SkillSlotAssignmentRequest: nsSkills.Get(SignalNames.SkillSlotAssignmentRequest),
+	UnAssignSkillSlotRequest: nsSkills.Get(SignalNames.UnAssignSkillSlotRequest),
 };
 
-/* Skill Remotes */
-const SkillRemotes = {
-	SkillBarCreated: nsSkills.Get(SignalNames.SkillBarCreated),
-	SendSkillAssignment: nsSkills.Get(SignalNames.SendSkillAssignment),
-
-	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
-	UnassignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
-};
-
-
-export { PlayerRemotes, PlayerCharacterRemotes, SkillRemotes };
+export { Responses, Requests };

@@ -9,8 +9,8 @@ import WcsClient from "./WCS Helpers/WCSClient";
 WcsClient.Start();
 
 // Controllers
-import KeyboardController from "client/Keyboard/Keyboard";
+//import KeyboardController from "client/Keyboard/Keyboard";
 
 // Start the Keyboard Controller
 
-KeyboardController.Start();
+//KeyboardController.Start();

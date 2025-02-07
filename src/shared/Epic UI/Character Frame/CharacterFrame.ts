@@ -7,6 +7,7 @@
 
 /* Imports */
 
+import { Players } from "@rbxts/services";
 // Interfaces
 import { TCharacterFrame, ICharacterInfo, IProgressBar, ICharacterFrame } from "./iCharacterFrame";
 
@@ -16,6 +17,8 @@ import { StorageManager } from "shared/Storage Manager/StorageManager";
 // Sub-Modules
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
 import CharacterInfo from "shared/Epic UI/Character Frame/CharacterInfo";
+import Logger from "shared/Utility/Logger";
+import { ResourceId } from "shared/_References/Resources";
 
 /* Main Class: CharacterFrame */
 export default class CharacterFrame implements ICharacterFrame {
@@ -34,9 +37,9 @@ export default class CharacterFrame implements ICharacterFrame {
 	info: ICharacterInfo;
 
 	// Constructor
-	constructor(player: Player) {
+	constructor() {
 		// Set the Parent
-		this.instance.Parent = player.WaitForChild("PlayerGui").WaitForChild("HUD");
+		this.instance.Parent = Players.LocalPlayer.WaitForChild("PlayerGui").WaitForChild("HUD");
 
 		// Create the Resource Bars
 		this.bars = {
@@ -48,6 +51,36 @@ export default class CharacterFrame implements ICharacterFrame {
 
 		// Create the Character Info
 		this.info = new CharacterInfo(this.instance.Info);
+	}
+
+	public Update(level: number, name: string) {
+		Logger.Log(script, "Updating Character Frame");
+		// Update the Character Info
+		this.info.setLevel(level);
+		this.info.setName(name);
+		const profilePic = Players.GetUserThumbnailAsync(
+			Players.LocalPlayer.UserId,
+			Enum.ThumbnailType.HeadShot,
+			Enum.ThumbnailSize.Size420x420,
+		)[0];
+		this.info.setProfilePic(profilePic);
+	}
+
+	UpdateResource(resourceId: ResourceId, current: number, max: number) {
+		switch (resourceId) {
+			case "Health":
+				this.bars.health.setPercent(math.floor((current / max) * 100));
+				break;
+			case "Mana":
+				this.bars.mana.setPercent(math.floor((current / max) * 100));
+				break;
+			case "Stamina":
+				this.bars.stamina.setPercent(math.floor((current / max) * 100));
+				break;
+			case "Experience":
+				this.bars.experience.setPercent(math.floor((current / max) * 100));
+				break;
+		}
 	}
 
 	// Destroy the Character Frame instance

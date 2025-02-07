@@ -17,7 +17,7 @@ export default class KeyboardController {
 		}
 	}
 	// Constructor
-	constructor() {
+	private constructor() {
 		const Player = game.GetService("Players").LocalPlayer as Player;
 		const character = Player.Character;
 		KeyboardController.OnCharacterAdded(character as Model);

@@ -9,7 +9,7 @@ export default class SlotAssignmentButton {
 		"SlotAssignmentButton_Template",
 	) as TSlotAssignmentButton;
 
-	private _remoteAssignSlot = Signals.Client.GetNamespace("Skills").Get(SignalNames.AssignSkillSlot);
+	private _remoteAssignSlot = Signals.Client.GetNamespace("Skills").Get(SignalNames.SkillSlotAssignmentRequest);
 
 	constructor(slotId: number, itemId: SkillId) {
 		assert(this.Button.SlotId !== undefined, "Slot ID is undefined");

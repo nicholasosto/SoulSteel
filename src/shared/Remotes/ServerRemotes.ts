@@ -6,46 +6,35 @@
  * The remotes are then exported to be used in other files.
  */
 
-import Signals, { SignalNames, RemoteNames } from "shared/Remotes/Remotes";
+import Signals, { SignalNames } from "shared/Remotes/Remotes";
 
-// Player: Remotes
-const nsPlayerRemotes = Signals.Server.GetNamespace("Player");
-const PlayerRemotes = {
-	PlayerLevelUp: nsPlayerRemotes.Get(SignalNames.PlayerLevelUp),
-	PlayerResourceUpdate: nsPlayerRemotes.Get(SignalNames.PlayerResourceUpdate),
-	PlayerInfoUpdate: nsPlayerRemotes.Get(SignalNames.PlayerInfoUpdate),
-	//PlayerStatUpdate: nsPlayerRemotes.Get(RemoteNames.PlayerStatUpdate),
-};
 
-// Player Character: Remotes
+/* Namespaces */
+
 const nsPlayerCharacter = Signals.Server.GetNamespace("PlayerCharacter");
-const PlayerCharacterRemotes = {
-	PlayerCharacterCreated: nsPlayerCharacter.Get(SignalNames.PlayerCharacterCreated),
-	PlayerCharacterDestroyed: nsPlayerCharacter.Get(SignalNames.PlayerCharacterDestroyed),
-	TargetSelected: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
-};
-
-// Skills Remotes
 const nsSkills = Signals.Server.GetNamespace("Skills");
-const SkillSignals = {
-	// Skill Bar Instance Created Client and Server
-	SkillBarCreated: nsSkills.Get(SignalNames.SkillBarCreated),
-	SendSkillAssignment: nsSkills.Get(SignalNames.SendSkillAssignment),
 
-	// Unlock Skill
-	UnlockSkill: nsSkills.Get(SignalNames.UnlockSkill),
-
-	// Skill Assignment Client to Server
-	AssignSkillSlot: nsSkills.Get(SignalNames.AssignSkillSlot),
-	UnAssignSkillSlot: nsSkills.Get(SignalNames.UnAssignSkillSlot),
-
-	// Skill Assignment Server to Client
-	AssignSkillResponse: nsSkills.Get(SignalNames.AssignSkillResponse),
+/* Skill Remotes */
+const Requests = {
+	/* Skill Map */
+	SkillMapRequest: nsSkills.Get(SignalNames.SkillMapRequest),
+	/* Unlock Skill */
+	UnlockSkillRequest: nsSkills.Get(SignalNames.UnlockSkillRequest),
+	/* Skill Slot Assignment */
+	SkillSlotAssignmentRequest: nsSkills.Get(SignalNames.SkillSlotAssignmentRequest),
+	UnAssignSkillSlotRequest: nsSkills.Get(SignalNames.UnAssignSkillSlotRequest),
 };
 
-const nsSkillRemotes = Signals.Server.GetNamespace("SkillRemotes");
-const SkillRemotes = {
-	GetUnlockedSkills: nsSkillRemotes.Get(RemoteNames.GetUnlockedSkills),
+/* Skill Responses */
+const Responses = {
+	/* Player Info */
+	PlayerInfoResponse: nsPlayerCharacter.Get(SignalNames.PlayerInfoResponse),
+	/* Player Resource */
+	PlayerResourceResponse: nsPlayerCharacter.Get(SignalNames.PlayerResourceResponse),
+	/* Skill Map */
+	SkillMapResponse: nsSkills.Get(SignalNames.SkillMapResponse),
+	/* Skill Slot Assignment */
+	SkillSlotAssignmentResponse: nsSkills.Get(SignalNames.SkillSlotAssignmentResponse),
 };
 
-export { PlayerRemotes, PlayerCharacterRemotes, SkillSignals, SkillRemotes };
+export { Requests, Responses };

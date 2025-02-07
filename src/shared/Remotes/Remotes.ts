@@ -1,104 +1,78 @@
 import Net, { Definitions } from "@rbxts/net";
-import { InventoryItem, InventoryType, ItemId } from "../_References/Inventory";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
 import { ResourceId } from "shared/_References/Resources";
 
+/* Payloads */
 interface Payloads {
 	PlayerLevelUp: [level: number];
-	PlayerInfoUpdate: [name: string, level: number, profilePicId: string];
+	PlayerInfoResponse: [name: string, level: number, profilePicId: string];
 	PlayerResourceUpdate: [resourceId: ResourceId, current: number, max: number];
 }
 
+/* Signal Names */
 enum SignalNames {
 	// Player
-	PlayerLevelUp = "PlayerLevelUp",
-	PlayerResourceUpdate = "PlayerResourceUpdate",
-	PlayerInfoUpdate = "PlayerInfoUpdate",
-
-	// Player Character
-	PlayerCharacterCreated = "PlayerCharacterCreated",
-	PlayerCharacterDestroyed = "PlayerCharacterDestroyed",
+	PlayerLevelUpResponse = "PlayerLevelUpResponse",
+	PlayerResourceResponse = "PlayerResourceResponse",
+	PlayerInfoResponse = "PlayerInfoResponse",
+	GameCharacterCreatedResponse = "GameCharacterCreatedResponse",
+	GameCharacterDestroyedResponse = "PlayerCharacterDestroyed",
 	PlayerCharacterTargetSelected = "TargetSelected",
+	NotifyPlayerResponse = "UINotifyPlayer",
 
-	// Inventory
-	GetInventory = "GetInventory",
-	RequestInventory = "RequestInventory",
+	/* Skills */
+	SkillMapRequest = "SkillMapRequest", // Notifies the server that the skill bar has been created
+	SkillMapResponse = "SkillMapResponse", // Sends skill assignment data to the client
 
-	// Equipment
-	EquipItemRequest = "EquipItemRequest",
+	UnlockSkillRequest = "UnlockSkillRequest",
+	UnlockSkillResponse = "UnlockSkillResponse",
 
-	// Skills
-	//crfGetUnlockedSkills = "crfGetUnlockedSkills",
+	SkillSlotAssignmentRequest = "SkillSlotAssignmentRequest",
+	SkillSlotAssignmentResponse = "SkillSlotAssignmentResponse",
 
-	SkillBarCreated = "SkillBarCreated", // Notifies the server that the skill bar has been created
-	SendSkillAssignment = "SendSkillAssignment", // Sends skill assignment data to the client
-
-	//LoadPlayerSkills = "SkillAssignment",
-	RequestPlayerSkills = "RequestPlayerSkills",
-	UnlockSkill = "UnlockSkill",
-	AssignSkillSlot = "AssignSkillSlot",
-	UnAssignSkillSlot = "UnAssignSkillSlot",
-	AssignSkillResponse = "AssignSkillResponse",
-
-	// User Interface
-	UIUpdateInventory = "UIUpdateInventory",
-	UINotifyPlayer = "UINotifyPlayer",
+	UnAssignSkillSlotRequest = "UnAssignSkillSlotRequest",
 }
 
-enum RemoteNames {
-	UpdatePlayerStat = "UpdatePlayerStat",
-	GetPlayerInventory = "GetPlayerInventory",
-	GetUnlockedSkills = "GetUnlockedSkills",
-}
-
+/* Remotes */
 const Remotes = Net.Definitions.Create({
-	// Player
-	Player: Definitions.Namespace({
-		// Level Up
-		[SignalNames.PlayerLevelUp]: Net.Definitions.ServerToClientEvent<Payloads["PlayerLevelUp"]>(),
-		// Experience Update
-		[SignalNames.PlayerInfoUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerInfoUpdate"]>(),
-		// Resource Update
-		[SignalNames.PlayerResourceUpdate]: Net.Definitions.ServerToClientEvent<Payloads["PlayerResourceUpdate"]>(),
-		// Stat Update
-		//[RemoteNames.PlayerStatUpdate]: Net.Definitions.ServerToClientEvent<[statId: string, value: number]>(),
-	}),
 
 	// Player Character
 	PlayerCharacter: Definitions.Namespace({
+		// Level Up
+		[SignalNames.PlayerLevelUpResponse]: Net.Definitions.ServerToClientEvent<Payloads["PlayerLevelUp"]>(),
+		// Experience Update
+		[SignalNames.PlayerInfoResponse]: Net.Definitions.ServerToClientEvent<Payloads["PlayerInfoResponse"]>(),
+		// Resource Update
+		[SignalNames.PlayerResourceResponse]: Net.Definitions.ServerToClientEvent<Payloads["PlayerResourceUpdate"]>(),
 		// Created
-		[SignalNames.PlayerCharacterCreated]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.GameCharacterCreatedResponse]: Net.Definitions.ServerToClientEvent(),
 		// Destroyed
-		[SignalNames.PlayerCharacterDestroyed]: Net.Definitions.ServerToClientEvent(),
+		[SignalNames.GameCharacterDestroyedResponse]: Net.Definitions.ServerToClientEvent(),
 		// Target Selected
 		[SignalNames.PlayerCharacterTargetSelected]: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
+	
+		[SignalNames.NotifyPlayerResponse]: Net.Definitions.ServerToClientEvent(),
 	}),
 	// Skills
 	Skills: Definitions.Namespace({
-		[SignalNames.SendSkillAssignment]: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
-		[SignalNames.SkillBarCreated]: Net.Definitions.ClientToServerEvent<[]>(),
+		/* Skill Map */
+		[SignalNames.SkillMapRequest]: Net.Definitions.ClientToServerEvent<[]>(),
+		[SignalNames.SkillMapResponse]: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
 
-		//[SignalNames.RequestPlayerSkills]: Net.Definitions.ClientToServerEvent(),
-		[SignalNames.UnlockSkill]: Net.Definitions.ClientToServerEvent<[skillId: string]>(),
+		/* Unlock Skill */
+		[SignalNames.UnlockSkillRequest]: Net.Definitions.ClientToServerEvent<[skillId: SkillId]>(),
+		[SignalNames.UnlockSkillResponse]: Net.Definitions.ServerToClientEvent<[skillId: SkillId]>(),
 
-		// Assign and Unassign Skill Slot
-		[SignalNames.AssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number, skillId: SkillId]>(),
-		[SignalNames.UnAssignSkillSlot]: Net.Definitions.ClientToServerEvent<[slotIndex: number]>(),
-		[SignalNames.AssignSkillResponse]: Net.Definitions.ServerToClientEvent<[slot: number, skill: SkillId]>(),
-	}),
+		/* Assign Skill Slot */
+		[SignalNames.SkillSlotAssignmentRequest]:
+			Net.Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
+		[SignalNames.SkillSlotAssignmentResponse]: Net.Definitions.ServerToClientEvent<[] | [error: string]>(),
 
-	SkillRemotes: Definitions.Namespace({
-		[RemoteNames.GetUnlockedSkills]: Net.Definitions.ServerAsyncFunction<() => SkillId[] | undefined>(),
-	}),
-
-	// User Interface
-	UserInterface: Definitions.Namespace({
-		[SignalNames.UIUpdateInventory]: Net.Definitions.ServerToClientEvent(),
-		[SignalNames.UINotifyPlayer]: Net.Definitions.ServerToClientEvent(),
+		/* Unassign Skill Slot */
+		[SignalNames.UnAssignSkillSlotRequest]: Net.Definitions.ClientToServerEvent<[slot: number]>(),
 	}),
 });
 
 export default Remotes;
 
-export { SignalNames, RemoteNames };
+export { SignalNames };

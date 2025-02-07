@@ -14,7 +14,7 @@ import GameCharacter from "./GameCharacter";
 import { CharacterResource } from "shared/Character Resources/CharacterResource";
 
 //NET
-import { SendPlayerResourceUpdate } from "server/net/ServerCalls";
+import { Responses } from "shared/Remotes/ServerRemotes";
 
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
@@ -50,6 +50,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		});
 
 		Logger.Log(script, `Player Character ${this.displayName} Created`);
+
+		Responses.PlayerInfoResponse.SendToPlayer(this.player, this.displayName, this.level, "ProfilePicId");
 	}
 
 	public SetTarget(target: GameCharacter): void {
@@ -100,7 +102,12 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public OnTakeDamage(DamageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Took Damage");
 		this.HealthResource.SetCurrent(this.HealthResource.Current - DamageContainer.Damage);
-		SendPlayerResourceUpdate(this.player, "Health", this.HealthResource.Current, this.HealthResource.MaxValue);
+		Responses.PlayerResourceResponse.SendToPlayer(
+			this.player,
+			"Health",
+			this.HealthResource.Current,
+			this.HealthResource.MaxValue,
+		);
 	}
 
 	public Destroy(): void {

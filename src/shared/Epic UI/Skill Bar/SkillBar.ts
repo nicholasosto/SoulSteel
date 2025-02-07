@@ -23,16 +23,15 @@ export default class SkillBar {
 	private _instance: TSkillBar = StorageManager.CloneFromStorage("SkillBar_Template") as TSkillBar;
 
 	//WCS Character
-	private wcsCharacter: Character;
+	private wcsCharacter: Character | undefined;
 
 	// Skill Maps
 	private _skillButtonMap = new Map<number, SkillButton>();
 	private _skillConnectionMap = new Map<number, RBXScriptConnection>();
 
 	// Constructor
-	constructor(wcsCharacter: Character) {
+	constructor() {
 		this._instance.Parent = playerHUD;
-		this.wcsCharacter = wcsCharacter;
 	}
 
 	// Public:  Assign Skill to Slot
@@ -48,6 +47,11 @@ export default class SkillBar {
 		for (const [slot, skillId] of skillSlotMap) {
 			this._createSkillButton(slot, skillId);
 		}
+	}
+
+	/* Set WCS Character */
+	public SetWCSCharacter(wcsCharacter: Character) {
+		this.wcsCharacter = wcsCharacter;
 	}
 
 	// Public:  Set Slot
@@ -95,7 +99,7 @@ export default class SkillBar {
 
 		const connection = this._skillButtonMap.get(slot)?.ButtonInstance.Activated.Connect(() => {
 			this._skillButtonMap.get(slot)?.StartCooldown();
-			this.wcsCharacter.GetSkillFromString(skillId)?.Start();
+			this.wcsCharacter?.GetSkillFromString(skillId)?.Start();
 		});
 
 		this._skillConnectionMap.set(slot, connection as RBXScriptConnection);

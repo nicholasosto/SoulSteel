@@ -1,6 +1,6 @@
 // TargetSelector.ts
 import { Players, Workspace, UserInputService, CollectionService } from "@rbxts/services";
-import { sendTargetSelected } from "client/net/RemoteCalls";
+import { Requests } from "shared/Remotes/ClientRemotes";
 import Logger from "shared/Utility/Logger";
 
 const localPlayer = Players.LocalPlayer;
@@ -39,7 +39,7 @@ export function initializeTargetSelection() {
 			const target = getTargetFromScreenPosition(new Vector2(input.Position.X, input.Position.Y));
 			if (target) {
 				Logger.Log("Target selected: " + target.Name);
-				sendTargetSelected(target.GetFullName());
+				Requests.TargetSelectionRequest.SendToServer(target.GetFullName());
 				// Here you can perform additional actions such as highlighting the target or firing a remote event.
 			} else {
 				Logger.Log("No target selected.");
