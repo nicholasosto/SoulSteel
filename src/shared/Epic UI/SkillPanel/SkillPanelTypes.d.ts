@@ -1,6 +1,6 @@
 import { TSkillPanel } from "./TSkillPanel";
-import { TSkillBar } from "../../Epic UI/Skill Bar/TSkillBar";
-import { TSkillButton } from "../../Epic UI/Skill Bar/TSkillButton";
+import { TSkillBar } from "../Skill Bar/TSkillBar";
+import { TSkillButton } from "../Skill Bar/TSkillButton";
 
 type SkillPanelState = "Loading" | "SkillSelected" | "Displayed" | "Hidden";
 

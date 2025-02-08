@@ -1,7 +1,7 @@
-import { IGameCharacter, INPCCharacter, IPlayerCharacter } from "./ICharacter";
+import { IGameCharacter, INPCCharacter, IPlayerCharacter } from "./Interfaces";
 import { TGameCharacter } from "./TGameCharacter";
 import { CharacterStatId, TCharacterResource } from "./Character Resources/iCharacterResource";
-import { ISkillManager } from "./ICharacter";
+import { ISkillManager } from "./Interfaces";
 
 export {
 	IGameCharacter,

@@ -1,4 +1,4 @@
-import { TDialog } from "shared/UI Component Classes/DialogFrame/Dialog_Template";
+import { TDialog } from "shared/Epic UI/DialogFrame/Dialog_Template";
 import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import Logger from "shared/Utility/Logger";

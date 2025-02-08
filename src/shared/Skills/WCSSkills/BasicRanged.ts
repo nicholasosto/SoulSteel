@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
-import { IPlayerCharacter } from "shared/Game Character/ICharacter";
+import { IPlayerCharacter } from "shared/Game Character/Interfaces";
 
 const skillDefinition = SkillDefinitions.BasicRanged;
 const baseDamage = skillDefinition.baseDamage ?? 14;

@@ -4,6 +4,16 @@ import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { CharacterResource } from "./Character Resources/CharacterResource";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 
+/* Test Interface for SkillManager */
+export interface ISkillManager {
+	// Skills
+	SkillMap: Map<number, SkillId>;
+	UnlockedSkills: Array<SkillId>;
+	InitializeSkills(playerData: IPlayerData): void;
+	AssignSkillToSlot(slot: number, skillId: SkillId): void;
+	RemoveSkillFromSlot(slot: number): void;
+}
+
 /* IGameCharacter */
 export interface IGameCharacter {
 	level: number;
@@ -20,16 +30,6 @@ export interface IGameCharacter {
 	SetTarget(target: IGameCharacter): void;
 	ClearTarget(): void;
 	Destroy(): void;
-}
-
-/* Test Interface for SkillManager */
-export interface ISkillManager {
-	// Skills
-	SkillMap: Map<number, SkillId>;
-	UnlockedSkills: Array<SkillId>;
-	InitializeSkills(playerData: IPlayerData): void;
-	AssignSkillToSlot(slot: number, skillId: SkillId): void;
-	RemoveSkillFromSlot(slot: number): void;
 }
 
 /* IPlayerCharacter */

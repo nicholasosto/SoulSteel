@@ -16,6 +16,8 @@ const nsSkills = Signals.Server.GetNamespace("Skills");
 
 /* Skill Remotes */
 const Requests = {
+	/* Teleport */
+	TeleportRequest: Signals.Server.Get(SignalNames.TeleportRequest),
 	/* Skill Map */
 	SkillMapRequest: nsSkills.Get(SignalNames.SkillMapRequest),
 	/* Unlock Skill */
@@ -27,6 +29,8 @@ const Requests = {
 
 /* Skill Responses */
 const Responses = {
+	/* Teleport */
+	TeleportResponse: Signals.Server.Get(SignalNames.TeleportResponse),
 	/* Player Info */
 	PlayerInfoResponse: nsPlayerCharacter.Get(SignalNames.PlayerInfoResponse),
 	/* Player Resource */

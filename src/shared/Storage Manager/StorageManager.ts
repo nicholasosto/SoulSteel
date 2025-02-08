@@ -22,23 +22,5 @@ export default class StorageManager {
 		return item?.Clone();
 	}
 
-	// public static LoadFromPackage(packageId: PackageIds, itemName: string): Instance | undefined {
-	// 	const runMode = RunService.IsServer() ? "Server" : "Client";
-
-	// 	if (runMode === "Client") {
-	// 		return StorageManager.CloneFromStorage(itemName);
-	// 	}
-
-	// 	const packageModel = InsertService.LoadAsset(packageId) as Model;
-	// 	if (packageModel === undefined) {
-	// 		Logger.Log(script, `Failed to load package with ID: ${packageId}`);
-	// 		return undefined;
-	// 	}
-	// 	const item = packageModel.FindFirstChild(itemName, true);
-	// 	if (item === undefined) {
-	// 		Logger.Log(script, `Failed to load item with name: ${itemName}`);
-	// 		return undefined;
-	// 	}
-	// 	return item.Clone();
-	// }
+	//public static CloneAccessoriesFromStorage(itemId: string): Array<Instance> {
 }

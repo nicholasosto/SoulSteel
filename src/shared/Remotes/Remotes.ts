@@ -11,6 +11,10 @@ interface Payloads {
 
 /* Signal Names */
 enum SignalNames {
+	// Teleport
+	TeleportRequest = "TeleportRequest",
+	TeleportResponse = "TeleportResponse",
+
 	// Player
 	PlayerLevelUpResponse = "PlayerLevelUpResponse",
 	PlayerResourceResponse = "PlayerResourceResponse",
@@ -35,6 +39,10 @@ enum SignalNames {
 
 /* Remotes */
 const Remotes = Net.Definitions.Create({
+	// Teleport
+	TeleportRequest: Net.Definitions.ClientToServerEvent<[destination: Vector3]>(),
+	TeleportResponse: Net.Definitions.ServerToClientEvent<[destination: Vector3]>(),
+
 	// Player Character
 	PlayerCharacter: Definitions.Namespace({
 		// Level Up

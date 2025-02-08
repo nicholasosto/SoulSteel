@@ -1,6 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import { TGameCharacter, IGameCharacter } from "shared/Game Character/CharacterIndex";
+import { generateCharacterName } from "shared/Factories/NameFactory";
 
 export default class GameCharacter implements IGameCharacter {
 	characterId: string;
@@ -16,7 +17,7 @@ export default class GameCharacter implements IGameCharacter {
 		const fullName = wcsCharacter.Instance?.GetFullName();
 		assert(fullName, "Instance is nil");
 		this.characterId = fullName;
-		this.displayName = "GameCharacter";
+		this.displayName = generateCharacterName();
 		this.wcsCharacter = wcsCharacter;
 		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
 		this.characterModel.AddTag("GameCharacter");

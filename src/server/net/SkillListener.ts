@@ -2,7 +2,7 @@
 import Logger from "shared/Utility/Logger";
 import { Requests, Responses } from "shared/Remotes/ServerRemotes";
 import GameCharacterController from "server/Controllers/GameCharacterController";
-import { IGameCharacter, IPlayerCharacter } from "shared/Game Character/ICharacter";
+import { IGameCharacter, IPlayerCharacter } from "shared/Game Character/Interfaces";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 
 GameCharacterController.Start();

@@ -13,6 +13,7 @@ const nsSkills = Remotes.Client.GetNamespace("Skills");
 
 /* Skill Responses */
 const Responses = {
+	TeleportResponse: Remotes.Client.Get(SignalNames.TeleportResponse),
 	/* Skills */
 	SkillMapResponse: nsSkills.Get(SignalNames.SkillMapResponse),
 	SkillSlotAssignmentResponse: nsSkills.Get(SignalNames.SkillSlotAssignmentResponse),
@@ -25,6 +26,7 @@ const Responses = {
 
 /* Skill Requests */
 const Requests = {
+	TeleportRequest: Remotes.Client.Get(SignalNames.TeleportRequest),
 	/* Player Character */
 	TargetSelectionRequest: nsPlayerCharacter.Get(SignalNames.PlayerCharacterTargetSelected),
 

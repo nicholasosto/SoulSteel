@@ -9,8 +9,9 @@ import StorageManager from "shared/Storage Manager/StorageManager";
 import DataManager from "server/Controllers/DataManager";
 
 // Event Listeners
-import StartSkillListeners from "server/net/SkillListeners";
-import StartPlayerListeners from "server/net/PlayerListeners";
+import StartSkillListeners from "server/net/SkillListener";
+import StartPlayerListeners from "server/net/PlayerListener";
+import StartTeleportListener from "./net/TeleportListener";
 
 // Controllers
 import GameCharacterController from "./Controllers/GameCharacterController";
@@ -38,6 +39,7 @@ WCSServer.Start();
 // Start the Player Listeners
 StartPlayerListeners();
 StartSkillListeners();
+StartTeleportListener();
 
 // Start the Managers
 DataManager.Start();
