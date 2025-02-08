@@ -18,6 +18,7 @@ import GameCharacterController from "./Controllers/GameCharacterController";
 
 // WCS Imports
 import { CreateServer } from "@rbxts/wcs";
+import StartDeveloperListener from "./net/DeveloperListener";
 
 // Create the WCS Server
 const WCSServer = CreateServer();
@@ -40,6 +41,7 @@ WCSServer.Start();
 StartPlayerListeners();
 StartSkillListeners();
 StartTeleportListener();
+StartDeveloperListener();
 
 // Start the Managers
 DataManager.Start();

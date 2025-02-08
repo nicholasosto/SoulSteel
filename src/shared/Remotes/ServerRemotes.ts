@@ -16,6 +16,8 @@ const nsSkills = Signals.Server.GetNamespace("Skills");
 
 /* Skill Remotes */
 const Requests = {
+	/* Developer */
+	DeveloperRequest: Signals.Server.Get(SignalNames.DeveloperRequest),
 	/* Teleport */
 	TeleportRequest: Signals.Server.Get(SignalNames.TeleportRequest),
 	/* Skill Map */
@@ -29,6 +31,8 @@ const Requests = {
 
 /* Skill Responses */
 const Responses = {
+	/* Developer */
+	DeveloperResponse: Signals.Server.Get(SignalNames.DeveloperResponse),
 	/* Teleport */
 	TeleportResponse: Signals.Server.Get(SignalNames.TeleportResponse),
 	/* Player Info */

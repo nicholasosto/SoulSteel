@@ -11,10 +11,9 @@ const TeleportButtons = TeleportButtonDecendants.filter((instance: Instance) => 
 
 Logger.Log("[ButtonScript]", TeleportButtons);
 TeleportButtons.forEach((button) => {
-    const cfvLocation = button.WaitForChild("Location") as CFrameValue;
-    assert(cfvLocation, "CFrameValue not found");
+	const cfvLocation = button.WaitForChild("Location") as CFrameValue;
+	assert(cfvLocation, "CFrameValue not found");
 	button.Activated.Connect(() => {
-
 		Requests.TeleportRequest.SendToServer(cfvLocation.Value.Position);
 	});
 });

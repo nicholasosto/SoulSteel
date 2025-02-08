@@ -11,6 +11,10 @@ interface Payloads {
 
 /* Signal Names */
 enum SignalNames {
+	// Developer
+	DeveloperRequest = "DeveloperRequest",
+	DeveloperResponse = "DeveloperResponse",
+
 	// Teleport
 	TeleportRequest = "TeleportRequest",
 	TeleportResponse = "TeleportResponse",
@@ -33,12 +37,15 @@ enum SignalNames {
 
 	SkillSlotAssignmentRequest = "SkillSlotAssignmentRequest",
 	SkillSlotAssignmentResponse = "SkillSlotAssignmentResponse",
-
 	UnAssignSkillSlotRequest = "UnAssignSkillSlotRequest",
 }
 
 /* Remotes */
 const Remotes = Net.Definitions.Create({
+	// For testing features
+	DeveloperRequest: Net.Definitions.ClientToServerEvent<[message: string]>(),
+	DeveloperResponse: Net.Definitions.ServerToClientEvent<[message: string]>(),
+
 	// Teleport
 	TeleportRequest: Net.Definitions.ClientToServerEvent<[destination: Vector3]>(),
 	TeleportResponse: Net.Definitions.ServerToClientEvent<[destination: Vector3]>(),
