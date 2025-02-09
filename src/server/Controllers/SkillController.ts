@@ -1,10 +1,11 @@
 // server/net/remotes.server.ts
 import Logger from "shared/Utility/Logger";
-import * as ServerRemotes from "server/net/ServerRemotes";
+import { SkillEvent } from "server/net/ServerEvents";
 //import { Requests, Responses } from "shared/Remotes/ServerRemotes";
 import CharacterController from "server/Controllers/CharacterController";
 
 import PlayerCharacter from "server/Character/PlayerCharacter";
+import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 export default class SkillController {
 	// Singleton
@@ -28,25 +29,23 @@ export default class SkillController {
 	}
 
 	private static _initializeListeners() {
-		Logger.Log("NEW!!!!!!!!!!!!!!!", "Skill Controller Started");
 		/* Skill Bar Created */
 		this._skillBarCreated?.Disconnect();
-		this._skillBarCreated = ServerRemotes.SkillBarCreated.Connect((player, skillBar) => {
-			Logger.Log("REMOTE", "Skill Bar Created", player, skillBar as unknown as string);
+		this._skillBarCreated = SkillEvent.SkillBarCreated.Connect((player: Player) => {
 			// Get the player character
 			const playerCharacter = CharacterController.GetGameCharacter<PlayerCharacter>(tostring(player.UserId));
 			const skillManager = playerCharacter?.skillManager;
 			assert(skillManager?.SkillMap, "Skill Slot Map is nil");
 
 			// Send the skill slot map to the player
-			ServerRemotes.SkillBarCreated.SendToPlayer(player, skillBar);
+
+			SkillEvent.SkillBarCreated.SendToPlayer(player, skillManager.SkillMap);
 		});
 
 		/* Assign Skill Slot */
 		this._skillSlotAssignmentConnection?.Disconnect();
-		this._skillSlotAssignmentConnection = ServerRemotes.SkillSlotAssignment.Connect((player, slot, skillId) => {
+		this._skillSlotAssignmentConnection = SkillEvent.SkillSlotAssignment.Connect((player, slot, skillId) => {
 			// Get the skill manager
-			wait(1);
 			const playerCharacter = CharacterController.GetGameCharacter(tostring(player.UserId)) as PlayerCharacter;
 			const skillManager = playerCharacter?.skillManager;
 
@@ -60,26 +59,19 @@ export default class SkillController {
 		});
 
 		/* Unassign Skill Slot */
-	// 	this._unAssignSkillSlotConnection?.Disconnect();
-	// 	this._unAssignSkillSlotConnection = Requests.UnAssignSkillSlotRequest.Connect((player, slot) => {
-	// 		// Get the player character
-	// 		const playerCharacter = CharacterController.GetGameCharacter(tostring(player.UserId)) as PlayerCharacter;
-	// 		const skillManager = playerCharacter?.skillManager;
+		this._unAssignSkillSlotConnection?.Disconnect();
+		this._unAssignSkillSlotConnection = SkillEvent.UnassignSkillSlot.Connect((player: Player, slot: number) => {
+			// Get the player character
+			const playerCharacter = CharacterController.GetGameCharacter(tostring(player.UserId)) as PlayerCharacter;
+			const skillManager = playerCharacter?.skillManager;
 
-	// 		// Validate the parameters
-	// 		assert(playerCharacter, "Player Character is nil");
-	// 		assert(slot >= 1 && slot <= 6, "Invalid slot");
+			// Validate the parameters
+			assert(playerCharacter, "Player Character is nil");
+			assert(slot >= 1 && slot <= 6, "Invalid slot");
 
-	// 		// Remove the skill from the slot
-	// 		skillManager.RemoveSkillFromSlot(slot);
-	// 	});
-
-	// 	/*Skill Bar Created */
-	// 	this._skillBarCreated?.Disconnect();
-	// 	this._skillBarCreated = ServerEvents.SkillBarCreated.Connect((player, skillBar) => {
-	// 		Logger.Log("REMOTE", "Skill Controller Started", player, skillBar as unknown as string);
-	// 		ServerEvents.SkillBarCreated.SendToPlayer(player, skillBar);
-	// 	});
+			// Remove the skill from the slot
+			skillManager.RemoveSkillFromSlot(slot);
+		});
 	}
 }
 

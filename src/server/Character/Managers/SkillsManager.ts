@@ -5,7 +5,7 @@ import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { GetSkillSlotMap } from "shared/Data Interfaces/PlayerData";
 import { CreateSkillFromId } from "shared/Skills/WCSHelper";
 import { Character } from "@rbxts/wcs";
-import { Responses } from "shared/Remotes/ServerRemotes";
+
 
 export default class SkillsManager implements ISkillManager {
 	// Skills
@@ -41,10 +41,10 @@ export default class SkillsManager implements ISkillManager {
 		this.AssignSkillToSlot(slot, "None");
 
 		/* Send Skill Map to Player */
-		const player = this.wcsCharacter.Player;
-		if (player) {
-			Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
-		}
+		// const player = this.wcsCharacter.Player;
+		// if (player) {
+		// 	Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
+		// }
 	}
 
 	/* Assign Skill to Slot */
@@ -56,10 +56,10 @@ export default class SkillsManager implements ISkillManager {
 		this.SkillMap.set(slot, skillId);
 		const player = this.wcsCharacter.Player;
 
-		/* Send Skill Map to Player */
-		if (player) {
-			Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
-		}
+		// /* Send Skill Map to Player */
+		// if (player) {
+		// 	Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
+		// }
 	}
 
 	/* Register Skill */

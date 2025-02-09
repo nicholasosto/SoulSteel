@@ -2,8 +2,7 @@
 import Logger from "shared/Utility/Logger";
 
 /* Remotes */
-import { Requests, Responses } from "shared/Remotes/ClientRemotes";
-import * as ClientEvents from "client/net/ClientEvents";
+import { SkillEvent } from "./ClientEvents";
 
 /* GUI Components */
 import SkillBar from "shared/Epic UI/Skill Bar/SkillBar";
@@ -28,8 +27,6 @@ const SkillBarInstance = new SkillBar();
 Character.CharacterCreated.Connect((wcsCharacter) => {
 	_wcsCharacter = wcsCharacter;
 	SkillBarInstance.SetWCSCharacter(_wcsCharacter);
-	Requests.SkillMapRequest.SendToServer();
-	ClientEvents.SkillBarCreated.SendToServer(SkillBarInstance);
 });
 
 /* Character Destroyed */
@@ -37,17 +34,6 @@ Character.CharacterDestroyed.Connect(() => {
 	Logger.Log(script, "[NEW STYLE]: Character Destroyed");
 });
 
-/* Skill Map  */
-Responses.SkillMapResponse.Connect((skillSlotMap: Map<number, SkillId>) => {
-	SkillBarInstance.LoadSkills(skillSlotMap);
-});
-
-/* Skill Slot Assignment */
-Responses.SkillSlotAssignmentResponse.Connect((slot: number, skillId: SkillId) => {
-	SkillBarInstance.AssignSkillToSlot(slot, skillId);
-	Requests.SkillMapRequest.SendToServer();
-});
-
-ClientEvents.SkillBarCreated.Connect((skillBar) => {
+SkillEvent.SkillBarCreated.Connect((skillBar) => {
 	Logger.Log("[Bi Directional]", "Skill Bar Created", skillBar as unknown as string);
 });

@@ -18,7 +18,7 @@ import StartTeleportListener from "./net/TeleportListener";
 import CharacterController from "./Controllers/CharacterController";
 import StartDeveloperListener from "./net/DeveloperListener";
 import SkillController from "./Controllers/SkillController";
-import { Responses } from "shared/Remotes/ServerRemotes";
+import { GameCycleEvents } from "./net/ServerEvents";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -35,16 +35,13 @@ class GameServer {
 			/* Start Data Manager */
 			DataManager.Start();
 			StorageManager.Start();
-			Responses.DataManagerStarted.SendToAllPlayers();
 			/* Start WCS */
 			GameServer.StartWCS();
 
 			wait(1.5); // Wait for the WCS Server and DataManager to start and register the directories
 
 			CharacterController.Start();
-			Responses.CharacterControllerStarted.SendToAllPlayers();
 			SkillController.Start();
-			Responses.SkillControllerStarted.SendToAllPlayers();
 		}
 	}
 
@@ -74,32 +71,6 @@ class GameServer {
 }
 
 GameServer.Start();
-
-// // Create the WCS Server
-// const WCSServer = CreateServer();
-
-// // Reference the Parent WCS Directory
-// const ParentWCSDirectory = ReplicatedStorage.WaitForChild("TS").WaitForChild("Skills");
-
-// // WCS Directories
-// const SkillsDirectorory = ParentWCSDirectory.WaitForChild("WCSSkills");
-// const StatusDirectory = ParentWCSDirectory.WaitForChild("WCSStatus");
-
-// // Register the WCS Directories
-// WCSServer.RegisterDirectory(SkillsDirectorory);
-// WCSServer.RegisterDirectory(StatusDirectory);
-
-// // Start the WCS Server
-// WCSServer.Start();
-
-// // Start the Managers
-// DataManager.Start();
-// wait(1);
-// StorageManager.Start();
-// CharacterController.Start();
-// SkillController.Start();
-
-// Start the Player Listeners
 
 StartTeleportListener();
 StartDeveloperListener();

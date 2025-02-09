@@ -1,6 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { Players } from "@rbxts/services";
-import { CollectionService } from "@rbxts/services";
+import { Players, CollectionService } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
 import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
@@ -8,7 +7,6 @@ import GameCharacter from "server/Character/GameCharacter";
 import NPCCharacter from "server/Character/NPCCharacter";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 import { TGameCharacter } from "shared/Game Character/CharacterIndex";
-import { Responses } from "shared/Remotes/ServerRemotes";
 
 export default class CharacterController {
 	// Static Instance

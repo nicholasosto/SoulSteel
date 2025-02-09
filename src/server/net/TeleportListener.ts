@@ -1,8 +1,8 @@
-import { Requests } from "shared/Remotes/ServerRemotes";
+import { WorldEvent } from "./ServerEvents";
 
 export default function StartTeleportListener() {
 	/* Teleport Player */
-	Requests.TeleportRequest.Connect((player: Player, position: Vector3) => {
+	WorldEvent.Teleport.Connect((player: Player, position: Vector3) => {
 		// Get the player character
 		const character = player.Character;
 		if (character === undefined) return;

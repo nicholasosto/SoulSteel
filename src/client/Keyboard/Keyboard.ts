@@ -1,7 +1,7 @@
 // Begin: KeyboardController.ts
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
-import { Requests } from "shared/Remotes/ClientRemotes";
+import { SkillEvent } from "client/net/ClientEvents";
 import { SkillKeyMap } from "./KeyboardMaps";
 import Logger from "shared/Utility/Logger";
 // Set the skills here
@@ -54,17 +54,17 @@ export default class KeyboardController {
 
 		switch (input.KeyCode) {
 			case Enum.KeyCode.KeypadOne:
-				Requests.SkillSlotAssignmentRequest.SendToServer(1, "Meditate");
+				SkillEvent.SkillSlotAssignment.SendToServer(1, "Meditate");
 				break;
 			case Enum.KeyCode.KeypadTwo:
-				Requests.SkillSlotAssignmentRequest.SendToServer(2, "Charge");
+				SkillEvent.SkillSlotAssignment.SendToServer(2, "Charge");
 				break;
 
 			case Enum.KeyCode.KeypadThree:
-				Requests.SkillSlotAssignmentRequest.SendToServer(3, "Fly");
+				SkillEvent.SkillSlotAssignment.SendToServer(3, "Fly");
 				break;
 			case Enum.KeyCode.KeypadZero:
-				Requests.UnAssignSkillSlotRequest.SendToServer(2);
+				SkillEvent.UnassignSkillSlot.SendToServer(2);
 				break;
 			case Enum.KeyCode.R:
 				Logger.Log(script, "R Pressed");

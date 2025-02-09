@@ -1,7 +1,7 @@
 // File: developer.client.ts
 // Purpose: Handles the client-side of the developer listener which calls the ReferenceBlock Creator.
 
-import { Requests } from "shared/Remotes/ClientRemotes";
+import { DeveloperEvent } from "client/net/ClientEvents";
 import Logger from "shared/Utility/Logger";
 import { GameOfLifeButton } from "client/Buttons/DeveloperButtons";
 
@@ -14,7 +14,7 @@ function InitializeDeveloperClient() {
 	connection_1?.Disconnect();
 	connection_1 = GameOfLifeButton.MouseButton1Click.Connect(() => {
 		Logger.Log("[Game of Life Button]", "Activated");
-		Requests.DeveloperRequest.SendToServer("Game of Life Button Clicked");
+		DeveloperEvent.GameOfLife.SendToServer();
 		wait(1);
 	});
 }

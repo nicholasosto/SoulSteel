@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import { Requests } from "shared/Remotes/ClientRemotes";
+import { WorldEvent } from "client/net/ClientEvents";
 import Logger from "shared/Utility/Logger";
 
 const localPlayer = Players.LocalPlayer;
@@ -14,7 +14,7 @@ TeleportButtons.forEach((button) => {
 	const cfvLocation = button.WaitForChild("Location") as CFrameValue;
 	assert(cfvLocation, "CFrameValue not found");
 	button.Activated.Connect(() => {
-		Requests.TeleportRequest.SendToServer(cfvLocation.Value.Position);
+		WorldEvent.Teleport.SendToServer(cfvLocation.Value.Position);
 	});
 });
 

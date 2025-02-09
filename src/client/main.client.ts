@@ -3,7 +3,7 @@ import Logger from "shared/Utility/Logger";
 import KeyboardController from "client/Keyboard/Keyboard";
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 import WcsClient from "./_WCS/WCSClient";
-import { Responses } from "shared/Remotes/ClientRemotes";
+import { GameCycleEvents } from "./net/ClientEvents";
 
 class GameClient {
 	private static _instance: GameClient;
@@ -39,19 +39,19 @@ class GameClient {
 	private static _initializeListeners() {
 		/* Skill Controller Started */
 		this._skillControllerStarted?.Disconnect();
-		this._skillControllerStarted = Responses.SkillControllerStarted.Connect(() => {
+		this._skillControllerStarted = GameCycleEvents.SkillControllerStarted.Connect(() => {
 			Logger.Log("REMOTE", "Skill Controller Started");
 		});
 
 		/* Data Manager Started */
 		this._dataManagerStarted?.Disconnect();
-		this._dataManagerStarted = Responses.DataManagerStarted.Connect(() => {
+		this._dataManagerStarted = GameCycleEvents.DataManagerStarted.Connect(() => {
 			Logger.Log("REMOTE", "Data Manager Started");
 		});
 
 		/* Character Controller Started */
 		this._characterControllerStarted?.Disconnect();
-		this._characterControllerStarted = Responses.CharacterControllerStarted.Connect(() => {
+		this._characterControllerStarted = GameCycleEvents.CharacterControllerStarted.Connect(() => {
 			Logger.Log("REMOTE", "Character Controller Started");
 		});
 	}
