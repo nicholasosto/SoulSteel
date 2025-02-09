@@ -27,39 +27,56 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public HealthResource: CharacterResource;
 	public ManaResource: CharacterResource;
 	public StaminaResource: CharacterResource;
+	public ExperienceResource: CharacterResource;
 
-	constructor(player: Player, playerData: IPlayerData) {
-		const wcsCharacter = new Character(player.Character || player.CharacterAdded.Wait()[0]);
+	/* Connections */
+	private _characterCreated: RBXScriptConnection | undefined;
+	private _characterDestroyed: RBXScriptConnection | undefined;
+
+	constructor(player: Player, playerData: IPlayerData, wcsCharacter: Character) {
+
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
-
+		Logger.Log(script, "Player Character Created: ", this.wcsCharacter as unknown as string);
 		// Initialize the Player Character
 		this.level = playerData.ProgressionStats.Level;
 		this.currentExperience = playerData.ProgressionStats.Experience;
 		this.displayName = player.Name;
 
+		/* Initialize Listeners */
+		this._initializeListeners();
+
 		/* Resources */
 		this.HealthResource = CreateCharacterResource("Health", playerData);
 		this.ManaResource = CreateCharacterResource("Mana", playerData);
 		this.StaminaResource = CreateCharacterResource("Stamina", playerData);
-
-		Logger.Log(
-			script,
-			"Health Resource Created",
-			this.HealthResource.GetValues(),
-			this.ManaResource.GetValues(),
-			this.StaminaResource.GetValues(),
-		);
+		this.ExperienceResource = CreateCharacterResource("Experience", playerData);
 
 		// Managers #TODO - Add Progression, Equipment, Inventory, etc.
 		this.skillManager = new SkillsManager(wcsCharacter);
 		this.skillManager.InitializeSkills(playerData);
 	}
 
+	private _initializeListeners() {
+		/* Character Model Created */
+		this._characterCreated?.Disconnect();
+		this._characterCreated = this.player.CharacterAdded.Connect(() => {
+			Logger.Log(script, "[PlayerCharacter] Character Created");
+		});
+
+		/* Character Model Destroyed */
+		this._characterDestroyed?.Disconnect();
+		this._characterDestroyed = this.player.CharacterRemoving.Connect(() => {
+			Logger.Log(script, "[PlayerCharacter] Character Destroyed");
+			this.Destroy();
+		});
+	}
+
 	/* Died */
 	public OnDeath(): void {
 		Logger.Log(script, "Player Character Died");
+		this.HealthResource.SetCurrent(4);
 	}
 
 	/* Take Damage */
@@ -70,7 +87,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	/* Destroy */
 	public Destroy(): void {
-		Logger.Log(script, "Destroying Player Character");
 		super.Destroy();
 	}
 }

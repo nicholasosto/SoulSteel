@@ -19,6 +19,8 @@ import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
 import CharacterInfo from "shared/Epic UI/Character Frame/CharacterInfo";
 import Logger from "shared/Utility/Logger";
 import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
 
 /* Main Class: CharacterFrame */
 export default class CharacterFrame implements ICharacterFrame {
@@ -53,8 +55,10 @@ export default class CharacterFrame implements ICharacterFrame {
 		this.info = new CharacterInfo(this.instance.Info);
 	}
 
-	public Update(level: number, name: string) {
+	public Update(playerData: IPlayerData) {
 		Logger.Log(script, "Updating Character Frame");
+		const level = playerData.ProgressionStats.Level;
+		const name = playerData.CharacterName;
 		// Update the Character Info
 		this.info.setLevel(level);
 		this.info.setName(name);
@@ -66,19 +70,19 @@ export default class CharacterFrame implements ICharacterFrame {
 		this.info.setProfilePic(profilePic);
 	}
 
-	UpdateResource(resourceId: ResourceId, current: number, max: number) {
-		switch (resourceId) {
+	UpdateResource(characterResource: CharacterResource) {
+		switch (characterResource.ResourceName) {
 			case "Health":
-				this.bars.health.setPercent(math.floor((current / max) * 100));
+				this.bars.health.update(characterResource);
 				break;
 			case "Mana":
-				this.bars.mana.setPercent(math.floor((current / max) * 100));
+				this.bars.mana.update(characterResource);
 				break;
 			case "Stamina":
-				this.bars.stamina.setPercent(math.floor((current / max) * 100));
+				this.bars.stamina.update(characterResource);
 				break;
 			case "Experience":
-				this.bars.experience.setPercent(math.floor((current / max) * 100));
+				this.bars.experience.update(characterResource);
 				break;
 		}
 	}

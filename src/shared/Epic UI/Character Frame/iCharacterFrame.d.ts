@@ -1,3 +1,5 @@
+import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
+
 type TCharacterFrame = Frame & {
 	Bars: Frame & {
 		Progress: Frame & {
@@ -16,6 +18,7 @@ type TCharacterFrame = Frame & {
 
 interface IProgressBar {
 	frame: Frame;
+	update(characterResource: CharacterResource): void;
 	setPercent(percent: number): void;
 	setText(value: string): void;
 	getPercent(): number;

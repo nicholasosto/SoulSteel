@@ -80,6 +80,10 @@ function CreateCharacterResource(resourceName: ResourceId, playerData: IPlayerDa
 			primaryStatValue = playerData.CharacterStats.Dexterity;
 			secondaryStatValue = playerData.CharacterStats.Constitution;
 			break;
+		case "Experience":
+			primaryStatValue = playerData.ProgressionStats.Level;
+			secondaryStatValue = 0;
+			break;
 	}
 
 	const primaryStatMultiplier = primaryStatValue * 10;

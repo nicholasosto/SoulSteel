@@ -1,6 +1,6 @@
 import { IProgressBar } from "shared/Epic UI/Character Frame/iCharacterFrame";
+import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
 import Logger from "shared/Utility/Logger";
-
 
 export default class ProgressBar implements IProgressBar {
 	frame: Frame;
@@ -9,6 +9,17 @@ export default class ProgressBar implements IProgressBar {
 		this.frame = frame;
 	}
 
+	update(characterResource: CharacterResource) {
+		Logger.Log(script, "Updating Progress Bar", characterResource as unknown as string);
+		const currentValue = characterResource.Current;
+		const maxValue = characterResource.MaxValue;
+
+		const textValue = `${characterResource.ResourceName}: ${currentValue}/${maxValue}`;
+
+		const percent = (currentValue / maxValue) * 100;
+		this.setPercent(percent);
+		this.setText(textValue);
+	}
 	setPercent(percent: number) {
 		this.frame.SetAttribute("BarPercent", math.clamp(percent, 0, 100));
 	}
