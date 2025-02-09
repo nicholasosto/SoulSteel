@@ -5,7 +5,8 @@
  */
 
 /* Imports */
-import Remotes, { SignalNames } from "shared/Remotes/Remotes";
+import { Skill } from "@rbxts/wcs";
+import Remotes, { BiDirectionalEvents, GameCycleRemotes, SignalNames } from "shared/Remotes/Remotes";
 
 /* Namespaces */
 const nsPlayerCharacter = Remotes.Client.GetNamespace("PlayerCharacter");
@@ -13,6 +14,11 @@ const nsSkills = Remotes.Client.GetNamespace("Skills");
 
 /* Skill Responses */
 const Responses = {
+	ModuleToModule: Remotes.Client.Get("ModuleToModule"),
+	/* Game Cycle */
+	SkillControllerStarted: GameCycleRemotes.Client.Get(SignalNames.SkillControllerStarted),
+	CharacterControllerStarted: GameCycleRemotes.Client.Get(SignalNames.CharacterControllerStarted),
+	DataManagerStarted: GameCycleRemotes.Client.Get(SignalNames.DataManagerStarted),
 	/* Developer */
 	DeveloperResponse: Remotes.Client.Get(SignalNames.DeveloperResponse),
 	/* Teleport */
@@ -25,6 +31,11 @@ const Responses = {
 	PlayerInfoResponse: nsPlayerCharacter.Get(SignalNames.PlayerInfoResponse),
 	PlayerLevelUpResponse: nsPlayerCharacter.Get(SignalNames.PlayerLevelUpResponse),
 	PlayerResourceResponse: nsPlayerCharacter.Get(SignalNames.PlayerResourceResponse),
+};
+
+const BiDirectional = {
+	ModuleToModule: Remotes.Client.Get("ModuleToModule"),
+	SkillBarCreated: BiDirectionalEvents.Client.Get("SkillBarCreated"),
 };
 
 /* Skill Requests */
@@ -44,4 +55,4 @@ const Requests = {
 	UnAssignSkillSlotRequest: nsSkills.Get(SignalNames.UnAssignSkillSlotRequest),
 };
 
-export { Responses, Requests };
+export { Responses, Requests, BiDirectional };

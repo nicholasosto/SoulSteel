@@ -3,12 +3,58 @@ import Logger from "shared/Utility/Logger";
 import KeyboardController from "client/Keyboard/Keyboard";
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 import WcsClient from "./_WCS/WCSClient";
+import { Responses } from "shared/Remotes/ClientRemotes";
 
-// Enable Target Selection
-initializeTargetSelection();
+class GameClient {
+	private static _instance: GameClient;
 
-// Start the WCS Client
-WcsClient.Start();
+	/* Connections */
+	private static _skillControllerStarted: RBXScriptConnection | undefined;
+	private static _dataManagerStarted: RBXScriptConnection | undefined;
+	private static _characterControllerStarted: RBXScriptConnection | undefined;
 
-// Start the Keyboard Controller
-KeyboardController.Start();
+	/* Constructor */
+	constructor() {
+		Logger.Log("MAIN CLIENT", "Client Singleton: Instantiated");
+	}
+
+	public static Start() {
+		if (this._instance === undefined) {
+			/* Create the Game Client */
+			this._instance = new GameClient();
+
+			/* Start the WCS Client */
+			WcsClient.Start();
+
+			/* Initialize Listeners */
+			this._initializeListeners();
+			// Start the Keyboard Controller
+			initializeTargetSelection();
+			KeyboardController.Start();
+
+			Logger.Log(script, "Started()");
+		}
+	}
+
+	private static _initializeListeners() {
+		/* Skill Controller Started */
+		this._skillControllerStarted?.Disconnect();
+		this._skillControllerStarted = Responses.SkillControllerStarted.Connect(() => {
+			Logger.Log("REMOTE", "Skill Controller Started");
+		});
+
+		/* Data Manager Started */
+		this._dataManagerStarted?.Disconnect();
+		this._dataManagerStarted = Responses.DataManagerStarted.Connect(() => {
+			Logger.Log("REMOTE", "Data Manager Started");
+		});
+
+		/* Character Controller Started */
+		this._characterControllerStarted?.Disconnect();
+		this._characterControllerStarted = Responses.CharacterControllerStarted.Connect(() => {
+			Logger.Log("REMOTE", "Character Controller Started");
+		});
+	}
+}
+
+GameClient.Start();

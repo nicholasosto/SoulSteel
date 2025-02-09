@@ -8,7 +8,10 @@ import { IPlayerCharacter, ISkillManager } from "shared/Game Character/Character
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 // Classes
 import GameCharacter from "./GameCharacter";
-import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
+import {
+	CharacterResource,
+	CreateCharacterResource,
+} from "shared/Game Character/Character Resources/CharacterResource";
 
 //NET
 import SkillsManager from "server/Character/Managers/SkillsManager";
@@ -21,9 +24,12 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public skillManager: ISkillManager;
 
 	/* Resources */
-	public HealthResource: CharacterResource = new CharacterResource("Health");
+	public HealthResource: CharacterResource;
+	public ManaResource: CharacterResource;
+	public StaminaResource: CharacterResource;
 
-	constructor(player: Player, wcsCharacter: Character, playerData: IPlayerData) {
+	constructor(player: Player, playerData: IPlayerData) {
+		const wcsCharacter = new Character(player.Character || player.CharacterAdded.Wait()[0]);
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
@@ -32,6 +38,19 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.level = playerData.ProgressionStats.Level;
 		this.currentExperience = playerData.ProgressionStats.Experience;
 		this.displayName = player.Name;
+
+		/* Resources */
+		this.HealthResource = CreateCharacterResource("Health", playerData);
+		this.ManaResource = CreateCharacterResource("Mana", playerData);
+		this.StaminaResource = CreateCharacterResource("Stamina", playerData);
+
+		Logger.Log(
+			script,
+			"Health Resource Created",
+			this.HealthResource.GetValues(),
+			this.ManaResource.GetValues(),
+			this.StaminaResource.GetValues(),
+		);
 
 		// Managers #TODO - Add Progression, Equipment, Inventory, etc.
 		this.skillManager = new SkillsManager(wcsCharacter);

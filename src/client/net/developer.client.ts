@@ -12,7 +12,7 @@ function InitializeDeveloperClient() {
 	Logger.Log("[Developer Client]", "Initialized");
 
 	connection_1?.Disconnect();
-	connection_1 = GameOfLifeButton.Activated.Connect(() => {
+	connection_1 = GameOfLifeButton.MouseButton1Click.Connect(() => {
 		Logger.Log("[Game of Life Button]", "Activated");
 		Requests.DeveloperRequest.SendToServer("Game of Life Button Clicked");
 		wait(1);

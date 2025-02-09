@@ -17,6 +17,7 @@ export default class DataManager {
 	private constructor() {
 		DataManager.playerAddedConnection?.Disconnect();
 		DataManager.playerAddedConnection = Players.PlayerAdded.Connect((player) => {
+			Logger.Log(script, "[Registering]: ", player);
 			DataManager.RegisterPlayer(player);
 		});
 	}
@@ -45,8 +46,11 @@ export default class DataManager {
 		PlayerDataRegistry.set(userId, dataCache);
 	}
 
-	public static GetDataCache(userId: string): DataCache {
-		return PlayerDataRegistry.get(userId) as DataCache;
+	public static GetDataCache(player: Player): DataCache {
+		const dataCache = PlayerDataRegistry.get(tostring(player.UserId)) as DataCache;
+		Logger.Log(script, "Data Cache: ", dataCache as unknown as string);
+		
+		return dataCache;
 	}
 
 	// Called from the Server OnPlayerLeaving event

@@ -1,6 +1,7 @@
 import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import SkillBar from "shared/Epic UI/Skill Bar/SkillBar";
 
 /* Payloads */
 interface Payloads {
@@ -11,6 +12,11 @@ interface Payloads {
 
 /* Signal Names */
 enum SignalNames {
+	// Game Cycle
+	SkillControllerStarted = "SkillControllerStarted",
+	CharacterControllerStarted = "CharacterControllerStarted",
+	DataManagerStarted = "DataManagerStarted",
+
 	// Developer
 	DeveloperRequest = "DeveloperRequest",
 	DeveloperResponse = "DeveloperResponse",
@@ -40,11 +46,25 @@ enum SignalNames {
 	UnAssignSkillSlotRequest = "UnAssignSkillSlotRequest",
 }
 
+const GameCycleRemotes = Net.Definitions.Create({
+	[SignalNames.SkillControllerStarted]: Net.Definitions.BidirectionalEvent(),
+	[SignalNames.CharacterControllerStarted]: Net.Definitions.BidirectionalEvent(),
+	[SignalNames.DataManagerStarted]: Net.Definitions.BidirectionalEvent(),
+});
+
+const BiDirectionalEvents = Net.Definitions.Create({
+	SkillBarCreated: Net.Definitions.BidirectionalEvent<[skillBar: SkillBar]>(),
+	SkillSlotAssignment: Net.Definitions.BidirectionalEvent<[slot: number, skillId: SkillId]>(),
+	UnAssignSkillSlot: Net.Definitions.BidirectionalEvent<[slot: number]>(),
+	ModuleToModule: Net.Definitions.BidirectionalEvent<[message: string]>(),
+});
+
 /* Remotes */
 const Remotes = Net.Definitions.Create({
 	// For testing features
 	DeveloperRequest: Net.Definitions.ClientToServerEvent<[message: string]>(),
 	DeveloperResponse: Net.Definitions.ServerToClientEvent<[message: string]>(),
+	ModuleToModule: Net.Definitions.BidirectionalEvent<[message: string]>(),
 
 	// Teleport
 	TeleportRequest: Net.Definitions.ClientToServerEvent<[destination: Vector3]>(),
@@ -90,4 +110,4 @@ const Remotes = Net.Definitions.Create({
 
 export default Remotes;
 
-export { SignalNames };
+export { SignalNames, GameCycleRemotes, BiDirectionalEvents };

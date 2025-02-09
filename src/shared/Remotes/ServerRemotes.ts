@@ -6,13 +6,16 @@
  * The remotes are then exported to be used in other files.
  */
 
-import Signals, { SignalNames } from "shared/Remotes/Remotes";
-
+import Signals, { GameCycleRemotes, SignalNames } from "shared/Remotes/Remotes";
 
 /* Namespaces */
 
 const nsPlayerCharacter = Signals.Server.GetNamespace("PlayerCharacter");
 const nsSkills = Signals.Server.GetNamespace("Skills");
+
+const BiDirectional = {
+	ModuleToModule: Signals.Server.Get("ModuleToModule"),
+};
 
 /* Skill Remotes */
 const Requests = {
@@ -31,6 +34,11 @@ const Requests = {
 
 /* Skill Responses */
 const Responses = {
+	/* Game Cycle */
+	SkillControllerStarted: GameCycleRemotes.Server.Get(SignalNames.SkillControllerStarted),
+	CharacterControllerStarted: GameCycleRemotes.Server.Get(SignalNames.CharacterControllerStarted),
+	DataManagerStarted: GameCycleRemotes.Server.Get(SignalNames.DataManagerStarted),
+
 	/* Developer */
 	DeveloperResponse: Signals.Server.Get(SignalNames.DeveloperResponse),
 	/* Teleport */
