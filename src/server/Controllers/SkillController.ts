@@ -1,8 +1,8 @@
 // server/net/remotes.server.ts
 import Logger from "shared/Utility/Logger";
-import { SkillEvent } from "server/net/ServerEvents";
+import { SkillEvent } from "server/net/_Server_Events";
 //import { Requests, Responses } from "shared/Remotes/ServerRemotes";
-import CharacterController from "server/Controllers/CharacterController";
+import PCController from "server/Controllers/PlayerCharacterController";
 
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
@@ -33,7 +33,7 @@ export default class SkillController {
 		this._skillSlotAssignmentConnection?.Disconnect();
 		this._skillSlotAssignmentConnection = SkillEvent.SkillSlotAssignment.Connect((player, slot, skillId) => {
 			// Get the skill manager
-			const playerCharacter = CharacterController.GetGameCharacter(tostring(player.UserId)) as PlayerCharacter;
+			const playerCharacter = PCController.GetPlayerCharacter(player) as PlayerCharacter;
 			const skillManager = playerCharacter?.skillManager;
 
 			// Validate the parameters
@@ -49,11 +49,11 @@ export default class SkillController {
 		this._unAssignSkillSlotConnection?.Disconnect();
 		this._unAssignSkillSlotConnection = SkillEvent.UnassignSkillSlot.Connect((player: Player, slot: number) => {
 			// Get the player character
-			const playerCharacter = CharacterController.GetGameCharacter(tostring(player.UserId)) as PlayerCharacter;
+			const playerCharacter = PCController.GetPlayerCharacter(player);
 			const skillManager = playerCharacter?.skillManager;
 
 			// Validate the parameters
-			assert(playerCharacter, "Player Character is nil");
+			assert(skillManager, "Player Character is nil");
 			assert(slot >= 1 && slot <= 6, "Invalid slot");
 
 			// Remove the skill from the slot

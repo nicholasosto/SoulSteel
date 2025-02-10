@@ -8,8 +8,8 @@ class CharacterResource {
 	public ResourceName: string = "DefaultResource";
 
 	// Resource Values
-	public MaxValue: number = 100;
-	public Current: number = 100;
+	private MaxValue: number = 100;
+	private Current: number = 100;
 
 	// Regen Values
 	private _regenAmount: number = 10;
@@ -19,6 +19,15 @@ class CharacterResource {
 	constructor(resourceName: string) {
 		// Attribute Names and Values
 		this.ResourceName = resourceName;
+	}
+
+	// Get Current Value
+	public GetCurrent() {
+		return this.Current;
+	}
+
+	public GetMax() {
+		return this.MaxValue;
 	}
 
 	// Get Percentage

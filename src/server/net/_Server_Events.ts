@@ -1,4 +1,4 @@
-import { BiDirectionalEvents, S2C, C2S } from "shared/net/Remotes";
+import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
 
 const GameCycleEvents = {
 	PlayerDataLoaded: S2C.Server.Get("PlayerDataLoaded"),
@@ -29,4 +29,4 @@ const DeveloperEvent = {
 	GameOfLife: BiDirectionalEvents.Server.Get("GameOfLife"),
 };
 
-export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, CharacterEvent };
+export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, CharacterEvent, Payloads };

@@ -1,4 +1,4 @@
-import { WorldEvent } from "client/net/ClientEvents";
+import { WorldEvent } from "client/net/_Client_Events";
 import { Players } from "@rbxts/services";
 import Logger from "shared/Utility/Logger";
 

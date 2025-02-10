@@ -6,6 +6,7 @@ import { GetSkillSlotMap } from "shared/Data Interfaces/PlayerData";
 import { CreateSkillFromId } from "shared/Skills/WCSHelper";
 import { Character } from "@rbxts/wcs";
 
+const SkillManagers: Map<Character, SkillsManager> = new Map();
 
 export default class SkillsManager implements ISkillManager {
 	// Skills
@@ -13,25 +14,28 @@ export default class SkillsManager implements ISkillManager {
 	UnlockedSkills: SkillId[] = [];
 
 	/* Private Variables */
-	private wcsCharacter: Character;
+	public wcsCharacter: Character;
 
 	/* Constructor */
 	constructor(wcsCharacter: Character) {
 		/* Set WCS Character */
 		this.wcsCharacter = wcsCharacter;
 		assert(wcsCharacter, "Character is nil");
+		Logger.Log(script, `[SkillsManager]: Created for ${wcsCharacter}`);
+		SkillManagers.set(wcsCharacter, this);
+		Logger.Log(script, `[SkillsManager]: Skill Managers: ${SkillManagers.size()}`);
 	}
 
 	/* Initialize Skills */
 	InitializeSkills(playerData: IPlayerData): void {
 		/* Get Skill Slot Map */
 		this.SkillMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
-
+		Logger.Log(script, `[SkillsManager]: Initializing Skills`, this.SkillMap as unknown as string);
 		/* Load Skills */
 		this.SkillMap.forEach((skillId, slot) => {
+			Logger.Log(script, `[SkillsManager]: Loading Skill ${skillId} into Slot ${slot}`);
 			this.AssignSkillToSlot(slot, skillId);
 		});
-		Logger.Log(script, `[SkillsManager]: Initializing Skills`);
 	}
 
 	/* Remove Skill from Slot */
@@ -39,12 +43,6 @@ export default class SkillsManager implements ISkillManager {
 		/* Remove Skill from Slot */
 		this.SkillMap.delete(slot);
 		this.AssignSkillToSlot(slot, "None");
-
-		/* Send Skill Map to Player */
-		// const player = this.wcsCharacter.Player;
-		// if (player) {
-		// 	Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
-		// }
 	}
 
 	/* Assign Skill to Slot */
@@ -55,11 +53,6 @@ export default class SkillsManager implements ISkillManager {
 		/* Assign Skill to Slot */
 		this.SkillMap.set(slot, skillId);
 		const player = this.wcsCharacter.Player;
-
-		// /* Send Skill Map to Player */
-		// if (player) {
-		// 	Responses.SkillMapResponse.SendToPlayer(player, this.SkillMap);
-		// }
 	}
 
 	/* Register Skill */

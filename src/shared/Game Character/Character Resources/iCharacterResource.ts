@@ -1,6 +1,6 @@
 type CharacterStatId = "Strength" | "Speed" | "Dexterity" | "Intelligence" | "Constitution";
 
-interface CharacterStats {
+interface iCharacterStats {
 	Strength: number;
 	Speed: number;
 	Dexterity: number;
@@ -8,13 +8,18 @@ interface CharacterStats {
 	Constitution: number;
 }
 
-type TCharacterResource = {
+interface TCharacterResource {
 	ResourceName: string;
 	PrimaryStat: CharacterStatId;
 	SecondaryStat: CharacterStatId;
+	GetCurrent: () => number;
+	GetMax: () => number;
+	GetValues: () => [current: number, max: number];
 	GetPercentage: () => number;
+	SetMax: (value: number) => void;
+	SetCurrent: (value: number) => void;
 	GetLabel: () => string;
 	ActivateRegen: (activate: boolean) => void;
-};
+}
 
-export { CharacterStatId, CharacterStats, TCharacterResource };
+export { CharacterStatId, iCharacterStats as CharacterStats, TCharacterResource };

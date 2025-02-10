@@ -6,9 +6,10 @@ import WcsClient from "./_WCS/WCSClient";
 
 /* Controllers */
 import KeyboardController from "client/Keyboard/Keyboard";
-import UIController from "./net/Controllers/UIController";
+import ClientUIController from "./Controllers/ClientUIController";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
+import { Character } from "@rbxts/wcs";
 
 //import { GameCycleEvents } from "./net/ClientEvents";
 
@@ -34,7 +35,7 @@ class GameClient {
 			WcsClient.Start();
 
 			/* Controllers */
-			UIController.Start();
+			ClientUIController.Start();
 			KeyboardController.Start();
 
 			/* Initialize Target Selection */

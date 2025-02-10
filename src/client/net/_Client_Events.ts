@@ -1,4 +1,4 @@
-import { BiDirectionalEvents, S2C, C2S } from "shared/net/Remotes";
+import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
 const WorldEvent = {
 	Teleport: BiDirectionalEvents.Client.Get("Teleport"),
 	TargetSelected: C2S.Client.Get("TargetSelected"),
@@ -29,4 +29,4 @@ const GameCycleEvents = {
 	CharacterControllerStarted: S2C.Client.Get("CharacterControllerStarted"),
 };
 
-export { SkillEvent, WorldEvent, DeveloperEvent, GameCycleEvents, CharacterEvent };
+export { SkillEvent, WorldEvent, DeveloperEvent, GameCycleEvents, CharacterEvent, Payloads };

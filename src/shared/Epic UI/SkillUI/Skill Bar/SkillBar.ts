@@ -2,15 +2,14 @@
 import { Players } from "@rbxts/services";
 
 /* Interfaces */
-import { TSkillBar } from "shared/Epic UI/Skill Bar/TSkillBar";
+import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 /* Modules */
-import { SkillButton } from "./SkillButton";
+import { SkillButton } from "../SkillButton/SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";
-import StorageManager from "shared/Storage Manager/StorageManager";
 import { Character } from "@rbxts/wcs";
 
 /* References */
@@ -20,8 +19,7 @@ const playerHUD = LocalPlayer.WaitForChild("PlayerGui").WaitForChild("HUD");
 /* Main Class: SkillBar */
 export default class SkillBar {
 	// Instance
-	private _instance: TSkillBar = StorageManager.CloneFromStorage("SkillBar_Template") as TSkillBar;
-
+	private _instance: TSkillBar;
 	//WCS Character
 	private wcsCharacter: Character | undefined;
 
@@ -30,8 +28,9 @@ export default class SkillBar {
 	private _skillConnectionMap = new Map<number, RBXScriptConnection>();
 
 	// Constructor
-	constructor() {
-		this._instance.Parent = playerHUD;
+	constructor(skillBarInstance: TSkillBar) {
+		this._instance = skillBarInstance;
+		Logger.Log(script, "[Instance: SkillBar Class]: ", this._instance as unknown as string);
 	}
 
 	// Public:  Assign Skill to Slot
@@ -47,6 +46,7 @@ export default class SkillBar {
 
 	// Public:  Load Skills
 	public LoadSkills(skillSlotMap: Map<number, SkillId>) {
+		Logger.Log(script, "Loading Skills: ", skillSlotMap as unknown as string);
 		// Loop through the Skill Slot Map
 		for (const [slot, skillId] of skillSlotMap) {
 			this._createSkillButton(slot, skillId);
@@ -55,7 +55,12 @@ export default class SkillBar {
 
 	/* Set WCS Character */
 	public SetWCSCharacter(wcsCharacter: Character) {
+		Logger.Log(script, "Set WCS Character: ", wcsCharacter as unknown as string);
 		this.wcsCharacter = wcsCharacter;
+	}
+
+	public ClearWCSCharacter() {
+		this.wcsCharacter = undefined;
 	}
 
 	public ClearSlot(slot: number) {
@@ -69,6 +74,10 @@ export default class SkillBar {
 	// Private:  createSkillButton
 	private _createSkillButton(slot: number, skillId: SkillId) {
 		let parent: Frame | undefined;
+		if (this._instance === undefined) {
+			Logger.Log(script, "Skill Bar Instance is undefined");
+			return;
+		}
 		// Get the Parent Frame
 		switch (slot) {
 			case 1:
@@ -98,8 +107,19 @@ export default class SkillBar {
 		// Connect the Skill Button and add it to the map
 		this._skillConnectionMap.get(slot)?.Disconnect();
 		const connection = this._skillButtonMap.get(slot)?.ButtonInstance.Activated.Connect(() => {
+			Logger.Log(script, "Skill Button Activated: ", Character.GetLocalCharacter() as unknown as string);
+			const characterModel = Players.LocalPlayer?.Character;
+			if (characterModel === undefined) return;
+
+			const wcsCharacter = Character.GetCharacterFromInstance(characterModel);
+			if (wcsCharacter === undefined) return;
+
+			const skill = wcsCharacter.GetSkillFromString(skillId);
+			if (skill === undefined) return;
+
+			Logger.Log(script, "Skill Button Activated: ", slot, skillId);
 			this._skillButtonMap.get(slot)?.StartCooldown();
-			this.wcsCharacter?.GetSkillFromString(skillId)?.Start();
+			skill.Start();
 		});
 
 		this._skillConnectionMap.set(slot, connection as RBXScriptConnection);
@@ -110,6 +130,6 @@ export default class SkillBar {
 		this._skillConnectionMap.forEach((connection) => {
 			connection?.Disconnect();
 		});
-		this._instance.Destroy();
+		this._instance?.Destroy();
 	}
 }

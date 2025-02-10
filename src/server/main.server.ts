@@ -2,10 +2,10 @@
 import Logger from "shared/Utility/Logger";
 
 // Roblox Services
-import { ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage, Players } from "@rbxts/services";
 
 // WCS Imports
-import { CreateServer } from "@rbxts/wcs";
+import { Character, CreateServer } from "@rbxts/wcs";
 // Manager Imports
 import StorageManager from "shared/Storage Manager/StorageManager";
 import DataManager from "server/Controllers/DataManager";
@@ -15,10 +15,11 @@ import DataManager from "server/Controllers/DataManager";
 import StartTeleportListener from "./net/TeleportListener";
 
 // Controllers
-import CharacterController from "./Controllers/CharacterController";
+import PCController from "./Controllers/PlayerCharacterController";
 import StartDeveloperListener from "./net/DeveloperListener";
 import SkillController from "./Controllers/SkillController";
-import { GameCycleEvents } from "./net/ServerEvents";
+import { StartUIListeners, UIController } from "./net/UIListeners";
+//import { GameCycleEvents } from "./net/ServerEvents";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -40,7 +41,7 @@ class GameServer {
 
 			wait(1.5); // Wait for the WCS Server and DataManager to start and register the directories
 
-			CharacterController.Start();
+			PCController.Start();
 			SkillController.Start();
 		}
 	}
@@ -70,7 +71,35 @@ class GameServer {
 	}
 }
 
+/* Start the Game Server */
 GameServer.Start();
 
+/* Handle Player Added */
+function HandlePlayerAdded(player: Player) {
+	/* Create the Player Character */
+	player.CharacterAdded.Connect((character) => {
+		/* Character Controller */
+		PCController.OnCharacterAdded(player, character);
+		UIController.UpdatePlayerUI(player);
+
+		/* Humanoid and WCS cleanup */
+		const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+		humanoid.Died.Connect(() => {
+			Logger.Log("[MAIN SERVER] - Character Removed: ", character);
+			PCController.OnCharacterRemoved(player);
+		});
+	});
+}
+
+/* Get Existing Players: When the player joins before the server listens */
+Players.GetPlayers().forEach((player) => {
+	HandlePlayerAdded(player);
+});
+
+/* Player Added Event */
+Players.PlayerAdded.Connect((player) => {
+	HandlePlayerAdded(player);
+});
+StartUIListeners();
 StartTeleportListener();
 StartDeveloperListener();

@@ -29,23 +29,14 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public StaminaResource: CharacterResource;
 	public ExperienceResource: CharacterResource;
 
-	/* Connections */
-	private _characterCreated: RBXScriptConnection | undefined;
-	private _characterDestroyed: RBXScriptConnection | undefined;
-
 	constructor(player: Player, playerData: IPlayerData, wcsCharacter: Character) {
-
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
-		Logger.Log(script, "Player Character Created: ", this.wcsCharacter as unknown as string);
 		// Initialize the Player Character
 		this.level = playerData.ProgressionStats.Level;
 		this.currentExperience = playerData.ProgressionStats.Experience;
 		this.displayName = player.Name;
-
-		/* Initialize Listeners */
-		this._initializeListeners();
 
 		/* Resources */
 		this.HealthResource = CreateCharacterResource("Health", playerData);
@@ -58,21 +49,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.skillManager.InitializeSkills(playerData);
 	}
 
-	private _initializeListeners() {
-		/* Character Model Created */
-		this._characterCreated?.Disconnect();
-		this._characterCreated = this.player.CharacterAdded.Connect(() => {
-			Logger.Log(script, "[PlayerCharacter] Character Created");
-		});
-
-		/* Character Model Destroyed */
-		this._characterDestroyed?.Disconnect();
-		this._characterDestroyed = this.player.CharacterRemoving.Connect(() => {
-			Logger.Log(script, "[PlayerCharacter] Character Destroyed");
-			this.Destroy();
-		});
-	}
-
 	/* Died */
 	public OnDeath(): void {
 		Logger.Log(script, "Player Character Died");
@@ -82,7 +58,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Take Damage */
 	public OnTakeDamage(DamageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Took Damage");
-		this.HealthResource.SetCurrent(this.HealthResource.Current - DamageContainer.Damage);
+		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - DamageContainer.Damage);
 	}
 
 	/* Destroy */

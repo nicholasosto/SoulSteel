@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import { WorldEvent } from "client/net/ClientEvents";
+import { WorldEvent } from "client/net/_Client_Events";
 import Logger from "shared/Utility/Logger";
 
 const localPlayer = Players.LocalPlayer;

@@ -1,5 +1,5 @@
 import { AttributeLabel_Template } from "./AttributeLabel_Template";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
+import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
 import StorageManager from "shared/Storage Manager/StorageManager";
 
 export class AttributeLabelClass {
@@ -15,12 +15,12 @@ export class AttributeLabelClass {
 
 	// Set the name of the attribute
 	public SetName(name: string) {
-		this.LabelObject.AttributeName.SetAttribute(EEpicUIAttributes.TextValue, name);
+		this.LabelObject.AttributeName.SetAttribute("TextValue", name);
 	}
 
 	// Set the value of the attribute
 	public SetValue(value: number) {
-		this.LabelObject.AttributeValue.SetAttribute(EEpicUIAttributes.TextValue, tostring(value));
+		this.LabelObject.AttributeValue.SetAttribute("TextValue", tostring(value));
 	}
 
 	// Set the parent of the attribute label

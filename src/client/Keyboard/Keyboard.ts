@@ -1,7 +1,7 @@
 // Begin: KeyboardController.ts
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
-import { SkillEvent } from "client/net/ClientEvents";
+import { SkillEvent } from "client/net/_Client_Events";
 import { SkillKeyMap } from "./KeyboardMaps";
 import Logger from "shared/Utility/Logger";
 // Set the skills here

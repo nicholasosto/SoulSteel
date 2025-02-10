@@ -1,7 +1,7 @@
 // File: developer.client.ts
 // Purpose: Handles the client-side of the developer listener which calls the ReferenceBlock Creator.
 
-import { DeveloperEvent } from "client/net/ClientEvents";
+import { DeveloperEvent } from "client/net/_Client_Events";
 import Logger from "shared/Utility/Logger";
 import { GameOfLifeButton } from "client/Buttons/DeveloperButtons";
 

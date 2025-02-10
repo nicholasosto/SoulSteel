@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { EEpicUIAttributes } from "./EpicUIAttributes";
+import { EEpicUIAttributes } from "./EpicInterfaces";
 
 function GetEpicAttribute(attribute: EEpicUIAttributes, instance: Instance) {
 	if (instance === undefined) {

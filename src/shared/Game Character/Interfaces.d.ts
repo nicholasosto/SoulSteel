@@ -36,11 +36,12 @@ export interface IGameCharacter {
 export interface IPlayerCharacter extends IGameCharacter {
 	// Player
 	player: Player;
-	level: number;
 	currentExperience: number;
 
 	// Resources
 	HealthResource: CharacterResource;
+	ManaResource: CharacterResource;
+	StaminaResource: CharacterResource;
 
 	// Managers
 	skillManager: ISkillManager;

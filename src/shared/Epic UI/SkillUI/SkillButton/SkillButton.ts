@@ -3,14 +3,15 @@ import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 
 // Types
-import { TSkillButton } from "shared/Epic UI/Skill Bar/TSkillButton";
+import { TSkillButton } from "shared/Epic UI/SkillUI/SkillIndex";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
 
 // Functions
 import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
-import { Skill } from "@rbxts/wcs";
+import { Skill, Character } from "@rbxts/wcs";
 
 export class SkillButton {
 	// Button Frame Instance
@@ -41,10 +42,10 @@ export class SkillButton {
 
 		/* Cooldown Bar */
 		// Set the Text
-		this._cooldownBar.setText(this._skillDefinition.displayName);
+		this._cooldownBar.SetEpicAttribute("TextValue", this._skillDefinition.displayName);
 
 		// Set the Cooldown Value
-		this._cooldownBar.setPercent(100);
+		this._cooldownBar.SetEpicAttribute("BarPercent", "0");
 
 		/* Button */
 		// Set the Image
@@ -81,14 +82,14 @@ export class SkillButton {
 			}
 
 			// Ensure the progress bar shows full progress when cooldown is finished
-			this._cooldownBar.setPercent(100);
+			this._cooldownBar.SetEpicAttribute("BarPercent", "0");
 		});
 	}
 
 	// Set Cooldown Value
 	private _updateCooldown(current: number, max: number) {
 		const percent = (current / max) * 100;
-		this._cooldownBar.setPercent(percent);
+		this._cooldownBar.SetEpicAttribute("BarPercent", tostring(percent));
 	}
 
 	// Set Image
@@ -98,7 +99,7 @@ export class SkillButton {
 
 	// Set Text
 	public SetText(text: string) {
-		this._cooldownBar.setText(text);
+		this._cooldownBar.SetEpicAttribute("TextValue", text);
 	}
 
 	// Set Skill

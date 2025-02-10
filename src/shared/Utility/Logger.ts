@@ -1,5 +1,7 @@
 import { HttpService } from "@rbxts/services";
 import { Skill } from "@rbxts/wcs";
+import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 
 export type Printable =
 	| string
@@ -39,6 +41,14 @@ export default class Logger {
 		warn(logTag);
 		print(...messages);
 		//warn(logTag, ...messages);
+	}
+
+	public static LogPlayer(player: Player, ...messages: Array<Printable>) {
+		if (!this._enabled) {
+			return;
+		}
+		warn(player.Name);
+		print(...messages);
 	}
 
 	// CFrame: Convert CFrame to string with rounded values

@@ -1,5 +1,5 @@
 import { TDialog } from "shared/Epic UI/DialogFrame/Dialog_Template";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicUIAttributes";
+import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import Logger from "shared/Utility/Logger";
 
@@ -52,8 +52,8 @@ export class Dialog {
 	// Set up the buttons
 	protected _setupButtons(button1Name: string, button2Name: string) {
 		// Set Button Text
-		this._button1.SetAttribute(EEpicUIAttributes.TextValue, button1Name);
-		this._button2.SetAttribute(EEpicUIAttributes.TextValue, button2Name);
+		this._button1.SetAttribute("TextValue", button1Name);
+		this._button2.SetAttribute("TextValue", button2Name);
 		// Button 1 Click
 		this._connectionButton1 = this._button1.Activated.Connect(() => {
 			this.handleButton1Click();
@@ -84,8 +84,8 @@ export class Dialog {
 	public SetText(title: string, message: string) {
 		this._title = title;
 		this._message = message;
-		this._dialogTitle.SetAttribute(EEpicUIAttributes.TextValue, title);
-		this._dialogTextBox.SetAttribute(EEpicUIAttributes.TextValue, message);
+		this._dialogTitle.SetAttribute("TextValue", title);
+		this._dialogTextBox.SetAttribute("TextValue", message);
 	}
 
 	// Show and Hide Dialog

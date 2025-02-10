@@ -5,11 +5,11 @@ import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
 
 /* Payloads */
-// interface Payloads {
-// 	PlayerLevelUp: [level: number];
-// 	PlayerInfoResponse: [name: string, level: number, profilePicId: string];
-// 	PlayerResourceUpdate: [resourceId: ResourceId, current: number, max: number];
-// }
+interface Payloads {
+	PlayerLevelUp: [level: number];
+	PlayerInfoResponse: [name: string, level: number, profilePicId: string];
+	PlayerResourceUpdate: { resourceId: ResourceId, current: number, max: number};
+}
 
 const BiDirectionalEvents = Net.Definitions.Create({
 	GameOfLife: Net.Definitions.BidirectionalEvent<[]>(),
@@ -26,7 +26,7 @@ const C2S = Net.Definitions.Create({
 
 const S2C = Net.Definitions.Create({
 	PlayerDataLoaded: Net.Definitions.ServerToClientEvent<[playerData: IPlayerData]>(),
-	PlayerResourceUpdated: Net.Definitions.ServerToClientEvent<[characterResource: CharacterResource]>(),
+	PlayerResourceUpdated: Net.Definitions.ServerToClientEvent<[Payloads["PlayerResourceUpdate"]]>(),
 	PlayerDied: Net.Definitions.ServerToClientEvent(),
 
 	SkillControllerStarted: Net.Definitions.ServerToClientEvent(),
@@ -34,4 +34,4 @@ const S2C = Net.Definitions.Create({
 	DataManagerStarted: Net.Definitions.ServerToClientEvent(),
 });
 
-export { S2C, C2S, BiDirectionalEvents };
+export { S2C, C2S, BiDirectionalEvents, Payloads };

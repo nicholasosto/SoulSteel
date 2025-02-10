@@ -1,8 +1,11 @@
-import { WorldEvent } from "./ServerEvents";
+import { WorldEvent } from "./_Server_Events";
+
+let _teleportConnection: RBXScriptConnection | undefined;
 
 export default function StartTeleportListener() {
 	/* Teleport Player */
-	WorldEvent.Teleport.Connect((player: Player, position: Vector3) => {
+	_teleportConnection?.Disconnect();
+	_teleportConnection = WorldEvent.Teleport.Connect((player: Player, position: Vector3) => {
 		// Get the player character
 		const character = player.Character;
 		if (character === undefined) return;
