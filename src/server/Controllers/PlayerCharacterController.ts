@@ -40,9 +40,6 @@ export default class PCController {
 
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
-
-		/* Send UI Updates */
-		this.SendUIUpdates(player, playerCharacter);
 	}
 
 	/* On Character Removed */
@@ -56,26 +53,6 @@ export default class PCController {
 
 		// Remove from the Registry
 		this._PlayerCharacters.delete(tostring(player.UserId));
-	}
-
-	/* Send UI Updates */
-	private static SendUIUpdates(player: Player, playerCharacter: PlayerCharacter) {
-		// const playerData = DataManager.GetDataCache(player)._playerData as IPlayerData;
-
-		// GameCycleEvents.PlayerDataLoaded.SendToPlayer(player, playerData);
-		// CharacterEvent.ResourceUpdated.SendToPlayer(player, this.ResourcePayload(playerCharacter.HealthResource));
-		// CharacterEvent.ResourceUpdated.SendToPlayer(player, this.ResourcePayload(playerCharacter.ManaResource));
-		// CharacterEvent.ResourceUpdated.SendToPlayer(player, this.ResourcePayload(playerCharacter.StaminaResource));
-		// CharacterEvent.ResourceUpdated.SendToPlayer(player, this.ResourcePayload(playerCharacter.ExperienceResource));
-	}
-
-	private static ResourcePayload(characterResource: CharacterResource): Payloads["PlayerResourceUpdate"] {
-		const payload = {
-			resourceId: characterResource.ResourceName as ResourceId,
-			current: characterResource.GetCurrent(),
-			max: characterResource.GetMax(),
-		};
-		return payload;
 	}
 
 	/* Get Game Character */

@@ -1,10 +1,19 @@
-import DataManager from "server/Controllers/DataManager";
-import { GameCycleEvents, CharacterEvent } from "server/net/_Server_Events";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import { GameCycleEvents } from "server/net/_Server_Events";
+import UIController from "server/Controllers/UIController";
 import PCController from "server/Controllers/PlayerCharacterController";
+import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
 import Logger from "shared/Utility/Logger";
+import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 
 let _connection_UIReady: RBXScriptConnection | undefined;
+
+function CreateResourcePayload(CharacterResource: CharacterResource) {
+	return {
+		resourceId: CharacterResource.ResourceName as ResourceId,
+		current: CharacterResource.GetCurrent(),
+		max: CharacterResource.GetMax(),
+	};
+}
 
 export function StartUIListeners() {
 	_connection_UIReady?.Disconnect();
@@ -14,38 +23,16 @@ export function StartUIListeners() {
 			wait(0.5);
 			PC = PCController.GetPlayerCharacter(player);
 		}
+
+		const playerHealth = PC.HealthResource;
+		const playerMana = PC.ManaResource;
+		const playerStamina = PC.StaminaResource;
+		const playerExperience = PC.ExperienceResource;
 		Logger.Log(script, "Player Character: Exp", PC.ExperienceResource as unknown as string);
 		UIController.UpdatePlayerUI(player);
+		UIController.UpdateResourceBar(player, CreateResourcePayload(playerHealth));
+		UIController.UpdateResourceBar(player, CreateResourcePayload(playerMana));
+		UIController.UpdateResourceBar(player, CreateResourcePayload(playerStamina));
+		UIController.UpdateResourceBar(player, CreateResourcePayload(playerExperience));
 	});
-}
-
-export class UIController {
-	// Singleton
-	private static _instance: UIController;
-
-	// Constructor
-	private constructor() {
-		Logger.Log(script, "CONSTRUCTOR()");
-	}
-
-	public static Start() {
-		if (this._instance === undefined) {
-			this._instance = new UIController();
-		}
-	}
-
-	public static UpdateResourceBar(
-		player: Player,
-		resource: { resourceId: ResourceId; current: number; max: number },
-	) {
-		Logger.Log(script, "[GameCycle - UI Controller] - UpdateResourceBar / ResourceUpdated");
-		CharacterEvent.ResourceUpdated.SendToPlayer(player, resource);
-	}
-
-	public static UpdatePlayerUI(player: Player) {
-		Logger.Log(script, "[GameCycle - UI Controller] - UpdatePlayerUI / PlayerDataLoaded");
-		const playerData = DataManager.GetDataCache(player)._playerData;
-		print(playerData);
-		GameCycleEvents.PlayerDataLoaded.SendToPlayer(player, playerData);
-	}
 }

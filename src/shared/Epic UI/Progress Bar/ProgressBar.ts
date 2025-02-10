@@ -1,5 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
+
 export default class ProgressBar {
 	frame: Frame;
 

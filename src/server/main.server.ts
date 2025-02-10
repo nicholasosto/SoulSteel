@@ -5,21 +5,20 @@ import Logger from "shared/Utility/Logger";
 import { ReplicatedStorage, Players } from "@rbxts/services";
 
 // WCS Imports
-import { Character, CreateServer } from "@rbxts/wcs";
+import { CreateServer } from "@rbxts/wcs";
 // Manager Imports
 import StorageManager from "shared/Storage Manager/StorageManager";
 import DataManager from "server/Controllers/DataManager";
-
-// Event Listeners
-
-import StartTeleportListener from "./net/TeleportListener";
 
 // Controllers
 import PCController from "./Controllers/PlayerCharacterController";
 import StartDeveloperListener from "./net/DeveloperListener";
 import SkillController from "./Controllers/SkillController";
-import { StartUIListeners, UIController } from "./net/UIListeners";
-//import { GameCycleEvents } from "./net/ServerEvents";
+import UIController from "./Controllers/UIController";
+
+// Event Listeners
+import { StartUIListeners } from "./net/UIListeners";
+import StartTeleportListener from "./net/TeleportListener";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -100,6 +99,8 @@ Players.GetPlayers().forEach((player) => {
 Players.PlayerAdded.Connect((player) => {
 	HandlePlayerAdded(player);
 });
+
+/* Start the Listeners */
 StartUIListeners();
 StartTeleportListener();
 StartDeveloperListener();
