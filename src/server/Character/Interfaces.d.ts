@@ -1,5 +1,5 @@
 import { Character, DamageContainer, Skill } from "@rbxts/wcs";
-import { TGameCharacter } from "../../shared/Game Character/TGameCharacter";
+import { TGameCharacter } from "../../shared/Types/TGameCharacter";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { CharacterResource } from "./Character Resources/CharacterResource";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";

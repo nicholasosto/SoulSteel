@@ -1,5 +1,5 @@
 import { IGameCharacter, INPCCharacter, IPlayerCharacter } from "server/Character/Interfaces";
-import { TGameCharacter } from "shared/Game Character/TGameCharacter";
+import { TGameCharacter } from "shared/Types/TGameCharacter";
 import { CharacterStatId, TCharacterResource } from "./Character Resources/iCharacterResource";
 import { ISkillManager } from "server/Character/Interfaces";
 

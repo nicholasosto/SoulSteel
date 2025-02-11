@@ -4,7 +4,7 @@ import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 
 // Interfaces and Types
-import { IPlayerCharacter, ISkillManager } from "server/Character/CharacterIndex";
+import { IPlayerCharacter } from "server/Character/CharacterIndex";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 // Classes
 import GameCharacter from "./GameCharacter";
@@ -20,7 +20,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public currentExperience: number;
 
 	/* Managers */
-	public skillManager: ISkillManager;
+	public skillManager: SkillsManager;
 
 	/* Resources */
 	public HealthResource: CharacterResource;

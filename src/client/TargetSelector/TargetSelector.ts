@@ -11,7 +11,7 @@ export function getTargetFromScreenPosition(screenPos: Vector2): Instance | unde
 	const raycastParams = new RaycastParams();
 	raycastParams.FilterType = Enum.RaycastFilterType.Blacklist;
 
-	// Exclude the local player's character from being selected.
+	//Exclude the local player's character from being selected.
 	if (localPlayer.Character) {
 		raycastParams.FilterDescendantsInstances = [localPlayer.Character];
 	}
@@ -20,7 +20,7 @@ export function getTargetFromScreenPosition(screenPos: Vector2): Instance | unde
 	const result = Workspace.Raycast(ray.Origin, ray.Direction.mul(maxDistance), raycastParams);
 	if (result) {
 		const resultParent = result.Instance?.Parent;
-		if (resultParent?.HasTag("GameCharacter")) {
+		if (resultParent?.HasTag("NPCCharacter")) {
 			return resultParent;
 		}
 	}

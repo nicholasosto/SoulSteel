@@ -58,53 +58,6 @@ export type TGameCharacter = Model & {
 		RightKnee: Motor6D;
 		AvatarPartScaleType: StringValue;
 	};
-	InitialPoses: Folder & {
-		LeftUpperLeg_Composited: CFrameValue;
-		LeftUpperLeg_Initial: CFrameValue;
-		RightLowerLeg_Initial: CFrameValue;
-		LeftFoot_Original: CFrameValue;
-		LeftUpperLeg_Original: CFrameValue;
-		LeftHand_Composited: CFrameValue;
-		RightLowerArm_Initial: CFrameValue;
-		RightFoot_Original: CFrameValue;
-		RightUpperArm_Initial: CFrameValue;
-		LeftUpperArm_Composited: CFrameValue;
-		UpperTorso_Composited: CFrameValue;
-		RightHand_Original: CFrameValue;
-		LeftLowerLeg_Original: CFrameValue;
-		RightHand_Initial: CFrameValue;
-		UpperTorso_Original: CFrameValue;
-		LowerTorso_Composited: CFrameValue;
-		LeftFoot_Initial: CFrameValue;
-		LeftLowerArm_Original: CFrameValue;
-		RightUpperArm_Composited: CFrameValue;
-		LeftHand_Original: CFrameValue;
-		UpperTorso_Initial: CFrameValue;
-		Head_Initial: CFrameValue;
-		RightFoot_Initial: CFrameValue;
-		RightFoot_Composited: CFrameValue;
-		LowerTorso_Initial: CFrameValue;
-		RightHand_Composited: CFrameValue;
-		LeftUpperArm_Initial: CFrameValue;
-		RightLowerLeg_Original: CFrameValue;
-		LeftUpperArm_Original: CFrameValue;
-		RightUpperLeg_Original: CFrameValue;
-		RightUpperLeg_Initial: CFrameValue;
-		RightUpperLeg_Composited: CFrameValue;
-		LeftLowerArm_Composited: CFrameValue;
-		Head_Composited: CFrameValue;
-		LeftLowerLeg_Composited: CFrameValue;
-		Head_Original: CFrameValue;
-		LeftLowerArm_Initial: CFrameValue;
-		LowerTorso_Original: CFrameValue;
-		LeftLowerLeg_Initial: CFrameValue;
-		RightUpperArm_Original: CFrameValue;
-		RightLowerLeg_Composited: CFrameValue;
-		RightLowerArm_Composited: CFrameValue;
-		RightLowerArm_Original: CFrameValue;
-		LeftHand_Initial: CFrameValue;
-		LeftFoot_Composited: CFrameValue;
-	};
 	LeftLowerLeg: MeshPart & {
 		LeftKnee: Motor6D;
 		OriginalSize: Vector3Value;
@@ -162,40 +115,6 @@ export type TGameCharacter = Model & {
 		Neck: Motor6D;
 		Head: WrapTarget;
 		FaceCenterAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-	};
-	["Body Colors"]: BodyColors;
-	UpperTorso: MeshPart & {
-		LeftShoulderRigAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		BodyBackAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		NeckRigAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		RightShoulderRigAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		Waist: Motor6D;
-		OriginalSize: Vector3Value;
-		AvatarPartScaleType: StringValue;
-		LeftCollarAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		RightCollarAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		BodyFrontAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		WaistRigAttachment: Attachment & {
-			OriginalPosition: Vector3Value;
-		};
-		UpperTorso: WrapTarget;
-		NeckAttachment: Attachment & {
 			OriginalPosition: Vector3Value;
 		};
 	};

@@ -12,6 +12,9 @@ export default class GameCharacter implements IGameCharacter {
 	target?: IGameCharacter;
 	rewardMap: Map<IGameCharacter, number> = new Map<IGameCharacter, number>();
 
+	protected _connectionTakeDamage: RBXScriptConnection | undefined;
+	protected _connectionDealtDamage: RBXScriptConnection | undefined;
+
 	/* Constructor */
 	constructor(wcsCharacter: Character) {
 		const fullName = wcsCharacter.Instance?.GetFullName();
@@ -23,9 +26,29 @@ export default class GameCharacter implements IGameCharacter {
 		this.characterModel.AddTag("GameCharacter");
 	}
 
+	protected _initializeConnections() {
+		/* Take Damage */
+		this._connectionTakeDamage?.Disconnect();
+		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
+			Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
+			this.TakeDamage(damageContainer);
+		});
+
+		/* Dealt Damage */
+		this._connectionDealtDamage?.Disconnect();
+		this._connectionDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+			Logger.Log(script, "[Super]: Dealt Damage to: ", enemy as unknown as string);
+			this.DealtDamage(damageContainer);
+		});
+	}
+
 	/* Take Damage */
 	TakeDamage(damageContainer: DamageContainer): void {
 		Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
+	}
+
+	DealtDamage(damageContainer: DamageContainer): void {
+		Logger.Log(script, "[Super]: Dealt Damage", damageContainer.Damage);
 	}
 
 	/* Set Target */

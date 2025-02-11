@@ -7,6 +7,22 @@ import { DataCache } from "server/PlayerData/DataCache";
 
 const PlayerDataRegistry = new Map<string, DataCache>();
 
+
+interface PersistantDataController {
+	// Singleton
+	_instance: PersistantDataController;
+	DatastoreId: string;
+	GameDataStore: GlobalDataStore;
+	playerAddedConnection: RBXScriptConnection;
+
+	Start(): void;
+	RegisterPlayer(player: Player): void;
+	GetDataCache(player: Player): DataCache;
+	OnPlayerLeaving(player: Player): void;
+}
+
+
+/* Original Code */
 export default class DataManager {
 	// Singleton
 	private static _instance: DataManager;

@@ -1,4 +1,3 @@
-
 // Core Stats
 export type ProgressionStatId =
 	| "Level"
