@@ -2,7 +2,7 @@ import { Players } from "@rbxts/services";
 import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
 import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
 import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import { ResourceId } from "server/Character/Character Resources/Resources";
 import Logger from "shared/Utility/Logger";
 
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -27,5 +27,5 @@ ResourceBarInstanceMap.set("Experience", ExperienceBarInstance);
 
 Logger.Log(script, "Player GUI Loaded", SkillBarInstance as unknown as string);
 
-//const tempSkillBar = new SkillBar(SkillBarInstance);
-export { PlayerGUI, HUD_Screen, CharacterInfoFrame, SkillBarInstance, ResourceBarInstanceMap };
+
+export { CharacterInfoFrame, SkillBarInstance, ResourceBarInstanceMap };

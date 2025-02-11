@@ -1,6 +1,5 @@
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
-
+import { ResourceId } from "server/Character/Character Resources/Resources";
 
 // Character Resource Class
 class CharacterResource {
@@ -47,6 +46,15 @@ class CharacterResource {
 
 	// Set Current Value
 	public SetCurrent(value: number) {
+		if (value >= this.MaxValue) {
+			this.Current = this.MaxValue;
+			return;
+		}
+
+		if (value <= 0) {
+			this.Current = 0;
+			return;
+		}
 		this.Current = value;
 	}
 
@@ -82,7 +90,7 @@ function CreateCharacterResource(resourceName: ResourceId, playerData: IPlayerDa
 			secondaryStatValue = playerData.CharacterStats.Strength;
 			break;
 		case "Mana":
-			primaryStatValue = playerData.CharacterStats.Intelligence
+			primaryStatValue = playerData.CharacterStats.Intelligence;
 			secondaryStatValue = playerData.CharacterStats.Constitution;
 			break;
 		case "Stamina":

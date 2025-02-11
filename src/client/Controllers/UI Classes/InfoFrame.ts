@@ -12,16 +12,12 @@ import { Players } from "@rbxts/services";
 import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
 // Sub-Modules
 import Logger from "shared/Utility/Logger";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
 
 /* Main Class: CharacterFrame */
 export default class InfoFrame {
 	// Instance
 	private _instance: TInfoFrame;
-	// Character Info
-	private ResourceBarMap: Map<ResourceId, ProgressBar> = new Map();
 
 	// Constructor
 	constructor(infoFrame: TInfoFrame) {

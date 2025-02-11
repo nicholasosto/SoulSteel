@@ -1,8 +1,8 @@
 import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import { ResourceId } from "server/Character/Character Resources/Resources";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { CharacterResource } from "shared/Game Character/Character Resources/CharacterResource";
+import { CharacterResource } from "server/Character/Character Resources/CharacterResource";
 
 /* Payloads */
 interface Payloads {

@@ -1,5 +1,5 @@
 import { ImageIds } from "shared/Epic UI/ImageIds";
-import { ResourceId } from "shared/Game Character/Character Resources/Resources";
+import { ResourceId } from "server/Character/Character Resources/Resources";
 import { SkillDefinition } from "shared/Skills/SkillIndex";
 
 type GridItemState = "Locked" | "Unlocked" | "Equipped" | "Selected" | "Disabled";

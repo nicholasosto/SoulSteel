@@ -8,13 +8,12 @@ import { IPlayerCharacter, ISkillManager } from "shared/Game Character/Character
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 // Classes
 import GameCharacter from "./GameCharacter";
-import {
-	CharacterResource,
-	CreateCharacterResource,
-} from "shared/Game Character/Character Resources/CharacterResource";
+import { CharacterResource, CreateCharacterResource } from "server/Character/Character Resources/CharacterResource";
+import { CharacterEvent } from "server/net/_Server_Events";
 
 //NET
 import SkillsManager from "server/Character/Managers/SkillsManager";
+import { ResourceId } from "server/Character/Character Resources/Resources";
 
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
@@ -52,13 +51,19 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Died */
 	public OnDeath(): void {
 		Logger.Log(script, "Player Character Died");
-		this.HealthResource.SetCurrent(4);
+		this.Destroy();
 	}
 
 	/* Take Damage */
 	public OnTakeDamage(DamageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Took Damage");
 		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - DamageContainer.Damage);
+		const resource = {
+			resourceId: this.HealthResource.ResourceName as ResourceId,
+			current: this.HealthResource.GetCurrent(),
+			max: this.HealthResource.GetMax(),
+		};
+		CharacterEvent.ResourceUpdated.SendToPlayer(this.player, resource);
 	}
 
 	/* Destroy */
