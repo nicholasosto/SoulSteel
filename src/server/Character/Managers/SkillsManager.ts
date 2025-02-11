@@ -1,9 +1,9 @@
 import Logger from "shared/Utility/Logger";
-import { ISkillManager } from "server/Character/CharacterIndex";
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { GetSkillSlotMap } from "shared/Data Interfaces/PlayerData";
-import { CreateSkillFromId } from "shared/Skills/WCSHelper";
+import { ISkillManager } from "server/Character/Index/CharacterIndex";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
+import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character } from "@rbxts/wcs";
 
 const SkillManagers: Map<Character, SkillsManager> = new Map();

@@ -1,6 +1,5 @@
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { getDefaultPlayerSkillsData } from "shared/Skills/Data/SkillHelpers";
-import { getDefaultProgressionStatsData } from "server/Character/ProgressionStats";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
+import { getDefaultPlayerSkillsData } from "shared/_Functions/SkillFunctions";
 
 // Equipment Slot
 export type TEquipmentSlot = {
@@ -9,11 +8,19 @@ export type TEquipmentSlot = {
 };
 
 export const DataTemplate: IPlayerData = {
+	/* Datastore Info */
 	key: "Datatemplate",
 	version: 6,
 
-	// Character Name
+	/* Character Info */
 	CharacterName: "Default Name",
+
+	/* Progression Data */
+	ProgressionStats: {
+		Level: 1,
+		Experience: 0,
+		ExperienceToNextLevel: 100,
+	},
 
 	// Character Class
 	CharacterClass: {
@@ -32,8 +39,7 @@ export const DataTemplate: IPlayerData = {
 		Constitution: 7,
 		Speed: 9,
 	},
-	// Progression Stats
-	ProgressionStats: getDefaultProgressionStatsData(),
+
 	// Skills Data
 	Skills: getDefaultPlayerSkillsData(),
 };

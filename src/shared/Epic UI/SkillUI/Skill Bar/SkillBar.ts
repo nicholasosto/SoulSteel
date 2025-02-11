@@ -3,7 +3,7 @@ import { Players } from "@rbxts/services";
 
 /* Interfaces */
 import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillId } from "shared/_Types/SkillTypes";
 
 /* Modules */
 import { SkillButton } from "../SkillButton/SkillButton";

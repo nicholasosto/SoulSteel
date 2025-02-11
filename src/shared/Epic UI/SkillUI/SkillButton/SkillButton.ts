@@ -4,14 +4,12 @@ import StorageManager from "shared/Storage Manager/StorageManager";
 
 // Types
 import { TSkillButton } from "shared/Epic UI/SkillUI/SkillIndex";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
 
 // Functions
-import { getSkillDefinition } from "shared/Skills/Data/SkillHelpers";
-import { Skill, Character } from "@rbxts/wcs";
+import { getSkillDefinition } from "shared/_Functions/SkillFunctions";
 
 export class SkillButton {
 	// Button Frame Instance
@@ -27,7 +25,6 @@ export class SkillButton {
 
 	// Skill Definition
 	private _skillDefinition: SkillDefinition | undefined;
-	private _skill: Skill | undefined;
 
 	// Constructor
 	constructor(skillId: SkillId) {

@@ -1,8 +1,8 @@
-import { Character, DamageContainer, Skill } from "@rbxts/wcs";
-import { TGameCharacter } from "../../shared/Types/TGameCharacter";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { CharacterResource } from "./Character Resources/CharacterResource";
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { Character, DamageContainer } from "@rbxts/wcs";
+import { GameCharacterModel } from "../../../shared/_Types/GameCharacterModel";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { CharacterResource } from "../Classes/CharacterResource";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 /* Test Interface for SkillManager */
 export interface ISkillManager {
@@ -19,10 +19,10 @@ export interface IGameCharacter {
 	level: number;
 	characterId: string;
 	displayName: string;
-	characterModel?: TGameCharacter;
+	characterModel?: GameCharacterModel;
 	wcsCharacter: Character;
 	target?: IGameCharacter;
-	rewardMap: Map<IGameCharacter, number>;
+
 	// Constructor
 	// Skills
 	//RegisterSkill(skillId: SkillId): void;

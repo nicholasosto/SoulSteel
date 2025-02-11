@@ -2,10 +2,10 @@ import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import InfoFrame from "client/Controllers/UI Classes/InfoFrame";
 import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
-import { GetSkillSlotMap } from "shared/Data Interfaces/PlayerData";
+import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { GameCycleEvents, CharacterEvent } from "../net/_Client_Events";
 import * as HUD from "client/ScreenGUIs/Hud";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
+import { SkillId } from "shared/_Types/SkillTypes";
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
 
 export default class ClientUIController {

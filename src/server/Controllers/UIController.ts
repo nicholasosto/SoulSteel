@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { ResourceId } from "server/Character/Character Resources/Resources";
+import { ResourceId } from "shared/_Types/GameCharacterShared";
 import DataManager from "server/Controllers/DataManager";
 import { GameCycleEvents, CharacterEvent } from "server/net/_Server_Events";
 

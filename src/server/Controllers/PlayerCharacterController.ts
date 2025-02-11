@@ -3,7 +3,7 @@ import { Players, CollectionService } from "@rbxts/services";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 export default class PCController {
 	// Static Instance

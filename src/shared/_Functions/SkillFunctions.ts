@@ -1,6 +1,7 @@
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillDefinition, PlayerSkillsData } from "shared/Skills/Interfaces/SkillInterfaces";
-import { SkillDefinitions } from "./SkillDefinitions";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
+import { SkillDefinition, PlayerSkillsData } from "shared/_Interfaces/SkillInterfaces";
+import { SkillDefinitions } from "../_Definitions/SkillDefinitions";
 
 function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
 	const skillDefinitionMap = new Map<SkillId, SkillDefinition>();
@@ -38,4 +39,19 @@ function getDefaultPlayerSkillsData(): PlayerSkillsData {
 	return defaultPlayerSkillsData;
 }
 
-export { getSkillDefinitionMap, getSkillDefinition, getDefaultPlayerSkillsData };
+/* Create Skill From Id */
+function CreateSkillFromId(skillId: SkillId, wcsCharacter: Character) {
+	// Get the Skill Constructor
+	const skillConstructor = GetRegisteredSkillConstructor(skillId);
+	assert(skillConstructor, "Skill Constructor is nil");
+
+	// Create the Skill
+	const newSkill = new skillConstructor(wcsCharacter) as Skill;
+	assert(newSkill, "New Skill is nil");
+
+	// Return the Skill
+	return newSkill;
+}
+
+
+export { getSkillDefinitionMap, getSkillDefinition, getDefaultPlayerSkillsData, CreateSkillFromId };

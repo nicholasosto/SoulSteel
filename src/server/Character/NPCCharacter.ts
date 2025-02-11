@@ -1,6 +1,6 @@
 import GameCharacter from "./GameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { INPCCharacter } from "server/Character/Interfaces";
+import { INPCCharacter } from "server/Character/Index/Interfaces";
 import Logger from "shared/Utility/Logger";
 
 export default class NPCCharacter extends GameCharacter implements INPCCharacter {

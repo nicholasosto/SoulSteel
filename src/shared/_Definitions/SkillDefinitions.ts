@@ -1,8 +1,8 @@
 import { EAnimationID } from "shared/Animation/AnimationIndex";
 import { ImageIds } from "shared/Epic UI/ImageIds";
 import { ESoundId } from "shared/Audio/Sounds";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { SkillDefinition } from "shared/Skills/Interfaces/SkillInterfaces";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
 const SkillDefinitions: Record<SkillId, SkillDefinition> = {

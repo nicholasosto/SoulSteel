@@ -1,16 +1,15 @@
 import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { TGameCharacter, IGameCharacter } from "server/Character/CharacterIndex";
+import { GameCharacterModel, IGameCharacter } from "server/Character/Index/CharacterIndex";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 
 export default class GameCharacter implements IGameCharacter {
 	characterId: string;
 	level: number = 1;
 	displayName: string;
-	characterModel?: TGameCharacter;
+	characterModel?: GameCharacterModel;
 	wcsCharacter: Character;
 	target?: IGameCharacter;
-	rewardMap: Map<IGameCharacter, number> = new Map<IGameCharacter, number>();
 
 	protected _connectionTakeDamage: RBXScriptConnection | undefined;
 	protected _connectionDealtDamage: RBXScriptConnection | undefined;
@@ -22,7 +21,7 @@ export default class GameCharacter implements IGameCharacter {
 		this.characterId = fullName;
 		this.displayName = generateCharacterName();
 		this.wcsCharacter = wcsCharacter;
-		this.characterModel = this.wcsCharacter.Instance as TGameCharacter;
+		this.characterModel = this.wcsCharacter.Instance as GameCharacterModel;
 		this.characterModel.AddTag("GameCharacter");
 	}
 

@@ -1,14 +1,13 @@
 import Net, { Definitions } from "@rbxts/net";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
-import { ResourceId } from "server/Character/Character Resources/Resources";
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { CharacterResource } from "server/Character/Character Resources/CharacterResource";
+import { SkillId } from "shared/_Types/SkillTypes";
+import { ResourceId } from "shared/_Types/GameCharacterShared";
+import { IPlayerData } from "shared/_Interfaces/IPlayerData";
 
 /* Payloads */
 interface Payloads {
 	PlayerLevelUp: [level: number];
 	PlayerInfoResponse: [name: string, level: number, profilePicId: string];
-	PlayerResourceUpdate: { resourceId: ResourceId, current: number, max: number};
+	PlayerResourceUpdate: { resourceId: ResourceId; current: number; max: number };
 }
 
 const BiDirectionalEvents = Net.Definitions.Create({

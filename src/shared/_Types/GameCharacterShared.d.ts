@@ -1,6 +1,8 @@
+type ResourceId = "Health" | "Mana" | "Stamina" | "Domain" | "Class" | "Experience";
 type CharacterStatId = "Strength" | "Speed" | "Dexterity" | "Intelligence" | "Constitution";
 
-interface iCharacterStats {
+/* ICharacterStats */
+interface ICharacterStats {
 	Strength: number;
 	Speed: number;
 	Dexterity: number;
@@ -8,7 +10,8 @@ interface iCharacterStats {
 	Constitution: number;
 }
 
-interface TCharacterResource {
+/* Character Resource */
+interface ICharacterResource {
 	ResourceName: string;
 	PrimaryStat: CharacterStatId;
 	SecondaryStat: CharacterStatId;
@@ -22,4 +25,4 @@ interface TCharacterResource {
 	ActivateRegen: (activate: boolean) => void;
 }
 
-export { CharacterStatId, iCharacterStats as CharacterStats, TCharacterResource };
+export { ResourceId, CharacterStatId, ICharacterStats, ICharacterResource };

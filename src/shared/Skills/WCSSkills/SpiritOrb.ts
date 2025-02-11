@@ -1,7 +1,7 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { CreateAnimationTrack, EAnimationID } from "shared/Animation/AnimationIndex";
 import Logger from "shared/Utility/Logger";
-import { SkillDefinitions } from "shared/Skills/Data/SkillDefinitions";
+import { SkillDefinitions } from "shared/_Definitions/SkillDefinitions";
 
 @SkillDecorator
 export class SpiritOrb extends Skill {

@@ -1,11 +1,9 @@
 // server/net/remotes.server.ts
 import Logger from "shared/Utility/Logger";
 import { SkillEvent } from "server/net/_Server_Events";
-//import { Requests, Responses } from "shared/Remotes/ServerRemotes";
 import PCController from "server/Controllers/PlayerCharacterController";
 
 import PlayerCharacter from "server/Character/PlayerCharacter";
-import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 
 export default class SkillController {
 	// Singleton

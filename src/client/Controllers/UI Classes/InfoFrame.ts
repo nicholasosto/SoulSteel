@@ -12,7 +12,7 @@ import { Players } from "@rbxts/services";
 import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
 // Sub-Modules
 import Logger from "shared/Utility/Logger";
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 /* Main Class: CharacterFrame */
 export default class InfoFrame {
@@ -41,5 +41,4 @@ export default class InfoFrame {
 		)[0];
 		this._instance.ProfilePic.Image = profilePic;
 	}
-
 }

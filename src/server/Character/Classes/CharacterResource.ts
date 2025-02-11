@@ -1,5 +1,5 @@
-import { IPlayerData } from "shared/Data Interfaces/PlayerData";
-import { ResourceId } from "server/Character/Character Resources/Resources";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
+import { ResourceId } from "server/Character/Index/CharacterIndex";
 
 // Character Resource Class
 class CharacterResource {
@@ -15,9 +15,13 @@ class CharacterResource {
 	private _regenActive: boolean = false;
 
 	// Constructor
-	constructor(resourceName: string) {
+	constructor(resourceName: string, primaryStatValue: number, secondaryStatValue: number, level: number) {
 		// Attribute Names and Values
 		this.ResourceName = resourceName;
+		this.MaxValue = (primaryStatValue + secondaryStatValue / 2) * level;
+		this.Current = this.MaxValue;
+		this._regenAmount = primaryStatValue / 10;
+		this._regenActive = true;
 	}
 
 	// Get Current Value
@@ -77,39 +81,4 @@ class CharacterResource {
 	}
 }
 
-function CreateCharacterResource(resourceName: ResourceId, playerData: IPlayerData): CharacterResource {
-	const characterResource = new CharacterResource(resourceName);
-
-	const levelMultiplier = playerData.ProgressionStats.Level * 10;
-	let primaryStatValue = 0;
-	let secondaryStatValue = 0;
-
-	switch (resourceName) {
-		case "Health":
-			primaryStatValue = playerData.CharacterStats.Constitution;
-			secondaryStatValue = playerData.CharacterStats.Strength;
-			break;
-		case "Mana":
-			primaryStatValue = playerData.CharacterStats.Intelligence;
-			secondaryStatValue = playerData.CharacterStats.Constitution;
-			break;
-		case "Stamina":
-			primaryStatValue = playerData.CharacterStats.Dexterity;
-			secondaryStatValue = playerData.CharacterStats.Constitution;
-			break;
-		case "Experience":
-			primaryStatValue = playerData.ProgressionStats.Level;
-			secondaryStatValue = 0;
-			break;
-	}
-
-	const primaryStatMultiplier = primaryStatValue * 10;
-	const secondaryStatMultiplier = secondaryStatValue * 3;
-
-	characterResource.SetMax(levelMultiplier + primaryStatMultiplier + secondaryStatMultiplier);
-	characterResource.SetCurrent(characterResource.GetValues()[1]);
-	characterResource.RegenToggle(true);
-	return characterResource;
-}
-
-export { CharacterResource, CreateCharacterResource };
+export { CharacterResource };

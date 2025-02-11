@@ -1,4 +1,4 @@
-import { ResourceId } from "../../../server/Character/Character Resources/Resources";
+import { ResourceId } from "shared/_Types/GameCharacterShared";
 
 // Skill Type
 type SkillType = "Melee" | "Ranged" | "Hold" | "Utility" | "Movement";

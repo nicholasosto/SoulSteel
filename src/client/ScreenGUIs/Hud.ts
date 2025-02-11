@@ -1,8 +1,7 @@
 import { Players } from "@rbxts/services";
 import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
-import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
 import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
-import { ResourceId } from "server/Character/Character Resources/Resources";
+import { ResourceId } from "shared/_Types/GameCharacterShared";
 import Logger from "shared/Utility/Logger";
 
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
