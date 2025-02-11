@@ -1,6 +1,6 @@
 import { HttpService } from "@rbxts/services";
 import { Skill } from "@rbxts/wcs";
-import { IPlayerCharacter } from "shared/Game Character/Interfaces";
+import { IPlayerCharacter } from "server/Character/Interfaces";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 
 export type Printable =

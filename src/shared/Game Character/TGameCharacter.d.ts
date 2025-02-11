@@ -199,20 +199,6 @@ export type TGameCharacter = Model & {
 			OriginalPosition: Vector3Value;
 		};
 	};
-	["Son Guko 1  Face"]: Accessory & {
-		Handle: MeshPart & {
-			FaceCenterAttachment: Attachment;
-			OriginalSize: Vector3Value;
-			AvatarPartScaleType: StringValue;
-		};
-	};
-	["Instinctive Son Hair"]: Accessory & {
-		Handle: MeshPart & {
-			HairAttachment: Attachment;
-			OriginalSize: Vector3Value;
-			AvatarPartScaleType: StringValue;
-		};
-	};
 	LeftUpperArm: MeshPart & {
 		LeftUpperArm: WrapTarget;
 		OriginalSize: Vector3Value;

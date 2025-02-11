@@ -4,7 +4,7 @@ import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 
 // Interfaces and Types
-import { IPlayerCharacter, ISkillManager } from "shared/Game Character/CharacterIndex";
+import { IPlayerCharacter, ISkillManager } from "server/Character/CharacterIndex";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 // Classes
 import GameCharacter from "./GameCharacter";

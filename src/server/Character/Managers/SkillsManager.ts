@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { ISkillManager } from "shared/Game Character/CharacterIndex";
+import { ISkillManager } from "server/Character/CharacterIndex";
 import { IPlayerData } from "shared/Data Interfaces/PlayerData";
 import { SkillId } from "shared/Skills/Interfaces/SkillTypes";
 import { GetSkillSlotMap } from "shared/Data Interfaces/PlayerData";

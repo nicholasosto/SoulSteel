@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { TGameCharacter, IGameCharacter } from "shared/Game Character/CharacterIndex";
+import { TGameCharacter, IGameCharacter } from "server/Character/CharacterIndex";
 import { generateCharacterName } from "shared/Factories/NameFactory";
 
 export default class GameCharacter implements IGameCharacter {
@@ -42,7 +42,7 @@ export default class GameCharacter implements IGameCharacter {
 	/* Destroy */
 	Destroy(): void {
 		const humanoid = this.characterModel?.Humanoid;
-		humanoid?.TakeDamage(humanoid.MaxHealth*2);
+		humanoid?.TakeDamage(humanoid.MaxHealth * 2);
 		this.wcsCharacter.Destroy();
 	}
 }
