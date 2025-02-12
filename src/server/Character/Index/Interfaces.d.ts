@@ -9,7 +9,7 @@ export interface ISkillManager {
 	// Skills
 	SkillMap: Map<number, SkillId>;
 	UnlockedSkills: Array<SkillId>;
-	InitializeSkills(playerData: IPlayerData): void;
+	InitializeSkillMap(playerData: IPlayerData): void;
 	AssignSkillToSlot(slot: number, skillId: SkillId): void;
 	RemoveSkillFromSlot(slot: number): void;
 }

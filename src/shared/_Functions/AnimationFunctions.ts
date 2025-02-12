@@ -1,6 +1,7 @@
 import { Character } from "@rbxts/wcs";
-import { EAnimationID } from "./AnimationIndex";
+import { EAnimationID } from "../Animation/AnimationIndex";
 import Logger from "shared/Utility/Logger";
+import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
 	const model = instanceToAnimate instanceof Character ? instanceToAnimate.Instance : instanceToAnimate;
@@ -23,8 +24,10 @@ function CreateAnimation(animationID: EAnimationID): Animation {
 	return animation;
 }
 
-function CreateAnimationTrack(character: Character, animationID: EAnimationID): AnimationTrack | undefined {
-	const characterModel = character.Instance as Model;
+function CreateAnimationTrack(
+	characterModel: GameCharacterModel,
+	animationID: EAnimationID,
+): AnimationTrack | undefined {
 	if (characterModel === undefined) return;
 
 	const animation = CreateAnimation(animationID);

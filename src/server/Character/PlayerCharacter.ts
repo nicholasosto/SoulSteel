@@ -18,6 +18,7 @@ import GameCharacter from "./GameCharacter";
 
 /* Classes */
 import { CharacterResource } from "./Classes/CharacterResource";
+import AnimationManager from "./Managers/AnimationManager";
 
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
@@ -25,7 +26,12 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public currentExperience: number;
 
 	/* Managers */
+
+	/* Skills Manager */
 	public skillManager: SkillsManager;
+
+	/* Animation Manager */
+	public animationManager: AnimationManager;
 
 	/* Progression */
 	private ProgressionStats: IPlayerData["ProgressionStats"];
@@ -93,9 +99,14 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.CharacterStats.Constitution,
 			this.ProgressionStats.Level,
 		);
+
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(wcsCharacter);
-		this.skillManager.InitializeSkills(playerData);
+		this.skillManager.InitializeSkillMap(playerData);
+
+		/* Animation Manager */
+		assert(this.characterModel, "Character Model is nil");
+		this.animationManager = new AnimationManager(this.characterModel);
 
 		/* Initialize Connections */
 		this._initializeConnections();
@@ -121,6 +132,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this._connectionSkillStarted?.Disconnect();
 		this._connectionSkillStarted = this.wcsCharacter.SkillStarted.Connect((skill) => {
 			this.skillManager.OnSkillStarted(skill);
+			this.animationManager.OnSkillStarted(skill);
 		});
 
 		/* Skill Ended */

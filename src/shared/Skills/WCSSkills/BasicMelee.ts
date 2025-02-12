@@ -3,7 +3,7 @@ import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { SkillDefinitions } from "shared/_Definitions/SkillDefinitions";
 import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
 import { getSkillDefinitionMap } from "shared/_Functions/SkillFunctions";
-import { CreateAnimationTrack } from "shared/Animation/Utility";
+import { CreateAnimationTrack } from "shared/_Functions/AnimationFunctions";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { EAnimationID } from "shared/Animation/Enums";
 import { Character } from "@rbxts/wcs";
@@ -27,7 +27,10 @@ export class BasicMelee extends Skill {
 		Logger.Log(script, "Constructing Skill ");
 		// // Create Animation Track
 		//const animationId = this._skillDefinition.animation as EAnimationID;
-		this._animationTrack = CreateAnimationTrack(this.Character, EAnimationID.SKILL_BasicMelee);
+		this._animationTrack = CreateAnimationTrack(
+			this.Character.Instance as GameCharacterModel,
+			EAnimationID.SKILL_BasicMelee,
+		);
 
 		this.projectile = StorageManager.CloneFromStorage("Projectile_Explosion_01") as Model;
 
@@ -37,10 +40,6 @@ export class BasicMelee extends Skill {
 	// Client-Side Start
 	protected OnStartClient(): void {
 		Logger.Log(script, "Client Start");
-		// Logger.Log(script, "Client Started: ", this._skillDefinition.displayName);
-		// const characterModel = this.Character.Instance as Model;
-
-		// AttachEffect(characterModel, EParticleName.Blood_Wound, EAttachmentName.FaceFront, 3);
 	}
 
 	// Server-Side Start

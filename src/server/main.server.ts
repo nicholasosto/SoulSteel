@@ -6,6 +6,7 @@ import { ReplicatedStorage, Players } from "@rbxts/services";
 
 // WCS Imports
 import { CreateServer } from "@rbxts/wcs";
+
 // Manager Imports
 import StorageManager from "shared/Storage Manager/StorageManager";
 import DataManager from "server/Controllers/DataManager";
@@ -15,6 +16,9 @@ import PCController from "./Controllers/PlayerCharacterController";
 import StartDeveloperListener from "./net/DeveloperListener";
 import SkillController from "./Controllers/SkillController";
 import UIController from "./Controllers/UIController";
+
+// Collections
+import { StartCollectingNPCs } from "./Collections/NPCCollector";
 
 // Event Listeners
 import { StartUIListeners } from "./net/UIListeners";
@@ -104,3 +108,4 @@ Players.PlayerAdded.Connect((player) => {
 StartUIListeners();
 StartTeleportListener();
 StartDeveloperListener();
+StartCollectingNPCs();

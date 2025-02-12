@@ -6,8 +6,8 @@ import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";
 
-const SkillManagers: Map<Character, SkillsManager> = new Map();
 
+/* Skills Manager */
 export default class SkillsManager implements ISkillManager {
 	// Skills
 	SkillMap: Map<number, SkillId> = new Map<number, SkillId>();
@@ -21,19 +21,22 @@ export default class SkillsManager implements ISkillManager {
 		/* Set WCS Character */
 		this.wcsCharacter = wcsCharacter;
 		assert(wcsCharacter, "Character is nil");
-		Logger.Log(script, `[SkillsManager]: Created for ${wcsCharacter}`);
-		SkillManagers.set(wcsCharacter, this);
-		Logger.Log(script, `[SkillsManager]: Skill Managers: ${SkillManagers.size()}`);
+	}
+
+	/* Load Skills from List */
+	LoadSkillsFromList(skillList: SkillId[]): void {
+		skillList.forEach((skillId) => {
+			this._registerSkill(skillId);
+		});
 	}
 
 	/* Initialize Skills */
-	InitializeSkills(playerData: IPlayerData): void {
+	InitializeSkillMap(playerData: IPlayerData): void {
 		/* Get Skill Slot Map */
 		this.SkillMap = GetSkillSlotMap(playerData) as Map<number, SkillId>;
-		Logger.Log(script, `[SkillsManager]: Initializing Skills`, this.SkillMap as unknown as string);
+
 		/* Load Skills */
 		this.SkillMap.forEach((skillId, slot) => {
-			Logger.Log(script, `[SkillsManager]: Loading Skill ${skillId} into Slot ${slot}`);
 			this.AssignSkillToSlot(slot, skillId);
 		});
 	}
