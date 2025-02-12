@@ -1,6 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { Players, CollectionService } from "@rbxts/services";
-import { Character, DamageContainer } from "@rbxts/wcs";
+import { Character } from "@rbxts/wcs";
 import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
@@ -37,39 +36,6 @@ export default class PCController {
 
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
-
-		const DummyContainer: DamageContainer = {
-			Source: undefined,
-			Damage: 3,
-		};
-
-		const DummyHealth: DamageContainer = {
-			Source: undefined,
-			Damage: -10,
-		};
-
-		task.spawn(() => {
-			while (playerCharacter.HealthResource.GetCurrent() > -10) {
-				Logger.Log(script, "Player Character Loop");
-				assert(playerCharacter.characterModel?.Head, "Head is nil");
-				if (playerCharacter.characterModel.Head.AssemblyLinearVelocity.Magnitude > 11.1) {
-					playerCharacter.OnTakeDamage(DummyHealth);
-					Logger.Log(script, "Player Character Took Damage");
-				} else {
-					playerCharacter.OnTakeDamage(DummyContainer);
-					Logger.Log(script, "Player Character Took Damage");
-				}
-
-				if (playerCharacter.HealthResource.GetCurrent() <= 0) {
-					this._PlayerCharacters.delete(tostring(player.UserId));
-					playerCharacter.OnDeath();
-					Logger.Log(script, "PC Died");
-					break;
-				}
-
-				wait(0.2);
-			}
-		});
 	}
 
 	/* On Character Removed */

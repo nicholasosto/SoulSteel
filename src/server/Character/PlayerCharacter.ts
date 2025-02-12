@@ -4,7 +4,7 @@ import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 
 /* Character Index */
-import { CharacterStatId, IPlayerCharacter, ResourceId } from "server/Character/Index/CharacterIndex";
+import { IPlayerCharacter, ResourceId } from "server/Character/Index/CharacterIndex";
 
 /* Player Data */
 import { IPlayerData } from "shared/_Functions/DataFunctions";
@@ -28,7 +28,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public skillManager: SkillsManager;
 
 	/* Progression */
-	private ProgressionData: IPlayerData["ProgressionData"];
+	private ProgressionStats: IPlayerData["ProgressionStats"];
 
 	/* Character Stats */
 	private CharacterStats: IPlayerData["CharacterStats"];
@@ -38,6 +38,10 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public ManaResource: CharacterResource;
 	public StaminaResource: CharacterResource;
 	public ExperienceResource: CharacterResource;
+
+	/* WCS SkillConnections */
+	private _connectionSkillStarted: RBXScriptConnection | undefined;
+	private _connectionSkillEnded: RBXScriptConnection | undefined;
 
 	constructor(player: Player, playerData: IPlayerData, wcsCharacter: Character) {
 		super(wcsCharacter);
@@ -50,7 +54,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.displayName = player.Name;
 
 		/* Set Progression Data */
-		this.ProgressionData = playerData.ProgressionData;
+		this.ProgressionStats = playerData.ProgressionStats;
 
 		/* Set Core Stats */
 		this.CharacterStats = playerData.CharacterStats;
@@ -62,6 +66,10 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.CharacterStats.Strength,
 			this.level,
 		);
+
+		this.HealthResource.RegenToggle(true);
+
+		/* Mana Resource */
 		this.ManaResource = new CharacterResource(
 			"Mana",
 			this.CharacterStats.Intelligence,
@@ -69,6 +77,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.level,
 		);
 
+		/* Stamina Resource */
 		this.StaminaResource = new CharacterResource(
 			"Stamina",
 			this.CharacterStats.Dexterity,
@@ -76,15 +85,54 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.level,
 		);
 
+		/* Experience Resource */
+		// #TODO: Separate implementation for Experience Resource
 		this.ExperienceResource = new CharacterResource(
 			"Experience",
 			this.CharacterStats.Intelligence,
 			this.CharacterStats.Constitution,
-			this.level,
+			this.ProgressionStats.Level,
 		);
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(wcsCharacter);
 		this.skillManager.InitializeSkills(playerData);
+
+		/* Initialize Connections */
+		this._initializeConnections();
+	}
+
+	/* WCS Connections */
+	protected _initializeConnections(): void {
+		/* Damaged */
+		this._connectionTakeDamage?.Disconnect();
+		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer: DamageContainer) => {
+			Logger.Log(script, "Player Character Damaged");
+			this.OnTakeDamage(damageContainer);
+		});
+
+		/* Dealt Damage */
+		this._connectionDealtDamage?.Disconnect();
+		this._connectionDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+			Logger.Log(script, ("Player Character Dealt Damage" + enemy) as unknown as string);
+			this.OnDamageDealt(enemy, damageContainer);
+		});
+
+		/* Skill Started */
+		this._connectionSkillStarted?.Disconnect();
+		this._connectionSkillStarted = this.wcsCharacter.SkillStarted.Connect((skill) => {
+			this.skillManager.OnSkillStarted(skill);
+		});
+
+		/* Skill Ended */
+		this._connectionSkillEnded?.Disconnect();
+		this._connectionSkillEnded = this.wcsCharacter.SkillEnded.Connect((skill) => {
+			Logger.Log(script, "Player Character Skill Ended");
+			this.skillManager.OnSkillEnded(skill);
+		});
+	}
+	/* Dealt Damage */
+	public OnDamageDealt(enemy: Character | undefined, damageContainer: DamageContainer): void {
+		Logger.Log(script, "Player Character Dealt Damage");
 	}
 
 	/* Died */
@@ -94,15 +142,16 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	}
 
 	/* Take Damage */
-	public OnTakeDamage(DamageContainer: DamageContainer): void {
+	public OnTakeDamage(damageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Took Damage");
-		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - DamageContainer.Damage);
+		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damageContainer.Damage);
 		const resource = {
 			resourceId: this.HealthResource.ResourceName as ResourceId,
 			current: this.HealthResource.GetCurrent(),
 			max: this.HealthResource.GetMax(),
 		};
 		CharacterEvent.ResourceUpdated.SendToPlayer(this.player, resource);
+		if (this.HealthResource.GetCurrent() <= 0) this.characterModel?.Humanoid.TakeDamage(9999999999);
 	}
 
 	/* Destroy */

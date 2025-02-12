@@ -64,7 +64,8 @@ export default class GameCharacter implements IGameCharacter {
 	/* Destroy */
 	Destroy(): void {
 		const humanoid = this.characterModel?.Humanoid;
-		humanoid?.TakeDamage(humanoid.MaxHealth * 2);
+		humanoid?.Destroy();
 		this.wcsCharacter.Destroy();
+		this.characterModel?.Destroy();
 	}
 }

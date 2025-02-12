@@ -4,7 +4,7 @@ import { IPlayerData } from "shared/_Functions/DataFunctions";
 import { SkillId } from "shared/_Types/SkillTypes";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
-import { Character } from "@rbxts/wcs";
+import { Character, UnknownSkill } from "@rbxts/wcs";
 
 const SkillManagers: Map<Character, SkillsManager> = new Map();
 
@@ -62,5 +62,13 @@ export default class SkillsManager implements ISkillManager {
 			return;
 		}
 		CreateSkillFromId(skillId, this.wcsCharacter);
+	}
+
+	public OnSkillStarted(skill: UnknownSkill): void {
+		Logger.Log(script, `[SkillsManager]: Skill Started: ${skill}`);
+	}
+
+	public OnSkillEnded(skill: UnknownSkill): void {
+		Logger.Log(script, `[SkillsManager]: Skill Ended: ${skill}`);
 	}
 }
