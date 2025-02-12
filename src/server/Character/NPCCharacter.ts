@@ -6,6 +6,7 @@ import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { BGUI_HealthBar } from "shared/_Types/BGUI_HealthBar";
 import AnimationManager from "./Managers/AnimationManager";
+import { BasicHold } from "shared/Skills/WCSSkills/BasicHold";
 
 const healthBar = StorageManager.CloneFromStorage("BGUI_HealthBar") as BGUI_HealthBar;
 
@@ -38,7 +39,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 		super(wcsCharacter);
 		assert(this.characterModel, "Character Model is nil");
 
-		this._animationManager = new AnimationManager(this.characterModel);
+		this._animationManager = new AnimationManager(this.characterModel, ["BasicHold", "BasicMelee"]);
 
 		this._healthBar.Parent = this.characterModel;
 		this._healthBar.Adornee = this.characterModel.Head;
@@ -52,13 +53,13 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 	protected _initializeConnections(): void {
 		/* Take Damage */
 		this._connectionTakeDamage?.Disconnect();
-		this._connectionWCSTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
+		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
 			this.OnTakeDamage(damageContainer);
 		});
 
 		/* Deal Damage */
-		this._connectionDealtDamage?.Disconnect();
-		this._connectionWCSDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+		this._connectionDealDamage?.Disconnect();
+		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
 			this.OnDamageDealt(enemy, damageContainer);
 		});
 
@@ -69,7 +70,8 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 		});
 
 		/* Died */
-		this._connectionWCSDied = this.wcsCharacter.Destroyed.Connect(() => {
+		this._connectionWCSDied?.Disconnect();
+		this._connectionWCSDied = this.characterModel.Humanoid.Died.Connect(() => {
 			this.OnDeath();
 		});
 	}
@@ -83,6 +85,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 	}
 	public OnDeath(): void {
 		Logger.Log(script, "NPC Character Died: ", this.displayName);
+		this.Destroy();
 	}
 
 	public OnTakeDamage(damageContainer: DamageContainer): void {
@@ -97,6 +100,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 
 	public Destroy(): void {
 		Logger.Log(script, "Destroying Player Character");
+		this._healthBar.Destroy();
 		super.Destroy();
 	}
 }

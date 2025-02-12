@@ -106,7 +106,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		/* Animation Manager */
 		assert(this.characterModel, "Character Model is nil");
-		this.animationManager = new AnimationManager(this.characterModel);
+		this.animationManager = new AnimationManager(this.characterModel, playerData.Skills.unlockedSkills);
 
 		/* Initialize Connections */
 		this._initializeConnections();
@@ -122,8 +122,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		});
 
 		/* Dealt Damage */
-		this._connectionDealtDamage?.Disconnect();
-		this._connectionDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+		this._connectionDealDamage?.Disconnect();
+		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
 			Logger.Log(script, ("Player Character Dealt Damage" + enemy) as unknown as string);
 			this.OnDamageDealt(enemy, damageContainer);
 		});
@@ -140,6 +140,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this._connectionSkillEnded = this.wcsCharacter.SkillEnded.Connect((skill) => {
 			Logger.Log(script, "Player Character Skill Ended");
 			this.skillManager.OnSkillEnded(skill);
+			//this.animationManager.OnSkillEnded(skill);
 		});
 	}
 	/* Dealt Damage */

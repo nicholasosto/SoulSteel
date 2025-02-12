@@ -1,33 +1,51 @@
 import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
 import GameCharacter from "../GameCharacter";
-import { GetAnimator, CreateAnimation, CreateAnimationTrack } from "shared/_Functions/AnimationFunctions";
+import {
+	GetAnimator,
+	CreateAnimation,
+	CreateAnimationTrack,
+	CreateAnimationMap,
+} from "shared/_Functions/AnimationFunctions";
 import { EAnimationID } from "shared/Animation/AnimationIndex";
 import Logger from "shared/Utility/Logger";
-import { Skill, UnknownSkill } from "@rbxts/wcs";
+import { UnknownSkill } from "@rbxts/wcs";
+import { SkillId } from "shared/_Types/SkillTypes";
+
+import { TAnimationPackage } from "shared/_Types/TAnimationPackage";
+
+//type AnimationPack 
+
 
 export default class AnimationManager {
 	private _gameCharacter: GameCharacterModel;
-    private _animationMap: Map<string, AnimationTrack> = new Map<string, AnimationTrack>();
+	private _animationMap: Map<SkillId, AnimationTrack>;
 
 	/*Constructor*/
-	constructor(gameCharacter: GameCharacterModel) {
+	constructor(gameCharacter: GameCharacterModel, skillList: SkillId[]) {
 		this._gameCharacter = gameCharacter;
-		Logger.Log(script, "Constructed");
-
-		/*Test Animation*/
-		const newAnimation = CreateAnimation(EAnimationID.SKILL_BasicMelee);
-		const animator = GetAnimator(this._gameCharacter);
-		const animationTrack = CreateAnimationTrack(this._gameCharacter, EAnimationID.SKILL_BasicMelee);
-
-		if (animationTrack) {
-			animationTrack.Play();
-		} else {
-			Logger.Log(script, "Animation Track is nil");
-		}
+		this._animationMap = CreateAnimationMap(this._gameCharacter, skillList) as Map<SkillId, AnimationTrack>;
+		Logger.Log(script, "Constructed", this._animationMap as unknown as string);
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {
+		const skillId = skill.GetName() as SkillId;
+		const animationTrack = this._animationMap.get(skillId);
+		if (animationTrack === undefined) {
+			Logger.Log(script, "Animation Track is nil");
+			return;
+		}
+		animationTrack.Play();
 		Logger.Log(script, "Skill Started: ", skill.GetName());
 	}
 
+	public OnSkillEnded(skill: UnknownSkill): void {
+		const skillId = skill.GetName() as SkillId;
+		const animationTrack = this._animationMap.get(skillId);
+		if (animationTrack === undefined) {
+			Logger.Log(script, "Animation Track is nil");
+			return;
+		}
+		animationTrack.Stop();
+		Logger.Log(script, "Skill Ended: ", skill.GetName());
+	}
 }

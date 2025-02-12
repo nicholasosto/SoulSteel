@@ -1,7 +1,8 @@
 import { Character } from "@rbxts/wcs";
-import { EAnimationID } from "../Animation/AnimationIndex";
+import { EAnimationID } from "../Animation/Enums";
 import Logger from "shared/Utility/Logger";
 import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
+import { SkillId } from "shared/_Types/SkillTypes";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
 	const model = instanceToAnimate instanceof Character ? instanceToAnimate.Instance : instanceToAnimate;
@@ -27,18 +28,50 @@ function CreateAnimation(animationID: EAnimationID): Animation {
 function CreateAnimationTrack(
 	characterModel: GameCharacterModel,
 	animationID: EAnimationID,
+	looped: boolean = false,
 ): AnimationTrack | undefined {
 	if (characterModel === undefined) return;
 
 	const animation = CreateAnimation(animationID);
 	const animator = GetAnimator(characterModel);
 	const animationTrack = animator?.LoadAnimation(animation);
+
 	if (animationTrack === undefined) {
 		Logger.Log(script, "Animation Track is nil");
 		return;
 	}
-
+	animationTrack.Looped = looped;
 	return animationTrack;
 }
 
-export { GetAnimator, CreateAnimation, CreateAnimationTrack };
+function GetAnimationForSkillId(skillId: SkillId): EAnimationID {
+	switch (skillId) {
+		case "BasicMelee":
+			return EAnimationID.BasicMelee;
+		case "BasicRanged":
+			return EAnimationID.BasicRanged;
+		case "BasicHold":
+			return EAnimationID.BasicHold;
+		case "Dash":
+			return EAnimationID.Dash;
+		case "Fly":
+			return EAnimationID.Fly;
+		default:
+			return EAnimationID.MoonPartAnimation;
+	}
+}
+
+/* Create Animation Map */
+function CreateAnimationMap(model: GameCharacterModel, skillList: SkillId[]): Map<SkillId, AnimationTrack> {
+	const animationMap = new Map<SkillId, AnimationTrack>();
+	skillList.forEach((skill) => {
+		const animationTrack = CreateAnimationTrack(model, GetAnimationForSkillId(skill));
+		if (animationTrack) {
+			animationMap.set(skill, animationTrack);
+		}
+	});
+
+	return animationMap;
+}
+
+export { GetAnimator, CreateAnimation, CreateAnimationTrack, CreateAnimationMap };

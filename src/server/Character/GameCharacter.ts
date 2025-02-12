@@ -7,12 +7,12 @@ export default class GameCharacter implements IGameCharacter {
 	characterId: string;
 	level: number = 1;
 	displayName: string;
-	characterModel?: GameCharacterModel;
+	characterModel: GameCharacterModel;
 	wcsCharacter: Character;
 	target?: IGameCharacter;
 
 	protected _connectionTakeDamage: RBXScriptConnection | undefined;
-	protected _connectionDealtDamage: RBXScriptConnection | undefined;
+	protected _connectionDealDamage: RBXScriptConnection | undefined;
 
 	/* Constructor */
 	constructor(wcsCharacter: Character) {
@@ -34,8 +34,8 @@ export default class GameCharacter implements IGameCharacter {
 		});
 
 		/* Dealt Damage */
-		this._connectionDealtDamage?.Disconnect();
-		this._connectionDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+		this._connectionDealDamage?.Disconnect();
+		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
 			Logger.Log(script, "[Super]: Dealt Damage to: ", enemy as unknown as string);
 			this.DealtDamage(damageContainer);
 		});

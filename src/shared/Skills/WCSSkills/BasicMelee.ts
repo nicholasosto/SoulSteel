@@ -1,12 +1,11 @@
 import Logger from "shared/Utility/Logger";
-import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillDefinitions } from "shared/_Definitions/SkillDefinitions";
+import { Skill, SkillDecorator, Character } from "@rbxts/wcs";
+
 import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
 import { getSkillDefinitionMap } from "shared/_Functions/SkillFunctions";
-import { CreateAnimationTrack } from "shared/_Functions/AnimationFunctions";
+
 import StorageManager from "shared/Storage Manager/StorageManager";
-import { EAnimationID } from "shared/Animation/Enums";
-import { Character } from "@rbxts/wcs";
+
 import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
 
 @SkillDecorator
@@ -27,10 +26,6 @@ export class BasicMelee extends Skill {
 		Logger.Log(script, "Constructing Skill ");
 		// // Create Animation Track
 		//const animationId = this._skillDefinition.animation as EAnimationID;
-		this._animationTrack = CreateAnimationTrack(
-			this.Character.Instance as GameCharacterModel,
-			EAnimationID.SKILL_BasicMelee,
-		);
 
 		this.projectile = StorageManager.CloneFromStorage("Projectile_Explosion_01") as Model;
 
@@ -39,30 +34,20 @@ export class BasicMelee extends Skill {
 
 	// Client-Side Start
 	protected OnStartClient(): void {
-		Logger.Log(script, "Client Start");
+		Logger.Log(script, "OnClientStart()");
 	}
 
 	// Server-Side Start
 	protected OnStartServer(): void {
-		Logger.Log(script, "Server Start");
-		//Logger.Log(script, "Server Started: ", this._skillDefinition.displayName);
-		//dummy test
+		Logger.Log(script, "OnServerStart()");
+
+		/* Game Character Model */
 		const gamecharacterModel = this.Character.Instance as GameCharacterModel;
-		//gamecharacterModel.Humanoid.WalkSpeed = 0;
 
-		// Get the Character Model and CFrame
-		const characterModel: Model = this.Character.Instance as Model;
-		assert(characterModel !== undefined, "Character Model is nil");
-		const characterCFrame: CFrame = characterModel.GetPivot();
+		assert(gamecharacterModel !== undefined, "Character Model is nil");
 
-		// Create the Projectile
-		//const projectile = explosion_01.Clone();
+		/* Hit Box */
 		const hitbox = this.createHitbox();
-		//const projectileInstance = new ExplosiveProjectile(hitbox, new Vector3(0, 0, -1), 50, 40, 10);
-
-		// Set the Projectile Properties
-		//projectile.Parent = game.Workspace;
-		//projectile.PivotTo(characterCFrame.mul(new CFrame(0, 0, -6)));
 
 		// Connect the Hitbox
 		this._connectionHitbox?.Disconnect();
@@ -72,12 +57,13 @@ export class BasicMelee extends Skill {
 			const wcsCharacter = Character.GetCharacterFromInstance(characterModel);
 			Logger.Log(script, "Hit: ", wcsCharacter as unknown as string);
 			if (wcsCharacter !== this.Character) {
-				Logger.Log(script, "Hit: ", "Self");
-				//projectileInstance.onCollision(hit);
 				wcsCharacter?.TakeDamage(this._damageContainer);
+				this._connectionHitbox?.Disconnect();
+
+				this.projectile?.Destroy();
+				hitbox.Destroy();
 				return;
 			}
-			wcsCharacter?.TakeDamage(this._damageContainer);
 		});
 
 		// play the animation
@@ -99,7 +85,7 @@ export class BasicMelee extends Skill {
 		hitbox.Parent = game.Workspace;
 
 		const characterCFrame = (this.Character.Instance as Model).GetPivot();
-		const offset = characterCFrame.mul(new CFrame(0, 0, -6));
+		const offset = characterCFrame.mul(new CFrame(0, 0, -16));
 		hitbox.PivotTo(offset);
 
 		return hitbox;

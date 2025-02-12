@@ -11,8 +11,6 @@ function OnNPCAdded(npc: GameCharacterModel) {
 	const npcWcsCharacter = new Character(npc);
 	const npcCharacter = new NPCCharacter(npcWcsCharacter);
 	npcCharacter.OnSpawn();
-
-	npcCharacter.OnTakeDamage({ Damage: 510, Source: undefined });
 }
 
 function StartCollectingNPCs() {
