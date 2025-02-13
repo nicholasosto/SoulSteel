@@ -50,7 +50,6 @@ class GameServer {
 	}
 
 	public static StartWCS() {
-		Logger.Log(script, "StartWCS()");
 
 		if (!this._wcsServerStarted) {
 			// Create the WCS Server
@@ -88,7 +87,7 @@ function HandlePlayerAdded(player: Player) {
 		/* Humanoid and WCS cleanup */
 		const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 		humanoid.Died.Connect(() => {
-			Logger.Log("[MAIN SERVER] - Character Removed: ", character);
+			Logger.Log("[MAIN SERVER] - Character Removed: ", character.Name);
 			PCController.OnCharacterRemoved(player);
 		});
 	});

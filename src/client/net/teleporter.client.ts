@@ -9,8 +9,6 @@ const TeleportButtonDecendants = TeleportPanel.WaitForChild("TeleportButtons").G
 
 const TeleportButtons = TeleportButtonDecendants.filter((instance: Instance) => instance.IsA("TextButton"));
 
-Logger.Log("Teleport Listener Started: ", TeleportButtons);
-
 TeleportButtons.forEach((button) => {
 	const cfvLocation = button.WaitForChild("Location") as CFrameValue;
 	assert(cfvLocation, "CFrameValue not found");

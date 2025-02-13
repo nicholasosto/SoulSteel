@@ -5,29 +5,25 @@
 // - Character Info (Name, Level, Profile Picture)
 // The Character Frame is created when the player character is added to the game and is destroyed when the player character is removed from the game.
 
-/* Imports */
-
+/* Module Imports */
 import { Players } from "@rbxts/services";
-// Interfaces
+
+/* Shared Imports */
 import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
-// Sub-Modules
-import Logger from "shared/Utility/Logger";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 /* Main Class: CharacterFrame */
 export default class InfoFrame {
-	// Instance
+	/* instance */
 	private _instance: TInfoFrame;
 
-	// Constructor
+	/* Constructor */
 	constructor(infoFrame: TInfoFrame) {
 		this._instance = infoFrame;
-		// Set the Parent
-		Logger.Log(script, "[Instance: CharacterFrame Class]: ", this._instance as unknown as string);
 	}
 
+	/* Update */
 	public Update(playerData: IPlayerData) {
-		Logger.Log(script, "Updating Character Frame");
 		const level = playerData.ProgressionStats.Level;
 		const name = playerData.CharacterName;
 

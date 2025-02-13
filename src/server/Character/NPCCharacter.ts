@@ -35,7 +35,6 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 	private _connectionWCSDied: RBXScriptConnection | undefined;
 
 	constructor(wcsCharacter: Character, level: number = 1) {
-		Logger.Log(script, "NPC Character Constructor");
 		super(wcsCharacter);
 		assert(this.characterModel, "Character Model is nil");
 
@@ -48,6 +47,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 		this.level = level;
 
 		this._initializeConnections();
+		Logger.Log("Created NPC Character: ", this.displayName);
 	}
 
 	protected _initializeConnections(): void {

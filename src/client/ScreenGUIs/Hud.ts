@@ -24,7 +24,4 @@ ResourceBarInstanceMap.set("Mana", ManaBarInstance);
 ResourceBarInstanceMap.set("Stamina", StaminaBarInstance);
 ResourceBarInstanceMap.set("Experience", ExperienceBarInstance);
 
-Logger.Log(script, "Player GUI Loaded", SkillBarInstance as unknown as string);
-
-
 export { CharacterInfoFrame, SkillBarInstance, ResourceBarInstanceMap };

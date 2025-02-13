@@ -6,7 +6,6 @@ import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";
 
-
 /* Skills Manager */
 export default class SkillsManager implements ISkillManager {
 	// Skills
@@ -17,7 +16,7 @@ export default class SkillsManager implements ISkillManager {
 	public wcsCharacter: Character;
 
 	/* Constructor */
-	constructor(wcsCharacter: Character) {
+	constructor(playerData: IPlayerData, wcsCharacter: Character) {
 		/* Set WCS Character */
 		this.wcsCharacter = wcsCharacter;
 		assert(wcsCharacter, "Character is nil");
@@ -28,6 +27,15 @@ export default class SkillsManager implements ISkillManager {
 		skillList.forEach((skillId) => {
 			this._registerSkill(skillId);
 		});
+	}
+
+	/* Register Skill */
+	private _registerSkill(skillId: SkillId): void {
+		if (this.wcsCharacter.GetSkillFromString(skillId)) {
+			Logger.Log(script, `[SkillsManager]: Skill ${skillId} already registered`);
+			return;
+		}
+		CreateSkillFromId(skillId, this.wcsCharacter);
 	}
 
 	/* Initialize Skills */
@@ -56,15 +64,6 @@ export default class SkillsManager implements ISkillManager {
 		/* Assign Skill to Slot */
 		this.SkillMap.set(slot, skillId);
 		const player = this.wcsCharacter.Player;
-	}
-
-	/* Register Skill */
-	private _registerSkill(skillId: SkillId): void {
-		if (this.wcsCharacter.GetSkillFromString(skillId)) {
-			Logger.Log(script, `[SkillsManager]: Skill ${skillId} already registered`);
-			return;
-		}
-		CreateSkillFromId(skillId, this.wcsCharacter);
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {

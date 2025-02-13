@@ -7,7 +7,6 @@ import { DataCache } from "server/PlayerData/DataCache";
 
 const PlayerDataRegistry = new Map<string, DataCache>();
 
-
 interface PersistantDataController {
 	// Singleton
 	_instance: PersistantDataController;
@@ -21,7 +20,6 @@ interface PersistantDataController {
 	OnPlayerLeaving(player: Player): void;
 }
 
-
 /* Original Code */
 export default class DataManager {
 	// Singleton
@@ -33,7 +31,6 @@ export default class DataManager {
 	private constructor() {
 		DataManager.playerAddedConnection?.Disconnect();
 		DataManager.playerAddedConnection = Players.PlayerAdded.Connect((player) => {
-			Logger.Log(script, "[Registering]: ", player);
 			DataManager.RegisterPlayer(player);
 		});
 	}
@@ -64,8 +61,6 @@ export default class DataManager {
 
 	public static GetDataCache(player: Player): DataCache {
 		const dataCache = PlayerDataRegistry.get(tostring(player.UserId)) as DataCache;
-		Logger.Log(script, "Data Cache: ", dataCache as unknown as string);
-		
 		return dataCache;
 	}
 
@@ -77,5 +72,3 @@ export default class DataManager {
 		dataCache.Save();
 	}
 }
-
-

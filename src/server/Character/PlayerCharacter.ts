@@ -73,8 +73,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.level,
 		);
 
-		this.HealthResource.RegenToggle(true);
-
 		/* Mana Resource */
 		this.ManaResource = new CharacterResource(
 			"Mana",
@@ -101,7 +99,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		);
 
 		/* Skills Manager */
-		this.skillManager = new SkillsManager(wcsCharacter);
+		this.skillManager = new SkillsManager(playerData, wcsCharacter);
 		this.skillManager.InitializeSkillMap(playerData);
 
 		/* Animation Manager */

@@ -7,19 +7,12 @@ import WcsClient from "./_WCS/WCSClient";
 /* Controllers */
 import KeyboardController from "client/Keyboard/Keyboard";
 import ClientUIController from "./Controllers/ClientUIController";
+import MovementController  from "./Controllers/MovementController";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
-import { Character } from "@rbxts/wcs";
-
-//import { GameCycleEvents } from "./net/ClientEvents";
 
 class GameClient {
 	private static _instance: GameClient;
-
-	/* Connections */
-	private static _skillControllerStarted: RBXScriptConnection | undefined;
-	private static _dataManagerStarted: RBXScriptConnection | undefined;
-	private static _characterControllerStarted: RBXScriptConnection | undefined;
 
 	/* Constructor */
 	constructor() {
@@ -37,6 +30,7 @@ class GameClient {
 			/* Controllers */
 			ClientUIController.Start();
 			KeyboardController.Start();
+			new MovementController();
 
 			/* Initialize Target Selection */
 			initializeTargetSelection();

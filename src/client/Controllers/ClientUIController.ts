@@ -1,21 +1,24 @@
+/* Shared Imports */
 import Logger from "shared/Utility/Logger";
-import { Players } from "@rbxts/services";
-import InfoFrame from "client/Controllers/UI Classes/InfoFrame";
-import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
-import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
-import { GameCycleEvents, CharacterEvent } from "../net/_Client_Events";
-import * as HUD from "client/ScreenGUIs/Hud";
+import InfoFrame from "shared/Epic UI/InfoFrame";
 import { SkillId } from "shared/_Types/SkillTypes";
 import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
+import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
+
+/* Client Imports */
+import { GameCycleEvents, CharacterEvent } from "client/net/_Client_Events";
+import { CharacterInfoFrame, SkillBarInstance, ResourceBarInstanceMap } from "client/ScreenGUIs/Hud";
 
 export default class ClientUIController {
 	/* Singleton Instance*/
 	private static _instance: ClientUIController;
 
-	// UI Components
 	/* Skill Bar */
-	private static SkillBar = new SkillBar(HUD.SkillBarInstance);
-	private static InfoFrame = new InfoFrame(HUD.CharacterInfoFrame);
+	private static SkillBar = new SkillBar(SkillBarInstance);
+
+	/* Info Frame */
+	private static InfoFrame = new InfoFrame(CharacterInfoFrame);
 
 	/* Resource Bar Map */
 	private static ResourceBarMap = new Map<string, ProgressBar>();
@@ -29,7 +32,7 @@ export default class ClientUIController {
 
 	// Constructor
 	private constructor() {
-		Logger.Log(script, "CONSTRUCTOR()");
+		Logger.Log(script, "Client UI Controller Singleton: Instantiated");
 	}
 
 	public static Start() {
@@ -37,19 +40,19 @@ export default class ClientUIController {
 			this._instance = new ClientUIController();
 			this._initializeResourceBars();
 			this._initializeListeners();
-
-			Logger.Log(script, "[UI Controller - PlayerUIReady] - Sending to Server");
 			GameCycleEvents.PlayerUIReady.SendToServer();
 		}
 	}
 
+	/* Initialize Resource Bars */
 	private static _initializeResourceBars() {
-		HUD.ResourceBarInstanceMap.forEach((resourceBarInstance, resourceId) => {
+		ResourceBarInstanceMap.forEach((resourceBarInstance, resourceId) => {
 			const progressBar = new ProgressBar(resourceBarInstance);
 			this.ResourceBarMap.set(resourceId, progressBar);
 		});
 	}
 
+	/* Update Resource Bar */
 	public static UpdateResourceBar(resourceId: string, resouce: { resourceId: string; current: number; max: number }) {
 		const progressBar = this.ResourceBarMap.get(resourceId);
 		if (progressBar) {
@@ -57,12 +60,12 @@ export default class ClientUIController {
 		}
 	}
 
+	/* Initialize Listeners */
 	private static _initializeListeners() {
 		/* Player Data Loaded*/
 		this._playerDataLoaded?.Disconnect();
 		this._playerDataLoaded = GameCycleEvents.PlayerDataLoaded.Connect((playerData) => {
 			const skillSlotMap = GetSkillSlotMap(playerData);
-			Logger.Log(script, "[GameCycle - UI Controller] - PlayerDataLoaded", skillSlotMap as unknown as string);
 			this.SkillBar.LoadSkills(skillSlotMap as Map<number, SkillId>);
 			this.InfoFrame.Update(playerData);
 		});
@@ -70,7 +73,6 @@ export default class ClientUIController {
 		/* Resource Updated */
 		this._resourceUpdated?.Disconnect();
 		this._resourceUpdated = CharacterEvent.ResourceUpdated.Connect((resource) => {
-			Logger.Log(script, "[GameCycle - UI Controller] - ResourceUpdated", resource as unknown as string);
 			this.UpdateResourceBar(resource.resourceId, resource);
 		});
 	}

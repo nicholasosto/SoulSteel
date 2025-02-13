@@ -1,6 +1,5 @@
 import { Players } from "@rbxts/services";
 import { WorldEvent } from "client/net/_Client_Events";
-import Logger from "shared/Utility/Logger";
 
 const localPlayer = Players.LocalPlayer;
 const PlayerGui = localPlayer.WaitForChild("PlayerGui");
@@ -9,7 +8,7 @@ const TeleportButtonDecendants = TeleportPanel.WaitForChild("TeleportButtons").G
 
 const TeleportButtons = TeleportButtonDecendants.filter((instance: Instance) => instance.IsA("TextButton"));
 
-Logger.Log("[ButtonScript]", TeleportButtons);
+/* Assert that the TeleportButtons are TextButtons */
 TeleportButtons.forEach((button) => {
 	const cfvLocation = button.WaitForChild("Location") as CFrameValue;
 	assert(cfvLocation, "CFrameValue not found");

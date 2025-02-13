@@ -21,9 +21,10 @@ export default class KeyboardController {
 		const Player = game.GetService("Players").LocalPlayer as Player;
 		const character = Player.Character;
 		KeyboardController.OnCharacterAdded(character as Model);
-		// CHARACTER ADDED
+
+		/* Character Added Connection */
+		KeyboardController.characterAddedConnection?.Disconnect();
 		KeyboardController.characterAddedConnection = Player.CharacterAdded.Connect((character: Model) => {
-			//Logger.Log(script,"KeyboardController", "Character Added");
 			KeyboardController.OnCharacterAdded(character);
 		});
 	}
@@ -66,9 +67,6 @@ export default class KeyboardController {
 			case Enum.KeyCode.KeypadZero:
 				SkillEvent.UnassignSkillSlot.SendToServer(2);
 				break;
-			case Enum.KeyCode.R:
-				Logger.Log(script, "R Pressed");
-				break;
 			default:
 				break;
 		}
@@ -90,7 +88,7 @@ export default class KeyboardController {
 		// Gets the skill from the character
 		const skill = character?.GetSkillFromString(skillName) as Skill;
 		if (skill === undefined) {
-			Logger.Log(script, "Character or Skill is not assigned to Character");
+			Logger.Log(script, "ERROR: Character or Skill is not assigned to Character");
 			return;
 		}
 
