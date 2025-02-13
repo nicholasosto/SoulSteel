@@ -2,6 +2,7 @@ import { TDialog } from "shared/Epic UI/DialogFrame/Dialog_Template";
 import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import Logger from "shared/Utility/Logger";
+import { SendNoticationConfirmation } from "shared/net/Remotes";
 
 export class Dialog {
 	// Main Template
@@ -15,26 +16,13 @@ export class Dialog {
 	private _closeButton: ImageButton;
 	private _button1: TextButton;
 	private _button2: TextButton;
-	private _title?: string;
-	private _message?: string;
 
 	// Connections
 	private _connectionButton1: RBXScriptConnection | undefined;
 	private _connectionButton2: RBXScriptConnection | undefined;
 	private _connectionClose: RBXScriptConnection | undefined;
 
-	constructor(
-		dialogTemplate: TDialog,
-		title: string,
-		parent: Instance,
-		button1Name: string,
-		button2Name: string,
-		message: string,
-	) {
-		// Clone and Parent the Dialog Template
-		this._dialogFrame = dialogTemplate.Clone();
-		this._dialogFrame.Parent = parent;
-
+	constructor(title: string, parent: Instance, button1Name: string, button2Name: string, message: string) {
 		// Text Content Title and Message
 		this._dialogTextBox = this._dialogFrame.Content.Body;
 		this._dialogTitle = this._dialogFrame.Content.Header.Title;
@@ -47,6 +35,9 @@ export class Dialog {
 		// Setup Dialog
 		this._setupButtons(button1Name, button2Name);
 		this.SetText(title, message);
+
+		// Clone and Parent the Dialog Template
+		this._dialogFrame.Parent = parent;
 	}
 
 	// Set up the buttons
@@ -56,12 +47,12 @@ export class Dialog {
 		this._button2.SetAttribute("TextValue", button2Name);
 		// Button 1 Click
 		this._connectionButton1 = this._button1.Activated.Connect(() => {
-			this.handleButton1Click();
+			this._handleButton1Click();
 		});
 
 		// Button 2 Click
 		this._connectionButton2 = this._button2.Activated.Connect(() => {
-			this.handleButton2Click();
+			this._handleButton2Click();
 		});
 
 		// Close Button Click
@@ -71,19 +62,18 @@ export class Dialog {
 	}
 
 	// Button Click Handlers
-	protected handleButton1Click() {
+	protected _handleButton1Click() {
 		Logger.Log(script, "Button 1 Clicked");
+		SendNoticationConfirmation(true);
 		this.Hide();
 	}
-	protected handleButton2Click() {
+	protected _handleButton2Click() {
 		Logger.Log(script, "Button 2 Clicked");
 		this.Hide();
 	}
 
 	// Update the Dialog Title and Message
 	public SetText(title: string, message: string) {
-		this._title = title;
-		this._message = message;
 		this._dialogTitle.SetAttribute("TextValue", title);
 		this._dialogTextBox.SetAttribute("TextValue", message);
 	}

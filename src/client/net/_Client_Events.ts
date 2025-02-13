@@ -29,4 +29,8 @@ const GameCycleEvents = {
 	CharacterControllerStarted: S2C.Client.Get("CharacterControllerStarted"),
 };
 
+const Notifications = {
+	PlayerNotification: BiDirectionalEvents.Client.Get("PlayerNotification"),
+};
+
 export { SkillEvent, WorldEvent, DeveloperEvent, GameCycleEvents, CharacterEvent, Payloads };

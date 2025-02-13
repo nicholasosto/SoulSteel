@@ -7,7 +7,8 @@ import WcsClient from "./_WCS/WCSClient";
 /* Controllers */
 import KeyboardController from "client/Keyboard/Keyboard";
 import ClientUIController from "./Controllers/ClientUIController";
-import MovementController  from "./Controllers/MovementController";
+import MovementController from "./Controllers/MovementController";
+import MainMenu from "./ScreenGUIs/MainMenu";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 
@@ -28,6 +29,7 @@ class GameClient {
 			WcsClient.Start();
 
 			/* Controllers */
+			MainMenu.Start();
 			ClientUIController.Start();
 			KeyboardController.Start();
 			new MovementController();

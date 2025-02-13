@@ -29,4 +29,8 @@ const DeveloperEvent = {
 	GameOfLife: BiDirectionalEvents.Server.Get("GameOfLife"),
 };
 
+const Notifications = {
+	PlayerNotification: BiDirectionalEvents.Server.Get("PlayerNotification"),
+};
+
 export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, CharacterEvent, Payloads };

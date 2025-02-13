@@ -34,5 +34,8 @@ export function StartUIListeners() {
 		UIController.UpdateResourceBar(player, CreateResourcePayload(playerMana));
 		UIController.UpdateResourceBar(player, CreateResourcePayload(playerStamina));
 		UIController.UpdateResourceBar(player, CreateResourcePayload(playerExperience));
+
+		wait(2);
+		UIController.NotifyPlayer(player, "Welcome to the game!", false);
 	});
 }

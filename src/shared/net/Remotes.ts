@@ -2,6 +2,12 @@ import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/_Types/SkillTypes";
 import { ResourceId } from "shared/_Types/GameCharacterShared";
 import { IPlayerData } from "shared/_Interfaces/IPlayerData";
+import Logger from "shared/Utility/Logger";
+
+interface PlayerNotificationPayload {
+	message: string;
+	confirmation: boolean;
+}
 
 /* Payloads */
 interface Payloads {
@@ -10,12 +16,13 @@ interface Payloads {
 	PlayerResourceUpdate: { resourceId: ResourceId; current: number; max: number };
 }
 
-const BiDirectionalEvents = Net.Definitions.Create({
+const BiDirectional = Net.Definitions.Create({
 	GameOfLife: Net.Definitions.BidirectionalEvent<[]>(),
 	Teleport: Net.Definitions.BidirectionalEvent<[destination: Vector3]>(),
 	SkillSlotAssignment: Net.Definitions.BidirectionalEvent<[slot: number, skillId: SkillId]>(),
 	UnAssignSkillSlot: Net.Definitions.BidirectionalEvent<[slot: number]>(),
 	ModuleToModule: Net.Definitions.BidirectionalEvent<[message: string]>(),
+	PlayerNotification: Net.Definitions.BidirectionalEvent<[payload: PlayerNotificationPayload]>(),
 });
 
 const C2S = Net.Definitions.Create({
@@ -33,4 +40,18 @@ const S2C = Net.Definitions.Create({
 	DataManagerStarted: Net.Definitions.ServerToClientEvent(),
 });
 
-export { S2C, C2S, BiDirectionalEvents, Payloads };
+
+/* Send To Client */
+function SendNotification(player: Player, message: string, confirmation: boolean): void {
+	const payload: PlayerNotificationPayload = { message, confirmation };
+	BiDirectional.Server.Get("PlayerNotification").SendToPlayer(player, payload);
+	Logger.Log(script, `Notification: ${message}`, player);
+}
+
+/* Send To Server */
+function SendNoticationConfirmation(confirmation: boolean): void {
+	const payload: PlayerNotificationPayload = { message: "", confirmation };
+	BiDirectional.Client.Get("PlayerNotification").SendToServer(payload);
+}
+
+export { S2C, C2S, BiDirectional as BiDirectionalEvents, Payloads, SendNotification, SendNoticationConfirmation };

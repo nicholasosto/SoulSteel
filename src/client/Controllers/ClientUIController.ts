@@ -8,7 +8,7 @@ import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 
 /* Client Imports */
 import { GameCycleEvents, CharacterEvent } from "client/net/_Client_Events";
-import { CharacterInfoFrame, SkillBarInstance, ResourceBarInstanceMap } from "client/ScreenGUIs/Hud";
+import { InfoFrameInstance, SkillBarInstance, ResourceBarInstanceMap } from "client/ScreenGUIs/GUI_Index";
 
 export default class ClientUIController {
 	/* Singleton Instance*/
@@ -18,7 +18,7 @@ export default class ClientUIController {
 	private static SkillBar = new SkillBar(SkillBarInstance);
 
 	/* Info Frame */
-	private static InfoFrame = new InfoFrame(CharacterInfoFrame);
+	private static InfoFrame = new InfoFrame(InfoFrameInstance);
 
 	/* Resource Bar Map */
 	private static ResourceBarMap = new Map<string, ProgressBar>();
