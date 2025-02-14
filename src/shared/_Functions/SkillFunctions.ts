@@ -1,6 +1,7 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
-import { ISkillDefinition, PlayerSkillsData } from "shared/_Interfaces/SkillInterfaces";
+import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";
+import { PlayerSkillsData } from "shared/_Interfaces/IPlayerData";
 import { SkillDefinitions } from "../_Definitions/SkillDefinitions";
 
 function getSkillDefinitionMap(): Map<SkillId, ISkillDefinition> {
@@ -8,14 +9,6 @@ function getSkillDefinitionMap(): Map<SkillId, ISkillDefinition> {
 	skillDefinitionMap.set("BasicHold", SkillDefinitions.BasicHold);
 	skillDefinitionMap.set("BasicMelee", SkillDefinitions.BasicMelee);
 	skillDefinitionMap.set("BasicRanged", SkillDefinitions.BasicRanged);
-	skillDefinitionMap.set("SpiritOrb", SkillDefinitions.SpiritOrb);
-	skillDefinitionMap.set("Teleport", SkillDefinitions.Teleport);
-	skillDefinitionMap.set("Dash", SkillDefinitions.Dash);
-	skillDefinitionMap.set("MultiJump", SkillDefinitions.MultiJump);
-	skillDefinitionMap.set("Fly", SkillDefinitions.Fly);
-	skillDefinitionMap.set("Meditate", SkillDefinitions.Meditate);
-	skillDefinitionMap.set("Charge", SkillDefinitions.Charge);
-	skillDefinitionMap.set("None", SkillDefinitions.None);
 	// ... add additional skills here
 
 	return skillDefinitionMap;

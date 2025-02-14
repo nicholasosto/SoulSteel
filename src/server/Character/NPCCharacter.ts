@@ -1,10 +1,10 @@
 import GameCharacter from "./GameCharacter";
-import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
+import { GameCharacterModel } from "shared/_Types/TGameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import { INPCCharacter } from "server/Character/Index/Interfaces";
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
-import { BGUI_HealthBar } from "shared/_Types/BGUI_HealthBar";
+import { BGUI_HealthBar } from "shared/_Types/TBillboardGUI";
 import AnimationManager from "./Managers/AnimationManager";
 import { BasicHold } from "shared/Skills/WCSSkills/BasicHold";
 

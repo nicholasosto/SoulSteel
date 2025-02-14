@@ -1,6 +1,6 @@
 import { CollectionService } from "@rbxts/services";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
+import { GameCharacterModel } from "shared/_Types/TGameCharacter";
 import NPCCharacter from "server/Character/NPCCharacter";
 import Logger from "shared/Utility/Logger";
 

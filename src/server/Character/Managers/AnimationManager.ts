@@ -1,4 +1,4 @@
-import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
+import { GameCharacterModel } from "shared/_Types/TGameCharacter";
 import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
 import Logger from "shared/Utility/Logger";
 import { UnknownSkill } from "@rbxts/wcs";

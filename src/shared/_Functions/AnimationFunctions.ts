@@ -1,7 +1,7 @@
 import { Character } from "@rbxts/wcs";
 import { EAnimationID } from "../Animation/Enums";
 import Logger from "shared/Utility/Logger";
-import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
+import { GameCharacterModel } from "shared/_Types/TGameCharacter";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
@@ -52,10 +52,6 @@ function GetAnimationForSkillId(skillId: SkillId): EAnimationID {
 			return EAnimationID.BasicRanged;
 		case "BasicHold":
 			return EAnimationID.BasicHold;
-		case "Dash":
-			return EAnimationID.Dash;
-		case "Fly":
-			return EAnimationID.Fly;
 		default:
 			return EAnimationID.MoonPartAnimation;
 	}

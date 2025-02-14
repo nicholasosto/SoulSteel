@@ -1,30 +1,27 @@
 import Logger from "shared/Utility/Logger";
 import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillDefinitions } from "shared/_Definitions/SkillDefinitions";
 
 @SkillDecorator
 export class BasicHold extends Skill {
-	private _skillDefinition = SkillDefinitions.BasicHold;
-	private _damageContainer = this.CreateDamageContainer(this._skillDefinition.baseDamage ?? 10);
-	private _animationTrack: AnimationTrack | undefined;
+	private _damageContainer = this.CreateDamageContainer(14);
 	protected OnConstruct(): void {
-		Logger.Log(script, "Shared Construct", this._skillDefinition as unknown as string);
+		Logger.Log(script, "Shared Construct", this.Character?.Instance.Name);
 	}
 
 	protected OnConstructServer(): void {
-		Logger.Log(script, "Server Constructor", this._skillDefinition as unknown as string);
+		Logger.Log(script, "Server Constructor", this.Character?.Instance.Name);
 		//super.OnConstructServer();
 	}
 
 	protected OnStartClient(): void {
-		Logger.Log(script, "Client Start", this._skillDefinition as unknown as string);
+		Logger.Log(script, "Client Start", this.Character?.Instance.Name);
 	}
 
 	protected OnStartServer(): void {
-		Logger.Log(script, "Server Started: ");
+		Logger.Log(script, "Server Started: ", this.Character?.Instance.Name);
 	}
 
 	protected OnEndServer(): void {
-		Logger.Log(script, "Server Ended: ");
+		Logger.Log(script, "Server Ended: ", this.Character?.Instance.Name);
 	}
 }

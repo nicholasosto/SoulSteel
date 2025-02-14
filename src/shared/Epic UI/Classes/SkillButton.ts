@@ -5,7 +5,7 @@ import StorageManager from "shared/Storage Manager/StorageManager";
 // Types
 import { TSkillButton } from "shared/Epic UI/Types/TSkillButton";
 import { SkillId } from "shared/_IDs/IDs_Skill";
-import { ISkillDefinition } from "shared/_Interfaces/SkillInterfaces";
+import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 // Functions
@@ -107,7 +107,7 @@ export class SkillButton {
 	}
 
 	public ClearSkill() {
-		this.SetSkill("None");
+		this.SetSkill("BasicMelee");
 	}
 
 	// Set Parent

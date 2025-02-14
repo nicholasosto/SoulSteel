@@ -55,14 +55,14 @@ export default class KeyboardController {
 
 		switch (input.KeyCode) {
 			case Enum.KeyCode.KeypadOne:
-				SkillEvent.SkillSlotAssignment.SendToServer(1, "Meditate");
+				SkillEvent.SkillSlotAssignment.SendToServer(4, "BasicMelee");
 				break;
 			case Enum.KeyCode.KeypadTwo:
-				SkillEvent.SkillSlotAssignment.SendToServer(2, "Charge");
+				SkillEvent.SkillSlotAssignment.SendToServer(5, "BasicRanged");
 				break;
 
 			case Enum.KeyCode.KeypadThree:
-				SkillEvent.SkillSlotAssignment.SendToServer(3, "Fly");
+				SkillEvent.SkillSlotAssignment.SendToServer(3, "BasicHold");
 				break;
 			case Enum.KeyCode.KeypadZero:
 				SkillEvent.UnassignSkillSlot.SendToServer(2);

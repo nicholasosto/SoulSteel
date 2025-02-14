@@ -1,16 +1,16 @@
-import { SkillResource } from "shared/_Types/TSkillResource";
+import { TSkillResource } from "shared/_Types/TSkillResource";
 
-const DEFAULT_RESOURCE_MANA: SkillResource = {
+const DEFAULT_RESOURCE_MANA: TSkillResource = {
 	resourceId: "Mana",
 	amount: 30,
 };
 
-const DEFAULT_RESOURCE_HEALTH: SkillResource = {
+const DEFAULT_RESOURCE_HEALTH: TSkillResource = {
 	resourceId: "Health",
 	amount: 20,
 };
 
-const DEFAULT_RESOURCE_STAMINA: SkillResource = {
+const DEFAULT_RESOURCE_STAMINA: TSkillResource = {
 	resourceId: "Stamina",
 	amount: 40,
 };

@@ -3,7 +3,7 @@ import Logger from "shared/Utility/Logger";
 import InfoFrame from "shared/Epic UI/Classes/InfoFrame";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
-import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
+import SkillBar from "shared/Epic UI/Classes/SkillBar";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 
 /* Client Imports */

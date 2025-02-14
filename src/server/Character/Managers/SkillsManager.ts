@@ -53,7 +53,7 @@ export default class SkillsManager implements ISkillManager {
 	RemoveSkillFromSlot(slot: number): void {
 		/* Remove Skill from Slot */
 		this.SkillMap.delete(slot);
-		this.AssignSkillToSlot(slot, "None");
+		this.AssignSkillToSlot(slot, "BasicMelee");
 	}
 
 	/* Assign Skill to Slot */

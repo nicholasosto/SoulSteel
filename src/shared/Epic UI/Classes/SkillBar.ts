@@ -6,7 +6,7 @@ import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 /* Modules */
-import { SkillButton } from "../../Classes/SkillButton";
+import { SkillButton } from "./SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";
@@ -60,7 +60,7 @@ export default class SkillBar {
 		if (skillButton !== undefined) {
 			skillButton.Destroy();
 		}
-		this._createSkillButton(slot, "None");
+		this._createSkillButton(slot, "BasicMelee");
 	}
 
 	// Private:  createSkillButton
