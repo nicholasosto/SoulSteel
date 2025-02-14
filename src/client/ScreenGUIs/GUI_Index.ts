@@ -15,7 +15,7 @@ const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as ScreenGui;
 const Settings_Screen = PlayerGUI.WaitForChild("Settings") as ScreenGui;
 
 /* Store Screen */
-const Store_Screen = PlayerGUI.WaitForChild("Store UI Pack").WaitForChild("Gui").WaitForChild("ScreenGui") as ScreenGui;
+//const Store_Screen = PlayerGUI.WaitForChild("Store UI Pack").WaitForChild("Gui").WaitForChild("ScreenGui") as ScreenGui;
 
 /* HUD Elements */
 const MainMenuFrame = HUD_Screen.WaitForChild("MainMenu") as Frame;
@@ -56,7 +56,7 @@ export {
 	Character_Screen,
 	Teleport_Screen,
 	Settings_Screen,
-	Store_Screen,
+	//Store_Screen,
 
 	/* HUD Elements */
 	MainMenuFrame,
