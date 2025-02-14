@@ -1,6 +1,5 @@
 import { ICharacterStats } from "shared/_Interfaces/ICharacterStats";
 import { IPlayerSkillsData } from "./IPlayerSkillsData";
-import { SkillId } from "shared/_IDs/IDs_Skill";
 
 interface IPlayerData {
 	[str: string]: unknown;
@@ -25,6 +24,5 @@ interface IPlayerData {
 	// Skills Data
 	Skills: IPlayerSkillsData;
 }
-
 
 export { IPlayerSkillsData, IPlayerData };

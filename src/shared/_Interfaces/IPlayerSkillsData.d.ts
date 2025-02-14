@@ -1,6 +1,5 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
-
 /* Player Skills Data */
 export interface IPlayerSkillsData {
 	/**
