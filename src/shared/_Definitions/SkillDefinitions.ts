@@ -1,5 +1,5 @@
 import { EAnimationID } from "shared/Animation/AnimationIndex";
-import { ImageIds } from "shared/Epic UI/ImageIds";
+import { ImageIds } from "shared/_Enums/EImageId";
 import { ESoundId } from "shared/Audio/Sounds";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";

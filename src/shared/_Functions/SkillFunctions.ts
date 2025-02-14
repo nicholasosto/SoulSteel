@@ -1,7 +1,7 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
 import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";
-import { PlayerSkillsData } from "shared/_Interfaces/IPlayerData";
+import { IPlayerSkillsData } from "shared/_Interfaces/IPlayerSkillsData";
 import { SkillDefinitions } from "../_Definitions/SkillDefinitions";
 
 function getSkillDefinitionMap(): Map<SkillId, ISkillDefinition> {
@@ -24,8 +24,8 @@ function getSkillDefinition(skillId: SkillId): ISkillDefinition {
 }
 
 // Get Default Player Skills Data
-function getDefaultPlayerSkillsData(): PlayerSkillsData {
-	const defaultPlayerSkillsData: PlayerSkillsData = {
+function getDefaultPlayerSkillsData(): IPlayerSkillsData {
+	const defaultPlayerSkillsData: IPlayerSkillsData = {
 		unlockedSkills: ["BasicMelee", "BasicRanged", "BasicHold"],
 		assignedSlots: ["BasicMelee", "BasicRanged", undefined, undefined, undefined],
 	};

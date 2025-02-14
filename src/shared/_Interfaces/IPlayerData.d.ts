@@ -1,4 +1,5 @@
 import { ICharacterStats } from "shared/_Interfaces/ICharacterStats";
+import { IPlayerSkillsData } from "./IPlayerSkillsData";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 interface IPlayerData {
@@ -22,12 +23,8 @@ interface IPlayerData {
 	CharacterStats: ICharacterStats;
 
 	// Skills Data
-	Skills: PlayerSkillsData;
-}
-// Player Skills Data
-interface PlayerSkillsData {
-	unlockedSkills: SkillId[];
-	assignedSlots: Array<SkillId | undefined>;
+	Skills: IPlayerSkillsData;
 }
 
-export { PlayerSkillsData, IPlayerData };
+
+export { IPlayerSkillsData, IPlayerData };
