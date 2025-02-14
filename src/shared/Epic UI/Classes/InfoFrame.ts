@@ -9,7 +9,7 @@
 import { Players } from "@rbxts/services";
 
 /* Shared Imports */
-import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
+import { TInfoFrame } from "shared/Epic UI/EpicIndex";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 /* Main Class: CharacterFrame */

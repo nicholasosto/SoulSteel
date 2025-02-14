@@ -1,4 +1,4 @@
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 // Set the skills here
 const SkillKeyMap: Map<Enum.KeyCode, SkillId> = new Map<Enum.KeyCode, SkillId>();
 SkillKeyMap.set(Enum.KeyCode.Q, "BasicMelee");

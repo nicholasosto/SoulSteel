@@ -1,7 +1,7 @@
 import { SkillType, SkillResource, SkillId } from "shared/_Types/SkillTypes";
 
 // Skill Definition
-interface SkillDefinition {
+interface ISkillDefinition {
 	displayName: string;
 	wcsSkillId: SkillId;
 	description: string;
@@ -15,7 +15,7 @@ interface SkillDefinition {
 }
 
 /* Player Skills Data */
-interface PlayerSkillsData {
+interface IPlayerSkillsData {
 	/**
 	 * All the skill IDs that this player has unlocked.
 	 * Could be an array or a Set-like structure.
@@ -29,4 +29,4 @@ interface PlayerSkillsData {
 	assignedSlots: Array<SkillId | undefined>;
 }
 
-export { SkillDefinition, PlayerSkillsData };
+export { ISkillDefinition, IPlayerSkillsData as PlayerSkillsData };

@@ -1,11 +1,11 @@
 import { EAnimationID } from "shared/Animation/AnimationIndex";
 import { ImageIds } from "shared/Epic UI/ImageIds";
 import { ESoundId } from "shared/Audio/Sounds";
-import { SkillId } from "shared/_Types/SkillTypes";
-import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
+import { SkillId } from "shared/_IDs/IDs_Skill";
+import { ISkillDefinition } from "shared/_Interfaces/SkillInterfaces";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
-const SkillDefinitions: Record<SkillId, SkillDefinition> = {
+const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 	BasicMelee: {
 		displayName: "Melee Strike",
 		skillType: "Melee",

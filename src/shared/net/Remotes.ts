@@ -1,6 +1,6 @@
 import Net, { Definitions } from "@rbxts/net";
-import { SkillId } from "shared/_Types/SkillTypes";
-import { ResourceId } from "shared/_Types/GameCharacterShared";
+import { SkillId } from "shared/_IDs/IDs_Skill";
+import { ResourceId } from "shared/_IDs/IDs_Resource";
 import { IPlayerData } from "shared/_Interfaces/IPlayerData";
 import Logger from "shared/Utility/Logger";
 

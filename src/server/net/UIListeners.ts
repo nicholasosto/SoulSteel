@@ -3,7 +3,7 @@ import UIController from "server/Controllers/UIController";
 import PCController from "server/Controllers/PlayerCharacterController";
 import { CharacterResource } from "server/Character/Classes/CharacterResource";
 import Logger from "shared/Utility/Logger";
-import { ResourceId } from "shared/_Types/GameCharacterShared";
+import { ResourceId } from "shared/_IDs/IDs_Resource";
 
 let _connection_UIReady: RBXScriptConnection | undefined;
 

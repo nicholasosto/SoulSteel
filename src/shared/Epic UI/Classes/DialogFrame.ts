@@ -1,5 +1,5 @@
-import { TDialog } from "shared/Epic UI/DialogFrame/Dialog_Template";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
+import { TDialog } from "shared/Epic UI/Types/TDialog";
+import { TEpicAttributes } from "shared/Epic UI/EpicIndex";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import Logger from "shared/Utility/Logger";
 import { SendNoticationConfirmation } from "shared/net/Remotes";

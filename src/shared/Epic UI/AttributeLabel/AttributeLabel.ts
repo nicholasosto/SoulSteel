@@ -1,5 +1,5 @@
 import { AttributeLabel_Template } from "./AttributeLabel_Template";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
+import { TEpicAttributes } from "shared/Epic UI/EpicIndex";
 import StorageManager from "shared/Storage Manager/StorageManager";
 
 export class AttributeLabelClass {

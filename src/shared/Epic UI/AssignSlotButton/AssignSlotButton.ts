@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { TSlotAssignmentButton } from "./SlotAssignmentButtonTypes";
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 
 export default class SlotAssignmentButton {
 	public Button: TSlotAssignmentButton = StorageManager.CloneFromStorage(

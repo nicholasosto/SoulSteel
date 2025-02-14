@@ -1,17 +1,7 @@
-type ResourceId = "Health" | "Mana" | "Stamina" | "Domain" | "Class" | "Experience";
-type CharacterStatId = "Strength" | "Speed" | "Dexterity" | "Intelligence" | "Constitution";
-
-/* ICharacterStats */
-interface ICharacterStats {
-	Strength: number;
-	Speed: number;
-	Dexterity: number;
-	Intelligence: number;
-	Constitution: number;
-}
+import { CharacterStatId } from "shared/_IDs/IDs_CharacterStat";
 
 /* Character Resource */
-interface ICharacterResource {
+export default interface ICharacterResource {
 	ResourceName: string;
 	PrimaryStat: CharacterStatId;
 	SecondaryStat: CharacterStatId;
@@ -24,5 +14,3 @@ interface ICharacterResource {
 	GetLabel: () => string;
 	ActivateRegen: (activate: boolean) => void;
 }
-
-export { ResourceId, CharacterStatId, ICharacterStats, ICharacterResource };

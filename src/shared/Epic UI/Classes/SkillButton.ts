@@ -3,10 +3,10 @@ import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 
 // Types
-import { TSkillButton } from "shared/Epic UI/SkillUI/SkillIndex";
-import { SkillId } from "shared/_Types/SkillTypes";
-import { SkillDefinition } from "shared/_Interfaces/SkillInterfaces";
-import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import { TSkillButton } from "shared/Epic UI/Types/TSkillButton";
+import { SkillId } from "shared/_IDs/IDs_Skill";
+import { ISkillDefinition } from "shared/_Interfaces/SkillInterfaces";
+import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 // Functions
 import { getSkillDefinition } from "shared/_Functions/SkillFunctions";
@@ -24,12 +24,12 @@ export class SkillButton {
 	private _cooldownRemaining = 0;
 
 	// Skill Definition
-	private _skillDefinition: SkillDefinition | undefined;
+	private _skillDefinition: ISkillDefinition | undefined;
 
 	// Constructor
 	constructor(skillId: SkillId) {
 		// Set the Skill Definition
-		this._skillDefinition = getSkillDefinition(skillId) as SkillDefinition;
+		this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
 
 		// Set the Cooldown Time
 		this._cooldownTime = this._skillDefinition.cooldown;
@@ -101,7 +101,7 @@ export class SkillButton {
 
 	// Set Skill
 	public SetSkill(skillId: SkillId) {
-		this._skillDefinition = getSkillDefinition(skillId) as SkillDefinition;
+		this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
 		this._setImage(this._skillDefinition.icon);
 		this._cooldownTime = this._skillDefinition.cooldown;
 	}

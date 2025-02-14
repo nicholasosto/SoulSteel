@@ -1,7 +1,7 @@
 import { Players } from "@rbxts/services";
-import { TInfoFrame } from "shared/Epic UI/EpicInterfaces";
-import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
-import { ResourceId } from "shared/_Types/GameCharacterShared";
+import { TInfoFrame } from "shared/Epic UI/EpicIndex";
+import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
+import { ResourceId } from "shared/_IDs/IDs_Resource";
 import Logger from "shared/Utility/Logger";
 
 /* Main Screen GUI */

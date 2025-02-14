@@ -2,7 +2,7 @@ import { Character } from "@rbxts/wcs";
 import { EAnimationID } from "../Animation/Enums";
 import Logger from "shared/Utility/Logger";
 import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
 	const model = instanceToAnimate instanceof Character ? instanceToAnimate.Instance : instanceToAnimate;

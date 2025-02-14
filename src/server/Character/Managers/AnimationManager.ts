@@ -2,7 +2,7 @@ import { GameCharacterModel } from "shared/_Types/GameCharacterModel";
 import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
 import Logger from "shared/Utility/Logger";
 import { UnknownSkill } from "@rbxts/wcs";
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 
 export default class AnimationManager {
 	private _gameCharacter: GameCharacterModel;

@@ -2,11 +2,11 @@
 import { Players } from "@rbxts/services";
 
 /* Interfaces */
-import { TSkillBar } from "shared/Epic UI/SkillUI/Skill Bar/TSkillBar";
-import { SkillId } from "shared/_Types/SkillTypes";
+import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 
 /* Modules */
-import { SkillButton } from "../SkillButton/SkillButton";
+import { SkillButton } from "../../Classes/SkillButton";
 
 /* Utility */
 import Logger from "shared/Utility/Logger";

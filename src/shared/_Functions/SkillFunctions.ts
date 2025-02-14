@@ -1,10 +1,10 @@
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
-import { SkillDefinition, PlayerSkillsData } from "shared/_Interfaces/SkillInterfaces";
+import { ISkillDefinition, PlayerSkillsData } from "shared/_Interfaces/SkillInterfaces";
 import { SkillDefinitions } from "../_Definitions/SkillDefinitions";
 
-function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
-	const skillDefinitionMap = new Map<SkillId, SkillDefinition>();
+function getSkillDefinitionMap(): Map<SkillId, ISkillDefinition> {
+	const skillDefinitionMap = new Map<SkillId, ISkillDefinition>();
 	skillDefinitionMap.set("BasicHold", SkillDefinitions.BasicHold);
 	skillDefinitionMap.set("BasicMelee", SkillDefinitions.BasicMelee);
 	skillDefinitionMap.set("BasicRanged", SkillDefinitions.BasicRanged);
@@ -22,9 +22,9 @@ function getSkillDefinitionMap(): Map<SkillId, SkillDefinition> {
 }
 
 // Get Skill Definition
-function getSkillDefinition(skillId: SkillId): SkillDefinition {
+function getSkillDefinition(skillId: SkillId): ISkillDefinition {
 	const skillDefinition = SkillDefinitions[skillId];
-	if (!skillDefinition) {
+	if (skillDefinition === undefined) {
 		throw `SkillDefinition not found for skillId: ${skillId}`;
 	}
 	return skillDefinition;
@@ -52,8 +52,5 @@ function CreateSkillFromId(skillId: SkillId, wcsCharacter: Character) {
 	// Return the Skill
 	return newSkill;
 }
-
-
-
 
 export { getSkillDefinitionMap, getSkillDefinition, getDefaultPlayerSkillsData, CreateSkillFromId };

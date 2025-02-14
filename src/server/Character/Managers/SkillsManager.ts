@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { ISkillManager } from "server/Character/Index/CharacterIndex";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
-import { SkillId } from "shared/_Types/SkillTypes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";

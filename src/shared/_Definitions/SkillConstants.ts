@@ -1,4 +1,4 @@
-import { SkillResource } from "shared/_Types/SkillTypes";
+import { SkillResource } from "shared/_Types/TSkillResource";
 
 const DEFAULT_RESOURCE_MANA: SkillResource = {
 	resourceId: "Mana",

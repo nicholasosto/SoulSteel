@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { EEpicUIAttributes } from "shared/Epic UI/EpicInterfaces";
+import { TEpicAttributes } from "shared/Epic UI/EpicIndex";
 
 export default class ProgressBar {
 	frame: Frame;
@@ -19,11 +19,11 @@ export default class ProgressBar {
 		this.SetEpicAttribute("BarPercent", tostring(percent));
 		this.SetEpicAttribute("TextValue", textValue);
 	}
-	SetEpicAttribute(attribute: EEpicUIAttributes, value: string) {
+	SetEpicAttribute(attribute: TEpicAttributes, value: string) {
 		this.frame.SetAttribute(attribute, value);
 	}
 
-	GetEpicAttribute(attribute: EEpicUIAttributes): string {
+	GetEpicAttribute(attribute: TEpicAttributes): string {
 		Logger.Log(script, "Getting Epic Attribute", attribute as unknown as string);
 		return this.frame.GetAttribute(attribute) as string;
 	}

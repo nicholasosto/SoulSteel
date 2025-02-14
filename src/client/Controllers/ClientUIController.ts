@@ -1,8 +1,8 @@
 /* Shared Imports */
 import Logger from "shared/Utility/Logger";
-import InfoFrame from "shared/Epic UI/InfoFrame";
-import { SkillId } from "shared/_Types/SkillTypes";
-import ProgressBar from "shared/Epic UI/Progress Bar/ProgressBar";
+import InfoFrame from "shared/Epic UI/Classes/InfoFrame";
+import { SkillId } from "shared/_IDs/IDs_Skill";
+import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 import SkillBar from "shared/Epic UI/SkillUI/Skill Bar/SkillBar";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 
@@ -35,6 +35,7 @@ export default class ClientUIController {
 		Logger.Log(script, "Client UI Controller Singleton: Instantiated");
 	}
 
+	/* Start */
 	public static Start() {
 		if (this._instance === undefined) {
 			this._instance = new ClientUIController();
