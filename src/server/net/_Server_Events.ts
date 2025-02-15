@@ -1,3 +1,4 @@
+import { ResourceId } from "shared/_IDs/IDs_Resource";
 import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
 
 const GameCycleEvents = {
@@ -33,4 +34,10 @@ const Notifications = {
 	PlayerNotification: BiDirectionalEvents.Server.Get("PlayerNotification"),
 };
 
-export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, CharacterEvent, Payloads };
+const Outbound = {
+	SendResourceUpdate(player: Player, resource: { resourceId: ResourceId; current: number; max: number }) {
+		CharacterEvent.ResourceUpdated.SendToPlayer(player, resource);
+	},
+};
+
+export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, Payloads, Outbound, Notifications };

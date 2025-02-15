@@ -1,6 +1,7 @@
 import ICharacterStats from "shared/_Interfaces/ICharacterStats";
 import IPlayerSkillsData from "./IPlayerSkillsData";
 import IProgressionStats from "./IProgressionStats";
+import ICharacterInfo from "./ICharacterInfo";
 
 export default interface IPlayerData {
 	[str: string]: unknown;
@@ -10,8 +11,7 @@ export default interface IPlayerData {
 	version: number;
 
 	// Character Info
-	CharacterName: string;
-
+	CharacterInfo: ICharacterInfo;
 	// Progression Stats
 	ProgressionStats: IProgressionStats;
 	// Character Stats

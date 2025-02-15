@@ -2,10 +2,12 @@ import Logger from "shared/Utility/Logger";
 import { ResourceId } from "server/Character/Index/CharacterIndex";
 import { CharacterResource } from "../Classes/CharacterResource";
 import { Character, UnknownSkill } from "@rbxts/wcs";
+
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/IPlayerData";
 import IResourceManager from "shared/_Interfaces/IResourceManager";
+import { Outbound } from "server/net/_Server_Events";
 
 /* Responibilities */
 // - Create and manage resources for the character
@@ -62,24 +64,55 @@ export default class ResourceManager implements IResourceManager {
 
 	/* Constructor */
 	constructor(PlayerCharacter: IPlayerCharacter) {
+		/* Set Player Character */
 		this._playerCharacter = PlayerCharacter;
+
+		/* Initialize Resources */
 		const level = this._playerCharacter.ProgressionStats.Level;
 		const characterStats = this._playerCharacter.CharacterStats;
 		this.HealthResource = new CharacterResource("Health", calculateMaxHealth(characterStats, level));
 		this.ManaResource = new CharacterResource("Mana", calculateMaxMana(characterStats, level));
 		this.StaminaResource = new CharacterResource("Stamina", calculateMaxStamina(characterStats, level));
+
+		// Update UI
+		this._notifyUI();
 	}
 
-	/* Load Skills from List */
-	CreatePlayerResource(resourceId: ResourceId): void {
-		Logger.Log(script, `[ResourceManager]: Creating Resource: ${resourceId}`);
+	/* Notify UI */
+	private _notifyUI() {
+		Outbound.SendResourceUpdate(this._playerCharacter.player, this.HealthResource.GetPayload());
+		Outbound.SendResourceUpdate(this._playerCharacter.player, this.ManaResource.GetPayload());
+		Outbound.SendResourceUpdate(this._playerCharacter.player, this.StaminaResource.GetPayload());
+	}
+
+	public OnHeartBeat() {
+		Logger.Log(script, `[ResourceManager]: Heartbeat`);
+		this.HealthResource.regenStep();
+		this.ManaResource.regenStep();
+		this.StaminaResource.regenStep();
+		this._notifyUI();
+	}
+
+	public OnDamageTaken(damage: number): void {
+		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damage);
+		this._notifyUI();
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {
+		this.ManaResource.SetCurrent(this.ManaResource.GetCurrent() - 100);
+		this.ManaResource.RegenToggle(true);
 		Logger.Log(script, `[ResourceManager]: Skill Started: ${skill}`);
+		this._notifyUI();
 	}
 
 	public OnSkillEnded(skill: UnknownSkill): void {
 		Logger.Log(script, `[ResourceManager]: Skill Ended: ${skill}`);
+	}
+
+	public Destroy() {
+		Logger.Log("[Destroying]", `ResourceManager: ${this._playerCharacter.player.Name}`);
+		this.HealthResource.Destroy();
+		this.ManaResource.Destroy();
+		this.StaminaResource.Destroy();
 	}
 }

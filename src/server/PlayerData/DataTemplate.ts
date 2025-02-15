@@ -13,7 +13,9 @@ export const DataTemplate: IPlayerData = {
 	version: 6,
 
 	/* Character Info */
-	CharacterName: "Default Name",
+	CharacterInfo: {
+		CharacterName: "Player",
+	},
 
 	/* Progression Data */
 	ProgressionStats: {

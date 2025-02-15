@@ -22,7 +22,7 @@ export function StartUIListeners() {
 		while (PC === undefined) {
 			const character = player.Character;
 			if (character) {
-				PCController.OnCharacterAdded(player, character);
+				PCController.CreatePlayerCharacter(player, character);
 				PC = PCController.GetPlayerCharacter(player);
 			}
 			wait(0.5);

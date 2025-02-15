@@ -17,7 +17,7 @@ function OnResourceDrainAdded(basePart: TResourceModifierPart) {
 		//if (playerCharacter === undefined) return;
 		const resourceId = basePart.ResourceId.Value;
 		const drainRate = basePart.DrainRate.Value;
-		playerCharacter?.OnTakeDamage({ Damage: drainRate, Source: undefined });
+		playerCharacter?.wcsCharacter.TakeDamage({ Damage: drainRate, Source: undefined });
 		Logger.Log(script, "Resource Drainer: ", resourceId, drainRate);
 	});
 }

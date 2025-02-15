@@ -1,5 +1,4 @@
 import { ResourceId } from "server/Character/Index/CharacterIndex";
-import { RunService } from "@rbxts/services";
 import ICharacterResource from "shared/_Interfaces/ICharacterResource";
 import Logger from "shared/Utility/Logger";
 
@@ -14,12 +13,9 @@ class CharacterResource implements ICharacterResource {
 
 	// Regen Values
 	private _regenAmount: number = 10;
-	private _regenActive: boolean = false;
-
-	// Connection
-	private _connection: RBXScriptConnection | undefined;
-	private _lastUpdate: number = tick();
 	private _regenRate: number = 1;
+	private _lastRegen: number = tick();
+	private _regenActive: boolean = false;
 
 	// Regen Rate
 
@@ -30,19 +26,7 @@ class CharacterResource implements ICharacterResource {
 		this.MaxValue = maxValue;
 		this.Current = this.MaxValue;
 		this._regenAmount = this.MaxValue * 0.01;
-		this._regenActive = true;
-
-		this._connection?.Disconnect();
-		this._connection = RunService.Heartbeat.Connect(() => {
-			const deltaTime = tick() - this._lastUpdate;
-			if (deltaTime < this._regenRate) {
-				return;
-			} else {
-				this.regenStep();
-				Logger.Log("Regen Step", this.ResourceId, this.Current);
-				this._lastUpdate = tick();
-			}
-		});
+		this._regenActive = false;
 	}
 
 	public GetPayload() {
@@ -98,15 +82,22 @@ class CharacterResource implements ICharacterResource {
 
 	// Regen Step:
 	public regenStep() {
-		// Check if regen is active and if the max value is not reached
-		if (!this._regenActive || this.Current >= this.MaxValue) {
+		const deltaTime = tick() - this._lastRegen;
+		if (this._regenActive === false) {
 			return;
 		}
-		if (this.Current + this._regenAmount > this.MaxValue) {
-			this.SetCurrent(this.MaxValue);
-			return;
-		}
-		this.SetCurrent(this.Current + this._regenAmount);
+		/* Calculate Regen Amount */
+		const regenAmount = this._regenAmount * deltaTime * this._regenRate;
+
+		/* Set Last Regen */
+		this._lastRegen = tick();
+
+		/* Set Current */
+		this.SetCurrent(this.Current + regenAmount);
+	}
+
+	public Destroy() {
+		Logger.Log("Destroying Resource: ", this.ResourceId);
 	}
 }
 

@@ -1,12 +1,12 @@
 import GameCharacter from "./GameCharacter";
-import { TGameCharacter } from "shared/_Types/TGameCharacter";
+import { TGameCharacter} from "shared/_Types/TGameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import INPCCharacter from "shared/_Interfaces/INPCCharacter";
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { BGUI_HealthBar } from "shared/_Types/TBillboardGUI";
-import AnimationManager from "./Managers/AnimationManager";
-import { BasicHold } from "shared/Skills/WCSSkills/BasicHold";
+import AnimationManager from "server/Character/Managers/AnimationManager";
+
 
 const healthBar = StorageManager.CloneFromStorage("BGUI_HealthBar") as BGUI_HealthBar;
 
@@ -52,14 +52,14 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 
 	protected _initializeConnections(): void {
 		/* Take Damage */
-		this._connectionTakeDamage?.Disconnect();
-		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
+		this._connectionWCSTakeDamage?.Disconnect();
+		this._connectionWCSTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
 			this.OnTakeDamage(damageContainer);
 		});
 
 		/* Deal Damage */
-		this._connectionDealDamage?.Disconnect();
-		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
+		this._connectionWCSDealtDamage?.Disconnect();
+		this._connectionWCSDealtDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
 			this.OnDamageDealt(enemy, damageContainer);
 		});
 

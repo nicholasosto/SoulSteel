@@ -5,7 +5,7 @@ import Logger from "shared/Utility/Logger";
 import { ReplicatedStorage, Players } from "@rbxts/services";
 
 // WCS Imports
-import { CreateServer } from "@rbxts/wcs";
+import { Character, CreateServer } from "@rbxts/wcs";
 
 // Manager Imports
 import StorageManager from "shared/Storage Manager/StorageManager";
@@ -25,6 +25,7 @@ import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
 // Event Listeners
 import { StartUIListeners } from "./net/UIListeners";
 import StartTeleportListener from "./net/TeleportListener";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -76,23 +77,8 @@ class GameServer {
 
 /* Start the Game Server */
 GameServer.Start();
-
-/* Handle Player Added */
-function HandlePlayerAdded(player: Player) {
-	/* Create the Player Character */
-	player.CharacterAdded.Connect((character) => {
-		/* Character Controller */
-		PCController.OnCharacterAdded(player, character);
-		UIController.UpdatePlayerUI(player);
-
-		/* Humanoid and WCS cleanup */
-		const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-		humanoid.Died.Connect(() => {
-			Logger.Log("[MAIN SERVER] - Character Removed: ", character.Name);
-			PCController.OnCharacterRemoved(player);
-		});
-	});
-}
+const _playerConnections: Map<Player, RBXScriptConnection> = new Map();
+const _destroyConnection: Map<Player, RBXScriptConnection> = new Map();
 
 /* Start the Listeners */
 StartUIListeners();
@@ -104,12 +90,53 @@ StartCollectingNPCs();
 StartCollectingLava();
 StartCollectingResourceDrains();
 
+/* Handle Player Added */
+function HandleCharacterAdded(player: Player, character: TGameCharacter | undefined): boolean {
+	if (character === undefined) return false;
+	if (player === undefined) return false;
+
+	const playerCharacter = PCController.CreatePlayerCharacter(player, character);
+	if (playerCharacter === undefined) return false;
+
+	const humanoid = character.Humanoid;
+	if (humanoid === undefined) return false;
+
+	_destroyConnection.set(
+		player,
+		humanoid.Died.Connect(() => {
+			Logger.Log("Flow - Player Died: ", player.Name);
+			PCController.RemovePlayerCharacter(player);
+		}),
+	);
+
+	UIController.UpdatePlayerUI(player);
+
+	return true;
+}
+
+function HandlePlayerAdded(player: Player) {
+	/* If character exists */
+
+	const _topSuccess = HandleCharacterAdded(player, player.Character as TGameCharacter);
+	Logger.Log("Flow - Player Added [Handle Player - Existing]: " + _topSuccess);
+	_playerConnections.get(player)?.Disconnect();
+	_playerConnections.set(
+		player,
+		player.CharacterAdded.Connect((character) => {
+			const success = HandleCharacterAdded(player, character as TGameCharacter);
+			Logger.Log("Flow - Player Added [Handle Player - New]: " + success);
+		}),
+	);
+}
+
 /* Player Added Event */
 Players.PlayerAdded.Connect((player) => {
+	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });
 
 /* Get Existing Players: When the player joins before the server listens */
 Players.GetPlayers().forEach((player) => {
+	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });

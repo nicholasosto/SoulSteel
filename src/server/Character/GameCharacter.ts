@@ -11,9 +11,6 @@ export default class GameCharacter implements IGameCharacter {
 	wcsCharacter: Character;
 	target?: IGameCharacter;
 
-	protected _connectionTakeDamage: RBXScriptConnection | undefined;
-	protected _connectionDealDamage: RBXScriptConnection | undefined;
-
 	/* Constructor */
 	constructor(wcsCharacter: Character) {
 		const fullName = wcsCharacter.Instance?.GetFullName();
@@ -23,22 +20,6 @@ export default class GameCharacter implements IGameCharacter {
 		this.wcsCharacter = wcsCharacter;
 		this.characterModel = this.wcsCharacter.Instance as GameCharacterModel;
 		this.characterModel.AddTag("GameCharacter");
-	}
-
-	protected _initializeConnections() {
-		/* Take Damage */
-		this._connectionTakeDamage?.Disconnect();
-		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer) => {
-			Logger.Log(script, "[Super]: Taking Damage", damageContainer.Damage);
-			this.TakeDamage(damageContainer);
-		});
-
-		/* Dealt Damage */
-		this._connectionDealDamage?.Disconnect();
-		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
-			Logger.Log(script, "[Super]: Dealt Damage to: ", enemy as unknown as string);
-			this.DealtDamage(damageContainer);
-		});
 	}
 
 	/* Take Damage */
@@ -63,9 +44,6 @@ export default class GameCharacter implements IGameCharacter {
 
 	/* Destroy */
 	Destroy(): void {
-		const humanoid = this.characterModel?.Humanoid;
-		humanoid?.Destroy();
-		this.wcsCharacter.Destroy();
-		this.characterModel?.Destroy();
+		Logger.LogFlow("[Player Character Flow][Destruction]", 99, script);
 	}
 }

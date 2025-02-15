@@ -73,4 +73,13 @@ export default class SkillsManager implements ISkillManager {
 	public OnSkillEnded(skill: UnknownSkill): void {
 		Logger.Log(script, `[SkillsManager]: Skill Ended: ${skill}`);
 	}
+
+	public OnDamageTaken(): void {
+		Logger.Log(script, `[SkillsManager]: Damage Taken`);
+	}
+
+	/* Destroy */
+	public Destroy() {
+		Logger.Log("[Destroying]", "Skills Manager");
+	}
 }

@@ -25,7 +25,7 @@ export default class InfoFrame {
 	/* Update */
 	public Update(playerData: IPlayerData) {
 		const level = playerData.ProgressionStats.Level;
-		const name = playerData.CharacterName;
+		const name = playerData.CharacterInfo.CharacterName;
 
 		this._instance.LevelCounter.SetAttribute("TextValue", tostring(level));
 		this._instance.Name_Frame.SetAttribute("TextValue", name);

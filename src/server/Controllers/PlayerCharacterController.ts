@@ -4,6 +4,9 @@ import { Character } from "@rbxts/wcs";
 import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
+import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
+
+type TConnectionName = "TakeDamage" | "Die";
 
 export default class PCController {
 	// Static Instance
@@ -11,10 +14,11 @@ export default class PCController {
 
 	// Registry
 	public static _PlayerCharacters: Map<string, PlayerCharacter> = new Map();
+	public static _CharacterConnections: Map<PlayerCharacter, Map<TConnectionName, RBXScriptConnection>> = new Map();
 
 	/* Constructor */
 	private constructor() {
-		Logger.Log(script, "CONSTRUCTOR()");
+		Logger.Log(script, "Starting PC Controller");
 	}
 
 	/* Start */
@@ -25,45 +29,43 @@ export default class PCController {
 	}
 
 	/* On Character Added */
-	public static OnCharacterAdded(player: Player, character: Model) {
+	public static CreatePlayerCharacter(player: Player, character: Model): IPlayerCharacter {
+		Logger.LogFlow("[Player Character Flow][Creation]", 2, script);
 		/* Get Player Data */
 		const playerData = DataManager.GetDataCache(player)._playerData as IPlayerData;
 
 		/* Create the WCS Character */
 		const wcsCharacter = new Character(character);
 
+		wcsCharacter.Destroyed.Connect(() => {
+			Logger.LogFlow("[Player Character Flow][Creation]", 4, script);
+			this.RemovePlayerCharacter(player);
+		});
+
 		/* Create Player Character */
 		const playerCharacter = new PlayerCharacter(player, playerData, wcsCharacter);
 
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
-		warn("!!!Adding Player Character: ", player.Name);
+		Logger.LogFlow("[Player Character Flow][Creation]", 3, script);
+		return playerCharacter;
 	}
 
 	/* On Character Removed */
-	public static OnCharacterRemoved(player: Player) {
+	public static RemovePlayerCharacter(player: Player) {
+		Logger.Log("Flow - Remove Player Character", player.Name);
 		// Get the Game Character
 		const playerCharacter = this._PlayerCharacters.get(tostring(player.UserId)) as PlayerCharacter;
 		assert(playerCharacter, "Player Character is nil");
-		playerCharacter.Destroy();
+		playerCharacter.OnDeath();
 
 		// Remove from the Registry
-		warn("!!!Removing Player Character: ", player.Name);
 		this._PlayerCharacters.delete(tostring(player.UserId));
 	}
 
 	/* Get Game Character */
 	public static GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
 		return PCController._PlayerCharacters.get(tostring(player.UserId)) as PlayerCharacter;
-	}
-
-	// /* Destroy Game Character */
-	public static DestroyPlayerCharacter(player: Player) {
-		// Get the Game Character
-		const playerCharacter = this._PlayerCharacters.get(tostring(player.UserId));
-		if (playerCharacter === undefined) {
-			Logger.Log(script, "Player Character is nil");
-		}
 	}
 
 	public static GetPlayerCharacterFromCharacter(character: Model): PlayerCharacter | undefined {

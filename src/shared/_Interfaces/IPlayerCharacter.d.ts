@@ -13,6 +13,7 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	characterModel: TGameCharacter;
 
 	// // Resources
+	CharacterInfo: IPlayerData["CharacterInfo"];
 	ProgressionStats: IPlayerData["ProgressionStats"];
 	CharacterStats: IPlayerData["CharacterStats"];
 
@@ -24,7 +25,7 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	/* Event Handlers */
 	OnDeath(): void;
 	OnTakeDamage(DamageContainer: DamageContainer): void;
-
+ 
 	// Destroy
 	Destroy(): void;
 }

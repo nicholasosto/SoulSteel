@@ -91,6 +91,10 @@ export default class Logger {
 		return this._logger;
 	}
 
+	public static LogFlow(flow: string, step: number, _script: unknown) {
+		warn(`Flow: ${flow} - Step: ${step} \n Script: ${_script as string}`);
+	}
+
 	public static PrintSkillInfo(skill: Skill) {
 		warn(`Skill: ${skill.GetName()}\n`);
 		print("Player: ", skill.Player);
