@@ -23,11 +23,11 @@ export default class SkillsManager implements ISkillManager {
 	}
 
 	/* Load Skills from List */
-	LoadSkillsFromList(skillList: SkillId[]): void {
-		skillList.forEach((skillId) => {
-			this._registerSkill(skillId);
-		});
-	}
+	// LoadSkillsFromList(skillList: SkillId[]): void {
+	// 	skillList.forEach((skillId) => {
+	// 		this._registerSkill(skillId);
+	// 	});
+	// }
 
 	/* Register Skill */
 	private _registerSkill(skillId: SkillId): void {
@@ -45,19 +45,19 @@ export default class SkillsManager implements ISkillManager {
 
 		/* Load Skills */
 		this.SkillMap.forEach((skillId, slot) => {
-			this.AssignSkillToSlot(slot, skillId);
+			this.OnEquipSkillSlot(slot, skillId);
 		});
 	}
 
 	/* Remove Skill from Slot */
-	RemoveSkillFromSlot(slot: number): void {
+	OnUnequipSkillSlot(slot: number): void {
 		/* Remove Skill from Slot */
 		this.SkillMap.delete(slot);
-		this.AssignSkillToSlot(slot, "BasicMelee");
+		this.OnEquipSkillSlot(slot, "BasicMelee");
 	}
 
 	/* Assign Skill to Slot */
-	AssignSkillToSlot(slot: number, skillId: SkillId): void {
+	OnEquipSkillSlot(slot: number, skillId: SkillId): void {
 		/* Register Skill if needed */
 		if (this.wcsCharacter.GetSkillFromString(skillId) === undefined) this._registerSkill(skillId);
 

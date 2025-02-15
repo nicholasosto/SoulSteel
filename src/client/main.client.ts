@@ -10,6 +10,8 @@ import ClientUIController from "./Controllers/ClientUIController";
 import MovementController from "./Controllers/MovementController";
 import MainMenu from "./ScreenGUIs/MainMenu";
 
+
+
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 import { GameCycleEvents } from "./net/_Client_Events";
 
@@ -34,6 +36,7 @@ class GameClient {
 			ClientUIController.Start();
 			KeyboardController.Start();
 			new MovementController();
+			
 
 			/* Initialize Target Selection */
 			initializeTargetSelection();

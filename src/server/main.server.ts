@@ -21,6 +21,7 @@ import UIController from "./Controllers/UIController";
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
 import { StartCollectingLava } from "./Collections/LavaCollector";
 import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
+import StartQuestBlockCollection from "./Collections/QuestBlock";
 
 // Event Listeners
 import { StartUIListeners } from "./net/UIListeners";
@@ -89,6 +90,7 @@ StartDeveloperListener();
 StartCollectingNPCs();
 StartCollectingLava();
 StartCollectingResourceDrains();
+StartQuestBlockCollection();
 
 /* Handle Player Added */
 function HandleCharacterAdded(player: Player, character: TGameCharacter | undefined): boolean {

@@ -3,6 +3,7 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import IPlayerData  from "shared/_Interfaces/IPlayerData";
 import Logger from "shared/Utility/Logger";
+import { QuestId } from "shared/_IDs/IDs_Quest";
 
 interface PlayerNotificationPayload {
 	message: string;
@@ -25,9 +26,15 @@ const BiDirectional = Net.Definitions.Create({
 	PlayerNotification: Net.Definitions.BidirectionalEvent<[payload: PlayerNotificationPayload]>(),
 });
 
+
 const C2S = Net.Definitions.Create({
 	PlayerUIReady: Net.Definitions.ClientToServerEvent(),
 	TargetSelected: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
+
+	/*Quests*/
+	QuestAccepted: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
+	QuestUpdated: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
+	QuestCompleted: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
 });
 
 const S2C = Net.Definitions.Create({
@@ -38,6 +45,10 @@ const S2C = Net.Definitions.Create({
 	SkillControllerStarted: Net.Definitions.ServerToClientEvent(),
 	CharacterControllerStarted: Net.Definitions.ServerToClientEvent(),
 	DataManagerStarted: Net.Definitions.ServerToClientEvent(),
+
+	/*Quests*/
+	QuestRewarded: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
+	QuestAssigned: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
 });
 
 

@@ -56,8 +56,8 @@ export default class PCController {
 		Logger.Log("Flow - Remove Player Character", player.Name);
 		// Get the Game Character
 		const playerCharacter = this._PlayerCharacters.get(tostring(player.UserId)) as PlayerCharacter;
-		assert(playerCharacter, "Player Character is nil");
-		playerCharacter.OnDeath();
+
+		playerCharacter?.OnDeath();
 
 		// Remove from the Registry
 		this._PlayerCharacters.delete(tostring(player.UserId));

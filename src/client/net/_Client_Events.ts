@@ -1,3 +1,4 @@
+import { QuestId } from "shared/_IDs/IDs_Quest";
 import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
 const WorldEvent = {
 	Teleport: BiDirectionalEvents.Client.Get("Teleport"),
@@ -33,4 +34,28 @@ const Notifications = {
 	PlayerNotification: BiDirectionalEvents.Client.Get("PlayerNotification"),
 };
 
-export { SkillEvent, WorldEvent, DeveloperEvent, GameCycleEvents, CharacterEvent, Payloads };
+const QuestCompleted = C2S.Client.Get("QuestCompleted");
+const QuestRewarded = S2C.Client.Get("QuestRewarded");
+const QuestAssigned = S2C.Client.Get("QuestAssigned");
+
+const QuestToServer = {
+	SendQuestAccepted: C2S.Client.Get("QuestAccepted"),
+
+	SendQuestComplete(questId: QuestId) {
+		QuestCompleted.SendToServer(questId);
+	},
+};
+
+
+export {
+	SkillEvent,
+	WorldEvent,
+	DeveloperEvent,
+	GameCycleEvents,
+	CharacterEvent,
+	Payloads,
+	QuestToServer,
+	Notifications,
+	QuestRewarded,
+	QuestAssigned,
+};

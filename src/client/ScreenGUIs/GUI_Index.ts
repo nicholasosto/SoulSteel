@@ -3,6 +3,7 @@ import { TInfoFrame } from "shared/Epic UI/EpicIndex";
 import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import Logger from "shared/Utility/Logger";
+import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
 
 /* Main Screen GUI */
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -13,7 +14,7 @@ const Character_Screen = PlayerGUI.WaitForChild("Character") as ScreenGui;
 const Teleport_Screen = PlayerGUI.WaitForChild("Teleport") as ScreenGui;
 const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as ScreenGui;
 const Settings_Screen = PlayerGUI.WaitForChild("Settings") as ScreenGui;
-
+const QuestPanelGUI = PlayerGUI.WaitForChild("Quests") as TQuestPanel;
 /* Store Screen */
 //const Store_Screen = PlayerGUI.WaitForChild("Store UI Pack").WaitForChild("Gui").WaitForChild("ScreenGui") as ScreenGui;
 
@@ -57,6 +58,8 @@ export {
 	Teleport_Screen,
 	Settings_Screen,
 	//Store_Screen,
+
+	QuestPanelGUI,
 
 	/* HUD Elements */
 	MainMenuFrame,

@@ -40,7 +40,7 @@ export default class SkillController {
 			assert(skillId, "Invalid skillId");
 
 			// Assign the skill to the slot
-			skillManager.AssignSkillToSlot(slot, skillId);
+			skillManager.OnEquipSkillSlot(slot, skillId);
 		});
 
 		/* Unassign Skill Slot */
@@ -52,10 +52,10 @@ export default class SkillController {
 
 			// Validate the parameters
 			assert(skillManager, "Player Character is nil");
-			assert(slot >= 1 && slot <= 6, "Invalid slot");
+			assert(slot >= 1 && slot <= 5, "Invalid slot");
 
 			// Remove the skill from the slot
-			skillManager.RemoveSkillFromSlot(slot);
+			skillManager.OnUnequipSkillSlot(slot);
 		});
 	}
 }

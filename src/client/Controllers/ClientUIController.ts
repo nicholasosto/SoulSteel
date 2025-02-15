@@ -5,14 +5,32 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 import SkillBar from "shared/Epic UI/Classes/SkillBar";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
+import QuestPanel from "client/ScreenGUIs/QuestPanel";
+import Quest from "shared/_Classes/Quest";
 
 /* Client Imports */
-import { GameCycleEvents, CharacterEvent } from "client/net/_Client_Events";
-import { InfoFrameInstance, SkillBarInstance, ResourceBarInstanceMap } from "client/ScreenGUIs/GUI_Index";
+import {
+	GameCycleEvents,
+	CharacterEvent,
+	QuestToServer,
+	QuestRewarded,
+	QuestAssigned,
+} from "client/net/_Client_Events";
+import {
+	InfoFrameInstance,
+	SkillBarInstance,
+	ResourceBarInstanceMap,
+	QuestPanelGUI,
+} from "client/ScreenGUIs/GUI_Index";
+import { QuestId } from "shared/_IDs/IDs_Quest";
+import QuestDeffinitions from "shared/_Definitions/QuestDeffinitions";
 
 export default class ClientUIController {
 	/* Singleton Instance*/
 	private static _instance: ClientUIController;
+
+	/* Quest Panel */
+	private static QuestPanel = new QuestPanel(QuestPanelGUI);
 
 	/* Skill Bar */
 	private static SkillBar = new SkillBar(SkillBarInstance);
@@ -26,9 +44,13 @@ export default class ClientUIController {
 	// Connections
 	/* Player Data Loaded */
 	private static _playerDataLoaded: RBXScriptConnection | undefined;
-
 	/* Resource Updated */
 	private static _resourceUpdated: RBXScriptConnection | undefined;
+	/* Quest Reward */
+	private static _questReward: RBXScriptConnection | undefined;
+
+	/* Quest Accepted */
+	private static _questAccepted: RBXScriptConnection | undefined;
 
 	// Constructor
 	private constructor() {
@@ -75,6 +97,24 @@ export default class ClientUIController {
 		this._resourceUpdated?.Disconnect();
 		this._resourceUpdated = CharacterEvent.ResourceUpdated.Connect((resource) => {
 			this.UpdateResourceBar(resource.resourceId, resource);
+		});
+
+		/* Quest Completed */
+		this._questReward?.Disconnect();
+		this._questReward = QuestRewarded.Connect((questId) => {
+			this.QuestPanel.OnQuestCompleted(questId);
+		});
+
+		/* Quest Accepted */
+		this._questAccepted?.Disconnect();
+		this._questAccepted = QuestAssigned.Connect((questId) => {
+			this.QuestPanel.AddQuest(new Quest(questId));
+			const _rewardButton = this.QuestPanel.GetQuest(questId)?.RewardButton;
+			if (_rewardButton) {
+				_rewardButton.MouseButton1Click.Connect(() => {
+					QuestToServer.SendQuestComplete(questId);
+				});
+			}
 		});
 	}
 }

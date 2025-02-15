@@ -4,10 +4,11 @@ import { ResourceId } from "shared/_IDs/IDs_Resource";
 /* Character Resource */
 export default interface ICharacterResource {
 	ResourceId: ResourceId;
-	GetCurrent(): number;
-	GetMax(): number;
-	GetValues(): [current: number, max: number];
+	readonly Current: number;
+	readonly MaxValue: number;
 	GetPercentage(): number;
+	GetPayload(): { resourceId: ResourceId; current: number; max: number };
 	SetMax(value: number): void;
 	SetCurrent(value: number): void;
+
 }

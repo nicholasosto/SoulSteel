@@ -21,7 +21,8 @@ import GameCharacter from "./GameCharacter";
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
-	private playerData: IPlayerData;
+	private humanoid: Humanoid;
+	//private playerData: IPlayerData;
 	public currentExperience: number;
 
 	/* Managers */
@@ -53,7 +54,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
-		this.playerData = playerData;
+		this.humanoid = this.characterModel.Humanoid;
+		//this.playerData = playerData;
 
 		/* Set Player Data */
 		this.level = playerData.ProgressionStats.Level;
@@ -136,6 +138,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Died */
 	public OnDeath(): void {
 		Logger.Log("Flow - On Death", this.player.Name);
+		this.humanoid.Health = 0;
 		this.skillManager.Destroy();
 		this.animationManager.Destroy();
 		this.resourceManager.Destroy();

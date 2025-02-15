@@ -8,8 +8,8 @@ class CharacterResource implements ICharacterResource {
 	public ResourceId: ResourceId = "Health";
 
 	// Resource Values
-	private MaxValue: number = 100;
-	private Current: number = 100;
+	public MaxValue: number;
+	public Current: number;
 
 	// Regen Values
 	private _regenAmount: number = 10;
@@ -26,7 +26,7 @@ class CharacterResource implements ICharacterResource {
 		this.MaxValue = maxValue;
 		this.Current = this.MaxValue;
 		this._regenAmount = this.MaxValue * 0.01;
-		this._regenActive = false;
+		this._regenActive = true;
 	}
 
 	public GetPayload() {
@@ -45,12 +45,6 @@ class CharacterResource implements ICharacterResource {
 	public GetMax() {
 		return this.MaxValue;
 	}
-
-	// Get Values
-	public GetValues(): [current: number, max: number] {
-		return [this.Current, this.MaxValue];
-	}
-
 	// Get Percentage
 	public GetPercentage() {
 		return (this.Current / this.MaxValue) * 100;
@@ -93,7 +87,7 @@ class CharacterResource implements ICharacterResource {
 		this._lastRegen = tick();
 
 		/* Set Current */
-		this.SetCurrent(this.Current + regenAmount);
+		this.SetCurrent(math.floor(this.Current + regenAmount));
 	}
 
 	public Destroy() {

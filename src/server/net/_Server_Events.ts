@@ -1,5 +1,7 @@
+import { QuestId } from "shared/_IDs/IDs_Quest";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
+import Logger from "shared/Utility/Logger";
 
 const GameCycleEvents = {
 	PlayerDataLoaded: S2C.Server.Get("PlayerDataLoaded"),
@@ -38,6 +40,17 @@ const Outbound = {
 	SendResourceUpdate(player: Player, resource: { resourceId: ResourceId; current: number; max: number }) {
 		CharacterEvent.ResourceUpdated.SendToPlayer(player, resource);
 	},
+	SendQuestRewarded(player: Player, questId: QuestId) {
+		S2C.Server.Get("QuestRewarded").SendToPlayer(player, questId);
+	},
+	SendQuestAssigned(player: Player, questId: QuestId) {
+		S2C.Server.Get("QuestAssigned").SendToPlayer(player, questId);
+	},
 };
+
+C2S.Server.Get("QuestCompleted").Connect((player, questId) => {
+	Logger.Log(script, "Quest Completed", player, questId);
+	Outbound.SendQuestRewarded(player, questId);
+});
 
 export { DeveloperEvent, SkillEvent, WorldEvent, GameCycleEvents, Payloads, Outbound, Notifications };
