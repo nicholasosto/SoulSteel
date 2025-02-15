@@ -9,7 +9,7 @@ let _connection_UIReady: RBXScriptConnection | undefined;
 
 function CreateResourcePayload(CharacterResource: CharacterResource) {
 	return {
-		resourceId: CharacterResource.ResourceName as ResourceId,
+		resourceId: CharacterResource.ResourceId as ResourceId,
 		current: CharacterResource.GetCurrent(),
 		max: CharacterResource.GetMax(),
 	};
@@ -20,20 +20,26 @@ export function StartUIListeners() {
 	_connection_UIReady = GameCycleEvents.PlayerUIReady.Connect((player: Player) => {
 		let PC = PCController.GetPlayerCharacter(player);
 		while (PC === undefined) {
+			const character = player.Character;
+			if (character) {
+				PCController.OnCharacterAdded(player, character);
+				PC = PCController.GetPlayerCharacter(player);
+			}
 			wait(0.5);
-			PC = PCController.GetPlayerCharacter(player);
+			Logger.Log("UI LISTENERS", "Waiting for Player Character to be created...");
 		}
+		Logger.Log("UI LISTENERS", "Player Character has been created!", PC.player.Name);
 
-		const playerHealth = PC.HealthResource;
-		const playerMana = PC.ManaResource;
-		const playerStamina = PC.StaminaResource;
-		const playerExperience = PC.ExperienceResource;
-		Logger.Log(script, "Player Character: Exp", PC.ExperienceResource as unknown as string);
-		UIController.UpdatePlayerUI(player);
-		UIController.UpdateResourceBar(player, CreateResourcePayload(playerHealth));
-		UIController.UpdateResourceBar(player, CreateResourcePayload(playerMana));
-		UIController.UpdateResourceBar(player, CreateResourcePayload(playerStamina));
-		UIController.UpdateResourceBar(player, CreateResourcePayload(playerExperience));
+		// const playerHealth = PC.HealthResource;
+		// const playerMana = PC.ManaResource;
+		// const playerStamina = PC.StaminaResource;
+		// const playerExperience = PC.ExperienceResource;
+
+		// UIController.UpdatePlayerUI(player);
+		// UIController.UpdateResourceBar(player, CreateResourcePayload(playerHealth));
+		// UIController.UpdateResourceBar(player, CreateResourcePayload(playerMana));
+		// UIController.UpdateResourceBar(player, CreateResourcePayload(playerStamina));
+		// UIController.UpdateResourceBar(player, CreateResourcePayload(playerExperience));
 
 		wait(2);
 		UIController.NotifyPlayer(player, "Welcome to the game!", false);

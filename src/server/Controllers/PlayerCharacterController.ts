@@ -1,4 +1,5 @@
 import Logger from "shared/Utility/Logger";
+import { Players } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
 import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
@@ -9,7 +10,7 @@ export default class PCController {
 	private static _instance: PCController;
 
 	// Registry
-	private static _PlayerCharacters: Map<string, PlayerCharacter> = new Map();
+	public static _PlayerCharacters: Map<string, PlayerCharacter> = new Map();
 
 	/* Constructor */
 	private constructor() {
@@ -36,6 +37,7 @@ export default class PCController {
 
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
+		warn("!!!Adding Player Character: ", player.Name);
 	}
 
 	/* On Character Removed */
@@ -46,6 +48,7 @@ export default class PCController {
 		playerCharacter.Destroy();
 
 		// Remove from the Registry
+		warn("!!!Removing Player Character: ", player.Name);
 		this._PlayerCharacters.delete(tostring(player.UserId));
 	}
 
@@ -61,5 +64,21 @@ export default class PCController {
 		if (playerCharacter === undefined) {
 			Logger.Log(script, "Player Character is nil");
 		}
+	}
+
+	public static GetPlayerCharacterFromCharacter(character: Model): PlayerCharacter | undefined {
+		const player = Players.GetPlayerFromCharacter(character);
+		Logger.Log(script, "Getting PlayerCharacter: ", player);
+		const UserId = tostring(player?.UserId);
+
+		const playerCharacter = this._PlayerCharacters.get(UserId);
+		if (playerCharacter === undefined) {
+			Logger.Log(script, "Player Character is nil", "PlayerList: ");
+			this._PlayerCharacters.forEach((value, key) => {
+				Logger.Log(script, key, value.player.Name);
+			});
+		}
+
+		return playerCharacter;
 	}
 }

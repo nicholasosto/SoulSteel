@@ -19,6 +19,8 @@ import UIController from "./Controllers/UIController";
 
 // Collections
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
+import { StartCollectingLava } from "./Collections/LavaCollector";
+import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
 
 // Event Listeners
 import { StartUIListeners } from "./net/UIListeners";
@@ -50,7 +52,6 @@ class GameServer {
 	}
 
 	public static StartWCS() {
-
 		if (!this._wcsServerStarted) {
 			// Create the WCS Server
 			const WCSServer = CreateServer();
@@ -93,18 +94,22 @@ function HandlePlayerAdded(player: Player) {
 	});
 }
 
-/* Get Existing Players: When the player joins before the server listens */
-Players.GetPlayers().forEach((player) => {
-	HandlePlayerAdded(player);
-});
+/* Start the Listeners */
+StartUIListeners();
+StartTeleportListener();
+StartDeveloperListener();
+
+/* Start the Collections */
+StartCollectingNPCs();
+StartCollectingLava();
+StartCollectingResourceDrains();
 
 /* Player Added Event */
 Players.PlayerAdded.Connect((player) => {
 	HandlePlayerAdded(player);
 });
 
-/* Start the Listeners */
-StartUIListeners();
-StartTeleportListener();
-StartDeveloperListener();
-StartCollectingNPCs();
+/* Get Existing Players: When the player joins before the server listens */
+Players.GetPlayers().forEach((player) => {
+	HandlePlayerAdded(player);
+});

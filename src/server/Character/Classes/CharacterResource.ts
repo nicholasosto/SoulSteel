@@ -1,10 +1,12 @@
-import { IPlayerData } from "shared/_Functions/DataFunctions";
 import { ResourceId } from "server/Character/Index/CharacterIndex";
+import { RunService } from "@rbxts/services";
+import ICharacterResource from "shared/_Interfaces/ICharacterResource";
+import Logger from "shared/Utility/Logger";
 
 // Character Resource Class
-class CharacterResource {
+class CharacterResource implements ICharacterResource {
 	// Resource Name
-	public ResourceName: string = "DefaultResource";
+	public ResourceId: ResourceId = "Health";
 
 	// Resource Values
 	private MaxValue: number = 100;
@@ -14,14 +16,41 @@ class CharacterResource {
 	private _regenAmount: number = 10;
 	private _regenActive: boolean = false;
 
+	// Connection
+	private _connection: RBXScriptConnection | undefined;
+	private _lastUpdate: number = tick();
+	private _regenRate: number = 1;
+
+	// Regen Rate
+
 	// Constructor
-	constructor(resourceName: string, primaryStatValue: number, secondaryStatValue: number, level: number) {
+	constructor(resourceId: ResourceId, maxValue: number) {
 		// Attribute Names and Values
-		this.ResourceName = resourceName;
-		this.MaxValue = (primaryStatValue + secondaryStatValue / 2) * level;
+		this.ResourceId = resourceId;
+		this.MaxValue = maxValue;
 		this.Current = this.MaxValue;
-		this._regenAmount = primaryStatValue / 10;
+		this._regenAmount = this.MaxValue * 0.01;
 		this._regenActive = true;
+
+		this._connection?.Disconnect();
+		this._connection = RunService.Heartbeat.Connect(() => {
+			const deltaTime = tick() - this._lastUpdate;
+			if (deltaTime < this._regenRate) {
+				return;
+			} else {
+				this.regenStep();
+				Logger.Log("Regen Step", this.ResourceId, this.Current);
+				this._lastUpdate = tick();
+			}
+		});
+	}
+
+	public GetPayload() {
+		return {
+			resourceId: this.ResourceId,
+			current: this.Current,
+			max: this.MaxValue,
+		};
 	}
 
 	// Get Current Value
@@ -33,14 +62,14 @@ class CharacterResource {
 		return this.MaxValue;
 	}
 
-	// Get Percentage
-	public GetPercentage() {
-		return (this.Current / this.MaxValue) * 100;
-	}
-
 	// Get Values
 	public GetValues(): [current: number, max: number] {
 		return [this.Current, this.MaxValue];
+	}
+
+	// Get Percentage
+	public GetPercentage() {
+		return (this.Current / this.MaxValue) * 100;
 	}
 
 	// Set Max Value

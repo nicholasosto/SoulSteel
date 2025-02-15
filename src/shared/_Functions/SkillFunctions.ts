@@ -1,7 +1,7 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
-import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";
-import { IPlayerSkillsData } from "shared/_Interfaces/IPlayerSkillsData";
+import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
+import IPlayerSkillsData  from "shared/_Interfaces/IPlayerSkillsData";
 import { SkillDefinitions } from "../_Definitions/SkillDefinitions";
 
 function getSkillDefinitionMap(): Map<SkillId, ISkillDefinition> {

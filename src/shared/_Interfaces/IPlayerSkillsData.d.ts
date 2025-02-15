@@ -1,7 +1,7 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 /* Player Skills Data */
-export interface IPlayerSkillsData {
+export default interface IPlayerSkillsData {
 	/**
 	 * All the skill IDs that this player has unlocked.
 	 * Could be an array or a Set-like structure.

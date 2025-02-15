@@ -11,6 +11,7 @@ import MovementController from "./Controllers/MovementController";
 import MainMenu from "./ScreenGUIs/MainMenu";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
+import { GameCycleEvents } from "./net/_Client_Events";
 
 class GameClient {
 	private static _instance: GameClient;
@@ -41,3 +42,5 @@ class GameClient {
 }
 
 GameClient.Start();
+
+GameCycleEvents.PlayerUIReady.SendToServer();

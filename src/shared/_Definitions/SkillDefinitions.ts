@@ -2,7 +2,7 @@ import { EAnimationID } from "shared/Animation/AnimationIndex";
 import { ImageIds } from "shared/_Enums/EImageId";
 import { ESoundId } from "shared/Audio/Sounds";
 import { SkillId } from "shared/_IDs/IDs_Skill";
-import { ISkillDefinition } from "shared/_Interfaces/ISkillDefinition";
+import  ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
 const SkillDefinitions: Record<SkillId, ISkillDefinition> = {

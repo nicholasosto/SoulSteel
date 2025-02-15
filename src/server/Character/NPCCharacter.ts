@@ -1,7 +1,7 @@
 import GameCharacter from "./GameCharacter";
-import { GameCharacterModel } from "shared/_Types/TGameCharacter";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
-import { INPCCharacter } from "server/Character/Index/Interfaces";
+import INPCCharacter from "shared/_Interfaces/INPCCharacter";
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { BGUI_HealthBar } from "shared/_Types/TBillboardGUI";
@@ -10,7 +10,7 @@ import { BasicHold } from "shared/Skills/WCSSkills/BasicHold";
 
 const healthBar = StorageManager.CloneFromStorage("BGUI_HealthBar") as BGUI_HealthBar;
 
-function UpdateHealthbar(characterModel: GameCharacterModel | undefined, healthBar: BGUI_HealthBar) {
+function UpdateHealthbar(characterModel: TGameCharacter | undefined, healthBar: BGUI_HealthBar) {
 	if (!characterModel) return;
 	const humanoid = characterModel.Humanoid;
 	const currentHealth = humanoid.Health;

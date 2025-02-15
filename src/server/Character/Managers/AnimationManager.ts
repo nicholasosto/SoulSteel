@@ -1,15 +1,16 @@
-import { GameCharacterModel } from "shared/_Types/TGameCharacter";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
 import Logger from "shared/Utility/Logger";
 import { UnknownSkill } from "@rbxts/wcs";
 import { SkillId } from "shared/_IDs/IDs_Skill";
+import IAnimationManager from "shared/_Interfaces/IAnimationManager";
 
-export default class AnimationManager {
-	private _gameCharacter: GameCharacterModel;
+export default class AnimationManager implements IAnimationManager {
+	private _gameCharacter: TGameCharacter;
 	private _animationMap: Map<SkillId, AnimationTrack>;
 
 	/*Constructor*/
-	constructor(gameCharacter: GameCharacterModel, skillList: SkillId[]) {
+	constructor(gameCharacter: TGameCharacter, skillList: SkillId[]) {
 		/* Get the game character */
 		this._gameCharacter = gameCharacter;
 

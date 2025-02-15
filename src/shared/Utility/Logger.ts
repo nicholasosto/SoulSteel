@@ -1,7 +1,4 @@
-import { HttpService } from "@rbxts/services";
 import { Skill } from "@rbxts/wcs";
-import { IPlayerCharacter } from "server/Character/Index/Interfaces";
-import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 export type Printable =
 	| string

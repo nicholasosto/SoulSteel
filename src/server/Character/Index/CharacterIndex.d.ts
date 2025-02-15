@@ -7,7 +7,7 @@ import { ResourceId, CharacterStatId, ICharacterStats, ICharacterResource } from
 import { IGameCharacter, INPCCharacter, IPlayerCharacter, ISkillManager } from "server/Character/Index/Interfaces";
 
 /* Types */
-import { GameCharacterModel } from "shared/_Types/TGameCharacter";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 
 export {
 	/* Interfaces */
@@ -19,7 +19,7 @@ export {
 	ICharacterResource,
 
 	/* Types */
-	GameCharacterModel,
+	TGameCharacter as GameCharacterModel,
 	CharacterStatId,
 	ResourceId,
 };

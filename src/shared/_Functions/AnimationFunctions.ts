@@ -1,7 +1,7 @@
 import { Character } from "@rbxts/wcs";
 import { EAnimationID } from "../Animation/Enums";
 import Logger from "shared/Utility/Logger";
-import { GameCharacterModel } from "shared/_Types/TGameCharacter";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 function GetAnimator(instanceToAnimate: Model | Character, fast: boolean = false): Animator | undefined {
@@ -26,7 +26,7 @@ function CreateAnimation(animationID: EAnimationID): Animation {
 }
 
 function CreateAnimationTrack(
-	characterModel: GameCharacterModel,
+	characterModel: TGameCharacter,
 	animationID: EAnimationID,
 	looped: boolean = false,
 ): AnimationTrack | undefined {
@@ -58,7 +58,7 @@ function GetAnimationForSkillId(skillId: SkillId): EAnimationID {
 }
 
 /* Create Animation Map */
-function CreateAnimationMap(model: GameCharacterModel, skillList: SkillId[]): Map<SkillId, AnimationTrack> {
+function CreateAnimationMap(model: TGameCharacter, skillList: SkillId[]): Map<SkillId, AnimationTrack> {
 	const animationMap = new Map<SkillId, AnimationTrack>();
 	skillList.forEach((skill) => {
 		const animationTrack = CreateAnimationTrack(model, GetAnimationForSkillId(skill));

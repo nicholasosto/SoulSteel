@@ -4,21 +4,24 @@ import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 
 /* Character Index */
-import { IPlayerCharacter, ResourceId } from "server/Character/Index/CharacterIndex";
+import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Player Data */
-import { IPlayerData } from "shared/_Functions/DataFunctions";
+import IPlayerData from "shared/_Interfaces/IPlayerData";
 
 /* Server Events */
 import { CharacterEvent } from "server/net/_Server_Events";
 
 /* Managers */
 import SkillsManager from "server/Character/Managers/SkillsManager";
+import AnimationManager from "./Managers/AnimationManager";
+import ResourceManager from "./Managers/ResourceManager";
+
+/* Types */
 import GameCharacter from "./GameCharacter";
 
 /* Classes */
 import { CharacterResource } from "./Classes/CharacterResource";
-import AnimationManager from "./Managers/AnimationManager";
 
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
@@ -26,24 +29,21 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public currentExperience: number;
 
 	/* Managers */
-
-	/* Skills Manager */
 	public skillManager: SkillsManager;
-
-	/* Animation Manager */
 	public animationManager: AnimationManager;
+	public resourceManager: ResourceManager;
 
 	/* Progression */
-	private ProgressionStats: IPlayerData["ProgressionStats"];
+	public ProgressionStats: IPlayerData["ProgressionStats"];
 
 	/* Character Stats */
-	private CharacterStats: IPlayerData["CharacterStats"];
+	public CharacterStats: IPlayerData["CharacterStats"];
 
 	/* Resources */
-	public HealthResource: CharacterResource;
-	public ManaResource: CharacterResource;
-	public StaminaResource: CharacterResource;
-	public ExperienceResource: CharacterResource;
+	// public HealthResource: CharacterResource;
+	// public ManaResource: CharacterResource;
+	// public StaminaResource: CharacterResource;
+	// public ExperienceResource: CharacterResource;
 
 	/* WCS SkillConnections */
 	private _connectionSkillStarted: RBXScriptConnection | undefined;
@@ -65,38 +65,40 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		/* Set Core Stats */
 		this.CharacterStats = playerData.CharacterStats;
 
-		/* Resources */
-		this.HealthResource = new CharacterResource(
-			"Health",
-			this.CharacterStats.Constitution,
-			this.CharacterStats.Strength,
-			this.level,
-		);
+		// /* Resources */
+		// this.HealthResource = new CharacterResource(
+		// 	"Health",
+		// 	this.CharacterStats.Constitution,
+		// 	this.CharacterStats.Strength,
+		// 	this.level,
+		// );
 
-		/* Mana Resource */
-		this.ManaResource = new CharacterResource(
-			"Mana",
-			this.CharacterStats.Intelligence,
-			this.CharacterStats.Constitution,
-			this.level,
-		);
+		// /* Mana Resource */
+		// this.ManaResource = new CharacterResource(
+		// 	"Mana",
+		// 	this.CharacterStats.Intelligence,
+		// 	this.CharacterStats.Constitution,
+		// 	this.level,
+		// );
 
-		/* Stamina Resource */
-		this.StaminaResource = new CharacterResource(
-			"Stamina",
-			this.CharacterStats.Dexterity,
-			this.CharacterStats.Constitution,
-			this.level,
-		);
+		// /* Stamina Resource */
+		// this.StaminaResource = new CharacterResource(
+		// 	"Stamina",
+		// 	this.CharacterStats.Dexterity,
+		// 	this.CharacterStats.Constitution,
+		// 	this.level,
+		// );
 
-		/* Experience Resource */
-		// #TODO: Separate implementation for Experience Resource
-		this.ExperienceResource = new CharacterResource(
-			"Experience",
-			this.CharacterStats.Intelligence,
-			this.CharacterStats.Constitution,
-			this.ProgressionStats.Level,
-		);
+		// /* Experience Resource */
+		// // #TODO: Separate implementation for Experience Resource
+		// this.ExperienceResource = new CharacterResource(
+		// 	"Experience",
+		// 	this.CharacterStats.Intelligence,
+		// 	this.CharacterStats.Constitution,
+		// 	this.ProgressionStats.Level,
+		// );
+		/* Resource Manager */
+		this.resourceManager = new ResourceManager(this);
 
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(playerData, wcsCharacter);
@@ -108,6 +110,9 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		/* Initialize Connections */
 		this._initializeConnections();
+
+		/* Resource Update */
+		this._sendResourceUpdate();
 	}
 
 	/* WCS Connections */
@@ -141,6 +146,13 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			//this.animationManager.OnSkillEnded(skill);
 		});
 	}
+
+	private _sendResourceUpdate(): void {
+		// CharacterEvent.ResourceUpdated.SendToPlayer(this.player, this.HealthResource.GetPayload());
+		// CharacterEvent.ResourceUpdated.SendToPlayer(this.player, this.ManaResource.GetPayload());
+		// CharacterEvent.ResourceUpdated.SendToPlayer(this.player, this.StaminaResource.GetPayload());
+		// CharacterEvent.ResourceUpdated.SendToPlayer(this.player, this.ExperienceResource.GetPayload());
+	}
 	/* Dealt Damage */
 	public OnDamageDealt(enemy: Character | undefined, damageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Dealt Damage");
@@ -154,15 +166,15 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 	/* Take Damage */
 	public OnTakeDamage(damageContainer: DamageContainer): void {
-		Logger.Log(script, "Player Character Took Damage");
-		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damageContainer.Damage);
-		const resource = {
-			resourceId: this.HealthResource.ResourceName as ResourceId,
-			current: this.HealthResource.GetCurrent(),
-			max: this.HealthResource.GetMax(),
-		};
-		CharacterEvent.ResourceUpdated.SendToPlayer(this.player, resource);
-		if (this.HealthResource.GetCurrent() <= 0) this.characterModel?.Humanoid.TakeDamage(9999999999);
+		// Logger.Log(script, "Player Character Took Damage");
+		// this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damageContainer.Damage);
+		// const resource = {
+		// 	resourceId: this.HealthResource.ResourceId,
+		// 	current: this.HealthResource.GetCurrent(),
+		// 	max: this.HealthResource.GetMax(),
+		// };
+		// CharacterEvent.ResourceUpdated.SendToPlayer(this.player, resource);
+		// if (this.HealthResource.GetCurrent() <= 0) this.characterModel?.Humanoid.TakeDamage(9999999999);
 	}
 
 	/* Destroy */

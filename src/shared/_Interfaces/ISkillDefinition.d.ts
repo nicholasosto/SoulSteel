@@ -2,7 +2,7 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 import { TSkillResource } from "shared/_Types/TSkillResource";
 
 // Skill Definition
-export interface ISkillDefinition {
+export default interface ISkillDefinition {
 	displayName: string;
 	wcsSkillId: SkillId;
 	description: string;

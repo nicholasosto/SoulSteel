@@ -1,7 +1,8 @@
-import { ICharacterStats } from "shared/_Interfaces/ICharacterStats";
-import { IPlayerSkillsData } from "./IPlayerSkillsData";
+import ICharacterStats from "shared/_Interfaces/ICharacterStats";
+import IPlayerSkillsData from "./IPlayerSkillsData";
+import IProgressionStats from "./IProgressionStats";
 
-interface IPlayerData {
+export default interface IPlayerData {
 	[str: string]: unknown;
 
 	// Datastore Info
@@ -12,17 +13,10 @@ interface IPlayerData {
 	CharacterName: string;
 
 	// Progression Stats
-	ProgressionStats: {
-		Level: number;
-		Experience: number;
-		ExperienceToNextLevel: number;
-	};
-
+	ProgressionStats: IProgressionStats;
 	// Character Stats
 	CharacterStats: ICharacterStats;
 
 	// Skills Data
 	Skills: IPlayerSkillsData;
 }
-
-export { IPlayerSkillsData, IPlayerData };

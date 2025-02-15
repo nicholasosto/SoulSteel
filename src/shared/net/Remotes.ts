@@ -1,7 +1,7 @@
 import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
-import { IPlayerData } from "shared/_Interfaces/IPlayerData";
+import IPlayerData  from "shared/_Interfaces/IPlayerData";
 import Logger from "shared/Utility/Logger";
 
 interface PlayerNotificationPayload {

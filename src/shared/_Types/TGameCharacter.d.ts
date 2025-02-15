@@ -1,4 +1,4 @@
-export type GameCharacterModel = Model & {
+export type TGameCharacter = Model & {
 	LeftLowerArm: MeshPart & {
 		LeftLowerArm: WrapTarget;
 		OriginalSize: Vector3Value;
