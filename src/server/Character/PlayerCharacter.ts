@@ -16,14 +16,18 @@ import ResourceManager from "server/Character/Managers/ResourceManager";
 
 /* Types */
 import GameCharacter from "./GameCharacter";
+import { QuestId } from "shared/_IDs/IDs_Quest";
+import DataManager from "server/Controllers/DataManager";
 
 /* Classes */
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
 	private humanoid: Humanoid;
-	//private playerData: IPlayerData;
+	private playerData: IPlayerData;
 	public currentExperience: number;
+
+	private _completedQuests: QuestId[] = [];
 
 	/* Managers */
 	public skillManager: SkillsManager;
@@ -54,6 +58,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
+		this.playerData = playerData;
 		this.humanoid = this.characterModel.Humanoid;
 		//this.playerData = playerData;
 
@@ -130,9 +135,38 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		});
 	}
 
+	public OnAssignQuest(questId: QuestId): boolean {
+		if (this._completedQuests.includes(questId)) {
+			return false;
+		}
+		Logger.Log(script, "Quest Assigned", this.player.Name, questId);
+		return true;
+	}
+
+	public OnQuestCompleted(questId: QuestId): boolean {
+		if (this._completedQuests.includes(questId)) {
+			return false;
+		}
+		Logger.Log(script, "Quest Completed", this.player.Name, questId);
+		this._completedQuests.push(questId);
+		return true;
+	}
+
 	/* Dealt Damage */
 	public OnDamageDealt(enemy: Character | undefined, damageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Dealt Damage");
+	}
+
+	public UpdateExperience(amount: number): void {
+		Logger.Log(script, "Player Character Experience Updated");
+		const newExperience = this.ProgressionStats.Experience + amount;
+		if(newExperience >= this.ProgressionStats.ExperienceToNextLevel) {
+			this.ProgressionStats.Experience = newExperience - this.ProgressionStats.ExperienceToNextLevel;
+			this.ProgressionStats.Level += 1;
+			this.ProgressionStats.ExperienceToNextLevel = this.ProgressionStats.Level * 100;
+		} else {
+			this.ProgressionStats.Experience = newExperience;
+		}
 	}
 
 	/* Died */

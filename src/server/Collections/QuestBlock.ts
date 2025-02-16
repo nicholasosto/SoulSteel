@@ -4,6 +4,7 @@ import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { Players } from "@rbxts/services";
 import { Outbound } from "server/net/_Server_Events";
 import { QuestId } from "shared/_IDs/IDs_Quest";
+import PCController from "server/Controllers/PlayerCharacterController";
 
 const tagName = "QuestBlock";
 
@@ -19,7 +20,11 @@ class QuestBlock {
 		this._Instance.Touched.Connect((hit) => {
 			const character: TGameCharacter = hit.FindFirstAncestorWhichIsA("Model") as TGameCharacter;
 			const player = Players.GetPlayerFromCharacter(character);
-			if (player) {
+
+			if (!player) return;
+
+			const playerCharacter = PCController.GetPlayerCharacter(player);
+			if (playerCharacter?.OnAssignQuest(this.questId as QuestId)) {
 				Outbound.SendQuestAssigned(player, this.questId as QuestId);
 			}
 		});

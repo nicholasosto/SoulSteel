@@ -15,6 +15,7 @@ import {
 	QuestToServer,
 	QuestRewarded,
 	QuestAssigned,
+	OnProgressionStats,
 } from "client/net/_Client_Events";
 import {
 	InfoFrameInstance,
@@ -48,9 +49,10 @@ export default class ClientUIController {
 	private static _resourceUpdated: RBXScriptConnection | undefined;
 	/* Quest Reward */
 	private static _questReward: RBXScriptConnection | undefined;
-
 	/* Quest Accepted */
 	private static _questAccepted: RBXScriptConnection | undefined;
+	/* Progression Stats */
+	private static _progressionStats: RBXScriptConnection | undefined;
 
 	// Constructor
 	private constructor() {
@@ -108,13 +110,26 @@ export default class ClientUIController {
 		/* Quest Accepted */
 		this._questAccepted?.Disconnect();
 		this._questAccepted = QuestAssigned.Connect((questId) => {
-			this.QuestPanel.AddQuest(new Quest(questId));
+			this.QuestPanel.OnQuestAccepted(questId);
 			const _rewardButton = this.QuestPanel.GetQuest(questId)?.RewardButton;
 			if (_rewardButton) {
 				_rewardButton.MouseButton1Click.Connect(() => {
 					QuestToServer.SendQuestComplete(questId);
 				});
 			}
+		});
+
+		/* Progression Stats */
+		this._progressionStats?.Disconnect();
+		this._progressionStats = OnProgressionStats.Connect((progressionStats) => {
+			this.InfoFrame.OnProgressionStats(progressionStats);
+			const resource = this.ResourceBarMap.get("Experience");
+			assert(resource, "Experience Resource Bar is nil");
+			resource.Update({
+				resourceId: "Experience",
+				current: progressionStats.Experience,
+				max: progressionStats.ExperienceToNextLevel,
+			});
 		});
 	}
 }

@@ -9,8 +9,9 @@
 import { Players } from "@rbxts/services";
 
 /* Shared Imports */
-import { TInfoFrame } from "shared/Epic UI/EpicIndex";
+import { IProgressBar, TInfoFrame } from "shared/Epic UI/EpicIndex";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
+import ProgressBar from "./ProgressBar";
 
 /* Main Class: CharacterFrame */
 export default class InfoFrame {
@@ -20,6 +21,7 @@ export default class InfoFrame {
 	/* Constructor */
 	constructor(infoFrame: TInfoFrame) {
 		this._instance = infoFrame;
+
 	}
 
 	/* Update */
@@ -36,5 +38,9 @@ export default class InfoFrame {
 			Enum.ThumbnailSize.Size420x420,
 		)[0];
 		this._instance.ProfilePic.Image = profilePic;
+	}
+
+	public OnProgressionStats(progressionStats: IPlayerData["ProgressionStats"]) {
+		this._instance.LevelCounter.SetAttribute("TextValue", tostring(progressionStats.Level));
 	}
 }

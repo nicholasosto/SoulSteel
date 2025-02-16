@@ -5,6 +5,7 @@ import DataManager from "./DataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
+import { Outbound, QuestCompleted } from "server/net/_Server_Events";
 
 type TConnectionName = "TakeDamage" | "Die";
 
@@ -15,6 +16,7 @@ export default class PCController {
 	// Registry
 	public static _PlayerCharacters: Map<string, PlayerCharacter> = new Map();
 	public static _CharacterConnections: Map<PlayerCharacter, Map<TConnectionName, RBXScriptConnection>> = new Map();
+	public static _QuestCompletedConnection: RBXScriptConnection;
 
 	/* Constructor */
 	private constructor() {
@@ -25,7 +27,28 @@ export default class PCController {
 	public static Start() {
 		if (this._instance === undefined) {
 			this._instance = new PCController();
+			this._InitConnections();
 		}
+	}
+
+	private static _InitConnections() {
+		this._QuestCompletedConnection?.Disconnect();
+		this._QuestCompletedConnection = QuestCompleted.Connect((player, questId) => {
+			const playerCharacter = this.GetPlayerCharacter(player);
+			const completed = playerCharacter?.OnQuestCompleted(questId);
+			if (completed) {
+				const playerDataCache = DataManager.GetDataCache(player);
+				assert(playerDataCache !== undefined, "Player Data is nil");
+				assert(playerCharacter !== undefined, "Player Character is nil");
+				playerCharacter.UpdateExperience(playerCharacter.ProgressionStats.Experience + 100);
+				const newCache = playerDataCache._playerData;
+				newCache.ProgressionStats = playerCharacter.ProgressionStats;
+				playerDataCache.SetDataCache(newCache);
+				
+				Outbound.SendQuestRewarded(player, questId);
+				Outbound.SendProgressionStats(player, playerDataCache._playerData.ProgressionStats);
+			}
+		});
 	}
 
 	/* On Character Added */

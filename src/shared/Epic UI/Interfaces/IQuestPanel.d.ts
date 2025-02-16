@@ -5,9 +5,7 @@ import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
 export default interface IQuestPanel {
 	QuestMap: Map<QuestId, IQuest>;
 	_Instance: TQuestPanel;
-	AddQuest(quest: IQuest): void;
-	RemoveQuest(questId: QuestId): void;
-	LoadQuests(quests: IQuest[]): void;
+	LoadQuests(quests: QuestId[]): void;
 	OnQuestAccepted(questId: QuestId): void;
 	OnQuestCompleted(questId: QuestId): void;
 	OnQuestUpdated(questId: QuestId): void;

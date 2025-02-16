@@ -49,6 +49,9 @@ const S2C = Net.Definitions.Create({
 	/*Quests*/
 	QuestRewarded: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
 	QuestAssigned: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
+	
+	/*Progression*/
+	SendProgressionStats: Net.Definitions.ServerToClientEvent<[progressionStats: IPlayerData["ProgressionStats"]]>(),
 });
 
 

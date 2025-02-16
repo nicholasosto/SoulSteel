@@ -38,6 +38,8 @@ const QuestCompleted = C2S.Client.Get("QuestCompleted");
 const QuestRewarded = S2C.Client.Get("QuestRewarded");
 const QuestAssigned = S2C.Client.Get("QuestAssigned");
 
+const OnProgressionStats = S2C.Client.Get("SendProgressionStats");
+
 const QuestToServer = {
 	SendQuestAccepted: C2S.Client.Get("QuestAccepted"),
 
@@ -58,4 +60,6 @@ export {
 	Notifications,
 	QuestRewarded,
 	QuestAssigned,
+
+	OnProgressionStats,
 };
