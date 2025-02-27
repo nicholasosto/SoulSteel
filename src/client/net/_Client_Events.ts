@@ -48,7 +48,6 @@ const QuestToServer = {
 	},
 };
 
-
 export {
 	SkillEvent,
 	WorldEvent,
@@ -60,6 +59,5 @@ export {
 	Notifications,
 	QuestRewarded,
 	QuestAssigned,
-
 	OnProgressionStats,
 };

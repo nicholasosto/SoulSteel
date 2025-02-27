@@ -31,7 +31,7 @@ export default class QuestPanel implements IQuestPanel {
 		const quest = this.QuestMap.get(questId);
 		Logger.Log(script, "Quest Panel: Quest Added", questId);
 		if (this.QuestMap.get(questId) !== undefined) {
-			Logger.Log(script, "Quest Panel: Quest Already Accepted",  this.QuestMap.get(questId) as unknown as string);
+			Logger.Log(script, "Quest Panel: Quest Already Accepted", this.QuestMap.get(questId) as unknown as string);
 			return;
 		} else {
 			Logger.Log(script, "Quest Panel: Quest Added");

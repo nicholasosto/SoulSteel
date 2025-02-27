@@ -25,7 +25,7 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	/* Event Handlers */
 	OnDeath(): void;
 	OnTakeDamage(DamageContainer: DamageContainer): void;
- 
+
 	// Destroy
 	Destroy(): void;
 }

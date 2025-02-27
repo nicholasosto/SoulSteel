@@ -49,7 +49,7 @@ const Outbound = {
 	},
 	SendProgressionStats(player: Player, progressionStats: IPlayerData["ProgressionStats"]) {
 		S2C.Server.Get("SendProgressionStats").SendToPlayer(player, progressionStats);
-	}
+	},
 };
 
 const QuestCompleted = C2S.Server.Get("QuestCompleted");

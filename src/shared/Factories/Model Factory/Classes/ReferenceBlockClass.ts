@@ -100,6 +100,5 @@ export default class ReferenceBlock implements IReferenceBlock {
 	private _spin() {
 		Logger.Log(this.Instance, "Spinning");
 		this._spinTween?.Play();
-
 	}
 }

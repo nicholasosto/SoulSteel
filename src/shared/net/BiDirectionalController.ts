@@ -14,4 +14,3 @@ BiDirectionalController.Teleport.Connect((player, destination) => {
 	Logger.Log(player, `Teleporting to ${destination}`);
 	player.Character?.PivotTo(new CFrame(destination));
 });
-

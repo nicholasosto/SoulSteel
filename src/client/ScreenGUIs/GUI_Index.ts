@@ -58,7 +58,6 @@ export {
 	Teleport_Screen,
 	Settings_Screen,
 	//Store_Screen,
-
 	QuestPanelGUI,
 
 	/* HUD Elements */

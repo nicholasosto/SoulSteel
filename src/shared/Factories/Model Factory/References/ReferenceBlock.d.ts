@@ -17,7 +17,7 @@ export type TReferenceBlock = Part & {
 	LeftBlock: ObjectValue;
 	TopConstraint: RigidConstraint;
 	LeftConstraint: RigidConstraint;
-}
+};
 
 export interface IReferenceBlock {
 	RightConstraint: RigidConstraint;
@@ -68,5 +68,4 @@ export abstract class ReferenceBlock implements IReferenceBlock {
 
 	// Run Cycle: Run the reference block's cycle of detection and action
 	abstract RunCycle(): void;
-
 }

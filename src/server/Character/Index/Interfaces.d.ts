@@ -5,9 +5,3 @@ import { CharacterResource } from "../Classes/CharacterResource";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 /* Test Interface for SkillManager */
-
-
-
-
-
-

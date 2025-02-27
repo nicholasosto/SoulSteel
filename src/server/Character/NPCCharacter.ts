@@ -1,12 +1,11 @@
 import GameCharacter from "./GameCharacter";
-import { TGameCharacter} from "shared/_Types/TGameCharacter";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import INPCCharacter from "shared/_Interfaces/INPCCharacter";
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage Manager/StorageManager";
 import { BGUI_HealthBar } from "shared/_Types/TBillboardGUI";
 import AnimationManager from "server/Character/Managers/AnimationManager";
-
 
 const healthBar = StorageManager.CloneFromStorage("BGUI_HealthBar") as BGUI_HealthBar;
 

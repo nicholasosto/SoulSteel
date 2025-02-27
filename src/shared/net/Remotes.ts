@@ -1,7 +1,7 @@
 import Net, { Definitions } from "@rbxts/net";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
-import IPlayerData  from "shared/_Interfaces/IPlayerData";
+import IPlayerData from "shared/_Interfaces/IPlayerData";
 import Logger from "shared/Utility/Logger";
 import { QuestId } from "shared/_IDs/IDs_Quest";
 
@@ -26,7 +26,6 @@ const BiDirectional = Net.Definitions.Create({
 	PlayerNotification: Net.Definitions.BidirectionalEvent<[payload: PlayerNotificationPayload]>(),
 });
 
-
 const C2S = Net.Definitions.Create({
 	PlayerUIReady: Net.Definitions.ClientToServerEvent(),
 	TargetSelected: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
@@ -49,11 +48,10 @@ const S2C = Net.Definitions.Create({
 	/*Quests*/
 	QuestRewarded: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
 	QuestAssigned: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
-	
+
 	/*Progression*/
 	SendProgressionStats: Net.Definitions.ServerToClientEvent<[progressionStats: IPlayerData["ProgressionStats"]]>(),
 });
-
 
 /* Send To Client */
 function SendNotification(player: Player, message: string, confirmation: boolean): void {

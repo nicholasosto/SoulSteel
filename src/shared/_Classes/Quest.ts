@@ -7,7 +7,6 @@ import IQuest from "shared/_Interfaces/IQuest";
 import Logger from "shared/Utility/Logger";
 
 export default class Quest implements IQuest {
-
 	/* Instance */
 	_Instance: TQuestItemFrame;
 	QuestDeffinition: TQuestDeffinition;

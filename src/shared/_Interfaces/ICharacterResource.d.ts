@@ -10,5 +10,4 @@ export default interface ICharacterResource {
 	GetPayload(): { resourceId: ResourceId; current: number; max: number };
 	SetMax(value: number): void;
 	SetCurrent(value: number): void;
-
 }

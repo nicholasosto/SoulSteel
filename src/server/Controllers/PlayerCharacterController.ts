@@ -44,7 +44,7 @@ export default class PCController {
 				const newCache = playerDataCache._playerData;
 				newCache.ProgressionStats = playerCharacter.ProgressionStats;
 				playerDataCache.SetDataCache(newCache);
-				
+
 				Outbound.SendQuestRewarded(player, questId);
 				Outbound.SendProgressionStats(player, playerDataCache._playerData.ProgressionStats);
 			}

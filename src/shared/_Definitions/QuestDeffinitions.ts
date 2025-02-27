@@ -2,8 +2,6 @@ import IQuest from "shared/_Interfaces/IQuest";
 import { QuestId, QuestRequirementId } from "shared/_IDs/IDs_Quest";
 import { TQuestDeffinition } from "shared/_Types/TQuestDeffinition";
 
-
-
 const QuestDeffinitionMap = new Map<QuestId, TQuestDeffinition>();
 
 QuestDeffinitionMap.set("Quest1", {

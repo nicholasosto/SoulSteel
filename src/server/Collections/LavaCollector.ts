@@ -13,7 +13,7 @@ function OnLavaAdded(lava: Texture) {
 
 	tween.Play();
 
-    Logger.Log(script, "Lava Added", lava.Name);
+	Logger.Log(script, "Lava Added", lava.Name);
 }
 
 export function StartCollectingLava() {

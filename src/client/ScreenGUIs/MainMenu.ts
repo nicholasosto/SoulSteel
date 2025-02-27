@@ -8,7 +8,7 @@ enum PanelName {
 	Teleport = "Teleport",
 	Skills = "Skills",
 	Settings = "Settings",
-//	Store = "Store",
+	//	Store = "Store",
 }
 
 const PanelMap = new Map<PanelName, ScreenGui>([
@@ -18,7 +18,7 @@ const PanelMap = new Map<PanelName, ScreenGui>([
 	[PanelName.Teleport, GUI.Teleport_Screen],
 	[PanelName.Skills, GUI.Skills_Screen],
 	[PanelName.Settings, GUI.Settings_Screen],
-//	[PanelName.Store, GUI.Store_Screen],
+	//	[PanelName.Store, GUI.Store_Screen],
 ]);
 
 const ButtonMap = new Map<string, TextButton>([
@@ -28,7 +28,7 @@ const ButtonMap = new Map<string, TextButton>([
 	[PanelName.Teleport, GUI.MainMenuFrame.WaitForChild("Teleport_Button") as TextButton],
 	[PanelName.Skills, GUI.MainMenuFrame.WaitForChild("Skills_Button") as TextButton],
 	[PanelName.Settings, GUI.MainMenuFrame.WaitForChild("Settings_Button") as TextButton],
-//	[PanelName.Store, GUI.MainMenuFrame.WaitForChild("Store_Button") as TextButton],
+	//	[PanelName.Store, GUI.MainMenuFrame.WaitForChild("Store_Button") as TextButton],
 ]);
 
 export default class MainMenu {

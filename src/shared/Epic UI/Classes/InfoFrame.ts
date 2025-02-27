@@ -21,7 +21,6 @@ export default class InfoFrame {
 	/* Constructor */
 	constructor(infoFrame: TInfoFrame) {
 		this._instance = infoFrame;
-
 	}
 
 	/* Update */

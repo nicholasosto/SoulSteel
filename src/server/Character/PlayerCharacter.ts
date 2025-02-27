@@ -160,7 +160,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public UpdateExperience(amount: number): void {
 		Logger.Log(script, "Player Character Experience Updated");
 		const newExperience = this.ProgressionStats.Experience + amount;
-		if(newExperience >= this.ProgressionStats.ExperienceToNextLevel) {
+		if (newExperience >= this.ProgressionStats.ExperienceToNextLevel) {
 			this.ProgressionStats.Experience = newExperience - this.ProgressionStats.ExperienceToNextLevel;
 			this.ProgressionStats.Level += 1;
 			this.ProgressionStats.ExperienceToNextLevel = this.ProgressionStats.Level * 100;
