@@ -52,6 +52,8 @@ function GetAnimationForSkillId(skillId: SkillId): EAnimationID {
 			return EAnimationID.BasicRanged;
 		case "BasicHold":
 			return EAnimationID.BasicHold;
+		case "HallowHold":
+			return EAnimationID.HallowHold;
 		default:
 			return EAnimationID.MoonPartAnimation;
 	}

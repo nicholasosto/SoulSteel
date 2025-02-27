@@ -25,7 +25,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 	private _healthBar = healthBar.Clone() as BGUI_HealthBar;
 
 	/* Managers */
-	private _animationManager: AnimationManager;
+	//private _animationManager: AnimationManager;
 
 	/* Connections */
 	private _connectionWCSTakeDamage: RBXScriptConnection | undefined;
@@ -37,7 +37,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 		super(wcsCharacter);
 		assert(this.characterModel, "Character Model is nil");
 
-		this._animationManager = new AnimationManager(this.characterModel, ["BasicHold", "BasicMelee"]);
+		//this._animationManager = new AnimationManager(this.characterModel, ["BasicHold", "BasicMelee"]);
 
 		this._healthBar.Parent = this.characterModel;
 		this._healthBar.Adornee = this.characterModel.Head;
@@ -65,7 +65,7 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 		/* Skill Started */
 		this._connectionWCSSkillStarted?.Disconnect();
 		this._connectionWCSSkillStarted = this.wcsCharacter.SkillStarted.Connect((skill) => {
-			this._animationManager.OnSkillStarted(skill);
+			//this._animationManager.OnSkillStarted(skill);
 		});
 
 		/* Died */

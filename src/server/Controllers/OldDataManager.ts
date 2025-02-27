@@ -21,23 +21,23 @@ interface PersistantDataController {
 }
 
 /* Original Code */
-export default class DataManager {
+export default class OldDataManager {
 	// Singleton
-	private static _instance: DataManager;
+	private static _instance: OldDataManager;
 	private static DatastoreId = "SOULSTEEL_2025";
-	private static GameDataStore = DataStoreService.GetDataStore(DataManager.DatastoreId);
+	private static GameDataStore = DataStoreService.GetDataStore(OldDataManager.DatastoreId);
 	private static playerAddedConnection: RBXScriptConnection;
 
 	private constructor() {
-		DataManager.playerAddedConnection?.Disconnect();
-		DataManager.playerAddedConnection = Players.PlayerAdded.Connect((player) => {
-			DataManager.RegisterPlayer(player);
+		OldDataManager.playerAddedConnection?.Disconnect();
+		OldDataManager.playerAddedConnection = Players.PlayerAdded.Connect((player) => {
+			OldDataManager.RegisterPlayer(player);
 		});
 	}
 
 	public static Start(): void {
 		if (this._instance === undefined) {
-			this._instance = new DataManager();
+			this._instance = new OldDataManager();
 		}
 	}
 
@@ -53,7 +53,7 @@ export default class DataManager {
 		}
 
 		// 03 - Create a new DataCache for the player
-		const dataCache = new DataCache(userId, DataManager.GameDataStore);
+		const dataCache = new DataCache(userId, OldDataManager.GameDataStore);
 
 		// 04 - Register the player in the PlayerCache
 		PlayerDataRegistry.set(userId, dataCache);

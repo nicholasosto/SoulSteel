@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
-import DataManager from "server/Controllers/DataManager";
+import OldDataManager from "server/Controllers/OldDataManager";
 import { GameCycleEvents } from "server/net/_Server_Events";
 import { SendNotification } from "shared/net/Remotes";
 
@@ -29,7 +29,7 @@ export default class UIController {
 
 	public static UpdatePlayerUI(player: Player) {
 		Logger.Log(script, "[GameCycle - UI Controller] - UpdatePlayerUI / PlayerDataLoaded");
-		const playerData = DataManager.GetDataCache(player)._playerData;
+		const playerData = OldDataManager.GetDataCache(player)._playerData;
 		print(playerData);
 		GameCycleEvents.PlayerDataLoaded.SendToPlayer(player, playerData);
 	}

@@ -2,7 +2,7 @@ import { TweenService } from "@rbxts/services";
 
 const DEFAULT_TWEEN_INFO = new TweenInfo(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false);
 
-function ScaleAbilityPart(basePart: BasePart, scale: number, tweenInfo?: TweenInfo) {
+function TweenScale(basePart: BasePart, scale: number, tweenInfo?: TweenInfo) {
 	let _tweenInfo = tweenInfo;
 	if (_tweenInfo === undefined) {
 		_tweenInfo = DEFAULT_TWEEN_INFO;
@@ -14,11 +14,19 @@ function ScaleAbilityPart(basePart: BasePart, scale: number, tweenInfo?: TweenIn
 	}
 }
 
-function ShootAbilityPart(basePart: BasePart, speed: number) {
+function TweenRotate(model: Model, rotation: Vector3) {
+	if (model === undefined) {
+		return;
+	}
+
+	//const tween = TweenService.Create(model, DEFAULT_TWEEN_INFO, { : rotation });
+}
+
+function TweenShoot(basePart: BasePart, speed: number) {
 	if (basePart !== undefined) {
 		basePart.Velocity = basePart.CFrame.LookVector.mul(speed);
 		return;
 	}
 }
 
-export { ScaleAbilityPart, ShootAbilityPart };
+export { TweenScale, TweenShoot, TweenRotate };

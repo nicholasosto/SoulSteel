@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
-import DataManager from "./DataManager";
+import OldDataManager from "./OldDataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
@@ -37,7 +37,7 @@ export default class PCController {
 			const playerCharacter = this.GetPlayerCharacter(player);
 			const completed = playerCharacter?.OnQuestCompleted(questId);
 			if (completed) {
-				const playerDataCache = DataManager.GetDataCache(player);
+				const playerDataCache = OldDataManager.GetDataCache(player);
 				assert(playerDataCache !== undefined, "Player Data is nil");
 				assert(playerCharacter !== undefined, "Player Character is nil");
 				playerCharacter.UpdateExperience(playerCharacter.ProgressionStats.Experience + 100);
@@ -55,7 +55,7 @@ export default class PCController {
 	public static CreatePlayerCharacter(player: Player, character: Model): IPlayerCharacter {
 		Logger.LogFlow("[Player Character Flow][Creation]", 2, script);
 		/* Get Player Data */
-		const playerData = DataManager.GetDataCache(player)._playerData as IPlayerData;
+		const playerData = OldDataManager.GetDataCache(player)._playerData as IPlayerData;
 
 		/* Create the WCS Character */
 		const wcsCharacter = new Character(character);

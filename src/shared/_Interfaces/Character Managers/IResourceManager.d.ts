@@ -1,5 +1,5 @@
 import { UnknownSkill } from "@rbxts/wcs";
-import ICharacterResource from "./ICharacterResource";
+import ICharacterResource from "shared/_Interfaces/ICharacterResource";
 
 export default interface IResourceManager {
 	// Skills

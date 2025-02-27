@@ -13,26 +13,32 @@ import IPlayerData from "shared/_Interfaces/IPlayerData";
 import SkillsManager from "server/Character/Managers/SkillsManager";
 import AnimationManager from "server/Character/Managers/AnimationManager";
 import ResourceManager from "server/Character/Managers/ResourceManager";
+import PlayerDataManager from "server/Character/Managers/PlayerDataManager";
+import ProgressionManager from "./Managers/ProgressionManager";
 
 /* Types */
 import GameCharacter from "./GameCharacter";
 import { QuestId } from "shared/_IDs/IDs_Quest";
-import DataManager from "server/Controllers/DataManager";
+import TargetManager from "./Managers/TargetManager";
 
 /* Classes */
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
 	public humanoid: Humanoid;
-	private playerData: IPlayerData;
+	public playerData: IPlayerData;
 	public currentExperience: number;
 
 	private _completedQuests: QuestId[] = [];
 
 	/* Managers */
-	public skillManager: SkillsManager;
+
 	public animationManager: AnimationManager;
+	public dataManager: PlayerDataManager;
+	public progressionManager: ProgressionManager;
 	public resourceManager: ResourceManager;
+	public skillManager: SkillsManager;
+	public targetManager: TargetManager;
 
 	/* Character Data */
 	public CharacterInfo: IPlayerData["CharacterInfo"];
@@ -44,6 +50,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public CharacterStats: IPlayerData["CharacterStats"];
 
 	/* Connections */
+	/* Humanoid */
+	private _humanoidDied: RBXScriptConnection | undefined;
 	/*WCS */
 	private _connectionSkillStarted: RBXScriptConnection | undefined;
 	private _connectionSkillEnded: RBXScriptConnection | undefined;
@@ -60,9 +68,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.player = player;
 		this.playerData = playerData;
 		this.humanoid = this.characterModel.Humanoid;
-		//this.playerData = playerData;
-
-		/* Set Player Data */
 		this.level = playerData.ProgressionStats.Level;
 		this.currentExperience = playerData.ProgressionStats.Experience;
 		this.displayName = player.Name;
@@ -76,30 +81,43 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		/* Set Character Info */
 		this.CharacterInfo = playerData.CharacterInfo;
 
+		/* Data Manager */
+		this.dataManager = new PlayerDataManager(this);
 		/* Resource Manager */
 		this.resourceManager = new ResourceManager(this);
 
 		/* Skills Manager */
-		this.skillManager = new SkillsManager(playerData, wcsCharacter);
+		this.skillManager = new SkillsManager(this);
 		this.skillManager.InitializeSkillMap(playerData);
+
+		/* Target Manager */
+		this.targetManager = new TargetManager(this);
+
+		/* Progression Manager */
+		this.progressionManager = new ProgressionManager(this);
 
 		/* Animation Manager */
 		assert(this.characterModel, "Character Model is nil");
-		this.animationManager = new AnimationManager(this.characterModel, playerData["Skills"]["unlockedSkills"]);
+		this.animationManager = new AnimationManager(this);
 
 		/* Initialize Connections */
 		this._initializeConnections();
 	}
 
-	/* WCS Connections */
+	/*Connections */
 	protected _initializeConnections(): void {
+		/* Humanoid */
+		this._humanoidDied?.Disconnect();
+		this._humanoidDied = this.humanoid.Died.Connect(() => {
+			Logger.Log(script, "Flow - Player Character Died");
+			this.OnDeath();
+		});
 		/* Damaged */
 		this._connectionTakeDamage?.Disconnect();
 		this._connectionTakeDamage = this.wcsCharacter.DamageTaken.Connect((damageContainer: DamageContainer) => {
 			Logger.Log(script, "Player Character Damaged");
 			this.OnTakeDamage(damageContainer);
 		});
-
 
 		/* Dealt Damage */
 		this._connectionDealDamage?.Disconnect();

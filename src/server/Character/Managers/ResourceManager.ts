@@ -6,7 +6,7 @@ import { Character, UnknownSkill } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/IPlayerData";
-import IResourceManager from "shared/_Interfaces/IResourceManager";
+import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
 import { Outbound } from "server/net/_Server_Events";
 
 /* Responibilities */

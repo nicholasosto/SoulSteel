@@ -3,18 +3,20 @@ import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
 import Logger from "shared/Utility/Logger";
 import { UnknownSkill } from "@rbxts/wcs";
 import { SkillId } from "shared/_IDs/IDs_Skill";
-import IAnimationManager from "shared/_Interfaces/IAnimationManager";
+import IAnimationManager from "shared/_Interfaces/Character Managers/IAnimationManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 export default class AnimationManager implements IAnimationManager {
+	private _playerCharacter: IPlayerCharacter;
 	private _gameCharacter: TGameCharacter;
 	private _animationMap: Map<SkillId, AnimationTrack>;
 
 	/*Constructor*/
-	constructor(characterModel: TGameCharacter, skillList: SkillId[]) {
+	constructor(playerCharacter: IPlayerCharacter) {
 		/* Get the game character */
-
-		this._gameCharacter = characterModel;
+		this._playerCharacter = playerCharacter;
+		this._gameCharacter = playerCharacter.characterModel;
+		const skillList = playerCharacter.playerData["Skills"]["unlockedSkills"];
 
 		/* Create the animation map */
 		this._animationMap = CreateAnimationMap(this._gameCharacter, skillList) as Map<SkillId, AnimationTrack>;
@@ -22,6 +24,7 @@ export default class AnimationManager implements IAnimationManager {
 
 	/* On Skill Started */
 	public OnSkillStarted(skill: UnknownSkill): void {
+		Logger.Log("Animation Map", this._animationMap as unknown as string);
 		/* Stop Other Animations */
 		this._StopAllAnimations();
 

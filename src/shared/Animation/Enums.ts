@@ -7,4 +7,5 @@ export enum EAnimationID {
 	BasicRanged = "rbxassetid://83501648864535",
 	BasicHold = "rbxassetid://105644658587176", // Robot laser spin
 	Dash = "rbxassetid://1056446585871716",
+	HallowHold = "rbxassetid://125099220628366", // Robot laser spin
 }

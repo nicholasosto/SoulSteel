@@ -5,6 +5,7 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";
+import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Skills Manager */
 export default class SkillsManager implements ISkillManager {
@@ -14,20 +15,15 @@ export default class SkillsManager implements ISkillManager {
 
 	/* Private Variables */
 	public wcsCharacter: Character;
+	private playerCharacter: IPlayerCharacter;
 
 	/* Constructor */
-	constructor(playerData: IPlayerData, wcsCharacter: Character) {
+	constructor(playerCharacter: IPlayerCharacter) {
 		/* Set WCS Character */
-		this.wcsCharacter = wcsCharacter;
-		assert(wcsCharacter, "Character is nil");
+		this.playerCharacter = playerCharacter;
+		this.wcsCharacter = playerCharacter.wcsCharacter;
+		assert(this.wcsCharacter, "Character is nil");
 	}
-
-	/* Load Skills from List */
-	// LoadSkillsFromList(skillList: SkillId[]): void {
-	// 	skillList.forEach((skillId) => {
-	// 		this._registerSkill(skillId);
-	// 	});
-	// }
 
 	/* Register Skill */
 	private _registerSkill(skillId: SkillId): void {
