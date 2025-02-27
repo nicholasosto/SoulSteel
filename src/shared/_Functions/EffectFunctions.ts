@@ -22,6 +22,16 @@ function TweenRotate(model: Model, rotation: Vector3) {
 	//const tween = TweenService.Create(model, DEFAULT_TWEEN_INFO, { : rotation });
 }
 
+function TweenCollide(basePart1: BasePart, basePart2: BasePart) {
+	if (basePart1 === undefined || basePart2 === undefined) {
+		return;
+	}
+	const tween1 = TweenService.Create(basePart1, DEFAULT_TWEEN_INFO, { Position: basePart2.Position });
+	const tween2 = TweenService.Create(basePart2, DEFAULT_TWEEN_INFO, { Position: basePart1.Position });
+	tween1.Play();
+	tween2.Play();
+}
+
 function TweenShoot(basePart: BasePart, speed: number) {
 	if (basePart !== undefined) {
 		basePart.Velocity = basePart.CFrame.LookVector.mul(speed);
@@ -29,4 +39,4 @@ function TweenShoot(basePart: BasePart, speed: number) {
 	}
 }
 
-export { TweenScale, TweenShoot, TweenRotate };
+export { TweenScale, TweenShoot, TweenRotate, TweenCollide };

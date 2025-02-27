@@ -3,7 +3,7 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 
 // Player Data Interface
 function GetSkillSlotMap(playerData: IPlayerData): Map<number, string> {
-	const equippedSkills = playerData.Skills["assignedSlots"] as SkillId[];
+	const equippedSkills = playerData["Skills"]["assignedSlots"] as SkillId[];
 	assert(equippedSkills !== undefined, "Equipped Skills is nil");
 	const skillMap = new Map<number, SkillId>();
 

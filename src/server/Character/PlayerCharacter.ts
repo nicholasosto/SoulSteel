@@ -88,7 +88,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(this);
-		this.skillManager.InitializeSkillMap(playerData);
+		const newPlayerData = this.dataManager.GetData();
+		this.skillManager.InitializeSkillMap(newPlayerData);
 
 		/* Target Manager */
 		this.targetManager = new TargetManager(this);
@@ -102,6 +103,8 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 
 		/* Initialize Connections */
 		this._initializeConnections();
+
+		this.dataManager.OnPlayerJoined();
 	}
 
 	/*Connections */
