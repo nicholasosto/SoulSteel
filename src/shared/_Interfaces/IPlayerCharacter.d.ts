@@ -11,6 +11,7 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	// Player
 	player: Player;
 	characterModel: TGameCharacter;
+	humanoid: Humanoid;
 
 	// // Resources
 	CharacterInfo: IPlayerData["CharacterInfo"];

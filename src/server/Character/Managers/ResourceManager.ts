@@ -74,6 +74,10 @@ export default class ResourceManager implements IResourceManager {
 		this.ManaResource = new CharacterResource("Mana", calculateMaxMana(characterStats, level));
 		this.StaminaResource = new CharacterResource("Stamina", calculateMaxStamina(characterStats, level));
 
+		/* Set Humanoid Stats */
+		this._playerCharacter.humanoid.MaxHealth = this.HealthResource.GetMax();
+		this._playerCharacter.humanoid.Health = this.HealthResource.GetMax();
+
 		// Update UI
 		this._notifyUI();
 	}

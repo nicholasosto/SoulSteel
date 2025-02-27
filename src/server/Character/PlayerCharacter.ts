@@ -23,7 +23,7 @@ import DataManager from "server/Controllers/DataManager";
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
-	private humanoid: Humanoid;
+	public humanoid: Humanoid;
 	private playerData: IPlayerData;
 	public currentExperience: number;
 
@@ -99,6 +99,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			Logger.Log(script, "Player Character Damaged");
 			this.OnTakeDamage(damageContainer);
 		});
+
 
 		/* Dealt Damage */
 		this._connectionDealDamage?.Disconnect();

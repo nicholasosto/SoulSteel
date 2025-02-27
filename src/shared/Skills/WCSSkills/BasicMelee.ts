@@ -41,7 +41,7 @@ export class BasicMelee extends Skill {
 		hitbox.Parent = game.Workspace;
 
 		const characterCFrame = (this.Character.Instance as Model).GetPivot();
-		const offset = characterCFrame.mul(new CFrame(0, 0, -16));
+		const offset = characterCFrame.mul(new CFrame(0, 0, -5));
 		hitbox.PivotTo(offset);
 
 		return hitbox;

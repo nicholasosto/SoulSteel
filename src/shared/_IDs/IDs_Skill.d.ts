@@ -1,2 +1,2 @@
 // Skill IDs
-export type SkillId = "BasicMelee" | "BasicRanged" | "BasicHold";
+export type SkillId = "BasicMelee" | "BasicRanged" | "BasicHold" | "HallowHold";

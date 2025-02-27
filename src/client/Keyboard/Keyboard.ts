@@ -93,6 +93,7 @@ export default class KeyboardController {
 		}
 
 		if (begin) {
+			Logger.Log(script, "Skill Started: ", skillName);
 			skill.Start();
 		}
 	}

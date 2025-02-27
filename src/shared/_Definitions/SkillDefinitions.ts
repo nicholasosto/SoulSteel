@@ -38,6 +38,16 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 		cooldown: 10,
 		resource: DEFAULT_RESOURCE_MANA,
 	},
+	HallowHold: {
+		displayName: "Hallow Hold",
+		wcsSkillId: "HallowHold",
+		description: "Do some Damage",
+		icon: ImageIds.BasicHold,
+		animation: EAnimationID.BasicHold,
+		audio: ESoundId.BasicHold,
+		cooldown: 10,
+		resource: DEFAULT_RESOURCE_MANA,
+	},
 };
 
 export { SkillDefinitions };

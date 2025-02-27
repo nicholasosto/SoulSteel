@@ -1,8 +1,8 @@
 import Logger from "shared/Utility/Logger";
-import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { HoldableSkill, Skill, SkillDecorator } from "@rbxts/wcs";
 
 @SkillDecorator
-export class BasicHold extends Skill {
+export class BasicHold extends HoldableSkill {
 	private _damageContainer = this.CreateDamageContainer(14);
 	protected OnConstruct(): void {
 		Logger.Log(script, "Shared Construct", this.Character?.Instance.Name);
