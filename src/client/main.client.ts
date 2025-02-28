@@ -5,7 +5,7 @@ import Logger from "shared/Utility/Logger";
 import WcsClient from "./_WCS/WCSClient";
 
 /* Controllers */
-import AudioController from "client/Controllers/AudioController";
+import AudioPlayer from "shared/Utility/AudioPlayer";
 import KeyboardController from "client/Keyboard/Keyboard";
 import ClientUIController from "./Controllers/ClientUIController";
 import MovementController from "./Controllers/MovementController";
@@ -43,6 +43,6 @@ class GameClient {
 }
 
 GameClient.Start();
-AudioController.PlayCreepyMoan();
+AudioPlayer.PlayCreepyMoan();
 
 GameCycleEvents.PlayerUIReady.SendToServer();

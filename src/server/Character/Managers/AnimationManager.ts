@@ -33,13 +33,18 @@ export default class AnimationManager implements IAnimationManager {
 
 		/* Get Animation Track */
 		const animationTrack = this._animationMap.get(skillId);
+		animationTrack?.Ended.Connect(() => {
+			this._playerCharacter.humanoid.WalkSpeed = 16;
+		});
 
 		/* Play Animation */
 		if (animationTrack) {
+			this._playerCharacter.humanoid.WalkSpeed = 0;
 			animationTrack.Play();
 		} else {
 			Logger.Log(script, "Animation Track is nil");
 		}
+
 	}
 
 	/* On Skill Ended */
