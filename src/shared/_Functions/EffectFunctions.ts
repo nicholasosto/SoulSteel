@@ -1,42 +1,25 @@
-import { TweenService } from "@rbxts/services";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
+import StorageManager from "shared/Storage/StorageManager";
 
-const DEFAULT_TWEEN_INFO = new TweenInfo(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false);
+const PurpleVortex = StorageManager.CloneFromStorage("Vortex_Purple");
 
-function TweenScale(basePart: BasePart, scale: number, tweenInfo?: TweenInfo) {
-	let _tweenInfo = tweenInfo;
-	if (_tweenInfo === undefined) {
-		_tweenInfo = DEFAULT_TWEEN_INFO;
-	}
-	if (basePart !== undefined) {
-		const tween = TweenService.Create(basePart, _tweenInfo, { Size: basePart.Size.mul(scale) });
-		tween.Play();
+function AddTemporaryEffect(gameCharacter: TGameCharacter, duration: number) {
+	const effect = PurpleVortex?.Clone();
+	if (effect === undefined) {
 		return;
 	}
+	effect.Parent = gameCharacter.LeftFoot;
+	task.delay(duration, () => {
+		effect.Destroy();
+	});
 }
 
-function TweenRotate(model: Model, rotation: Vector3) {
-	if (model === undefined) {
-		return;
-	}
+function EnableParticleEffects(parent: Instance, enable: boolean): void {
+	const particleEffects = parent.GetDescendants().filter((descendant) => descendant.IsA("ParticleEmitter"));
 
-	//const tween = TweenService.Create(model, DEFAULT_TWEEN_INFO, { : rotation });
+	particleEffects.forEach((particleEffect) => {
+		particleEffect.Enabled = enable;
+	});
 }
 
-function TweenCollide(basePart1: BasePart, basePart2: BasePart) {
-	if (basePart1 === undefined || basePart2 === undefined) {
-		return;
-	}
-	const tween1 = TweenService.Create(basePart1, DEFAULT_TWEEN_INFO, { Position: basePart2.Position });
-	const tween2 = TweenService.Create(basePart2, DEFAULT_TWEEN_INFO, { Position: basePart1.Position });
-	tween1.Play();
-	tween2.Play();
-}
-
-function TweenShoot(basePart: BasePart, speed: number) {
-	if (basePart !== undefined) {
-		basePart.Velocity = basePart.CFrame.LookVector.mul(speed);
-		return;
-	}
-}
-
-export { TweenScale, TweenShoot, TweenRotate, TweenCollide };
+export { AddTemporaryEffect, EnableParticleEffects };

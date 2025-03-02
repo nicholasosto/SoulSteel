@@ -7,6 +7,8 @@ class CharacterResource implements ICharacterResource {
 	// Resource Name
 	public ResourceId: ResourceId = "Health";
 
+	// 
+
 	// Resource Values
 	public MaxValue: number;
 	public Current: number;

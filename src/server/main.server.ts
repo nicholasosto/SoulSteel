@@ -8,7 +8,7 @@ import { ReplicatedStorage, Players } from "@rbxts/services";
 import { Character, CreateServer } from "@rbxts/wcs";
 
 // Manager Imports
-import StorageManager from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage/StorageManager";
 import OldDataManager from "server/Controllers/OldDataManager";
 
 // Controllers

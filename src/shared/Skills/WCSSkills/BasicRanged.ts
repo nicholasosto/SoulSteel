@@ -1,5 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
+import StorageManager from "shared/Storage/StorageManager";
 
 @SkillDecorator
 export class BasicRanged extends Skill {
@@ -18,6 +20,14 @@ export class BasicRanged extends Skill {
 	}
 
 	protected OnStartServer(): void {
+		const newNPC = StorageManager.CloneNPC("Dragon Boy", game.Workspace) as TGameCharacter;
+		const character = this.Character?.Instance as TGameCharacter;
+		const characterPosition = character.GetPivot();
+
+		if (characterPosition === undefined) return;
+
+		newNPC.PivotTo(characterPosition);
+
 		Logger.Log(script, "Server Started: ", this.Character?.Instance.Name);
 	}
 

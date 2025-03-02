@@ -1,5 +1,5 @@
 import { QuestId, QuestRequirementId, QuestRewardId } from "shared/_IDs/IDs_Quest";
-import StorageManager from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage/StorageManager";
 import { TQuestItemFrame } from "shared/Epic UI/Types/TQuestItem";
 import GetQuestDeffinition from "shared/_Definitions/QuestDeffinitions";
 import { TQuestDeffinition } from "shared/_Types/TQuestDeffinition";

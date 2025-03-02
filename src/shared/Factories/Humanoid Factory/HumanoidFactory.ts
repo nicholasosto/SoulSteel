@@ -1,15 +1,12 @@
 import { CollectionService } from "@rbxts/services";
-import { EHumanoidDescription } from "shared/Factories/Humanoid Factory/HumanoidTypes";
-import StorageManager from "shared/Storage Manager/StorageManager";
+import { EHumanoidDescription } from "shared/Factories/Humanoid Factory/HumanoidDeffinitions";
+import StorageManager from "shared/Storage/StorageManager";
 import Logger from "shared/Utility/Logger";
 
 export class HumanoidDescriptionFactory {
 	private static _instance: HumanoidDescriptionFactory;
 
-	private static _humanoidDescriptions: Map<EHumanoidDescription, HumanoidDescription> = new Map<
-		EHumanoidDescription,
-		HumanoidDescription
-	>();
+	private static _humanoidDescriptions = new Map<EHumanoidDescription, HumanoidDescription>();
 
 	private constructor() {
 		// Private constructor to prevent instantiation

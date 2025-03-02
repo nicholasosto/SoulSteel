@@ -1,10 +1,17 @@
 /* Shared Imports */
 import Logger from "shared/Utility/Logger";
+
+/* Epic UI Imports */
 import InfoFrame from "shared/Epic UI/Classes/InfoFrame";
-import { SkillId } from "shared/_IDs/IDs_Skill";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
+
+/* Skill Imports */
+import { SkillId } from "shared/_IDs/IDs_Skill";
 import SkillBar from "shared/Epic UI/Classes/SkillBar";
+import SkillPanel from "client/ScreenGUIs/SkillPanel";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
+
+/* Quest Imports */
 import QuestPanel from "client/ScreenGUIs/QuestPanel";
 import Quest from "shared/_Classes/Quest";
 
@@ -22,6 +29,7 @@ import {
 	SkillBarInstance,
 	ResourceBarInstanceMap,
 	QuestPanelGUI,
+	Skills_Screen,
 } from "client/ScreenGUIs/GUI_Index";
 import { QuestId } from "shared/_IDs/IDs_Quest";
 import QuestDeffinitions from "shared/_Definitions/QuestDeffinitions";
@@ -33,8 +41,9 @@ export default class ClientUIController {
 	/* Quest Panel */
 	private static QuestPanel = new QuestPanel(QuestPanelGUI);
 
-	/* Skill Bar */
+	/* Skill UI*/
 	private static SkillBar = new SkillBar(SkillBarInstance);
+	private static SkillPanel = new SkillPanel(Skills_Screen);
 
 	/* Info Frame */
 	private static InfoFrame = new InfoFrame(InfoFrameInstance);

@@ -3,7 +3,7 @@ import Quest from "shared/_Classes/Quest";
 import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
 import Logger from "shared/Utility/Logger";
 import { QuestId } from "shared/_IDs/IDs_Quest";
-import StorageManager from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage/StorageManager";
 import { TQuestItemFrame } from "shared/Epic UI/Types/TQuestItem";
 import { QuestToServer } from "client/net/_Client_Events";
 

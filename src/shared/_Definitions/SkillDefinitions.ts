@@ -8,9 +8,9 @@ import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstant
 const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 	BasicMelee: {
 		displayName: "Melee Strike",
-		wcsSkillId: "BasicMelee",
+		itemId: "BasicMelee",
 		description: "Strike with fury, Its like boxing but with swords and more ouch .",
-		icon: ImageIds.BasicMelee,
+		imageId: ImageIds.BasicMelee,
 		animation: EAnimationID.BasicMelee,
 		audio: ESoundId.BasicMelee,
 		cooldown: 5,
@@ -19,9 +19,9 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 	},
 	BasicRanged: {
 		displayName: "Ranged Attack",
-		wcsSkillId: "BasicRanged",
+		itemId: "BasicRanged",
 		description: "Strike a single target with spirit ball.",
-		icon: ImageIds.BasicRanged,
+		imageId: ImageIds.BasicRanged,
 		animation: EAnimationID.BasicRanged,
 		audio: ESoundId.BasicRanged,
 		cooldown: 8,
@@ -30,9 +30,9 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 	},
 	BasicHold: {
 		displayName: "Hold ME",
-		wcsSkillId: "BasicHold",
+		itemId: "BasicHold",
 		description: "Restore your health or an ally’s.",
-		icon: ImageIds.BasicHold,
+		imageId: ImageIds.BasicHold,
 		animation: EAnimationID.BasicHold,
 		audio: ESoundId.BasicHold,
 		cooldown: 10,
@@ -40,9 +40,9 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 	},
 	HallowHold: {
 		displayName: "Hallow Hold",
-		wcsSkillId: "HallowHold",
+		itemId: "HallowHold",
 		description: "Do some Damage",
-		icon: ImageIds.BasicHold,
+		imageId: ImageIds.BasicHold,
 		animation: EAnimationID.BasicHold,
 		audio: ESoundId.BasicHold,
 		cooldown: 10,

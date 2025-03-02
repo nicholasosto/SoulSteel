@@ -1,6 +1,6 @@
 // Utility
 import Logger from "shared/Utility/Logger";
-import StorageManager from "shared/Storage Manager/StorageManager";
+import StorageManager from "shared/Storage/StorageManager";
 
 // Types
 import { TSkillButton } from "shared/Epic UI/Types/TSkillButton";
@@ -9,7 +9,8 @@ import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 // Functions
-import { getSkillDefinition } from "shared/_Functions/SkillFunctions";
+//import { getSkillDefinition } from "shared/_Functions/SkillFunctions";
+import DefinitionsManager from "shared/Storage/DefinitionsManager";
 
 export class SkillButton {
 	// Button Frame Instance
@@ -29,24 +30,21 @@ export class SkillButton {
 	// Constructor
 	constructor(skillId: SkillId) {
 		// Set the Skill Definition
-		this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
+		//this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
+		this._skillDefinition = DefinitionsManager.GetSkillDefinition(skillId) as ISkillDefinition;
 
 		// Set the Cooldown Time
 		this._cooldownTime = this._skillDefinition.cooldown;
 
 		// Set the Skill Id
-		this._instance.Name = this._skillDefinition.wcsSkillId;
+		this._instance.Name = this._skillDefinition.itemId;
 
 		/* Cooldown Bar */
-		// Set the Text
 		this._cooldownBar.SetEpicAttribute("TextValue", this._skillDefinition.displayName);
-
-		// Set the Cooldown Value
 		this._cooldownBar.SetEpicAttribute("BarPercent", "0");
 
 		/* Button */
-		// Set the Image
-		this._setImage(this._skillDefinition.icon);
+		this._setImage(this._skillDefinition.imageId);
 	}
 
 	// Start Cooldown
@@ -94,24 +92,15 @@ export class SkillButton {
 		this._instance.SkillButton.ImageFrame.SkillImage.Image = image;
 	}
 
-	// Set Text
-	public SetText(text: string) {
-		this._cooldownBar.SetEpicAttribute("TextValue", text);
-	}
+	// // Set Text
+	// public SetText(text: string) {
+	// 	this._cooldownBar.SetEpicAttribute("TextValue", text);
+	// }
 
 	// Set Skill
-	public SetSkill(skillId: SkillId) {
-		this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
-		this._setImage(this._skillDefinition.icon);
-		this._cooldownTime = this._skillDefinition.cooldown;
-	}
-
-	public ClearSkill() {
-		this.SetSkill("BasicMelee");
-	}
-
-	// Set Parent
-	public Destroy() {
-		this._instance.Destroy();
-	}
+	// private SetSkill(skillId: SkillId) {
+	// 	this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
+	// 	this._setImage(this._skillDefinition.icon);
+	// 	this._cooldownTime = this._skillDefinition.cooldown;
+	// }
 }

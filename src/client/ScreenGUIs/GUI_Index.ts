@@ -4,6 +4,7 @@ import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import Logger from "shared/Utility/Logger";
 import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
+import { TSkillPanel } from "./SkillPanel";
 
 /* Main Screen GUI */
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -12,7 +13,7 @@ const Developer_Screen = PlayerGUI.WaitForChild("Developer") as ScreenGui;
 const Equipment_Screen = PlayerGUI.WaitForChild("Equipment") as ScreenGui;
 const Character_Screen = PlayerGUI.WaitForChild("Character") as ScreenGui;
 const Teleport_Screen = PlayerGUI.WaitForChild("Teleport") as ScreenGui;
-const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as ScreenGui;
+const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as TSkillPanel;
 const Settings_Screen = PlayerGUI.WaitForChild("Settings") as ScreenGui;
 const QuestPanelGUI = PlayerGUI.WaitForChild("Quests") as TQuestPanel;
 /* Store Screen */

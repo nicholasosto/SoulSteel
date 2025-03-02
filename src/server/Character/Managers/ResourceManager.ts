@@ -90,7 +90,7 @@ export default class ResourceManager implements IResourceManager {
 	}
 
 	public OnHeartBeat() {
-		Logger.Log(script, `[ResourceManager]: Heartbeat`);
+		//Logger.Log(script, `[ResourceManager]: Heartbeat`);
 		this.HealthResource.regenStep();
 		this.ManaResource.regenStep();
 		this.StaminaResource.regenStep();

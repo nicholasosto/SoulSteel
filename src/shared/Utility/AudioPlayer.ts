@@ -3,6 +3,10 @@ import Logger from "shared/Utility/Logger";
 const AudioAssets = {
 	SoundEffects: {
 		FINGER_SNAP: "rbxassetid://9114427906",
+		Lightning: "rbxassetid://5721273154",
+	},
+	Speak: {
+		InstaKill: "rbxassetid://131961137",
 	},
 	Music: {
 		CreepyMoan: "rbxassetid://472763153",
@@ -16,7 +20,9 @@ type AudioFile = {
 
 const AudioFiles: Map<string, AudioFile> = new Map([
 	["creepyMoan", { id: AudioAssets.Music.CreepyMoan, volume: 0.2 }],
+	["instaKill", { id: AudioAssets.Speak.InstaKill, volume: 2 }],
 	["fingerSnap", { id: AudioAssets.SoundEffects.FINGER_SNAP, volume: 2 }],
+	["lightning", { id: AudioAssets.SoundEffects.Lightning, volume: 2 }],
 ]);
 
 export default class AudioPlayer {

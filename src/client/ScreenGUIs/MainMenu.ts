@@ -1,5 +1,8 @@
 import * as GUI from "client/ScreenGUIs/GUI_Index";
+import DefinitionsManager from "shared/Storage/DefinitionsManager";
 import Logger from "shared/Utility/Logger";
+
+DefinitionsManager.Start();
 
 enum PanelName {
 	Developer = "Developer",

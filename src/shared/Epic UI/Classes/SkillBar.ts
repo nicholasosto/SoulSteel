@@ -28,39 +28,12 @@ export default class SkillBar {
 		this._instance = skillBarInstance;
 	}
 
-	// Public:  Assign Skill to Slot
-	public AssignSkillToSlot(slot: number, skillId: SkillId) {
-		const currentButton = this._skillButtonMap.get(slot);
-		if (currentButton === undefined) {
-			this._createSkillButton(slot, skillId);
-		} else {
-			currentButton.SetSkill(skillId);
-		}
-	}
-
 	// Public:  Load Skills
 	public LoadSkills(skillSlotMap: Map<number, SkillId>) {
 		// Loop through the Skill Slot Map
 		for (const [slot, skillId] of skillSlotMap) {
 			this._createSkillButton(slot, skillId);
 		}
-	}
-
-	/* Set WCS Character */
-	public SetWCSCharacter(wcsCharacter: Character) {
-		this.wcsCharacter = wcsCharacter;
-	}
-
-	public ClearWCSCharacter() {
-		this.wcsCharacter = undefined;
-	}
-
-	public ClearSlot(slot: number) {
-		const skillButton = this._skillButtonMap.get(slot);
-		if (skillButton !== undefined) {
-			skillButton.Destroy();
-		}
-		this._createSkillButton(slot, "BasicMelee");
 	}
 
 	// Private:  createSkillButton
@@ -73,10 +46,10 @@ export default class SkillBar {
 		// Get the Parent Frame
 		switch (slot) {
 			case 1:
-				parent = this._instance.Slot1.Content;
+				parent = this._instance.Slot1;
 				break;
 			case 2:
-				parent = this._instance.Slot2.Content;
+				parent = this._instance.Slot2;
 				break;
 			case 3:
 				parent = this._instance.Slot3;
@@ -116,13 +89,5 @@ export default class SkillBar {
 
 		// Add the Connection to the Map
 		this._skillConnectionMap.set(slot, connection as RBXScriptConnection);
-	}
-
-	// Destroy
-	public Destroy() {
-		this._skillConnectionMap.forEach((connection) => {
-			connection?.Disconnect();
-		});
-		this._instance?.Destroy();
 	}
 }
