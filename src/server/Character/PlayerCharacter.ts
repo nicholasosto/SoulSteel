@@ -52,6 +52,11 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Connections */
 	/* Humanoid */
 	private _humanoidDied: RBXScriptConnection | undefined;
+
+	/* Equipment Connections */
+	private _connectionEquip: RBXScriptConnection | undefined;
+	private _connectionUnequip: RBXScriptConnection | undefined;
+
 	/*WCS */
 	private _connectionSkillStarted: RBXScriptConnection | undefined;
 	private _connectionSkillEnded: RBXScriptConnection | undefined;

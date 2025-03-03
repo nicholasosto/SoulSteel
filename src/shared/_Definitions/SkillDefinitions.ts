@@ -42,7 +42,7 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 		displayName: "Hallow Hold",
 		itemId: "HallowHold",
 		description: "Do some Damage",
-		imageId: ImageIds.BasicHold,
+		imageId: ImageIds.HallowHold,
 		animation: EAnimationID.BasicHold,
 		audio: ESoundId.BasicHold,
 		cooldown: 10,

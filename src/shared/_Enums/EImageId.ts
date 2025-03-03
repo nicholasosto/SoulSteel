@@ -24,6 +24,7 @@ export enum ImageIds {
 	BasicMelee = rbxassetid + "BasicMelee",
 	BasicRanged = rbxassetid + "Ranged_Attack",
 	BasicHold = rbxassetid + "Basic Ring",
+	HallowHold = rbxassetid + "HallowHold",
 
 	// Movement
 	Dash = rbxassetid + "Dash",

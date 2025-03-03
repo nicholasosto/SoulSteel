@@ -13,7 +13,7 @@ import OldDataManager from "server/Controllers/OldDataManager";
 
 // Controllers
 import PCController from "./Controllers/PlayerCharacterController";
-import StartDeveloperListener from "./net/DeveloperListener";
+//import StartDeveloperListener from "./net/DeveloperListener";
 import SkillController from "./Controllers/SkillController";
 import UIController from "./Controllers/UIController";
 
@@ -21,12 +21,14 @@ import UIController from "./Controllers/UIController";
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
 import { StartCollectingLava } from "./Collections/LavaCollector";
 import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
+import { StartZoneDetection } from "./Collections/ZoneCollector";
 import StartQuestBlockCollection from "./Collections/QuestBlock";
 
 // Event Listeners
 import { StartUIListeners } from "./net/UIListeners";
 import StartTeleportListener from "./net/TeleportListener";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
+import { sendMessageToOpenAI } from "shared/net/OpenAI";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -84,12 +86,13 @@ const _destroyConnection: Map<Player, RBXScriptConnection> = new Map();
 /* Start the Listeners */
 StartUIListeners();
 StartTeleportListener();
-StartDeveloperListener();
+//StartDeveloperListener();
 
 /* Start the Collections */
 StartCollectingNPCs();
 StartCollectingLava();
 StartCollectingResourceDrains();
+StartZoneDetection();
 StartQuestBlockCollection();
 
 /* Handle Player Added */
@@ -142,3 +145,6 @@ Players.GetPlayers().forEach((player) => {
 	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });
+
+const hello = sendMessageToOpenAI("Hello World!");
+Logger.Log("OpenAI", hello);

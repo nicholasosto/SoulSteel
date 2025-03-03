@@ -6,6 +6,7 @@ import PlayerCharacter from "server/Character/PlayerCharacter";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import { Outbound, QuestCompleted } from "server/net/_Server_Events";
+import { RegisterPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 type TConnectionName = "TakeDamage" | "Die";
 
@@ -71,6 +72,7 @@ export default class PCController {
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
 		Logger.LogFlow("[Player Character Flow][Creation]", 3, script);
+		RegisterPlayerCharacter(playerCharacter);
 		return playerCharacter;
 	}
 
