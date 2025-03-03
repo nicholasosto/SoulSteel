@@ -28,7 +28,7 @@ import StartQuestBlockCollection from "./Collections/QuestBlock";
 import { StartUIListeners } from "./net/UIListeners";
 import StartTeleportListener from "./net/TeleportListener";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
-import { sendMessageToOpenAI } from "shared/net/OpenAI";
+//import { sendMessageToOpenAI } from "shared/net/OpenAI";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -146,5 +146,5 @@ Players.GetPlayers().forEach((player) => {
 	HandlePlayerAdded(player);
 });
 
-const hello = sendMessageToOpenAI("Hello World!");
-Logger.Log("OpenAI", hello);
+//const hello = sendMessageToOpenAI("Hello World!");
+//Logger.Log("OpenAI", hello);
