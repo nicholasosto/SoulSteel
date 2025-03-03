@@ -146,5 +146,5 @@ Players.GetPlayers().forEach((player) => {
 	HandlePlayerAdded(player);
 });
 
-const hello = sendMessageToOpenAI("Hello World!");
-Logger.Log("OpenAI", hello);
+//const hello = sendMessageToOpenAI("Hello World!");
+//Logger.Log("OpenAI", hello);

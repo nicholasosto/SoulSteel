@@ -1,6 +1,7 @@
 // TargetSelector.ts
 import { Players, Workspace, UserInputService } from "@rbxts/services";
 import { WorldEvent } from "client/net/_Client_Events";
+
 import Logger from "shared/Utility/Logger";
 
 const localPlayer = Players.LocalPlayer;

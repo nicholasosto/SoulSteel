@@ -28,9 +28,10 @@ import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 /* WCS Package */
 import { Skill, SkillDecorator } from "@rbxts/wcs";
+import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Test function for onHit */
-function initializeTouchedEvent(model: Model) {
+function initializeTouchedEvent(model: Model, thisGameCharacter: IPlayerCharacter) {
 	/* Get the parts */
 	const redSphere = model.FindFirstChild("RedSphere") as BasePart;
 	const blueSphere = model.FindFirstChild("BlueSphere") as BasePart;
@@ -47,6 +48,13 @@ function initializeTouchedEvent(model: Model) {
 
 	purpleSphere.Touched.Connect((hit: BasePart) => {
 		Logger.Log(script, "Touched Purple", hit.Parent?.Name);
+		const hitModel = hit.Parent as TGameCharacter;
+		if (hitModel === thisGameCharacter.targetManager.GetTarget()?.characterModel) {
+			Logger.Log(script, "Hit Target", hitModel?.Name);
+			hitModel.Humanoid.Health = 0;
+		} else {
+			Logger.Log(script, "Game Character", thisGameCharacter.targetManager.GetTarget()?.displayName);
+		}
 	});
 }
 
@@ -68,12 +76,13 @@ export class HallowHold extends Skill {
 		/* Create and Position Ability Model */
 		const abilityModel = StorageManager.CloneFromStorage("Hallow Hold Ability") as THallowHold;
 		abilityModel.Parent = game.Workspace;
-		abilityModel.PivotTo(HRP.CFrame.mul(new CFrame(0, 0, -9)).mul(CFrame.Angles(0, math.rad(90), 0)));
+		const modelRotationFrame = HRP.CFrame.mul(new CFrame(0, 0, -9)).mul(CFrame.Angles(0, math.rad(90), 0));
+		abilityModel.PivotTo(modelRotationFrame);
 		abilityModel.Name = "HallowHold_02";
 		Debris.AddItem(abilityModel, 11);
 
 		/* Initialize Touched Event */
-		initializeTouchedEvent(abilityModel);
+		initializeTouchedEvent(abilityModel, GameCharacter);
 
 		/* Add Casting Aura Effect */
 		AddTemporaryEffect(this.Character?.Instance as TGameCharacter, 5);

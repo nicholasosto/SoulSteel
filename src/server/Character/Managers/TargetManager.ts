@@ -11,7 +11,6 @@ export default class TargetManager implements ITargetManager {
 
 	/*Connections*/
 	private _targetSelected: RBXScriptConnection | undefined;
-	private _targetDeselected: RBXScriptConnection | undefined;
 
 	/* Constructor */
 	constructor(playerCharacter: IPlayerCharacter) {
@@ -22,6 +21,7 @@ export default class TargetManager implements ITargetManager {
 
 	/* Initialize Connections */
 	private _InitializeConnections(): void {
+		this._targetSelected?.Disconnect();
 		this._targetSelected = C2S.Server.Get("TargetSelected").Connect((player: Player, targetId: string) => {
 			const targetChar = GetNPCCharacter(targetId)
 				? this.OnTargetSelected(GetNPCCharacter(targetId)!)
@@ -32,15 +32,23 @@ export default class TargetManager implements ITargetManager {
 
 	/* Get Target */
 	public GetTarget(): IGameCharacter | undefined {
-		Logger.Log(script, `[TargetManager]: GetTarget: ${this._target?.displayName}`);
+		if (!this._target?.characterModel) {
+			Logger.Log(script, `[TargetManager]: Target is nil`);
+			return undefined;
+		}
 		return this._target;
 	}
 
 	/* Target Selected Event Handler */
 	public OnTargetSelected(target: IGameCharacter): void {
+		/* Set the target property*/
 		this._target = target;
-		Logger.Log(script, `[TargetManager]: Target Selected: ${target.displayName}`);
 		this._target = target as IGameCharacter;
+
+		/* Target Died Event Handler */
+		target.characterModel?.Humanoid.Died.Once(() => {
+			this.OnTargetDeselected();
+		});
 	}
 
 	/* Target Deselected Event Handler */
