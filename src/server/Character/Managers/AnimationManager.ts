@@ -44,7 +44,6 @@ export default class AnimationManager implements IAnimationManager {
 		} else {
 			Logger.Log(script, "Animation Track is nil");
 		}
-
 	}
 
 	/* On Skill Ended */

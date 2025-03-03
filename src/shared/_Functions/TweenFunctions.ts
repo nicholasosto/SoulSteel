@@ -26,7 +26,6 @@ function TweenRotate(model: Model, rotation: Vector3) {
 }
 
 function TweenShoot(basePart: BasePart, target: CFrame, duration: number) {
-
 	if (basePart === undefined) {
 		return;
 	}

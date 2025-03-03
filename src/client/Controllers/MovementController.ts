@@ -45,7 +45,7 @@ export default class MovementController {
 			}
 			this.lastJumpTime = currentTime;
 			if (this.jumpsLeft > 0 && this.humanoid.FreeFalling) {
-				const gameChar = Players.LocalPlayer.Character as TGameCharacter
+				const gameChar = Players.LocalPlayer.Character as TGameCharacter;
 				addVectorForceToCharacter(
 					gameChar,
 					new Vector3(0, gameChar.HumanoidRootPart.AssemblyMass * Workspace.Gravity, 0),

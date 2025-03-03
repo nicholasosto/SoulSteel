@@ -10,4 +10,3 @@ export enum EHumanoidDescription {
 }
 
 const RobotBase = new Instance("HumanoidDescription");
-
