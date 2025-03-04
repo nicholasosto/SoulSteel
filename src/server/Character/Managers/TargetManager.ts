@@ -3,7 +3,7 @@ import IGameCharacter from "shared/_Interfaces/IGameCharacter";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ITargetManager from "shared/_Interfaces/Character Managers/ITargetManager";
 import { GetNPCCharacter, GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
-import { S2C, C2S } from "shared/net/Remotes";
+import { C2S } from "shared/net/Remotes";
 
 export default class TargetManager implements ITargetManager {
 	private _playerCharacter: IPlayerCharacter;

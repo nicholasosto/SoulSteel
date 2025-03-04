@@ -5,6 +5,7 @@ import { UnknownSkill } from "@rbxts/wcs";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import IAnimationManager from "shared/_Interfaces/Character Managers/IAnimationManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
+import { IPlayerData } from "shared/_Functions/DataFunctions";
 
 export default class AnimationManager implements IAnimationManager {
 	private _playerCharacter: IPlayerCharacter;
@@ -12,11 +13,11 @@ export default class AnimationManager implements IAnimationManager {
 	private _animationMap: Map<SkillId, AnimationTrack>;
 
 	/*Constructor*/
-	constructor(playerCharacter: IPlayerCharacter) {
+	constructor(playerCharacter: IPlayerCharacter, playerData: IPlayerData) {
 		/* Get the game character */
 		this._playerCharacter = playerCharacter;
-		this._gameCharacter = playerCharacter.characterModel;
-		const skillList = playerCharacter.playerData["Skills"]["unlockedSkills"];
+		this._gameCharacter = playerCharacter.gameCharacterModel;
+		const skillList = playerCharacter.dataManager.GetData().Skills.unlockedSkills;
 
 		/* Create the animation map */
 		this._animationMap = CreateAnimationMap(this._gameCharacter, skillList) as Map<SkillId, AnimationTrack>;

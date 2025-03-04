@@ -1,6 +1,6 @@
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { GetRegisteredSkillConstructor, Character, Skill } from "@rbxts/wcs";
-import IPlayerSkillsData from "shared/_Interfaces/IPlayerSkillsData";
+import IPlayerSkillsData from "shared/_Interfaces/Player Data/IPlayerSkillsData";
 
 // Get Default Player Skills Data
 function getDefaultPlayerSkillsData(): IPlayerSkillsData {

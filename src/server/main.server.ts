@@ -9,7 +9,6 @@ import { Character, CreateServer } from "@rbxts/wcs";
 
 // Manager Imports
 import StorageManager from "shared/Storage/StorageManager";
-import OldDataManager from "server/Controllers/OldDataManager";
 
 // Controllers
 import PCController from "./Controllers/PlayerCharacterController";
@@ -42,8 +41,6 @@ class GameServer {
 	public static Start() {
 		if (this._instance === undefined) {
 			this._instance = new GameServer();
-			/* Start Data Manager */
-			OldDataManager.Start();
 			StorageManager.Start();
 			/* Start WCS */
 			GameServer.StartWCS();

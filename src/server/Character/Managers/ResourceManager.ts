@@ -4,8 +4,8 @@ import { CharacterResource } from "../Classes/CharacterResource";
 import { Character, UnknownSkill } from "@rbxts/wcs";
 
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import ICharacterStats from "shared/_Interfaces/ICharacterStats";
-import IPlayerData from "shared/_Interfaces/IPlayerData";
+import ICharacterStats from "shared/_Interfaces/Player Data/ICharacterStats";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
 import { Outbound } from "server/net/_Server_Events";
 
@@ -63,13 +63,13 @@ export default class ResourceManager implements IResourceManager {
 	public StaminaResource: CharacterResource;
 
 	/* Constructor */
-	constructor(PlayerCharacter: IPlayerCharacter) {
+	constructor(PlayerCharacter: IPlayerCharacter, playerData: IPlayerData) {
 		/* Set Player Character */
 		this._playerCharacter = PlayerCharacter;
 
 		/* Initialize Resources */
-		const level = this._playerCharacter.ProgressionStats.Level;
-		const characterStats = this._playerCharacter.CharacterStats;
+		const level = playerData.ProgressionStats.Level;
+		const characterStats = playerData.CharacterStats;
 		this.HealthResource = new CharacterResource("Health", calculateMaxHealth(characterStats, level));
 		this.ManaResource = new CharacterResource("Mana", calculateMaxMana(characterStats, level));
 		this.StaminaResource = new CharacterResource("Stamina", calculateMaxStamina(characterStats, level));

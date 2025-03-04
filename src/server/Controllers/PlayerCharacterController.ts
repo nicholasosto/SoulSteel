@@ -1,11 +1,8 @@
 import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
-import OldDataManager from "./OldDataManager";
 import PlayerCharacter from "server/Character/PlayerCharacter";
-import { IPlayerData } from "shared/_Functions/DataFunctions";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import { Outbound, QuestCompleted } from "server/net/_Server_Events";
 import { RegisterPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 type TConnectionName = "TakeDamage" | "Die";
@@ -33,30 +30,28 @@ export default class PCController {
 	}
 
 	private static _InitConnections() {
-		this._QuestCompletedConnection?.Disconnect();
-		this._QuestCompletedConnection = QuestCompleted.Connect((player, questId) => {
-			const playerCharacter = this.GetPlayerCharacter(player);
-			const completed = playerCharacter?.OnQuestCompleted(questId);
-			if (completed) {
-				const playerDataCache = OldDataManager.GetDataCache(player);
-				assert(playerDataCache !== undefined, "Player Data is nil");
-				assert(playerCharacter !== undefined, "Player Character is nil");
-				playerCharacter.UpdateExperience(playerCharacter.ProgressionStats.Experience + 100);
-				const newCache = playerDataCache._playerData;
-				newCache.ProgressionStats = playerCharacter.ProgressionStats;
-				playerDataCache.SetDataCache(newCache);
+		// this._QuestCompletedConnection?.Disconnect();
+		// this._QuestCompletedConnection = QuestCompleted.Connect((player, questId) => {
+		// 	const playerCharacter = this.GetPlayerCharacter(player);
+		// 	const completed = playerCharacter?.OnQuestCompleted(questId);
+		// 	if (completed) {
+		// 		const playerDataCache = OldDataManager.GetDataCache(player);
+		// 		assert(playerDataCache !== undefined, "Player Data is nil");
+		// 		assert(playerCharacter !== undefined, "Player Character is nil");
+		// 		playerCharacter.dataManager.UpdateProgressionStats
+		// 		const newCache = playerDataCache._playerData;
+		// 		newCache.ProgressionStats = playerCharacter.ProgressionStats;
+		// 		playerDataCache.SetDataCache(newCache);
 
-				Outbound.SendQuestRewarded(player, questId);
-				Outbound.SendProgressionStats(player, playerDataCache._playerData.ProgressionStats);
-			}
-		});
+		// 		Outbound.SendQuestRewarded(player, questId);
+		// 		Outbound.SendProgressionStats(player, playerDataCache._playerData.ProgressionStats);
+		// 	}
+		// });
 	}
 
 	/* On Character Added */
 	public static CreatePlayerCharacter(player: Player, character: Model): IPlayerCharacter {
 		Logger.LogFlow("[Player Character Flow][Creation]", 2, script);
-		/* Get Player Data */
-		const playerData = OldDataManager.GetDataCache(player)._playerData as IPlayerData;
 
 		/* Create the WCS Character */
 		const wcsCharacter = new Character(character);
@@ -67,7 +62,7 @@ export default class PCController {
 		});
 
 		/* Create Player Character */
-		const playerCharacter = new PlayerCharacter(player, playerData, wcsCharacter);
+		const playerCharacter = new PlayerCharacter(player, wcsCharacter);
 
 		/* Add to Registry */
 		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);

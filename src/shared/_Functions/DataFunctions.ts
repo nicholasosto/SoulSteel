@@ -1,4 +1,4 @@
-import IPlayerData from "shared/_Interfaces/IPlayerData";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { SkillId } from "shared/_IDs/IDs_Skill";
 
 // Player Data Interface

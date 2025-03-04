@@ -1,6 +1,6 @@
 import { QuestId } from "shared/_IDs/IDs_Quest";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
-import IPlayerData from "shared/_Interfaces/IPlayerData";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { BiDirectionalEvents, S2C, C2S, Payloads } from "shared/net/Remotes";
 import Logger from "shared/Utility/Logger";
 

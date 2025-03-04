@@ -23,7 +23,7 @@ import AudioPlayer, { AudioFiles, AudioFile } from "shared/Utility/AudioPlayer";
 
 /* Imported Functions */
 import { TweenCollide, TweenShoot, TweenPulseTransparency } from "shared/_Functions/TweenFunctions";
-import { AddTemporaryEffect, EnableParticleEffects } from "shared/_Functions/EffectFunctions";
+import { EnableParticleEffects, TimedEffect } from "shared/_Functions/EffectFunctions";
 import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 /* WCS Package */
@@ -65,27 +65,29 @@ export class HallowHold extends Skill {
 	protected OnStartClient(): void {}
 
 	protected OnStartServer(): void {
-		const HRP = this.Character?.Instance.FindFirstChild("HumanoidRootPart") as BasePart;
-		const GameCharacter = GetPlayerCharacter(this.Player!);
-		if (HRP === undefined) return;
-		if (GameCharacter === undefined) return;
-		const target = GameCharacter.targetManager.GetTarget();
+		/* Get the Player Character */
+		const playerCharacter = GetPlayerCharacter(this.Player!);
+		const playerCharacterModel = playerCharacter?.characterModel;
+		if (playerCharacterModel === undefined || playerCharacter === undefined) return;
 
-		Logger.Log(script, GameCharacter?.player.Name, "Hallow Hold");
+		/* Get the target Character Model*/
+		const targetGameCharacter = playerCharacter.targetManager.GetTarget();
+		const targetCharacterModel = targetGameCharacter?.characterModel;
 
 		/* Create and Position Ability Model */
 		const abilityModel = StorageManager.CloneFromStorage("Hallow Hold Ability") as THallowHold;
 		abilityModel.Parent = game.Workspace;
-		const modelRotationFrame = HRP.CFrame.mul(new CFrame(0, 0, -9)).mul(CFrame.Angles(0, math.rad(90), 0));
+		const modelRotationFrame = playerCharacterModel
+			.GetPivot()
+			.mul(new CFrame(0, 0, -9))
+			.mul(CFrame.Angles(0, math.rad(90), 0));
 		abilityModel.PivotTo(modelRotationFrame);
-		abilityModel.Name = "HallowHold_02";
-		Debris.AddItem(abilityModel, 11);
 
 		/* Initialize Touched Event */
-		initializeTouchedEvent(abilityModel, GameCharacter);
+		initializeTouchedEvent(abilityModel, playerCharacter);
 
 		/* Add Casting Aura Effect */
-		AddTemporaryEffect(this.Character?.Instance as TGameCharacter, 5);
+		TimedEffect(this.Character?.Instance as TGameCharacter, 5);
 
 		/* Spawn Blue Sphere */
 		task.delay(0.5, () => {
@@ -102,7 +104,7 @@ export class HallowHold extends Skill {
 
 		/* Collide Spheres */
 		task.delay(2.4, () => {
-			TweenCollide(abilityModel.RedSphere, abilityModel.BlueSphere, 0.2);
+			TweenCollide(abilityModel.RedSphere, abilityModel.BlueSphere, 20);
 			AudioPlayer.PlayAudio(AudioFiles.get("fingerSnap") as AudioFile);
 			EnableParticleEffects(abilityModel.PurpleSphere, true);
 		});
@@ -117,9 +119,11 @@ export class HallowHold extends Skill {
 			EnableParticleEffects(abilityModel.BlueSphere, false);
 
 			/* Show and Shoot Purple Sphere */
-			const targetCFrame = target?.characterModel?.GetPivot() ?? HRP.CFrame.mul(new CFrame(0, 0, -40));
+			const targetCFrame = targetCharacterModel
+				? (targetCharacterModel?.GetPivot() as CFrame)
+				: playerCharacterModel.GetPivot().mul(new CFrame(0, 0, -40));
 			abilityModel.PurpleSphere.Transparency = 0;
-			TweenShoot(abilityModel.PurpleSphere, targetCFrame, 1.5);
+			TweenShoot(abilityModel.PurpleSphere, targetCFrame, 14);
 			TweenPulseTransparency(abilityModel.PurpleSphere, 1.5);
 			AudioPlayer.PlayAudio(AudioFiles.get("instaKill") as AudioFile);
 		});

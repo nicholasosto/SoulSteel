@@ -9,7 +9,6 @@ import ITargetManager from "shared/_Interfaces/Character Managers/ITargetManager
 
 /* Package Imports */
 import { DamageContainer } from "@rbxts/wcs";
-import IPlayerData from "./IPlayerData";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import IDataManager from "./Character Managers/IDataManager";
 
@@ -17,14 +16,8 @@ import IDataManager from "./Character Managers/IDataManager";
 export default interface IPlayerCharacter extends IGameCharacter {
 	// Player
 	player: Player;
-	playerData: IPlayerData;
-	characterModel: TGameCharacter;
+	gameCharacterModel: TGameCharacter;
 	humanoid: Humanoid;
-
-	// // Resources
-	CharacterInfo: IPlayerData["CharacterInfo"];
-	ProgressionStats: IPlayerData["ProgressionStats"];
-	CharacterStats: IPlayerData["CharacterStats"];
 
 	// Managers
 	dataManager: IDataManager;

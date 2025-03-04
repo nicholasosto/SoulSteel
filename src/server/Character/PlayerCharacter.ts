@@ -7,7 +7,7 @@ import { Character, DamageContainer } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Player Data */
-import IPlayerData from "shared/_Interfaces/IPlayerData";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 
 /* Managers */
 import SkillsManager from "server/Character/Managers/SkillsManager";
@@ -20,14 +20,14 @@ import ProgressionManager from "./Managers/ProgressionManager";
 import GameCharacter from "./GameCharacter";
 import { QuestId } from "shared/_IDs/IDs_Quest";
 import TargetManager from "./Managers/TargetManager";
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
 
 /* Classes */
 /* Player Character */
 export default class PlayerCharacter extends GameCharacter implements IPlayerCharacter {
 	public player: Player;
+	public gameCharacterModel: TGameCharacter;
 	public humanoid: Humanoid;
-	public playerData: IPlayerData;
-	public currentExperience: number;
 
 	private _completedQuests: QuestId[] = [];
 
@@ -39,15 +39,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public resourceManager: ResourceManager;
 	public skillManager: SkillsManager;
 	public targetManager: TargetManager;
-
-	/* Character Data */
-	public CharacterInfo: IPlayerData["CharacterInfo"];
-
-	/* Progression */
-	public ProgressionStats: IPlayerData["ProgressionStats"];
-
-	/* Character Stats */
-	public CharacterStats: IPlayerData["CharacterStats"];
 
 	/* Connections */
 	/* Humanoid */
@@ -67,49 +58,37 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	private _heartbeatConnection: RBXScriptConnection | undefined;
 	private _lastUpdate = tick();
 
-	constructor(player: Player, playerData: IPlayerData, wcsCharacter: Character) {
+	constructor(player: Player, wcsCharacter: Character) {
 		super(wcsCharacter);
 		// Set Player
 		this.player = player;
-		this.playerData = playerData;
+		this.gameCharacterModel = player.Character as TGameCharacter;
 		this.humanoid = this.characterModel.Humanoid;
-		this.level = playerData.ProgressionStats.Level;
-		this.currentExperience = playerData.ProgressionStats.Experience;
 		this.displayName = player.Name;
-
-		/* Set Progression Data */
-		this.ProgressionStats = playerData.ProgressionStats;
-
-		/* Set Core Stats */
-		this.CharacterStats = playerData.CharacterStats;
-
-		/* Set Character Info */
-		this.CharacterInfo = playerData.CharacterInfo;
-
 		/* Data Manager */
 		this.dataManager = new PlayerDataManager(this);
+		const playerData = this.dataManager.GetData();
+
 		/* Resource Manager */
-		this.resourceManager = new ResourceManager(this);
+		this.resourceManager = new ResourceManager(this, playerData);
 
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(this);
 		const newPlayerData = this.dataManager.GetData();
-		this.skillManager.InitializeSkillMap(newPlayerData);
+		this.skillManager.InitializeSkillMap(playerData);
 
 		/* Target Manager */
 		this.targetManager = new TargetManager(this);
 
 		/* Progression Manager */
-		this.progressionManager = new ProgressionManager(this);
+		this.progressionManager = new ProgressionManager(player, this.dataManager);
 
 		/* Animation Manager */
 		assert(this.characterModel, "Character Model is nil");
-		this.animationManager = new AnimationManager(this);
+		this.animationManager = new AnimationManager(this, playerData);
 
 		/* Initialize Connections */
 		this._initializeConnections();
-
-		this.dataManager.OnPlayerJoined();
 	}
 
 	/*Connections */
@@ -182,18 +161,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Dealt Damage */
 	public OnDamageDealt(enemy: Character | undefined, damageContainer: DamageContainer): void {
 		Logger.Log(script, "Player Character Dealt Damage");
-	}
-
-	public UpdateExperience(amount: number): void {
-		Logger.Log(script, "Player Character Experience Updated");
-		const newExperience = this.ProgressionStats.Experience + amount;
-		if (newExperience >= this.ProgressionStats.ExperienceToNextLevel) {
-			this.ProgressionStats.Experience = newExperience - this.ProgressionStats.ExperienceToNextLevel;
-			this.ProgressionStats.Level += 1;
-			this.ProgressionStats.ExperienceToNextLevel = this.ProgressionStats.Level * 100;
-		} else {
-			this.ProgressionStats.Experience = newExperience;
-		}
 	}
 
 	/* Died */

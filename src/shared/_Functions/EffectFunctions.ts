@@ -3,7 +3,7 @@ import StorageManager from "shared/Storage/StorageManager";
 
 const PurpleVortex = StorageManager.CloneFromStorage("Vortex_Purple");
 
-function AddTemporaryEffect(gameCharacter: TGameCharacter, duration: number) {
+function TimedEffect(gameCharacter: TGameCharacter, duration: number) {
 	const effect = PurpleVortex?.Clone();
 	if (effect === undefined) {
 		return;
@@ -22,4 +22,4 @@ function EnableParticleEffects(parent: Instance, enable: boolean): void {
 	});
 }
 
-export { AddTemporaryEffect, EnableParticleEffects };
+export { TimedEffect, EnableParticleEffects };

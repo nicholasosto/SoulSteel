@@ -1,17 +1,24 @@
+import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
-import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import IProgressionStats from "shared/_Interfaces/IProgressionStats";
 import Logger from "shared/Utility/Logger";
+import { S2C } from "shared/net/Remotes";
 
 export default class ProgressionManager implements IProgressionManager {
-	private _playerCharacter: IPlayerCharacter;
-	constructor(playerCharacter: IPlayerCharacter) {
-		this._playerCharacter = playerCharacter;
+	private _player: Player;
+	private _dataManager: IDataManager;
+	constructor(player: Player, dataManager: IDataManager) {
+		this._player = player;
+		this._dataManager = dataManager;
+		this._updatePlayerUI();
+	}
+
+	private _updatePlayerUI(): void {
+		const progressionStats = this._dataManager.GetData().ProgressionStats;
+		S2C.Server.Get("SendProgressionStats").SendToPlayer(this._player, progressionStats);
 	}
 
 	public OnExperienceGained(experience: number): void {
 		Logger.Log(script, `[ProgressionManager]: Experience Gained: ${experience}`);
-		this._playerCharacter.ProgressionStats.Experience += experience;
 		this._checkLevelUp();
 	}
 
@@ -25,7 +32,7 @@ export default class ProgressionManager implements IProgressionManager {
 	}
 
 	private _checkLevelUp(): void {
-		const progressionStats = this._playerCharacter.ProgressionStats;
+		const progressionStats = this._dataManager.GetData().ProgressionStats;
 		const level = progressionStats.Level;
 		const experience = progressionStats.Experience;
 		const nextLevelExperience = this._getNextLevelExperience(level);
@@ -36,7 +43,7 @@ export default class ProgressionManager implements IProgressionManager {
 	}
 
 	private _levelUp(): void {
-		const progressionStats = this._playerCharacter.ProgressionStats;
+		const progressionStats = this._dataManager.GetData().ProgressionStats;
 		const level = progressionStats.Level;
 		const nextLevelExperience = this._getNextLevelExperience(level);
 

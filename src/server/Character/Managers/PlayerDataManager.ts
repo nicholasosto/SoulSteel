@@ -2,7 +2,7 @@ import Logger from "shared/Utility/Logger";
 import { DataStoreService } from "@rbxts/services";
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import IPlayerData from "shared/_Interfaces/IPlayerData";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -10,7 +10,8 @@ const DefualtData: IPlayerData = {
 	key: "Datatemplate",
 	version: 1,
 
-	CharacterInfo: {
+	CharacterIdentity: {
+		CharacterId: "Player",
 		CharacterName: "Player",
 	},
 	ProgressionStats: {
@@ -42,45 +43,65 @@ const DefualtData: IPlayerData = {
 	Inventory: {
 		InventorySlots: [],
 	},
-	Quests: {
-		ActiveQuests: [],
-		CompletedQuests: [],
+	QuestData: {
+		activeQuests: [],
+		completedQuests: [],
 	},
 };
 
 export default class PlayerDataManager implements IDataManager {
-	private _playerCharacter: IPlayerCharacter;
+	//private _playerCharacter: IPlayerCharacter;
 	private _userId: string;
-	private _playerData: IPlayerData | undefined;
+	private _playerData: IPlayerData = DefualtData;
+	private _lastSaveTime: number = 0;
+	private _saveInterval = 5;
 
 	constructor(playerCharacter: IPlayerCharacter) {
-		this._playerCharacter = playerCharacter;
-		//this._playerData = PlayerDataStore.
 		this._userId = tostring(playerCharacter.player.UserId);
-		this._playerData = this._LoadPlayerData();
-	}
-	public OnPlayerJoined(): void {
-		Logger.Log(script, `[PlayerDataManager]: Player joined with ID ${this._userId}`);
-		this._playerData = this._LoadPlayerData();
-	}
-	public OnCharacterDied(): void {
-		Logger.Log(script, `[PlayerDataManager]: Player died with ID ${this._userId}`);
-		this.SavePlayerData();
+		this._playerData = this._LoadData();
 	}
 
+	/* Update Identity */
+	public UpdateCharacterIdentity(newIdentity: IPlayerData["CharacterIdentity"]): void {
+		this._playerData.CharacterInfo = newIdentity;
+	}
+
+	/* Update Progression Stats */
+	public UpdateProgressionStats(newStats: IPlayerData["ProgressionStats"]): void {
+		this._playerData.ProgressionStats = newStats;
+	}
+
+	/* Get Data */
 	public GetData(): IPlayerData {
 		return this._playerData as IPlayerData;
 	}
-	public SavePlayerData(): void {
-		const randomData = { dummy: "random-data" + tostring(math.random(1, 100)) };
+
+	/* Save Data */
+	private _SaveData(): void {
+		/* Calculate Save Interval */
+		if (tick() - this._lastSaveTime < this._saveInterval) {
+			warn("Save interval not met");
+			return;
+		}
 		Logger.Log("SAVE DATA: " + math.round(tick()), `[PlayerDataManager]: Saving player data for ${this._userId}`);
+
+		/* Save Data */
 		PlayerDataStore.SetAsync(this._userId, this._playerData);
+
+		/* Update Last Save Time */
+		this._lastSaveTime = tick();
 	}
-	private _LoadPlayerData(): IPlayerData {
+
+	/* Load Data */
+	private _LoadData(): IPlayerData {
 		Logger.Log("LOAD DATA: " + math.round(tick()), `[PlayerDataManager]: Loading player data for ${this._userId}`);
+
+		/* Load Data */
 		const playerData = PlayerDataStore.GetAsync(this._userId)[0] as IPlayerData;
 		if (playerData === undefined) {
-			Logger.Log(script, `[PlayerDataManager]: No player data found for ${this._userId}, creating new data`);
+			warn("Player Data is nil, returning default data");
+			this._playerData = DefualtData;
+			this._SaveData();
 			return DefualtData;
 		}
 		return playerData;

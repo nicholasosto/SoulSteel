@@ -1,4 +1,5 @@
+import IPlayerData from "../Player Data/IPlayerData";
+
 export default interface IDataManager {
-	OnPlayerJoined(): void;
-	OnCharacterDied(): void;
+	GetData(): IPlayerData;
 }
