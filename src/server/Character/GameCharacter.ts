@@ -1,7 +1,7 @@
 import Logger from "shared/Utility/Logger";
 import { Character, DamageContainer } from "@rbxts/wcs";
 import { GameCharacterModel, IGameCharacter } from "server/Character/Index/CharacterIndex";
-import { generateCharacterName } from "shared/Factories/NameFactory";
+import { generateCharacterName } from "shared/_Factories/NameFactory";
 
 export default class GameCharacter implements IGameCharacter {
 	characterId: string;

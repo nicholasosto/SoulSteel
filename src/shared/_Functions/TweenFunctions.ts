@@ -1,7 +1,4 @@
 import { TweenService } from "@rbxts/services";
-import INPCCharacter from "shared/_Interfaces/INPCCharacter";
-import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import BaseProjectile from "shared/Factories/Projectile Factory/Projectiles/BaseProjectile";
 import Logger from "shared/Utility/Logger";
 
 const DEFAULT_TWEEN_INFO = new TweenInfo(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false);

@@ -1,5 +1,5 @@
 import Logger from "shared/Utility/Logger";
-import { FirstNames, LastNames, Monikors } from "shared/Factories/FactoryParts/CharacterNames";
+import { FirstNames, LastNames, Monikors } from "shared/_Factories/FactoryParts/CharacterNames";
 
 const EntityRegistryMap: Map<string, Instance> = new Map();
 let entityIdNum = 0;

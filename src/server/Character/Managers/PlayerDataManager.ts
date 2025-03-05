@@ -62,8 +62,8 @@ export default class PlayerDataManager implements IDataManager {
 	}
 
 	/* Update Identity */
-	public UpdateCharacterIdentity(newIdentity: IPlayerData["CharacterIdentity"]): void {
-		this._playerData.CharacterInfo = newIdentity;
+	public UpdateCharacterName(newIdentity: IPlayerData["CharacterIdentity"]["CharacterName"]): void {
+		this._playerData.CharacterIdentity.CharacterName = newIdentity;
 	}
 
 	/* Update Progression Stats */
@@ -74,6 +74,12 @@ export default class PlayerDataManager implements IDataManager {
 	/* Get Data */
 	public GetData(): IPlayerData {
 		return this._playerData as IPlayerData;
+	}
+
+	/* On Death */
+	public OnDeath(): void {
+		warn("Player Died");
+		this._SaveData();
 	}
 
 	/* Save Data */

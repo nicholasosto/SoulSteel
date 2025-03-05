@@ -3,7 +3,7 @@ import { IReferenceBlock, TReferenceBlock } from "../References/ReferenceBlock";
 import { TweenService } from "@rbxts/services";
 
 import { Debris, RunService } from "@rbxts/services";
-import { generateCharacterName } from "shared/Factories/NameFactory";
+import { generateCharacterName } from "shared/_Factories/NameFactory";
 
 // Tween Info
 const tweenInfo = new TweenInfo(1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0);

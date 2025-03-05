@@ -2,7 +2,7 @@
 import Logger from "shared/Utility/Logger";
 
 // Roblox Services
-import { ReplicatedStorage, Players } from "@rbxts/services";
+import { ReplicatedStorage, Players, Workspace } from "@rbxts/services";
 
 // WCS Imports
 import { Character, CreateServer } from "@rbxts/wcs";
@@ -28,6 +28,7 @@ import { StartUIListeners } from "./net/UIListeners";
 import StartTeleportListener from "./net/TeleportListener";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { sendMessageToOpenAI } from "server/API Calls/OpenAI";
+import BuildingFactory from "shared/_Factories/Building Factory/BuildingFactory";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -143,5 +144,11 @@ Players.GetPlayers().forEach((player) => {
 	HandlePlayerAdded(player);
 });
 
+const floorPart = StorageManager.CloneFromStorage("Terrain G");
+const generatedFloor = BuildingFactory.MakeFloor("Terrain G", 10, 20);
+
+Players.GetPlayers().forEach((player) => {
+	generatedFloor.PivotTo(player.Character!.GetPivot());
+});
 //const hello = sendMessageToOpenAI("Hello World!");
 //Logger.Log("OpenAI", hello);

@@ -68,13 +68,13 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		/* Data Manager */
 		this.dataManager = new PlayerDataManager(this);
 		const playerData = this.dataManager.GetData();
+		this.dataManager.UpdateCharacterName(player.Name + "Bugga Boo");
 
 		/* Resource Manager */
 		this.resourceManager = new ResourceManager(this, playerData);
 
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(this);
-		const newPlayerData = this.dataManager.GetData();
 		this.skillManager.InitializeSkillMap(playerData);
 
 		/* Target Manager */
@@ -166,6 +166,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	/* Died */
 	public OnDeath(): void {
 		Logger.Log("Flow - On Death", this.player.Name);
+		this.dataManager.OnDeath();
 		this.humanoid.Health = 0;
 		this.skillManager.Destroy();
 		this.animationManager.Destroy();
