@@ -94,6 +94,10 @@ export default class ClientUIController {
 		}
 	}
 
+	public static OnUnassignSkillSlot(slot: number) {
+		//this.SkillBar
+	}
+
 	/* Initialize Listeners */
 	private static _initializeListeners() {
 		/* Player Data Loaded*/

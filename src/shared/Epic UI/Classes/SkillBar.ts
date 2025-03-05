@@ -36,6 +36,18 @@ export default class SkillBar {
 		}
 	}
 
+	public AssignSkill(slot: number, skillId: SkillId) {
+		this._createSkillButton(slot, skillId);
+	}
+
+	public UnassignSkill(slot: number) {
+		// Get the Skill Button
+		const skillButton = this._skillButtonMap.get(slot);
+		if (skillButton === undefined) return;
+
+		this._skillConnectionMap.delete(slot);
+	}
+
 	// Private:  createSkillButton
 	private _createSkillButton(slot: number, skillId: SkillId) {
 		let parent: Frame | undefined;

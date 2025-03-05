@@ -144,11 +144,6 @@ Players.GetPlayers().forEach((player) => {
 	HandlePlayerAdded(player);
 });
 
-const floorPart = StorageManager.CloneFromStorage("Terrain G");
-const generatedFloor = BuildingFactory.MakeFloor("Terrain G", 10, 20);
 
-Players.GetPlayers().forEach((player) => {
-	generatedFloor.PivotTo(player.Character!.GetPivot());
-});
 //const hello = sendMessageToOpenAI("Hello World!");
 //Logger.Log("OpenAI", hello);

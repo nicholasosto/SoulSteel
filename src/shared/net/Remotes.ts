@@ -41,6 +41,8 @@ const S2C = Net.Definitions.Create({
 	PlayerResourceUpdated: Net.Definitions.ServerToClientEvent<[Payloads["PlayerResourceUpdate"]]>(),
 	PlayerDied: Net.Definitions.ServerToClientEvent(),
 
+	SendSkillSlotMap: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
+
 	SkillControllerStarted: Net.Definitions.ServerToClientEvent(),
 	CharacterControllerStarted: Net.Definitions.ServerToClientEvent(),
 	DataManagerStarted: Net.Definitions.ServerToClientEvent(),
