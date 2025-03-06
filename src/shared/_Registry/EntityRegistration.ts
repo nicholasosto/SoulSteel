@@ -31,12 +31,6 @@ function RemovePlayerCharacter(player: Player): void {
 	PlayerCharacterMap.delete(tostring(player.UserId));
 }
 
-/* Remove NPC Character */
-function RemoveNPCCharacter(npcCharacter: INPCCharacter): void {
-	Logger.Log(script, "RemoveNPCCharacter", `Removing ${npcCharacter.displayName}`);
-	NPCMap.delete(npcCharacter.characterId);
-}
-
 /* Register NPC Character */
 function RegisterNPCCharacter(npcCharacter: INPCCharacter): void {
 	Logger.Log(script, "RegisterNPCCharacter", `Registering ${npcCharacter.displayName}`);
@@ -49,4 +43,17 @@ function GetNPCCharacter(characterId: string): INPCCharacter | undefined {
 	return NPCMap.get(characterId);
 }
 
-export { RegisterPlayerCharacter, RegisterNPCCharacter, GetPlayerCharacter, GetNPCCharacter, RemovePlayerCharacter, RemoveNPCCharacter };
+/* Remove NPC Character */
+function RemoveNPCCharacter(npcCharacter: INPCCharacter): void {
+	Logger.Log(script, "RemoveNPCCharacter", `Removing ${npcCharacter.displayName}`);
+	NPCMap.delete(npcCharacter.characterId);
+}
+
+export {
+	RegisterPlayerCharacter,
+	RegisterNPCCharacter,
+	GetPlayerCharacter,
+	GetNPCCharacter,
+	RemovePlayerCharacter,
+	RemoveNPCCharacter,
+};

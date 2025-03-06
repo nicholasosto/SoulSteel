@@ -83,7 +83,7 @@ export default class PCController {
 	public static GetPlayerCharacterFromCharacter(character: Model): PlayerCharacter | undefined {
 		/* Get Player */
 		const player = Players.GetPlayerFromCharacter(character);
-		assert(player, "Player is nil");
+		if (player === undefined) return undefined;
 
 		/* Get Player Character */
 		const playerCharacter = GetPlayerCharacter(player) as PlayerCharacter;

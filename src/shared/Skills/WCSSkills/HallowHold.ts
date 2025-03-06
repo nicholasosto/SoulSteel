@@ -27,33 +27,20 @@ import { EnableParticleEffects, TimedEffect } from "shared/_Functions/EffectFunc
 import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 /* WCS Package */
-import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { Character, Skill, SkillDecorator } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Test function for onHit */
-function initializeTouchedEvent(model: Model, thisGameCharacter: IPlayerCharacter) {
+function initializeTouchedEvent(model: Model, thisMove: HallowHold) {
 	/* Get the parts */
-	const redSphere = model.FindFirstChild("RedSphere") as BasePart;
-	const blueSphere = model.FindFirstChild("BlueSphere") as BasePart;
 	const purpleSphere = model.FindFirstChild("PurpleSphere") as BasePart;
-
-	/* Create the Touched Events */
-	redSphere.Touched.Connect((hit: BasePart) => {
-		Logger.Log(script, "Touched Red", hit.Parent?.Name);
-	});
-
-	blueSphere.Touched.Connect((hit: BasePart) => {
-		Logger.Log(script, "Touched Blue", hit.Parent?.Name);
-	});
 
 	purpleSphere.Touched.Connect((hit: BasePart) => {
 		Logger.Log(script, "Touched Purple", hit.Parent?.Name);
 		const hitModel = hit.Parent as TGameCharacter;
-		if (hitModel === thisGameCharacter.targetManager.GetTarget()?.characterModel) {
-			Logger.Log(script, "Hit Target", hitModel?.Name);
-			hitModel.Humanoid.Health = 0;
-		} else {
-			Logger.Log(script, "Game Character", thisGameCharacter.targetManager.GetTarget()?.displayName);
+		const wcsCharacter = Character.GetCharacterFromInstance(hitModel);
+		if (wcsCharacter !== thisMove.Character) {
+			wcsCharacter?.TakeDamage({ Damage: 100, Source: thisMove });
 		}
 	});
 }
@@ -84,7 +71,7 @@ export class HallowHold extends Skill {
 		abilityModel.PivotTo(modelRotationFrame);
 
 		/* Initialize Touched Event */
-		initializeTouchedEvent(abilityModel, playerCharacter);
+		initializeTouchedEvent(abilityModel, this);
 
 		/* Add Casting Aura Effect */
 		TimedEffect(this.Character?.Instance as TGameCharacter, 5);

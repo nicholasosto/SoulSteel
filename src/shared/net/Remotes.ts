@@ -107,7 +107,7 @@ function SendResourceUpdate(player: Player, resourceId: ResourceId, current: num
 
 	/* Send To Player */
 	Remotes.Server.Get("SendResourceData").SendToPlayer(player, payload);
-	Logger.Log("Remotes", `Sent Resource Update: ${resourceId} - ${current}/${max}`);
+	//Logger.Log("Remotes", `Sent Resource Update: ${resourceId} - ${current}/${max}`);
 }
 
 /* Exports */

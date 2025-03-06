@@ -40,7 +40,7 @@ export function initializeTargetSelection() {
 			const target = getTargetFromScreenPosition(new Vector2(input.Position.X, input.Position.Y));
 			if (target) {
 				Logger.Log("Target selected: " + target.Name);
-				Remotes.Client.Get("TargetSelected").SendToServer(target.Name);
+				Remotes.Client.Get("TargetSelected").SendToServer(target.GetFullName());
 				// Here you can perform additional actions such as highlighting the target or firing a remote event.
 			} else {
 				Logger.Log("No target selected.");

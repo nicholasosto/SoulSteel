@@ -6,6 +6,7 @@ import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage/StorageManager";
 import { BGUI_HealthBar } from "shared/_Types/TBillboardGUI";
 import AnimationManager from "server/Character/Managers/AnimationManager";
+import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 
 const healthBar = StorageManager.CloneFromStorage("BGUI_HealthBar") as BGUI_HealthBar;
 
@@ -21,6 +22,7 @@ function UpdateHealthbar(characterModel: TGameCharacter | undefined, healthBar: 
 export default class NPCCharacter extends GameCharacter implements INPCCharacter {
 	public level: number;
 
+	private _damageMap: Map<Player, number> = new Map();
 	/* Health Bar */
 	private _healthBar = healthBar.Clone() as BGUI_HealthBar;
 
@@ -84,11 +86,25 @@ export default class NPCCharacter extends GameCharacter implements INPCCharacter
 	}
 	public OnDeath(): void {
 		Logger.Log(script, "NPC Character Died: ", this.displayName);
+		for (const [player, damage] of this._damageMap) {
+			Logger.Log(script, "Player: ", player.Name, " Damage: ", damage);
+			GetPlayerCharacter(player)?.progressionManager.OnExperienceGained(damage);
+		}
 		this.Destroy();
 	}
 
 	public OnTakeDamage(damageContainer: DamageContainer): void {
-		Logger.Log(script, "NPC Just Took: ", damageContainer.Damage);
+		const player = damageContainer.Source?.Character?.Player;
+		if (player === undefined) return;
+
+		const damage = this._damageMap.get(player);
+
+		if (damage !== undefined) {
+			this._damageMap.set(player, damage + damageContainer.Damage);
+		} else {
+			this._damageMap.set(player, damageContainer.Damage);
+		}
+
 		this.wcsCharacter.Humanoid.TakeDamage(damageContainer.Damage);
 		UpdateHealthbar(this.characterModel, this._healthBar);
 	}

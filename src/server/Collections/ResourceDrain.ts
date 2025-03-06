@@ -3,6 +3,9 @@ import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { TResourceModifierPart } from "shared/_Types/Collection Types/TResourceModifierPart";
 import PCController from "server/Controllers/PlayerCharacterController";
 import Logger from "shared/Utility/Logger";
+import { Character, Skill } from "@rbxts/wcs";
+import StorageManager from "shared/Storage/StorageManager";
+import { BasicHold } from "shared/Skills/WCSSkills/BasicHold";
 
 /* Collection Tag */
 const CollectionTag = "ResourceDrain";
@@ -17,7 +20,10 @@ function OnResourceDrainAdded(basePart: TResourceModifierPart) {
 		//if (playerCharacter === undefined) return;
 		const resourceId = basePart.ResourceId.Value;
 		const drainRate = basePart.DrainRate.Value;
-		playerCharacter?.wcsCharacter.TakeDamage({ Damage: drainRate, Source: undefined });
+		const rig = StorageManager.CloneFromStorage("Dragon Boy") as TGameCharacter;
+		const wcsCharacter = new Character(rig);
+		const theMove = new BasicHold(wcsCharacter);
+		playerCharacter?.wcsCharacter.TakeDamage({ Damage: drainRate, Source: theMove });
 		Logger.Log(script, "Resource Drainer: ", resourceId, drainRate);
 	});
 }

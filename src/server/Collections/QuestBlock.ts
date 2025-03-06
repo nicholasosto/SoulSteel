@@ -23,10 +23,10 @@ class QuestBlock {
 
 			if (!player) return;
 
-			const playerCharacter = PCController.GetPlayerCharacter(player);
-			if (playerCharacter?.OnAssignQuest(this.questId as QuestId)) {
-				AssignQuestToPlayer(player, this.questId);
-			}
+			// const playerCharacter = PCController.GetPlayerCharacter(player);
+			// if (playerCharacter?.OnAssignQuest(this.questId as QuestId)) {
+			// 	AssignQuestToPlayer(player, this.questId);
+			// }
 		});
 	}
 }

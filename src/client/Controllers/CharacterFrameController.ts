@@ -23,6 +23,7 @@ export default class CharacterFrameController {
 	private constructor() {
 		CharacterFrameController._characterFrame = new InfoFrame(CharacterFrameInstance);
 		CharacterFrameController._initializeListeners();
+
 	}
 
 	/* Start */

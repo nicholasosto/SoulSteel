@@ -1,7 +1,8 @@
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
 import Logger from "shared/Utility/Logger";
-
+import { SendResourceUpdate } from "shared/net/Remotes";
+import UIController from "server/Controllers/UIController";
 
 export default class ProgressionManager implements IProgressionManager {
 	private _player: Player;
@@ -9,49 +10,36 @@ export default class ProgressionManager implements IProgressionManager {
 	constructor(player: Player, dataManager: IDataManager) {
 		this._player = player;
 		this._dataManager = dataManager;
-		this._updatePlayerUI();
 	}
 
-	private _updatePlayerUI(): void {
-		const progressionStats = this._dataManager.GetData().ProgressionStats;
-	}
-
+	/* On Experience Gained */
 	public OnExperienceGained(experience: number): void {
 		Logger.Log(script, `[ProgressionManager]: Experience Gained: ${experience}`);
-		this._checkLevelUp();
+		const progressionStats = this._dataManager.GetData().ProgressionStats;
 
+		if (progressionStats.Experience + experience >= progressionStats.ExperienceToNextLevel) {
+			progressionStats.Level += 1;
+			progressionStats.Experience = 0;
+			progressionStats.ExperienceToNextLevel = this._getNextLevelExperience(progressionStats.Level);
+		} else {
+			progressionStats.Experience += experience;
+		}
+
+		this._dataManager.UpdateProgressionStats(progressionStats);
+
+		SendResourceUpdate(
+			this._player,
+			"Experience",
+			progressionStats.Experience,
+			progressionStats.ExperienceToNextLevel,
+		);
+
+		UIController.SendProgressionStats(this._player);
 	}
 
-	public OnLevelUp(): void {
-		Logger.Log(script, `[ProgressionManager]: Level Up!`);
-
-	}
 	private _getNextLevelExperience(level: number): number {
 		// Example formula for calculating experience needed for the next level
 		// This can be adjusted based on your game's progression system
 		return level * 100; // Example: 100 XP per level
-	}
-
-	private _checkLevelUp(): void {
-		const progressionStats = this._dataManager.GetData().ProgressionStats;
-		const level = progressionStats.Level;
-		const experience = progressionStats.Experience;
-		const nextLevelExperience = this._getNextLevelExperience(level);
-
-		if (experience >= nextLevelExperience) {
-			this._levelUp();
-		}
-	}
-
-	private _levelUp(): void {
-		const progressionStats = this._dataManager.GetData().ProgressionStats;
-		const level = progressionStats.Level;
-		const nextLevelExperience = this._getNextLevelExperience(level);
-
-		progressionStats.Level += 1;
-		progressionStats.Experience -= nextLevelExperience;
-
-		Logger.Log(script, `[ProgressionManager]: Level Up! New Level: ${progressionStats.Level}`);
-		this.OnLevelUp();
 	}
 }
