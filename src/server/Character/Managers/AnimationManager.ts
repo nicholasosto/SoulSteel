@@ -1,12 +1,21 @@
-import { TGameCharacter } from "shared/_Types/TGameCharacter";
-import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
+
 import Logger from "shared/Utility/Logger";
-import { UnknownSkill } from "@rbxts/wcs";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+/* Types */
+import { TGameCharacter } from "shared/_Types/TGameCharacter";
+
+/* Interfaces */
 import IAnimationManager from "shared/_Interfaces/Character Managers/IAnimationManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import { IPlayerData } from "shared/_Functions/DataFunctions";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 
+import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
+
+import { UnknownSkill } from "@rbxts/wcs";
+import { SkillId } from "shared/_IDs/IDs_Skill";
+
+
+
+/* Animation Manager */
 export default class AnimationManager implements IAnimationManager {
 	private _playerCharacter: IPlayerCharacter;
 	private _gameCharacter: TGameCharacter;
@@ -32,10 +41,13 @@ export default class AnimationManager implements IAnimationManager {
 		/* Get Skill Id */
 		const skillId = skill.GetName() as SkillId;
 
+		/* Get Base Walk Speed  to reset after setting to 0*/
+		const baseWalkSpeed = this._playerCharacter.humanoid.WalkSpeed;
+
 		/* Get Animation Track */
 		const animationTrack = this._animationMap.get(skillId);
 		animationTrack?.Ended.Connect(() => {
-			this._playerCharacter.humanoid.WalkSpeed = 24;
+			this._playerCharacter.humanoid.WalkSpeed = baseWalkSpeed;
 		});
 
 		/* Play Animation */

@@ -4,6 +4,7 @@ import PCController from "server/Controllers/PlayerCharacterController";
 import { Remotes } from "shared/net/Remotes";
 
 let _connection_UIReady: RBXScriptConnection | undefined;
+let _progressionStatsConnection: RBXScriptConnection | undefined;
 
 export function StartUIListeners() {
 	_connection_UIReady?.Disconnect();
@@ -18,5 +19,6 @@ export function StartUIListeners() {
 			wait(0.5);
 		}
 		UIController.NotifyPlayer(player, true, "Welcome", "Welcome to the game!");
+		UIController.SendProgressionStats(player);
 	});
 }

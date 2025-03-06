@@ -1,3 +1,4 @@
+/* Net Module */
 import Net, { Definitions } from "@rbxts/net";
 
 /* ID's */
@@ -28,11 +29,6 @@ interface Payloads {
 	/* Client to Server Payloads */
 	AssignSkill: [slot: number, skillId?: SkillId];
 }
-
-type ServerPayloads = {
-	NotifyPlayer: Payloads["PlayerNotification"];
-	SkillBarUpdate: Payloads["SkillSlotMap"];
-};
 
 const Remotes = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
@@ -114,6 +110,7 @@ function SendResourceUpdate(player: Player, resourceId: ResourceId, current: num
 	Logger.Log("Remotes", `Sent Resource Update: ${resourceId} - ${current}/${max}`);
 }
 
+/* Exports */
 export {
 	Remotes,
 	Payloads,

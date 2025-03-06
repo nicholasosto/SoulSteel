@@ -15,6 +15,7 @@ export default class MovementController {
 	constructor(maxJumps: number = 200) {
 		const character = Players.LocalPlayer.Character || (Players.LocalPlayer.CharacterAdded.Wait()[0] as Model);
 		this.humanoid = character.WaitForChild("Humanoid") as Humanoid;
+		this.humanoid.WalkSpeed = 28;
 		this.maxJumps = maxJumps;
 		this.jumpsLeft = maxJumps;
 		this.isJumping = false;

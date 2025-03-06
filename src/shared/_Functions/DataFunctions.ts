@@ -16,4 +16,4 @@ function GetSkillSlotMap(playerData: IPlayerData): Map<number, string> {
 	return skillMap;
 }
 
-export { IPlayerData, GetSkillSlotMap };
+export { GetSkillSlotMap };

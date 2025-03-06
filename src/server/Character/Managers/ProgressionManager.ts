@@ -1,7 +1,7 @@
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
 import Logger from "shared/Utility/Logger";
-import { Remotes } from "shared/net/Remotes";
+
 
 export default class ProgressionManager implements IProgressionManager {
 	private _player: Player;
@@ -14,16 +14,17 @@ export default class ProgressionManager implements IProgressionManager {
 
 	private _updatePlayerUI(): void {
 		const progressionStats = this._dataManager.GetData().ProgressionStats;
-		Remotes.Server.Get("SendProgressionStats").SendToPlayer(this._player, [progressionStats]);
 	}
 
 	public OnExperienceGained(experience: number): void {
 		Logger.Log(script, `[ProgressionManager]: Experience Gained: ${experience}`);
 		this._checkLevelUp();
+
 	}
 
 	public OnLevelUp(): void {
 		Logger.Log(script, `[ProgressionManager]: Level Up!`);
+
 	}
 	private _getNextLevelExperience(level: number): number {
 		// Example formula for calculating experience needed for the next level

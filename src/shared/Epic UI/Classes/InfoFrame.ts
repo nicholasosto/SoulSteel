@@ -9,9 +9,9 @@
 import { Players } from "@rbxts/services";
 
 /* Shared Imports */
-import { IProgressBar, TInfoFrame } from "shared/Epic UI/EpicIndex";
-import { IPlayerData } from "shared/_Functions/DataFunctions";
-import ProgressBar from "./ProgressBar";
+import { TInfoFrame } from "shared/Epic UI/EpicIndex";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+
 
 /* Main Class: CharacterFrame */
 export default class InfoFrame {
@@ -30,16 +30,23 @@ export default class InfoFrame {
 
 		this._instance.LevelCounter.SetAttribute("TextValue", tostring(level));
 		this._instance.Name_Frame.SetAttribute("TextValue", name);
-		// Update the Character Info
+		this._updateProfilePic();
+	}
+
+	public OnProgressionStats(progressionStats: IPlayerData["ProgressionStats"]) {
+		this._instance.LevelCounter.SetAttribute("TextValue", tostring(progressionStats.Level));
+	}
+
+	public OnCharacterIdentity(characterIdentity: IPlayerData["CharacterIdentity"]) {
+		this._instance.Name_Frame.SetAttribute("TextValue", characterIdentity.CharacterName);
+	}
+
+	private _updateProfilePic() {
 		const profilePic = Players.GetUserThumbnailAsync(
 			Players.LocalPlayer.UserId,
 			Enum.ThumbnailType.HeadShot,
 			Enum.ThumbnailSize.Size420x420,
 		)[0];
 		this._instance.ProfilePic.Image = profilePic;
-	}
-
-	public OnProgressionStats(progressionStats: IPlayerData["ProgressionStats"]) {
-		this._instance.LevelCounter.SetAttribute("TextValue", tostring(progressionStats.Level));
 	}
 }

@@ -1,11 +1,17 @@
 import Logger from "shared/Utility/Logger";
-import { ISkillManager } from "server/Character/Index/CharacterIndex";
-import { IPlayerData } from "shared/_Functions/DataFunctions";
+
+/* WCS Imports */
+import { Character, UnknownSkill } from "@rbxts/wcs";
+
+/* Interfaces */
+import ISkillManager from "shared/_Interfaces/Character Managers/ISkillManager";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import { SkillId } from "shared/_IDs/IDs_Skill";
+
+/* Functions */
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
-import { Character, UnknownSkill } from "@rbxts/wcs";
-import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Skills Manager */
 export default class SkillsManager implements ISkillManager {

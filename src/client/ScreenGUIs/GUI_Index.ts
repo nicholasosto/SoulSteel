@@ -5,6 +5,7 @@ import { ResourceId } from "shared/_IDs/IDs_Resource";
 import Logger from "shared/Utility/Logger";
 import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
 import { TSkillPanel } from "./SkillPanel";
+import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 /* Main Screen GUI */
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -21,21 +22,24 @@ const QuestPanelGUI = PlayerGUI.WaitForChild("Quests") as TQuestPanel;
 
 /* HUD Elements */
 const MainMenuFrame = HUD_Screen.WaitForChild("MainMenu") as Frame;
-const CharacterFrameInstance = HUD_Screen.WaitForChild("CharacterInfo_Frame");
-const InfoFrameInstance = CharacterFrameInstance.WaitForChild("InfoFrame") as TInfoFrame;
+const CharacterFrameMaster = HUD_Screen.WaitForChild("CharacterInfo_Frame");
+const CharacterFrameInstance = CharacterFrameMaster.WaitForChild("InfoFrame") as TInfoFrame;
 const SkillBarInstance = HUD_Screen.WaitForChild("SkillBar_Frame") as TSkillBar;
-const ResourceBarParent = CharacterFrameInstance.WaitForChild("Bars").WaitForChild("Progress") as Frame;
+const ResourceBarParent = CharacterFrameMaster.WaitForChild("Bars").WaitForChild("Progress") as Frame;
 const HealthBarInstance = ResourceBarParent.WaitForChild("HealthBar") as Frame;
 const ManaBarInstance = ResourceBarParent.WaitForChild("ManaBar") as Frame;
 const StaminaBarInstance = ResourceBarParent.WaitForChild("StaminaBar") as Frame;
 const ExperienceBarInstance = ResourceBarParent.WaitForChild("ExperienceBar") as Frame;
-const ResourceBarInstanceMap = new Map<ResourceId, Frame>();
+const ResourceBarInstanceMap = new Map<ResourceId, ProgressBar>();
 
 /* Resource Bar Map */
-ResourceBarInstanceMap.set("Health", HealthBarInstance);
-ResourceBarInstanceMap.set("Mana", ManaBarInstance);
-ResourceBarInstanceMap.set("Stamina", StaminaBarInstance);
-ResourceBarInstanceMap.set("Experience", ExperienceBarInstance);
+ResourceBarInstanceMap.set("Health", new ProgressBar(HealthBarInstance));
+ResourceBarInstanceMap.set("Mana", new ProgressBar(ManaBarInstance));
+ResourceBarInstanceMap.set("Stamina", new ProgressBar(StaminaBarInstance));
+ResourceBarInstanceMap.set("Experience", new ProgressBar(ExperienceBarInstance));
+
+const testProgressBar = ResourceBarInstanceMap.get("Stamina");
+Logger.Log(ResourceBarInstanceMap as unknown as string);
 
 /* Teleporter Buttons */
 const TeleportButtonsChildren = Teleport_Screen.WaitForChild("Window")
@@ -63,7 +67,7 @@ export {
 
 	/* HUD Elements */
 	MainMenuFrame,
-	InfoFrameInstance,
+	CharacterFrameInstance,
 	SkillBarInstance,
 	ResourceBarInstanceMap,
 

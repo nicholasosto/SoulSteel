@@ -14,6 +14,7 @@ import MainMenu from "./ScreenGUIs/MainMenu";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 import { Remotes } from "shared/net/Remotes";
+import CharacterFrameController from "./Controllers/CharacterFrameController";
 
 class GameClient {
 	private static _instance: GameClient;
@@ -34,6 +35,7 @@ class GameClient {
 			/* Controllers */
 			MainMenu.Start();
 			ClientUIController.Start();
+			CharacterFrameController.Start();
 			KeyboardController.Start();
 			new MovementController();
 
