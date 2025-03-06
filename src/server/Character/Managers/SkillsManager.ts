@@ -7,7 +7,6 @@ import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
-
 /* Skills Manager */
 export default class SkillsManager implements ISkillManager {
 	// Skills

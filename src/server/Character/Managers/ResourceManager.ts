@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 
-import { SendResourceUpdate } from "shared/net/Remotes";
+import { Remotes, SendResourceUpdate } from "shared/net/Remotes";
 
 import { CharacterResource } from "../Classes/CharacterResource";
 import { UnknownSkill } from "@rbxts/wcs";
@@ -89,7 +89,6 @@ export default class ResourceManager implements IResourceManager {
 		const healthPL = this.HealthResource.GetPayload();
 		const manaPL = this.ManaResource.GetPayload();
 		const stamPL = this.StaminaResource.GetPayload();
-
 		SendResourceUpdate(this._playerCharacter.player, healthPL.resourceId, healthPL.current, healthPL.max);
 		SendResourceUpdate(this._playerCharacter.player, manaPL.resourceId, manaPL.current, manaPL.max);
 		SendResourceUpdate(this._playerCharacter.player, stamPL.resourceId, stamPL.current, stamPL.max);

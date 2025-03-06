@@ -85,7 +85,7 @@ export default class ClientUIController {
 	private static _initializeListeners() {
 		/* Player Data Loaded*/
 		this._playerDataLoaded?.Disconnect();
-		this._playerDataLoaded = Remotes.Client.Get("SendPlayerData").Connect((playerData) => {
+		this._playerDataLoaded = Remotes.Client.Get("SendPlayerData").Connect(([playerData]) => {
 			const skillSlotMap = GetSkillSlotMap(playerData);
 			this.SkillBar.LoadSkills(skillSlotMap as Map<number, SkillId>);
 			this.InfoFrame.Update(playerData);
@@ -93,13 +93,13 @@ export default class ClientUIController {
 
 		/* Resource Updated */
 		this._resourceUpdated?.Disconnect();
-		this._resourceUpdated = Remotes.Client.Get("SendResourceData").Connect((resource) => {
-			Logger.Log(script, "Resource Updated", resource);
+		this._resourceUpdated = Remotes.Client.Get("SendResourceData").Connect((resourceData) => {
+			this.UpdateResourceBar(resourceData);
 		});
 
 		/* Progression Stats */
 		this._progressionStats?.Disconnect();
-		this._progressionStats = Remotes.Client.Get("SendProgressionStats").Connect((progressionStats) => {
+		this._progressionStats = Remotes.Client.Get("SendProgressionStats").Connect(([progressionStats]) => {
 			this.InfoFrame.OnProgressionStats(progressionStats);
 			const resource = this.ResourceBarMap.get("Experience");
 			Logger.Log(script, "Experience Resource", resource as unknown as string);

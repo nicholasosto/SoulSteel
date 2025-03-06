@@ -14,7 +14,7 @@ export default class ProgressionManager implements IProgressionManager {
 
 	private _updatePlayerUI(): void {
 		const progressionStats = this._dataManager.GetData().ProgressionStats;
-		Remotes.Server.Get("SendProgressionStats").SendToPlayer(this._player, progressionStats);
+		Remotes.Server.Get("SendProgressionStats").SendToPlayer(this._player, [progressionStats]);
 	}
 
 	public OnExperienceGained(experience: number): void {

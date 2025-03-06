@@ -26,7 +26,6 @@ export default class SkillController {
 		/* Assign Skill Slot */
 		this._skillSlotAssignmentConnection?.Disconnect();
 		this._skillSlotAssignmentConnection = Remotes.Server.Get("AssignSkill").Connect((player, payload) => {
-
 			/* Get the player character */
 			const playerCharacter = PCController.GetPlayerCharacter(player) as PlayerCharacter;
 			const skillId = payload[1] as SkillId;

@@ -6,6 +6,7 @@ import { ResourceId } from "shared/_IDs/IDs_Resource";
 
 /* Interfaces */
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+import Logger from "shared/Utility/Logger";
 
 /* All Payloads */
 interface Payloads {
@@ -59,11 +60,11 @@ const Remotes = Net.CreateDefinitions({
 	SkillBarUpdate: Definitions.ServerToClientEvent<[Payloads["SkillSlotMap"]]>(),
 
 	/* Data - Player Data Loaded */
-	SendPlayerData: Definitions.ServerToClientEvent<Payloads["PlayerData"]>(),
+	SendPlayerData: Definitions.ServerToClientEvent<[Payloads["PlayerData"]]>(),
 	/* Data - Progression Stats */
-	SendProgressionStats: Definitions.ServerToClientEvent<Payloads["ProgressionStats"]>(),
+	SendProgressionStats: Definitions.ServerToClientEvent<[Payloads["ProgressionStats"]]>(),
 	/* Data - Player Resource Update */
-	SendResourceData: Definitions.ServerToClientEvent<Payloads["PlayerResourceData"]>(),
+	SendResourceData: Definitions.ServerToClientEvent<[Payloads["PlayerResourceData"]]>(),
 });
 
 /* ======== Client to Server Functions =========*/
@@ -109,7 +110,8 @@ function SendResourceUpdate(player: Player, resourceId: ResourceId, current: num
 	const payload: Payloads["PlayerResourceData"] = [resourceId, current, max];
 
 	/* Send To Player */
-	Remotes.Server.Get("SendResourceData").SendToPlayer(player, ...payload);
+	Remotes.Server.Get("SendResourceData").SendToPlayer(player, payload);
+	Logger.Log("Remotes", `Sent Resource Update: ${resourceId} - ${current}/${max}`);
 }
 
 export {
