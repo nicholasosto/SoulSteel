@@ -1,0 +1,70 @@
+Event Usage Tree:
+
+BiDirectional Events:
+├── GameOfLife
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts   (DeveloperEvent)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts   (DeveloperEvent)
+├── Teleport
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts   (WorldEvent)
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\client\net\teleporter.client.ts          (WorldEvent)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts             (WorldEvent)
+├── SkillSlotAssignment
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts   (SkillEvent)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts             (SkillEvent)
+├── UnAssignSkillSlot
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts   (SkillEvent)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts             (SkillEvent)
+├── ModuleToModule
+│   └─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts   (Used only here)
+└── PlayerNotification
+    ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\Remotes.ts                  (SendNotification / SendNoticationConfirmation)
+    ├─ e:\RobloxDevelopment\SoulSteel\src\shared\net\BiDirectionalController.ts   (Notifications)
+    ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts             (Notifications)
+    └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts             (Notifications)
+
+C2S Events:
+├── PlayerUIReady
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts   (GameCycleEvents)
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\UIListeners.ts        (via GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── TargetSelected
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (WorldEvent)
+├── QuestAccepted
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (QuestToServer.SendQuestAccepted)
+├── QuestUpdated
+│   └─ (No usage found in provided files)
+└── QuestCompleted
+    ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (QuestCompleted)
+    └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (QuestToServer.SendQuestComplete)
+
+S2C Events:
+├── PlayerDataLoaded
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── PlayerResourceUpdated
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents, CharacterEvent)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents, CharacterEvent)
+├── PlayerDied
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── SendSkillSlotMap
+│   └─ (No usage found in provided files)
+├── SkillControllerStarted
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── CharacterControllerStarted
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── DataManagerStarted
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (GameCycleEvents)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (GameCycleEvents)
+├── QuestRewarded
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (Outbound.SendQuestRewarded)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (QuestRewarded)
+├── QuestAssigned
+│   ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (Outbound.SendQuestAssigned)
+│   └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (QuestAssigned)
+└── SendProgressionStats
+    ├─ e:\RobloxDevelopment\SoulSteel\src\server\net\_Server_Events.ts      (Outbound.SendProgressionStats)
+    └─ e:\RobloxDevelopment\SoulSteel\src\client\net\_Client_Events.ts      (OnProgressionStats)

@@ -68,4 +68,23 @@ function SendNoticationConfirmation(confirmation: boolean): void {
 	BiDirectional.Client.Get("PlayerNotification").SendToServer(payload);
 }
 
-export { S2C, C2S, BiDirectional as BiDirectionalEvents, Payloads, SendNotification, SendNoticationConfirmation };
+const Remotes = Net.CreateDefinitions({
+	// Client requests to assign a skill (e.g., unlock or invest a point in a skill)
+	AssignSkill: Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
+
+	// Server notifies the client about the result of the skill assignment
+	SkillAssigned: Definitions.ServerToClientEvent<[success: boolean, message: string]>(),
+
+	// Server updates the client's skill bar UI (e.g., new set of skills or updated state)
+	SkillBarUpdate: Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
+});
+
+export {
+	Remotes,
+	S2C,
+	C2S,
+	BiDirectional as BiDirectionalEvents,
+	Payloads,
+	SendNotification,
+	SendNoticationConfirmation,
+};

@@ -8,6 +8,7 @@ import WcsClient from "./_WCS/WCSClient";
 import AudioPlayer from "shared/Utility/AudioPlayer";
 import KeyboardController from "client/Keyboard/Keyboard";
 import ClientUIController from "./Controllers/ClientUIController";
+import SkillBarController from "./Controllers/SkillBarController";
 import MovementController from "./Controllers/MovementController";
 import MainMenu from "./ScreenGUIs/MainMenu";
 
@@ -43,6 +44,6 @@ class GameClient {
 }
 
 GameClient.Start();
-AudioPlayer.PlayCreepyMoan();
-
+//AudioPlayer.PlayCreepyMoan();
+SkillBarController.StartSkillBarListeners();
 GameCycleEvents.PlayerUIReady.SendToServer();
