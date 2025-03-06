@@ -2,9 +2,9 @@ import { TQuestBlock } from "shared/_Types/TQuestBlock";
 import { CollectionService } from "@rbxts/services";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { Players } from "@rbxts/services";
-import { Outbound } from "server/net/_Server_Events";
 import { QuestId } from "shared/_IDs/IDs_Quest";
 import PCController from "server/Controllers/PlayerCharacterController";
+import { AssignQuestToPlayer } from "shared/net/Remotes";
 
 const tagName = "QuestBlock";
 
@@ -25,7 +25,7 @@ class QuestBlock {
 
 			const playerCharacter = PCController.GetPlayerCharacter(player);
 			if (playerCharacter?.OnAssignQuest(this.questId as QuestId)) {
-				Outbound.SendQuestAssigned(player, this.questId as QuestId);
+				AssignQuestToPlayer(player, this.questId);
 			}
 		});
 	}

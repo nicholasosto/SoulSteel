@@ -1,13 +1,15 @@
 import Logger from "shared/Utility/Logger";
-import { ResourceId } from "server/Character/Index/CharacterIndex";
+
+import { SendResourceUpdate } from "shared/net/Remotes";
+
 import { CharacterResource } from "../Classes/CharacterResource";
-import { Character, UnknownSkill } from "@rbxts/wcs";
+import { UnknownSkill } from "@rbxts/wcs";
 
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/Player Data/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
-import { Outbound } from "server/net/_Server_Events";
+
 
 /* Responibilities */
 // - Create and manage resources for the character
@@ -84,9 +86,13 @@ export default class ResourceManager implements IResourceManager {
 
 	/* Notify UI */
 	private _notifyUI() {
-		Outbound.SendResourceUpdate(this._playerCharacter.player, this.HealthResource.GetPayload());
-		Outbound.SendResourceUpdate(this._playerCharacter.player, this.ManaResource.GetPayload());
-		Outbound.SendResourceUpdate(this._playerCharacter.player, this.StaminaResource.GetPayload());
+		const healthPL = this.HealthResource.GetPayload();
+		const manaPL = this.ManaResource.GetPayload();
+		const stamPL = this.StaminaResource.GetPayload();
+
+		SendResourceUpdate(this._playerCharacter.player, healthPL.resourceId, healthPL.current, healthPL.max);
+		SendResourceUpdate(this._playerCharacter.player, manaPL.resourceId, manaPL.current, manaPL.max);
+		SendResourceUpdate(this._playerCharacter.player, stamPL.resourceId, stamPL.current, stamPL.max);
 	}
 
 	public OnHeartBeat() {

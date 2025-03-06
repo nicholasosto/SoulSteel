@@ -2,7 +2,7 @@ import { TDialog } from "shared/Epic UI/Types/TDialog";
 import { TEpicAttributes } from "shared/Epic UI/EpicIndex";
 import StorageManager from "shared/Storage/StorageManager";
 import Logger from "shared/Utility/Logger";
-import { SendNoticationConfirmation } from "shared/net/Remotes";
+//import { SendNoticationConfirmation } from "shared/net/Remotes";
 
 export class Dialog {
 	// Main Template
@@ -45,15 +45,15 @@ export class Dialog {
 		// Set Button Text
 		this._button1.SetAttribute("TextValue", button1Name);
 		this._button2.SetAttribute("TextValue", button2Name);
-		// Button 1 Click
-		this._connectionButton1 = this._button1.Activated.Connect(() => {
-			this._handleButton1Click();
-		});
+		// // Button 1 Click
+		// this._connectionButton1 = this._button1.Activated.Connect(() => {
+		// 	this._handleButton1Click();
+		// });
 
-		// Button 2 Click
-		this._connectionButton2 = this._button2.Activated.Connect(() => {
-			this._handleButton2Click();
-		});
+		// // Button 2 Click
+		// this._connectionButton2 = this._button2.Activated.Connect(() => {
+		// 	this._handleButton2Click();
+		// });
 
 		// Close Button Click
 		this._connectionClose = this._closeButton.Activated.Connect(() => {
@@ -61,16 +61,16 @@ export class Dialog {
 		});
 	}
 
-	// Button Click Handlers
-	protected _handleButton1Click() {
-		Logger.Log(script, "Button 1 Clicked");
-		SendNoticationConfirmation(true);
-		this.Hide();
-	}
-	protected _handleButton2Click() {
-		Logger.Log(script, "Button 2 Clicked");
-		this.Hide();
-	}
+	// // Button Click Handlers
+	// protected _handleButton1Click() {
+	// 	Logger.Log(script, "Button 1 Clicked");
+	// 	SendNoticationConfirmation(true);
+	// 	this.Hide();
+	// }
+	// protected _handleButton2Click() {
+	// 	Logger.Log(script, "Button 2 Clicked");
+	// 	this.Hide();
+	// }
 
 	// Update the Dialog Title and Message
 	public SetText(title: string, message: string) {

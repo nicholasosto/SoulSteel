@@ -1,10 +1,9 @@
 // server/net/remotes.server.ts
 import Logger from "shared/Utility/Logger";
-import { SkillEvent } from "server/net/_Server_Events";
 import PCController from "server/Controllers/PlayerCharacterController";
-
 import PlayerCharacter from "server/Character/PlayerCharacter";
-import { Remotes } from "shared/net/Remotes";
+import { Remotes, SendNotification, Payloads } from "shared/net/Remotes";
+import { SkillId } from "shared/_IDs/IDs_Skill";
 
 export default class SkillController {
 	// Singleton
@@ -26,21 +25,42 @@ export default class SkillController {
 	private static _initializeListeners() {
 		/* Assign Skill Slot */
 		this._skillSlotAssignmentConnection?.Disconnect();
-		this._skillSlotAssignmentConnection = Remotes.Server.Get("AssignSkill").Connect((player, slot, skillId) => {
-			Logger.Log("Event - SkillSlotAssignment", `Player: ${player.Name}, Slot: ${slot}, SkillId: ${skillId}`);
+		this._skillSlotAssignmentConnection = Remotes.Server.Get("AssignSkill").Connect((player, payload) => {
 
 			/* Get the player character */
 			const playerCharacter = PCController.GetPlayerCharacter(player) as PlayerCharacter;
+			const skillId = payload[1] as SkillId;
+			const slot = payload[0] as number;
 
-			/* Assert Skill Manager and slot number*/
-			assert(playerCharacter.skillManager);
-			assert(slot >= 1 && slot <= 5, "Invalid slot");
-
-			/* Assign the skill to the slot */
-			playerCharacter.skillManager.OnEquipSkillSlot(slot, skillId);
+			/* Assign or Unassign Skill */
+			if (skillId === undefined) {
+				playerCharacter.skillManager.OnUnequipSkillSlot(slot);
+			} else {
+				/* Validate the skill assignment */
+				if (!this._validateSkillAssignment(playerCharacter, slot, skillId)) return;
+				/* Assign the skill to the slot */
+				playerCharacter.skillManager.OnEquipSkillSlot(slot, skillId);
+			}
 
 			/* Update the skill bar */
-			Remotes.Server.Get("SkillBarUpdate").SendToPlayer(player, playerCharacter.skillManager.SkillMap);
+			Remotes.Server.Get("SkillBarUpdate").SendToPlayer(player, [playerCharacter.skillManager.SkillMap]);
 		});
+	}
+
+	private static _validateSkillAssignment(playerCharacter: PlayerCharacter, slot: number, skillId: SkillId): boolean {
+		// Ensure slot is valid
+		assert(slot >= 1 && slot <= 5, "Invalid slot");
+		// Ensure skillManager exists
+		assert(playerCharacter.skillManager, "Missing skill manager");
+		// Check if the skill is unlocked
+		assert(playerCharacter.skillManager.UnlockedSkills.includes(skillId), "Skill not unlocked");
+
+		/* Check if the skill is unlocked */
+		if (!playerCharacter.skillManager.UnlockedSkills.includes(skillId)) {
+			SendNotification(playerCharacter.player, false, "Skill Assignment", "Skill not unlocked");
+			return false;
+		}
+
+		return true;
 	}
 }

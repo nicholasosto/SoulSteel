@@ -1,20 +1,35 @@
+/* 
+  Filename: PlayerCharacterController.ts
+  Location: src/server/Controllers
+  Project: SoulSteel
+  Author: TrembusTech
+  Date: March 06 2025
+  Instructions: This singleton should be started in the main server script.
+  Description: Controller for managing player characters on the server.
+               Handles creation, registration, removal, and cleanup of player characters.
+
+  Custom Events / Remotes: None
+  Other Events: 
+  	- WcsCharacterDestroyed
+  Revision History:
+    - Initial implementation.
+*/
+
 import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import { RegisterPlayerCharacter } from "shared/_Registry/EntityRegistration";
+import {
+	RegisterPlayerCharacter,
+	GetPlayerCharacter,
+	RemovePlayerCharacter,
+} from "shared/_Registry/EntityRegistration";
 
-type TConnectionName = "TakeDamage" | "Die";
-
+/* Player Character Controller */
 export default class PCController {
-	// Static Instance
+	/* Singleton Instance */
 	private static _instance: PCController;
-
-	// Registry
-	public static _PlayerCharacters: Map<string, PlayerCharacter> = new Map();
-	public static _CharacterConnections: Map<PlayerCharacter, Map<TConnectionName, RBXScriptConnection>> = new Map();
-	public static _QuestCompletedConnection: RBXScriptConnection;
 
 	/* Constructor */
 	private constructor() {
@@ -25,39 +40,16 @@ export default class PCController {
 	public static Start() {
 		if (this._instance === undefined) {
 			this._instance = new PCController();
-			this._InitConnections();
 		}
-	}
-
-	private static _InitConnections() {
-		// this._QuestCompletedConnection?.Disconnect();
-		// this._QuestCompletedConnection = QuestCompleted.Connect((player, questId) => {
-		// 	const playerCharacter = this.GetPlayerCharacter(player);
-		// 	const completed = playerCharacter?.OnQuestCompleted(questId);
-		// 	if (completed) {
-		// 		const playerDataCache = OldDataManager.GetDataCache(player);
-		// 		assert(playerDataCache !== undefined, "Player Data is nil");
-		// 		assert(playerCharacter !== undefined, "Player Character is nil");
-		// 		playerCharacter.dataManager.UpdateProgressionStats
-		// 		const newCache = playerDataCache._playerData;
-		// 		newCache.ProgressionStats = playerCharacter.ProgressionStats;
-		// 		playerDataCache.SetDataCache(newCache);
-
-		// 		Outbound.SendQuestRewarded(player, questId);
-		// 		Outbound.SendProgressionStats(player, playerDataCache._playerData.ProgressionStats);
-		// 	}
-		// });
 	}
 
 	/* On Character Added */
 	public static CreatePlayerCharacter(player: Player, character: Model): IPlayerCharacter {
-		Logger.LogFlow("[Player Character Flow][Creation]", 2, script);
-
 		/* Create the WCS Character */
 		const wcsCharacter = new Character(character);
 
+		/* WCS Character Destroyed */
 		wcsCharacter.Destroyed.Connect(() => {
-			Logger.LogFlow("[Player Character Flow][Creation]", 4, script);
 			this.RemovePlayerCharacter(player);
 		});
 
@@ -65,42 +57,38 @@ export default class PCController {
 		const playerCharacter = new PlayerCharacter(player, wcsCharacter);
 
 		/* Add to Registry */
-		this._PlayerCharacters.set(tostring(player.UserId), playerCharacter);
-		Logger.LogFlow("[Player Character Flow][Creation]", 3, script);
 		RegisterPlayerCharacter(playerCharacter);
+
+		/* Return Player Character */
 		return playerCharacter;
 	}
 
 	/* On Character Removed */
 	public static RemovePlayerCharacter(player: Player) {
-		Logger.Log("Flow - Remove Player Character", player.Name);
-		// Get the Game Character
-		const playerCharacter = this._PlayerCharacters.get(tostring(player.UserId)) as PlayerCharacter;
+		/* Get Player Character */
+		const playerCharacter = GetPlayerCharacter(player) as PlayerCharacter;
 
 		playerCharacter?.OnDeath();
 
-		// Remove from the Registry
-		this._PlayerCharacters.delete(tostring(player.UserId));
+		/* Remove from Registry */
+		RemovePlayerCharacter(player);
 	}
 
 	/* Get Game Character */
 	public static GetPlayerCharacter(player: Player): PlayerCharacter | undefined {
-		return PCController._PlayerCharacters.get(tostring(player.UserId)) as PlayerCharacter;
+		return GetPlayerCharacter(player) as PlayerCharacter;
 	}
 
+	/* Get Player Character from Character */
 	public static GetPlayerCharacterFromCharacter(character: Model): PlayerCharacter | undefined {
+		/* Get Player */
 		const player = Players.GetPlayerFromCharacter(character);
-		Logger.Log(script, "Getting PlayerCharacter: ", player);
-		const UserId = tostring(player?.UserId);
+		assert(player, "Player is nil");
 
-		const playerCharacter = this._PlayerCharacters.get(UserId);
-		if (playerCharacter === undefined) {
-			Logger.Log(script, "Player Character is nil", "PlayerList: ");
-			this._PlayerCharacters.forEach((value, key) => {
-				Logger.Log(script, key, value.player.Name);
-			});
-		}
+		/* Get Player Character */
+		const playerCharacter = GetPlayerCharacter(player) as PlayerCharacter;
 
+		/* Return Player Character */
 		return playerCharacter;
 	}
 }

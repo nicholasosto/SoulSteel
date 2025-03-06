@@ -5,6 +5,39 @@
 - **Code Clarity:** Use clear, consistent TypeScript syntax and maintain well-commented code.
 - **Modular Design:** Favor modular, reusable code and adhere to the principle of separation of concerns.
 - **Naming Conventions:** Use descriptive names for functions, variables, and classes that match our project's style.
+- **Commenting Style:**
+  - File Header:
+
+  ```ts
+  /*
+  Filename: PlayerCharacterController.ts
+  Location: src/server/Controllers
+  Project: SoulSteel
+  Author: TrembusTech
+  Date: March 06 2025
+  Instructions: This singleton should be started in the main server script.
+  Description: Controller for managing player characters on the server.
+               Handles creation, registration, removal, and cleanup of player characters.
+
+  Custom Events / Remotes: None
+  Other Events:
+  - WcsCharacterDestroyed
+  Revision History:
+  - Initial implementation.
+  */ 
+  ```
+
+  - Top Level:
+
+  ```ts
+  /*===========| NAME_OF_TITLE | ============*/
+  ```
+
+  - Sub Level:
+
+  ```ts
+  /* COMMENT */
+  ```
 
 ## Game Logic & Architecture
 
@@ -15,14 +48,14 @@
 
 ## UI Development
 
-- **Preferred UI Framework:** Use Roact (JSX) for building UI components.
+- **Preferred UI Framework:** Pleas review my client UI classes ensuring proper communication with server.  Use existing code where possible.
 - **Component Naming:** Name UI components using PascalCase (e.g., `MainMenu`, `InventoryUI`).
 - **Separation of Concerns:** Separate layout, styling, and logic in your UI code to enhance reusability and readability.
 - **Responsive Design:** Structure UI code to be easily adaptable as the game evolves.
 
 ## Debugging and Logging
 
-- **Custom Logging:** Always use our `Logger.Log` utility for debugging instead of using plain `print` statements.
+- **Custom Logging:** Always use our `Logger.Log` utility for debugging instead of using plain `print` statements. but use `warn` or `assert()` to inform of errors.
 - **Error Handling:** Include proper error checking and assertions, especially around remote calls and asset loading.
 - **Inline Documentation:** Add concise comments to explain complex logic or non-obvious code segments to ease future debugging.
 

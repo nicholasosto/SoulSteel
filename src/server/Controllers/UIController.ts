@@ -1,8 +1,8 @@
 import Logger from "shared/Utility/Logger";
-import { GameCycleEvents } from "server/net/_Server_Events";
 import { SendNotification } from "shared/net/Remotes";
 import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 import { IPlayerData } from "shared/_Functions/DataFunctions";
+import { Remotes } from "shared/net/Remotes";
 
 export default class UIController {
 	// Singleton
@@ -26,13 +26,10 @@ export default class UIController {
 			warn("Player Data is undefined");
 			return;
 		}
-		Logger.Log(script, playerCharacter?.dataManager.GetData() as unknown as string);
-
-		print("NEW: ", playerDataM);
-		GameCycleEvents.PlayerDataLoaded.SendToPlayer(player, playerDataM);
+		Remotes.Server.Get("SendPlayerData").SendToPlayer(player, playerDataM);
 	}
 
-	public static NotifyPlayer(player: Player, message: string, confirmation: boolean) {
-		SendNotification(player, message, confirmation);
+	public static NotifyPlayer(player: Player, success: boolean, title: string, message: string) {
+		SendNotification(player, success, title, message);
 	}
 }

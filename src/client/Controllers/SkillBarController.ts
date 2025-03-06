@@ -17,15 +17,14 @@ export default class SkillBarController {
 	public static StartSkillBarListeners() {
 		/* Skill Bar Update - From Server */
 		this._SkillBarUpdateConnection?.Disconnect();
-		this._SkillBarUpdateConnection = Remotes.Client.Get("SkillBarUpdate").Connect(
-			(skillMap: Map<number, SkillId>) => {
-				Logger.Log(script, "Skill Bar Update");
-				this._skillBar.LoadSkills(skillMap);
-			},
-		);
+		this._SkillBarUpdateConnection = Remotes.Client.Get("SkillBarUpdate").Connect(([skillMap]) => {
+			Logger.Log(script, "Skill Bar Update");
+			this._skillBar.LoadSkills(skillMap);
+		});
 	}
 	public static SendAssignSkill(slot: number, skillId: SkillId) {
-		Remotes.Client.Get("AssignSkill").SendToServer(slot, skillId);
+		const payload: [number, SkillId] = [slot, skillId];
+		Remotes.Client.Get("AssignSkill").SendToServer(payload);
 	}
 
 	public static UnassignSkill(slot: number) {

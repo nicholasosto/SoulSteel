@@ -1,7 +1,7 @@
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
 import Logger from "shared/Utility/Logger";
-import { S2C } from "shared/net/Remotes";
+import { Remotes } from "shared/net/Remotes";
 
 export default class ProgressionManager implements IProgressionManager {
 	private _player: Player;
@@ -14,7 +14,7 @@ export default class ProgressionManager implements IProgressionManager {
 
 	private _updatePlayerUI(): void {
 		const progressionStats = this._dataManager.GetData().ProgressionStats;
-		S2C.Server.Get("SendProgressionStats").SendToPlayer(this._player, progressionStats);
+		Remotes.Server.Get("SendProgressionStats").SendToPlayer(this._player, progressionStats);
 	}
 
 	public OnExperienceGained(experience: number): void {

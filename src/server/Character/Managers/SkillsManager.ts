@@ -6,7 +6,7 @@ import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
 import { CreateSkillFromId } from "shared/_Functions/SkillFunctions";
 import { Character, UnknownSkill } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import { S2C } from "shared/net/Remotes";
+
 
 /* Skills Manager */
 export default class SkillsManager implements ISkillManager {

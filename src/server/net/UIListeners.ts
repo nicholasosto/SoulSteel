@@ -1,21 +1,22 @@
-import { GameCycleEvents } from "server/net/_Server_Events";
 import UIController from "server/Controllers/UIController";
+import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 import PCController from "server/Controllers/PlayerCharacterController";
+import { Remotes } from "shared/net/Remotes";
 
 let _connection_UIReady: RBXScriptConnection | undefined;
 
 export function StartUIListeners() {
 	_connection_UIReady?.Disconnect();
-	_connection_UIReady = GameCycleEvents.PlayerUIReady.Connect((player: Player) => {
-		let PC = PCController.GetPlayerCharacter(player);
+	_connection_UIReady = Remotes.Server.Get("PlayerUIReady").Connect((player: Player) => {
+		let PC = GetPlayerCharacter(player);
 		while (PC === undefined) {
 			const character = player.Character;
 			if (character) {
 				PCController.CreatePlayerCharacter(player, character);
-				PC = PCController.GetPlayerCharacter(player);
+				PC = GetPlayerCharacter(player);
 			}
 			wait(0.5);
 		}
-		UIController.NotifyPlayer(player, "Welcome to the game!", false);
+		UIController.NotifyPlayer(player, true, "Welcome", "Welcome to the game!");
 	});
 }

@@ -1,90 +1,123 @@
 import Net, { Definitions } from "@rbxts/net";
+
+/* ID's */
 import { SkillId } from "shared/_IDs/IDs_Skill";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
+
+/* Interfaces */
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
-import Logger from "shared/Utility/Logger";
-import { QuestId } from "shared/_IDs/IDs_Quest";
 
-interface PlayerNotificationPayload {
-	message: string;
-	confirmation: boolean;
-}
-
-/* Payloads */
+/* All Payloads */
 interface Payloads {
-	PlayerLevelUp: [level: number];
-	PlayerInfoResponse: [name: string, level: number, profilePicId: string];
-	PlayerResourceUpdate: { resourceId: ResourceId; current: number; max: number };
+	/* Player Data */
+	PlayerData: [playerData: IPlayerData];
+	SkillSlotMap: [skillSlotMap: Map<number, SkillId>];
+	ProgressionStats: [progressionStats: IPlayerData["ProgressionStats"]];
+	CharacterIdentity: [characterIdentity: IPlayerData["CharacterIdentity"]];
+	CharacterStats: [characterStats: IPlayerData["CharacterStats"]];
+	QuestData: [questData: IPlayerData["QuestData"]];
+	Skills: [skills: IPlayerData["Skills"]];
+
+	/* Derived Data Payloads */
+	PlayerResourceData: [resourceId: ResourceId, current: number, max: number];
+
+	/* Messaging Payloads */
+	PlayerNotification: [success: boolean, title: string, message: string];
+
+	/* Client to Server Payloads */
+	AssignSkill: [slot: number, skillId?: SkillId];
 }
 
-const BiDirectional = Net.Definitions.Create({
-	GameOfLife: Net.Definitions.BidirectionalEvent<[]>(),
-	Teleport: Net.Definitions.BidirectionalEvent<[destination: Vector3]>(),
-	SkillSlotAssignment: Net.Definitions.BidirectionalEvent<[slot: number, skillId: SkillId]>(),
-	UnAssignSkillSlot: Net.Definitions.BidirectionalEvent<[slot: number]>(),
-	ModuleToModule: Net.Definitions.BidirectionalEvent<[message: string]>(),
-	PlayerNotification: Net.Definitions.BidirectionalEvent<[payload: PlayerNotificationPayload]>(),
-});
-
-const C2S = Net.Definitions.Create({
-	PlayerUIReady: Net.Definitions.ClientToServerEvent(),
-	TargetSelected: Net.Definitions.ClientToServerEvent<[targetId: string]>(),
-
-	/*Quests*/
-	QuestAccepted: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
-	QuestUpdated: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
-	QuestCompleted: Net.Definitions.ClientToServerEvent<[questId: QuestId]>(),
-});
-
-const S2C = Net.Definitions.Create({
-	PlayerDataLoaded: Net.Definitions.ServerToClientEvent<[playerData: IPlayerData]>(),
-	PlayerResourceUpdated: Net.Definitions.ServerToClientEvent<[Payloads["PlayerResourceUpdate"]]>(),
-	PlayerDied: Net.Definitions.ServerToClientEvent(),
-
-	SendSkillSlotMap: Net.Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
-
-	SkillControllerStarted: Net.Definitions.ServerToClientEvent(),
-	CharacterControllerStarted: Net.Definitions.ServerToClientEvent(),
-	DataManagerStarted: Net.Definitions.ServerToClientEvent(),
-
-	/*Quests*/
-	QuestRewarded: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
-	QuestAssigned: Net.Definitions.ServerToClientEvent<[questId: QuestId]>(),
-
-	/*Progression*/
-	SendProgressionStats: Net.Definitions.ServerToClientEvent<[progressionStats: IPlayerData["ProgressionStats"]]>(),
-});
-
-/* Send To Client */
-function SendNotification(player: Player, message: string, confirmation: boolean): void {
-	const payload: PlayerNotificationPayload = { message, confirmation };
-	BiDirectional.Server.Get("PlayerNotification").SendToPlayer(player, payload);
-	Logger.Log(script, `Notification: ${message}`, player);
-}
-
-/* Send To Server */
-function SendNoticationConfirmation(confirmation: boolean): void {
-	const payload: PlayerNotificationPayload = { message: "", confirmation };
-	BiDirectional.Client.Get("PlayerNotification").SendToServer(payload);
-}
+type ServerPayloads = {
+	NotifyPlayer: Payloads["PlayerNotification"];
+	SkillBarUpdate: Payloads["SkillSlotMap"];
+};
 
 const Remotes = Net.CreateDefinitions({
-	// Client requests to assign a skill (e.g., unlock or invest a point in a skill)
-	AssignSkill: Definitions.ClientToServerEvent<[slot: number, skillId: SkillId]>(),
+	/* ======== Client To Server Events =========*/
 
-	// Server notifies the client about the result of the skill assignment
-	SkillAssigned: Definitions.ServerToClientEvent<[success: boolean, message: string]>(),
+	/* Game Cycle - Player UI Ready */
+	PlayerUIReady: Definitions.ClientToServerEvent<[]>(),
 
-	// Server updates the client's skill bar UI (e.g., new set of skills or updated state)
-	SkillBarUpdate: Definitions.ServerToClientEvent<[skillSlotMap: Map<number, SkillId>]>(),
+	/*Skills -  Assign Skill Slot */
+	AssignSkill: Definitions.ClientToServerEvent<[Payloads["AssignSkill"]]>(),
+
+	/* Quests - Assign */
+	AssignQuest: Definitions.ClientToServerEvent<[questId: string]>(),
+
+	/* World - Teleport */
+	TeleportTo: Definitions.ClientToServerEvent<[destination: Vector3]>(),
+	/* World - Target Selected */
+	TargetSelected: Definitions.ClientToServerEvent<[targetId: string]>(),
+
+	/* ======== Server to Client Events =========*/
+
+	/* Messages - Notify Player */
+	NotifyPlayer: Definitions.ServerToClientEvent<[Payloads["PlayerNotification"]]>(),
+
+	/* Skills - UI Skill Bar Update */
+	SkillBarUpdate: Definitions.ServerToClientEvent<[Payloads["SkillSlotMap"]]>(),
+
+	/* Data - Player Data Loaded */
+	SendPlayerData: Definitions.ServerToClientEvent<Payloads["PlayerData"]>(),
+	/* Data - Progression Stats */
+	SendProgressionStats: Definitions.ServerToClientEvent<Payloads["ProgressionStats"]>(),
+	/* Data - Player Resource Update */
+	SendResourceData: Definitions.ServerToClientEvent<Payloads["PlayerResourceData"]>(),
 });
+
+/* ======== Client to Server Functions =========*/
+
+/* Assign Skill Slot */
+function AssignSkillSlot(slot: number, skillId: SkillId): void {
+	/* Create Payload */
+	const payload: Payloads["AssignSkill"] = [slot, skillId];
+
+	/* Send To Client */
+	Remotes.Client.Get("AssignSkill").SendToServer(payload);
+}
+
+/* Unassign Skill Slot */
+function UnAssignSkillSlot(slot: number): void {
+	/* Create Payload */
+	const payload: Payloads["AssignSkill"] = [slot, undefined];
+
+	/* Send To Client */
+	Remotes.Client.Get("AssignSkill").SendToServer(payload);
+}
+
+/* ======== Server to Client Functions =========*/
+
+/* Notify Player */
+function SendNotification(player: Player, success: boolean, title: string, message: string): void {
+	/* Create Payload */
+	const payload: Payloads["PlayerNotification"] = [success, title, message];
+
+	/* Send To Player */
+	Remotes.Server.Get("NotifyPlayer").SendToPlayer(player, payload);
+}
+
+/* Assign Quest */
+function AssignQuestToPlayer(player: Player, questId: string): void {
+	/* Send To Player */
+	Remotes.Client.Get("AssignQuest").SendToServer(questId);
+}
+
+/* Send Resource Update */
+function SendResourceUpdate(player: Player, resourceId: ResourceId, current: number, max: number): void {
+	/* Create Payload */
+	const payload: Payloads["PlayerResourceData"] = [resourceId, current, max];
+
+	/* Send To Player */
+	Remotes.Server.Get("SendResourceData").SendToPlayer(player, ...payload);
+}
 
 export {
 	Remotes,
-	S2C,
-	C2S,
-	BiDirectional as BiDirectionalEvents,
 	Payloads,
+	AssignSkillSlot,
+	UnAssignSkillSlot,
 	SendNotification,
-	SendNoticationConfirmation,
+	SendResourceUpdate,
+	AssignQuestToPlayer,
 };

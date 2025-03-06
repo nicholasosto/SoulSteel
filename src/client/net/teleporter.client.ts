@@ -1,4 +1,4 @@
-import { WorldEvent } from "client/net/_Client_Events";
+import { Remotes } from "shared/net/Remotes";
 import { TeleportButtons } from "client/ScreenGUIs/GUI_Index";
 
 /* Teleport Buttons */
@@ -11,7 +11,7 @@ TeleportButtons.forEach((button) => {
 		const cfvLocation = button.WaitForChild("Location") as CFrameValue;
 		assert(cfvLocation, "CFrameValue not found");
 		button.Activated.Connect(() => {
-			WorldEvent.Teleport.SendToServer(cfvLocation.Value.Position);
+			Remotes.Client.Get("TeleportTo").SendToServer(cfvLocation.Value.Position);
 		});
 	}
 });

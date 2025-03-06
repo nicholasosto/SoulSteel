@@ -3,7 +3,8 @@ import IGameCharacter from "shared/_Interfaces/IGameCharacter";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ITargetManager from "shared/_Interfaces/Character Managers/ITargetManager";
 import { GetNPCCharacter, GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
-import { C2S } from "shared/net/Remotes";
+import { Remotes } from "shared/net/Remotes";
+
 
 export default class TargetManager implements ITargetManager {
 	private _playerCharacter: IPlayerCharacter;
@@ -22,7 +23,7 @@ export default class TargetManager implements ITargetManager {
 	/* Initialize Connections */
 	private _InitializeConnections(): void {
 		this._targetSelected?.Disconnect();
-		this._targetSelected = C2S.Server.Get("TargetSelected").Connect((player: Player, targetId: string) => {
+		this._targetSelected = Remotes.Server.Get("TargetSelected").Connect((player: Player, targetId: string) => {
 			const targetChar = GetNPCCharacter(targetId)
 				? this.OnTargetSelected(GetNPCCharacter(targetId)!)
 				: this.OnTargetSelected(GetPlayerCharacter(targetId)!);

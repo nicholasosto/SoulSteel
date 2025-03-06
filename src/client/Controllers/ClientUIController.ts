@@ -10,36 +10,19 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 import SkillBar from "shared/Epic UI/Classes/SkillBar";
 import SkillPanel from "client/ScreenGUIs/SkillPanel";
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";
-
-/* Quest Imports */
-import QuestPanel from "client/ScreenGUIs/QuestPanel";
-import Quest from "shared/_Classes/Quest";
-
-/* Client Imports */
 import {
-	GameCycleEvents,
-	CharacterEvent,
-	QuestToServer,
-	QuestRewarded,
-	QuestAssigned,
-	OnProgressionStats,
-} from "client/net/_Client_Events";
-import {
-	InfoFrameInstance,
 	SkillBarInstance,
+	InfoFrameInstance,
 	ResourceBarInstanceMap,
-	QuestPanelGUI,
 	Skills_Screen,
 } from "client/ScreenGUIs/GUI_Index";
-import { QuestId } from "shared/_IDs/IDs_Quest";
-import QuestDeffinitions from "shared/_Definitions/QuestDeffinitions";
+
+/* Remotes */
+import { Payloads, Remotes } from "shared/net/Remotes";
 
 export default class ClientUIController {
 	/* Singleton Instance*/
 	private static _instance: ClientUIController;
-
-	/* Quest Panel */
-	private static QuestPanel = new QuestPanel(QuestPanelGUI);
 
 	/* Skill UI*/
 	private static SkillBar = new SkillBar(SkillBarInstance);
@@ -74,7 +57,7 @@ export default class ClientUIController {
 			this._instance = new ClientUIController();
 			this._initializeResourceBars();
 			this._initializeListeners();
-			GameCycleEvents.PlayerUIReady.SendToServer();
+			Remotes.Client.Get("PlayerUIReady").SendToServer();
 		}
 	}
 
@@ -87,10 +70,10 @@ export default class ClientUIController {
 	}
 
 	/* Update Resource Bar */
-	public static UpdateResourceBar(resourceId: string, resouce: { resourceId: string; current: number; max: number }) {
-		const progressBar = this.ResourceBarMap.get(resourceId);
+	public static UpdateResourceBar(payload: Payloads["PlayerResourceData"]) {
+		const progressBar = this.ResourceBarMap.get(payload[0]);
 		if (progressBar) {
-			progressBar.Update(resouce);
+			progressBar.Update(payload);
 		}
 	}
 
@@ -102,7 +85,7 @@ export default class ClientUIController {
 	private static _initializeListeners() {
 		/* Player Data Loaded*/
 		this._playerDataLoaded?.Disconnect();
-		this._playerDataLoaded = GameCycleEvents.PlayerDataLoaded.Connect((playerData) => {
+		this._playerDataLoaded = Remotes.Client.Get("SendPlayerData").Connect((playerData) => {
 			const skillSlotMap = GetSkillSlotMap(playerData);
 			this.SkillBar.LoadSkills(skillSlotMap as Map<number, SkillId>);
 			this.InfoFrame.Update(playerData);
@@ -110,39 +93,16 @@ export default class ClientUIController {
 
 		/* Resource Updated */
 		this._resourceUpdated?.Disconnect();
-		this._resourceUpdated = CharacterEvent.ResourceUpdated.Connect((resource) => {
-			this.UpdateResourceBar(resource.resourceId, resource);
-		});
-
-		/* Quest Completed */
-		this._questReward?.Disconnect();
-		this._questReward = QuestRewarded.Connect((questId) => {
-			this.QuestPanel.OnQuestCompleted(questId);
-		});
-
-		/* Quest Accepted */
-		this._questAccepted?.Disconnect();
-		this._questAccepted = QuestAssigned.Connect((questId) => {
-			this.QuestPanel.OnQuestAccepted(questId);
-			const _rewardButton = this.QuestPanel.GetQuest(questId)?.RewardButton;
-			if (_rewardButton) {
-				_rewardButton.MouseButton1Click.Connect(() => {
-					QuestToServer.SendQuestComplete(questId);
-				});
-			}
+		this._resourceUpdated = Remotes.Client.Get("SendResourceData").Connect((resource) => {
+			Logger.Log(script, "Resource Updated", resource);
 		});
 
 		/* Progression Stats */
 		this._progressionStats?.Disconnect();
-		this._progressionStats = OnProgressionStats.Connect((progressionStats) => {
+		this._progressionStats = Remotes.Client.Get("SendProgressionStats").Connect((progressionStats) => {
 			this.InfoFrame.OnProgressionStats(progressionStats);
 			const resource = this.ResourceBarMap.get("Experience");
-			assert(resource, "Experience Resource Bar is nil");
-			resource.Update({
-				resourceId: "Experience",
-				current: progressionStats.Experience,
-				max: progressionStats.ExperienceToNextLevel,
-			});
+			Logger.Log(script, "Experience Resource", resource as unknown as string);
 		});
 	}
 }

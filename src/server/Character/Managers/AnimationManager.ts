@@ -35,7 +35,7 @@ export default class AnimationManager implements IAnimationManager {
 		/* Get Animation Track */
 		const animationTrack = this._animationMap.get(skillId);
 		animationTrack?.Ended.Connect(() => {
-			this._playerCharacter.humanoid.WalkSpeed = 16;
+			this._playerCharacter.humanoid.WalkSpeed = 24;
 		});
 
 		/* Play Animation */
