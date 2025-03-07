@@ -2,7 +2,6 @@ import { Remotes } from "shared/net/Remotes";
 
 let _teleportConnection: RBXScriptConnection | undefined;
 
-
 export default function StartTeleportListener() {
 	/* Teleport Player */
 	_teleportConnection?.Disconnect();

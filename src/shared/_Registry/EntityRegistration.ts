@@ -49,6 +49,17 @@ function RemoveNPCCharacter(npcCharacter: INPCCharacter): void {
 	NPCMap.delete(npcCharacter.characterId);
 }
 
+function GetGameCharacter(characterId: string): IPlayerCharacter | INPCCharacter | undefined {
+	const playerCharacter = GetPlayerCharacter(characterId);
+	if (playerCharacter) {
+		return playerCharacter;
+	}
+	const npcCharacter = GetNPCCharacter(characterId);
+	if (npcCharacter) {
+		return npcCharacter;
+	}
+}
+
 export {
 	RegisterPlayerCharacter,
 	RegisterNPCCharacter,
@@ -56,4 +67,7 @@ export {
 	GetNPCCharacter,
 	RemovePlayerCharacter,
 	RemoveNPCCharacter,
+
+	/* Get Game Character */
+	GetGameCharacter,
 };

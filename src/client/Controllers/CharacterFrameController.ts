@@ -38,7 +38,7 @@ export default class CharacterFrameController {
 
 		/* Player Data Connection */
 		this._playerDataConnection?.Disconnect();
-		this._playerDataConnection = Remotes.Client.Get("SendPlayerData").Connect(([playerData]) => {
+		this._playerDataConnection = Remotes.Client.Get("SendPlayerData").Connect((playerData) => {
 			this._characterFrame.Update(playerData);
 		});
 
@@ -53,7 +53,7 @@ export default class CharacterFrameController {
 
 		/* Experience Bar Connection */
 		this._experienceBarConnection?.Disconnect();
-		this._experienceBarConnection = Remotes.Client.Get("SendProgressionStats").Connect(([progressionData]) => {
+		this._experienceBarConnection = Remotes.Client.Get("SendProgressionStats").Connect((progressionData) => {
 			const currentExperience = progressionData.Experience;
 			const maxExperience = progressionData.ExperienceToNextLevel;
 			const resourceId = "Experience" as ResourceId;
@@ -62,7 +62,7 @@ export default class CharacterFrameController {
 
 		/* Progression Stats Connection */
 		this._progressionStatsConnection?.Disconnect();
-		this._progressionStatsConnection = Remotes.Client.Get("SendProgressionStats").Connect(([progressionData]) => {
+		this._progressionStatsConnection = Remotes.Client.Get("SendProgressionStats").Connect((progressionData) => {
 			this._characterFrame.OnProgressionStats(progressionData);
 		});
 	}

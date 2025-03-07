@@ -32,7 +32,7 @@ export default class SkillBar {
 	public LoadSkills(skillSlotMap: Map<number, SkillId>) {
 		// Loop through the Skill Slot Map
 		for (const [slot, skillId] of skillSlotMap) {
-			this._createSkillButton(slot, skillId);
+			//this._createSkillButton(slot, skillId);
 		}
 	}
 

@@ -1,8 +1,6 @@
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
 import Logger from "shared/Utility/Logger";
-import { SendResourceUpdate } from "shared/net/Remotes";
-import UIController from "server/Controllers/UIController";
 
 export default class ProgressionManager implements IProgressionManager {
 	private _player: Player;
@@ -26,15 +24,6 @@ export default class ProgressionManager implements IProgressionManager {
 		}
 
 		this._dataManager.UpdateProgressionStats(progressionStats);
-
-		SendResourceUpdate(
-			this._player,
-			"Experience",
-			progressionStats.Experience,
-			progressionStats.ExperienceToNextLevel,
-		);
-
-		UIController.SendProgressionStats(this._player);
 	}
 
 	private _getNextLevelExperience(level: number): number {

@@ -28,6 +28,7 @@ export default class SkillsManager implements ISkillManager {
 		/* Set WCS Character */
 		this.playerCharacter = playerCharacter;
 		this.wcsCharacter = playerCharacter.wcsCharacter;
+		this.UnlockedSkills = playerCharacter.dataManager.GetData().Skills.unlockedSkills;
 		assert(this.wcsCharacter, "Character is nil");
 	}
 

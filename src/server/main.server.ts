@@ -13,7 +13,8 @@ import StorageManager from "shared/Storage/StorageManager";
 // Controllers
 import PCController from "./Controllers/PlayerCharacterController";
 import SkillController from "./Controllers/SkillController";
-import UIController from "./Controllers/UIController";
+import TargetingController from "./Controllers/TargetingController";
+import TeleportController from "./Controllers/TeleportController";
 
 // Collections
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
@@ -22,9 +23,7 @@ import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
 import { StartZoneDetection } from "./Collections/ZoneCollector";
 import StartQuestBlockCollection from "./Collections/QuestBlock";
 
-// Event Listeners
-import { StartUIListeners } from "./net/UIListeners";
-import StartTeleportListener from "./net/TeleportListener";
+/* Types */
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 
 class GameServer {
@@ -47,6 +46,8 @@ class GameServer {
 
 			PCController.Start();
 			SkillController.Start();
+			TargetingController.Start();
+			TeleportController.Start();
 		}
 	}
 
@@ -79,9 +80,7 @@ const _playerConnections: Map<Player, RBXScriptConnection> = new Map();
 const _destroyConnection: Map<Player, RBXScriptConnection> = new Map();
 
 /* Start the Listeners */
-StartUIListeners();
-StartTeleportListener();
-//StartDeveloperListener();
+//StartTeleportListener();
 
 /* Start the Collections */
 StartCollectingNPCs();
@@ -108,8 +107,6 @@ function HandleCharacterAdded(player: Player, character: TGameCharacter | undefi
 			PCController.RemovePlayerCharacter(player);
 		}),
 	);
-
-	UIController.UpdatePlayerUI(player);
 
 	return true;
 }
@@ -140,6 +137,3 @@ Players.GetPlayers().forEach((player) => {
 	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });
-
-//const hello = sendMessageToOpenAI("Hello World!");
-//Logger.Log("OpenAI", hello);

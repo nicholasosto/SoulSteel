@@ -38,7 +38,7 @@ export default class ClientUIController {
 	private static _initializeListeners() {
 		/* Player Data Loaded*/
 		this._playerDataLoaded?.Disconnect();
-		this._playerDataLoaded = Remotes.Client.Get("SendPlayerData").Connect(([playerData]) => {
+		this._playerDataLoaded = Remotes.Client.Get("SendPlayerData").Connect((playerData) => {
 			const skillSlotMap = GetSkillSlotMap(playerData);
 			this.SkillBar.LoadSkills(skillSlotMap as Map<number, SkillId>);
 		});

@@ -8,6 +8,13 @@ import { SkillId } from "shared/_IDs/IDs_Skill";
 export default class SkillController {
 	// Singleton
 	private static _instance: SkillController;
+
+	/* Remotes - outbound*/
+	private static _sendSkillBarUpdate = Remotes.Server.Get("SkillBarUpdate");
+
+	/* Remotes - inbound */
+	private static _assignSkill = Remotes.Server.Get("AssignSkill");
+
 	/* Connections */
 	private static _skillSlotAssignmentConnection: RBXScriptConnection | undefined;
 	// Constructor
@@ -25,7 +32,7 @@ export default class SkillController {
 	private static _initializeListeners() {
 		/* Assign Skill Slot */
 		this._skillSlotAssignmentConnection?.Disconnect();
-		this._skillSlotAssignmentConnection = Remotes.Server.Get("AssignSkill").Connect((player, payload) => {
+		this._skillSlotAssignmentConnection = this._assignSkill.Connect((player, payload) => {
 			/* Get the player character */
 			const playerCharacter = PCController.GetPlayerCharacter(player) as PlayerCharacter;
 			const skillId = payload[1] as SkillId;
@@ -42,7 +49,7 @@ export default class SkillController {
 			}
 
 			/* Update the skill bar */
-			Remotes.Server.Get("SkillBarUpdate").SendToPlayer(player, [playerCharacter.skillManager.SkillMap]);
+			this._sendSkillBarUpdate.SendToPlayer(player, [playerCharacter.skillManager.SkillMap]);
 		});
 	}
 

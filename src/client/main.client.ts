@@ -15,7 +15,6 @@ import StartScreenController from "./ScreenGUIs/StartScreen/StartScreenControlle
 import MainMenu from "./ScreenGUIs/MainMenu";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
-import { Remotes } from "shared/net/Remotes";
 import CharacterFrameController from "./Controllers/CharacterFrameController";
 import { CollectTransparencyTweens } from "./Collectors/PulseTween";
 import { PlayerGUI } from "./ScreenGUIs/GUI_Index";
@@ -54,5 +53,4 @@ GameClient.Start();
 //AudioPlayer.PlayCreepyMoan();
 SkillBarController.StartSkillBarListeners();
 CollectTransparencyTweens();
-Remotes.Client.Get("PlayerUIReady").SendToServer();
 PlayerGUIController.Start();

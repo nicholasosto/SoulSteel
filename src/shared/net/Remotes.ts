@@ -35,6 +35,7 @@ const Remotes = Net.CreateDefinitions({
 
 	/* Game Cycle - Player UI Ready */
 	PlayerUIReady: Definitions.ClientToServerEvent<[]>(),
+	PlayerDataRequest: Definitions.ClientToServerEvent<[]>(),
 
 	/*Skills -  Assign Skill Slot */
 	AssignSkill: Definitions.ClientToServerEvent<[Payloads["AssignSkill"]]>(),
@@ -56,9 +57,9 @@ const Remotes = Net.CreateDefinitions({
 	SkillBarUpdate: Definitions.ServerToClientEvent<[Payloads["SkillSlotMap"]]>(),
 
 	/* Data - Player Data Loaded */
-	SendPlayerData: Definitions.ServerToClientEvent<[Payloads["PlayerData"]]>(),
+	SendPlayerData: Definitions.ServerToClientEvent<Payloads["PlayerData"]>(),
 	/* Data - Progression Stats */
-	SendProgressionStats: Definitions.ServerToClientEvent<[Payloads["ProgressionStats"]]>(),
+	SendProgressionStats: Definitions.ServerToClientEvent<Payloads["ProgressionStats"]>(),
 	/* Data - Player Resource Update */
 	SendResourceData: Definitions.ServerToClientEvent<[Payloads["PlayerResourceData"]]>(),
 });
