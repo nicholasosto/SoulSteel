@@ -4,19 +4,24 @@ import Logger from "shared/Utility/Logger";
 /* WCS */
 import WcsClient from "./_WCS/WCSClient";
 
-/* Controllers */
+/* Audio */
 import AudioPlayer from "shared/Utility/AudioPlayer";
-import KeyboardController from "client/Keyboard/Keyboard";
-import ClientUIController from "./Controllers/ClientUIController";
-import SkillBarController from "./Controllers/SkillBarController";
-import MovementController from "./Controllers/MovementController";
-import PlayerGUIController from "./PlayerGUIController/PlayerGUIController";
-import StartScreenController from "./ScreenGUIs/StartScreen/StartScreenController";
-import MainMenu from "./ScreenGUIs/MainMenu";
 
-import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
+/* Input Controllers */
+import KeyboardController from "client/Keyboard/Keyboard";
+import MovementController from "./Controllers/MovementController";
+import ClientTargetController from "./Controllers/ClientTargetController";
+
+/* UI Controllers */
+import StartScreenController from "./ScreenGUIs/StartScreen/StartScreenController";
+import MainMenuController from "./ScreenGUIs/MainMenu";
+import SkillBarController from "./Controllers/SkillBarController";
 import CharacterFrameController from "./Controllers/CharacterFrameController";
+
+/* Collections */
 import { CollectTransparencyTweens } from "./Collectors/PulseTween";
+
+/* Other */
 import { PlayerGUI } from "./ScreenGUIs/GUI_Index";
 
 class GameClient {
@@ -35,22 +40,24 @@ class GameClient {
 			/* Start the WCS Client */
 			WcsClient.Start();
 
-			/* Controllers */
+			/* UI Controllers */
+			MainMenuController.Start();
 			StartScreenController.Start(PlayerGUI.FindFirstChild("StartScreen") as ScreenGui);
-			MainMenu.Start();
-			ClientUIController.Start();
 			CharacterFrameController.Start();
+			SkillBarController.Start();
+
+			/* Input Controllers */
 			KeyboardController.Start();
 			new MovementController();
+			ClientTargetController.Start();
 
-			/* Initialize Target Selection */
-			initializeTargetSelection();
+			/* Collections */
+			CollectTransparencyTweens();
+
+			/* Audio */
+			//AudioPlayer.PlayCreepyMoan();
 		}
 	}
 }
 
 GameClient.Start();
-//AudioPlayer.PlayCreepyMoan();
-SkillBarController.StartSkillBarListeners();
-CollectTransparencyTweens();
-PlayerGUIController.Start();

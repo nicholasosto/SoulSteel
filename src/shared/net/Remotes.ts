@@ -54,7 +54,7 @@ const Remotes = Net.CreateDefinitions({
 	NotifyPlayer: Definitions.ServerToClientEvent<[Payloads["PlayerNotification"]]>(),
 
 	/* Skills - UI Skill Bar Update */
-	SkillBarUpdate: Definitions.ServerToClientEvent<[Payloads["SkillSlotMap"]]>(),
+	SkillBarUpdate: Definitions.ServerToClientEvent<Payloads["SkillSlotMap"]>(),
 
 	/* Data - Player Data Loaded */
 	SendPlayerData: Definitions.ServerToClientEvent<Payloads["PlayerData"]>(),

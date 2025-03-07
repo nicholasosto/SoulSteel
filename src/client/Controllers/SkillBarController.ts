@@ -1,33 +1,54 @@
 import { SkillBarInstance } from "client/ScreenGUIs/GUI_Index";
-import SkillBar from "shared/Epic UI/Classes/SkillBar";
+import SkillBarUIComponent from "client/GUI_ComponentClasses/SkillBarUIComponent";
 import Logger from "shared/Utility/Logger";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { Remotes } from "shared/net/Remotes";
 
 /*Controller Events*/
 
 export default class SkillBarController {
+	/* Instance */
+	private static _instance: SkillBarController;
 	/* Skill Bar */
-	private static _skillBar: SkillBar = new SkillBar(SkillBarInstance);
+	private static _skillBar: SkillBarUIComponent = new SkillBarUIComponent(SkillBarInstance);
 
-	/* Skill Bar Update */
-	private static _SkillBarUpdateConnection: RBXScriptConnection | undefined;
+	/* Remotes - Outbound */
+	private static _AssignSkill = Remotes.Client.Get("AssignSkill");
 
-	/* Start Skill Bar Listeners */
-	public static StartSkillBarListeners() {
-		/* Skill Bar Update - From Server */
-		this._SkillBarUpdateConnection?.Disconnect();
-		this._SkillBarUpdateConnection = Remotes.Client.Get("SkillBarUpdate").Connect(([skillMap]) => {
-			Logger.Log(script, "Skill Bar Update");
-			this._skillBar.LoadSkills(skillMap);
+	/* Remotes - Inbound */
+	private static _PlayerDataSent = Remotes.Client.Get("SendPlayerData");
+	private static _SkillBarUpdate = Remotes.Client.Get("SkillBarUpdate");
+
+	/* Connections */
+	private static _connectionPlayerDataSent: RBXScriptConnection;
+	private static _connectionSkillBarUpdate: RBXScriptConnection;
+
+	/* Constructor */
+	private constructor() {
+		Logger.Log("SkillBarController", "CONSTRUCTOR()");
+	}
+
+	/* Start */
+	public static Start() {
+		if (this._instance === undefined) {
+			this._instance = new SkillBarController();
+			this._initializeListeners();
+			Logger.Log("SkillBarController", "Initialized");
+		}
+	}
+
+	/* Initialize Listeners */
+	private static _initializeListeners() {
+		/* #S2CRemote - Assign Skill */
+		this._connectionPlayerDataSent?.Disconnect();
+		this._connectionPlayerDataSent = this._PlayerDataSent.Connect((data: IPlayerData) => {
+			this._skillBar.Initialize(data);
 		});
-	}
-	public static SendAssignSkill(slot: number, skillId: SkillId) {
-		const payload: [number, SkillId] = [slot, skillId];
-		Remotes.Client.Get("AssignSkill").SendToServer(payload);
-	}
 
-	public static UnassignSkill(slot: number) {
-		SkillBarController._skillBar.UnassignSkill(slot);
+		/* #S2CRemote - Skill Bar Update */
+		this._connectionSkillBarUpdate?.Disconnect();
+		this._connectionSkillBarUpdate = this._SkillBarUpdate.Connect((skillSlotMap) => {
+			this._skillBar.Update(skillSlotMap);
+		});
 	}
 }

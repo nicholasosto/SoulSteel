@@ -5,6 +5,7 @@ import StorageManager from "shared/Storage/StorageManager";
 import DefinitionsManager from "shared/Storage/DefinitionsManager";
 import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+import Logger from "shared/Utility/Logger";
 
 type TSkillSlotMap = Map<number, SkillId>;
 
@@ -108,13 +109,17 @@ export default class SkillBarUIComponent {
 		warn("SkillBarUIComponent Constructor Not Implemented", skillBar.Slot1);
 	}
 
-	public Update(data: IPlayerData): void {
-		warn("Update - SkillBarUIComponent: Update Method Not Implemented", [data]);
+	public Initialize(data: IPlayerData): void {
+		Logger.Log("Skill Bar 2 - Initialize", data as unknown as string);
 		this._initializeSkillButtons(data);
 	}
 
-	private _initializeSkillButtons(data: IPlayerData): void {
-		const skillMap = GetSkillMapFromPlayerData(data);
+	public Update(skillSlotMap: TSkillSlotMap): void {
+		Logger.Log("Skill Bar 2 - Update", skillSlotMap as unknown as string);
+		this._updateSkillButtons(skillSlotMap);
+	}
+
+	private _updateSkillButtons(skillMap: TSkillSlotMap): void {
 		/* Loop through the Skill Slot Map */
 		for (const [slot, skillId] of skillMap) {
 			/* Get the Parent Frame */
@@ -138,6 +143,11 @@ export default class SkillBarUIComponent {
 			/* Set the Skill Button */
 			this._slotButtonsMap.set(parent, newSkillButton);
 		}
+	}
+
+	private _initializeSkillButtons(data: IPlayerData): void {
+		const skillMap = GetSkillMapFromPlayerData(data);
+		this._updateSkillButtons(skillMap);
 	}
 }
 

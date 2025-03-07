@@ -49,7 +49,7 @@ export default class SkillController {
 			}
 
 			/* Update the skill bar */
-			this._sendSkillBarUpdate.SendToPlayer(player, [playerCharacter.skillManager.SkillMap]);
+			this._sendSkillBarUpdate.SendToPlayer(player, playerCharacter.skillManager.SkillMap);
 		});
 	}
 

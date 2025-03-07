@@ -34,9 +34,9 @@ const ButtonMap = new Map<string, TextButton>([
 	//	[PanelName.Store, GUI.MainMenuFrame.WaitForChild("Store_Button") as TextButton],
 ]);
 
-export default class MainMenu {
+export default class MainMenuController {
 	/* Singleton Instance */
-	private static _instance: MainMenu;
+	private static _instance: MainMenuController;
 
 	/* Connections */
 	private static _buttonConnections = new Map<PanelName, RBXScriptConnection>();
@@ -50,7 +50,7 @@ export default class MainMenu {
 	/* Start */
 	public static Start() {
 		if (this._instance === undefined) {
-			this._instance = new MainMenu();
+			this._instance = new MainMenuController();
 			this._initializeButtonConnections();
 		}
 	}
@@ -58,8 +58,8 @@ export default class MainMenu {
 	/* Initialize Button Connections */
 	private static _initializeButtonConnections() {
 		/* Disconnect Existing Connections */
-		if (MainMenu._buttonConnections.size() > 0) {
-			MainMenu._buttonConnections.forEach((connection) => {
+		if (MainMenuController._buttonConnections.size() > 0) {
+			MainMenuController._buttonConnections.forEach((connection) => {
 				connection.Disconnect();
 			});
 		}
@@ -68,10 +68,10 @@ export default class MainMenu {
 		ButtonMap.forEach((button, panelName) => {
 			button.SetAttribute("TextValue", button.Name.split("_")[0]);
 			const connection = button.MouseButton1Click.Connect(() => {
-				MainMenu.TogglePanel(panelName as PanelName);
+				MainMenuController.TogglePanel(panelName as PanelName);
 			});
 
-			MainMenu._buttonConnections.set(panelName as PanelName, connection);
+			MainMenuController._buttonConnections.set(panelName as PanelName, connection);
 		});
 
 		/*Close Button on Panel*/
@@ -81,7 +81,7 @@ export default class MainMenu {
 				?.WaitForChild("Close", 0.1)
 				?.WaitForChild("ImageButton") as ImageButton;
 			closeButton?.MouseButton1Click.Connect(() => {
-				MainMenu.DisablePanel(panelName as PanelName);
+				MainMenuController.DisablePanel(panelName as PanelName);
 			});
 		});
 	}
