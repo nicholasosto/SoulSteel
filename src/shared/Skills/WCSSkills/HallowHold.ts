@@ -91,7 +91,7 @@ export class HallowHold extends Skill {
 
 		/* Collide Spheres */
 		task.delay(2.4, () => {
-			TweenCollide(abilityModel.RedSphere, abilityModel.BlueSphere, 20);
+			TweenCollide(abilityModel.Handle.GetPivot(), abilityModel.RedSphere, abilityModel.BlueSphere, 50);
 			AudioPlayer.PlayAudio(AudioFiles.get("fingerSnap") as AudioFile);
 			EnableParticleEffects(abilityModel.PurpleSphere, true);
 		});
@@ -110,7 +110,7 @@ export class HallowHold extends Skill {
 				? (targetCharacterModel?.GetPivot() as CFrame)
 				: playerCharacterModel.GetPivot().mul(new CFrame(0, 0, -40));
 			abilityModel.PurpleSphere.Transparency = 0;
-			TweenShoot(abilityModel.PurpleSphere, targetCFrame, 14);
+			TweenShoot(abilityModel.PurpleSphere, targetCFrame, 44);
 			TweenPulseTransparency(abilityModel.PurpleSphere, 1.5);
 			AudioPlayer.PlayAudio(AudioFiles.get("instaKill") as AudioFile);
 		});

@@ -54,7 +54,7 @@ function TweenShoot(basePart: BasePart, target: CFrame, velocitySPS: number) {
 	tween.Play();
 }
 
-function TweenCollide(basePart1: BasePart, basePart2: BasePart, velocitySPS: number) {
+function TweenCollide(atPoint: CFrame, basePart1: BasePart, basePart2: BasePart, velocitySPS: number) {
 	/* Check if both parts are valid */
 	if (basePart1 === undefined || basePart2 === undefined) {
 		return;
@@ -67,12 +67,9 @@ function TweenCollide(basePart1: BasePart, basePart2: BasePart, velocitySPS: num
 	/* Tween Info */
 	const _info = new TweenInfo(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false);
 
-	/* Goal Position */
-	const goalPosition = basePart1.Position.add(distance);
-
 	/* Create the Tweens */
-	const tween1 = TweenService.Create(basePart1, _info, { Position: goalPosition.mul(-1) });
-	const tween2 = TweenService.Create(basePart2, _info, { Position: goalPosition });
+	const tween1 = TweenService.Create(basePart1, _info, { CFrame: atPoint });
+	const tween2 = TweenService.Create(basePart2, _info, { CFrame: atPoint });
 
 	/* Play the Tweens */
 	tween1.Play();
