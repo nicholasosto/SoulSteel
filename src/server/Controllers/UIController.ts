@@ -25,6 +25,7 @@ export default class UIController {
 			warn("Player Data is undefined");
 			return;
 		}
+		warn("Sending Player Data");
 		Remotes.Server.Get("SendPlayerData").SendToPlayer(player, [playerDataM]);
 	}
 

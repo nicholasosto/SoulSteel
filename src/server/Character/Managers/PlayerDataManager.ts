@@ -78,30 +78,30 @@ export default class PlayerDataManager implements IDataManager {
 
 	/* On Death */
 	public OnDeath(): void {
-		warn("Player Died");
+		warn("Player Died - Data Manager");
 		this._SaveData();
 	}
 
 	/* Save Data */
 	private _SaveData(): void {
 		/* Calculate Save Interval */
-		if (tick() - this._lastSaveTime < this._saveInterval) {
-			warn("Save interval not met");
+		const timeSinceLastSave = tick() - this._lastSaveTime;
+
+		/* Check Save Interval */
+		if (timeSinceLastSave < this._saveInterval) {
+			print("Time Check - Save Interval Not Met: " + timeSinceLastSave);
 			return;
+		} else {
+			print("Time Check - Save Interval Met: " + timeSinceLastSave);
+
+			/* Save Data */
+			this._lastSaveTime = tick();
+			PlayerDataStore.SetAsync(this._userId, this._playerData);
 		}
-		Logger.Log("SAVE DATA: " + math.round(tick()), `[PlayerDataManager]: Saving player data for ${this._userId}`);
-
-		/* Save Data */
-		PlayerDataStore.SetAsync(this._userId, this._playerData);
-
-		/* Update Last Save Time */
-		this._lastSaveTime = tick();
 	}
 
 	/* Load Data */
 	private _LoadData(): IPlayerData {
-		Logger.Log("LOAD DATA: " + math.round(tick()), `[PlayerDataManager]: Loading player data for ${this._userId}`);
-
 		/* Load Data */
 		const playerData = PlayerDataStore.GetAsync(this._userId)[0] as IPlayerData;
 		if (playerData === undefined) {

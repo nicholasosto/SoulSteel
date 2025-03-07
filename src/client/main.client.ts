@@ -10,12 +10,15 @@ import KeyboardController from "client/Keyboard/Keyboard";
 import ClientUIController from "./Controllers/ClientUIController";
 import SkillBarController from "./Controllers/SkillBarController";
 import MovementController from "./Controllers/MovementController";
+import PlayerGUIController from "./PlayerGUIController/PlayerGUIController";
+import StartScreenController from "./ScreenGUIs/StartScreen/StartScreenController";
 import MainMenu from "./ScreenGUIs/MainMenu";
 
 import { initializeTargetSelection } from "client/TargetSelector/TargetSelector";
 import { Remotes } from "shared/net/Remotes";
 import CharacterFrameController from "./Controllers/CharacterFrameController";
 import { CollectTransparencyTweens } from "./Collectors/PulseTween";
+import { PlayerGUI } from "./ScreenGUIs/GUI_Index";
 
 class GameClient {
 	private static _instance: GameClient;
@@ -34,6 +37,7 @@ class GameClient {
 			WcsClient.Start();
 
 			/* Controllers */
+			StartScreenController.Start(PlayerGUI.FindFirstChild("StartScreen") as ScreenGui);
 			MainMenu.Start();
 			ClientUIController.Start();
 			CharacterFrameController.Start();
@@ -51,3 +55,4 @@ GameClient.Start();
 SkillBarController.StartSkillBarListeners();
 CollectTransparencyTweens();
 Remotes.Client.Get("PlayerUIReady").SendToServer();
+PlayerGUIController.Start();
