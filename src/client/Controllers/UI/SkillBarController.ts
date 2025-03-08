@@ -1,5 +1,5 @@
-import { SkillBarInstance } from "client/ScreenGUIs/GUI_Index";
-import SkillBarUIComponent from "client/GUI_ComponentClasses/SkillBarUIComponent";
+import { SkillBarInstance } from "client/_Helpers/GUI_Index";
+import SkillBarComponent from "client/GUI_ComponentClasses/Frames/SkillBarComponent";
 import Logger from "shared/Utility/Logger";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { Remotes } from "shared/net/Remotes";
@@ -10,7 +10,7 @@ export default class SkillBarController {
 	/* Instance */
 	private static _instance: SkillBarController;
 	/* Skill Bar */
-	private static _skillBar: SkillBarUIComponent = new SkillBarUIComponent(SkillBarInstance);
+	private static _skillBar: SkillBarComponent = new SkillBarComponent(SkillBarInstance);
 
 	/* Remotes - Outbound */
 	private static _AssignSkill = Remotes.Client.Get("AssignSkill");

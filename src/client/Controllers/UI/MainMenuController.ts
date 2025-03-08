@@ -1,4 +1,4 @@
-import * as GUI from "client/ScreenGUIs/GUI_Index";
+import * as GUI from "client/_Helpers/GUI_Index";
 import DefinitionsManager from "shared/Storage/DefinitionsManager";
 import Logger from "shared/Utility/Logger";
 

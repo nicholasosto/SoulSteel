@@ -2,7 +2,7 @@
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 import { AssignSkillSlot, UnAssignSkillSlot } from "shared/net/Remotes";
-import { SkillKeyMap } from "./KeyboardMaps";
+import { SkillKeyMap } from "../../_Helpers/KeyboardMaps";
 import Logger from "shared/Utility/Logger";
 // Set the skills here
 export default class KeyboardController {
@@ -10,8 +10,6 @@ export default class KeyboardController {
 	private static inputBeganConnection: RBXScriptConnection;
 	private static inputEndedConnection: RBXScriptConnection;
 	private static characterAddedConnection: RBXScriptConnection;
-
-	
 
 	public static Start() {
 		if (this.instance === undefined) {

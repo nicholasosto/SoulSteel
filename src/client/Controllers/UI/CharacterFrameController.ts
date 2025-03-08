@@ -1,4 +1,4 @@
-import { CharacterFrameInstance, ResourceBarInstanceMap } from "client/ScreenGUIs/GUI_Index";
+import { CharacterFrameInstance, ResourceBarInstanceMap } from "client/_Helpers/GUI_Index";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import InfoFrame from "shared/Epic UI/Classes/InfoFrame";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
@@ -12,6 +12,8 @@ export default class CharacterFrameController {
 
 	/* Classes */
 	private static _characterFrame: InfoFrame;
+
+	/* Remotes - Outbound */
 
 	/* Connections */
 	private static _playerDataConnection: RBXScriptConnection | undefined;

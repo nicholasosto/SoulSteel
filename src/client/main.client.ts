@@ -8,24 +8,31 @@ import WcsClient from "./_WCS/WCSClient";
 import AudioPlayer from "shared/Utility/AudioPlayer";
 
 /* Input Controllers */
-import KeyboardController from "client/Keyboard/Keyboard";
-import MovementController from "./Controllers/MovementController";
-import ClientTargetController from "./Controllers/ClientTargetController";
+import KeyboardController from "client/Controllers/Input/KeyboardController";
+import MovementController from "./Controllers/Input/MovementController";
+import ClientTargetController from "./Controllers/Input/ClientTargetController";
 
 /* UI Controllers */
-import StartScreenController from "./ScreenGUIs/StartScreen/StartScreenController";
-import MainMenuController from "./ScreenGUIs/MainMenu";
-import SkillBarController from "./Controllers/SkillBarController";
-import CharacterFrameController from "./Controllers/CharacterFrameController";
+import StartScreenController from "./Controllers/UI/StartScreenController";
+import MainMenuController from "./Controllers/UI/MainMenuController";
+import SkillBarController from "./Controllers/UI/SkillBarController";
+import CharacterFrameController from "./Controllers/UI/CharacterFrameController";
+import TeleportPanelController from "./Controllers/UI/TeleportPanelController";
 
 /* Collections */
 import { CollectTransparencyTweens } from "./Collectors/PulseTween";
 
+/* Remotes */
+import { Remotes } from "shared/net/Remotes";
+
 /* Other */
-import { PlayerGUI } from "./ScreenGUIs/GUI_Index";
+import { PlayerGUI } from "./_Helpers/GUI_Index";
 
 class GameClient {
 	private static _instance: GameClient;
+
+	/* Remotes */
+	private static _PlayerDataRequest = Remotes.Client.Get("PlayerDataRequest");
 
 	/* Constructor */
 	constructor() {
@@ -42,6 +49,7 @@ class GameClient {
 
 			/* UI Controllers */
 			MainMenuController.Start();
+			TeleportPanelController.Start();
 			StartScreenController.Start(PlayerGUI.FindFirstChild("StartScreen") as ScreenGui);
 			CharacterFrameController.Start();
 			SkillBarController.Start();
@@ -56,6 +64,10 @@ class GameClient {
 
 			/* Audio */
 			//AudioPlayer.PlayCreepyMoan();
+
+			/* Player Data Request */
+			Logger.Log("PlayerDataRequest", "Sending Request");
+			this._PlayerDataRequest.SendToServer();
 		}
 	}
 }

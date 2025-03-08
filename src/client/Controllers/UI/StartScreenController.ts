@@ -1,5 +1,5 @@
 import { generateCharacterName } from "shared/_Factories/NameFactory";
-import CharacterSlot from "./CharacterSlot";
+import CharacterSlot from "../../GUI_ComponentClasses/Frames/CharacterSlotComponent";
 
 export default class StartScreenController {
 	private static _instance: StartScreenController;

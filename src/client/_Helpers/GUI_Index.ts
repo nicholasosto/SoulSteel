@@ -4,7 +4,7 @@ import { TSkillBar } from "shared/Epic UI/Types/TSkillBar";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import Logger from "shared/Utility/Logger";
 import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
-import { TSkillPanel } from "./SkillPanel";
+import { TSkillPanel } from "../GUI_ComponentClasses/Panels/SkillPanel";
 import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 /* Main Screen GUI */
@@ -44,7 +44,7 @@ Logger.Log(ResourceBarInstanceMap as unknown as string);
 /* Teleporter Buttons */
 const TeleportButtonsChildren = Teleport_Screen.WaitForChild("Window")
 	.WaitForChild("Content")
-	.WaitForChild("Scroller")
+	.WaitForChild("Buttons")
 	.WaitForChild("TeleportButtons")
 	.GetChildren();
 

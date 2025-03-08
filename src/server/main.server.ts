@@ -15,6 +15,7 @@ import PCController from "./Controllers/PlayerCharacterController";
 import SkillController from "./Controllers/SkillController";
 import TargetingController from "./Controllers/TargetingController";
 import TeleportController from "./Controllers/TeleportController";
+import PlayerDataController from "./Controllers/PlayerDataController";
 
 // Collections
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
@@ -41,7 +42,7 @@ class GameServer {
 			StorageManager.Start();
 			/* Start WCS */
 			GameServer.StartWCS();
-
+			PlayerDataController.Start();
 			wait(1.5); // Wait for the WCS Server and DataManager to start and register the directories
 
 			PCController.Start();

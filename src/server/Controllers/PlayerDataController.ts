@@ -34,6 +34,7 @@ export default class PlayerDataController {
 		/* Player Data Request */
 		this._connectionPlayerDataRequest?.Disconnect();
 		this._connectionPlayerDataRequest = this._PlayerDataRequest.Connect((player) => {
+			Logger.Log("PlayerDataRequest", player);
 			/* Get the player character */
 			const playerCharacter = GetPlayerCharacter(player);
 			/* Get the player data */
