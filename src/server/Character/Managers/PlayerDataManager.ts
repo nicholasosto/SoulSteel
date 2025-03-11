@@ -1,8 +1,9 @@
 import Logger from "shared/Utility/Logger";
-import { DataStoreService } from "@rbxts/services";
+import { DataStoreService, Players } from "@rbxts/services";
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+import { Remotes } from "shared/net/Remotes";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -33,6 +34,8 @@ const DefualtData: IPlayerData = {
 		Intelligence: 5,
 		Constitution: 7,
 	},
+	AvaliableAttributePoints: 110,
+	SpentAttributePoints: 0,
 	Skills: {
 		unlockedSkills: ["BasicHold", "BasicMelee", "BasicRanged", "HallowHold"],
 		assignedSlots: ["HallowHold", "BasicMelee", "BasicRanged"],
@@ -55,10 +58,23 @@ export default class PlayerDataManager implements IDataManager {
 	private _playerData: IPlayerData = DefualtData;
 	private _lastSaveTime: number = 0;
 	private _saveInterval = 5;
+	private _player: Player;
 
 	constructor(playerCharacter: IPlayerCharacter) {
+		this._player = playerCharacter.player;
 		this._userId = tostring(playerCharacter.player.UserId);
 		this._playerData = this._LoadData();
+
+		task.spawn(() => {
+			warn("Player Data Save Service Started");
+			while (this._userId !== undefined) {
+				warn("Player Data Save Service Running");
+				this._SaveData();
+				wait(this._saveInterval);
+				
+				Remotes.Server.Get("SendPlayerData").SendToPlayer(this._player, this._playerData);
+			}
+		});
 	}
 
 	/* Update Identity */

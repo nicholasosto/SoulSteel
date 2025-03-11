@@ -19,6 +19,7 @@ import { QuestId } from "shared/_IDs/IDs_Quest";
 import TargetManager from "./Managers/TargetManager";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { generateCharacterName } from "shared/_Factories/NameFactory";
+import { AttributesManager } from "shared/_ObserverPattern/_Subjects/AttributesSubject";
 
 /* Classes */
 /* Player Character */
@@ -36,6 +37,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public resourceManager: ResourceManager;
 	public skillManager: SkillsManager;
 	public targetManager: TargetManager;
+	public attributesManager: AttributesManager;
 
 	/* Connections */
 	/* Humanoid */
@@ -80,6 +82,9 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		assert(this.characterModel, "Character Model is nil");
 		this.animationManager = new AnimationManager(this, playerData);
 
+		/* Attributes Subject */
+		this.attributesManager = new AttributesManager(this);
+
 		/* Initialize Connections */
 		this._initializeConnections();
 	}
@@ -112,6 +117,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.skillManager.OnSkillStarted(skill);
 			this.animationManager.OnSkillStarted(skill);
 			this.resourceManager.OnSkillStarted(skill);
+			this.attributesManager.updateAttribute("Strength", 5);
 		});
 
 		/* Skill Ended */

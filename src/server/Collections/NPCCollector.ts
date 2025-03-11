@@ -30,3 +30,8 @@ function StartCollectingNPCs() {
 }
 
 export { StartCollectingNPCs };
+
+/*
+{"Information":{"Created":1741422844,"ExportPriority":"Action","Modified":1741423160,"Length":300,"Looped":false},"Items":[{"Path":{"InstanceTypes":["DataModel","Workspace","Model","Folder","Model"],"ItemType":"Rig","InstanceNames":["game","Workspace","Zone - Mecha Mania","NPCs","WorkerBot"]}},{"Path":{"InstanceTypes":["DataModel","Workspace","Camera"],"ItemType":"Camera","InstanceNames":["game","Workspace","CurrentCamera"]}}]}
+
+*/

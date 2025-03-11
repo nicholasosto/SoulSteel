@@ -7,6 +7,7 @@ import { ResourceId } from "shared/_IDs/IDs_Resource";
 
 /* Interfaces */
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
+import { GameState } from "shared/State/GameStore";
 import Logger from "shared/Utility/Logger";
 
 /* All Payloads */
@@ -32,6 +33,15 @@ interface Payloads {
 
 const Remotes = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
+
+	/* GAME STATE */
+	StateChanged: Net.Definitions.ServerToClientEvent<[keyof GameState, unknown]>(),
+
+	/* Subject Observer - Score Manager */
+	PlayerAttributesUpdated:
+		Definitions.ServerToClientEvent<
+			[characterStats: IPlayerData["CharacterStats"], avalablePoints: number, spentPoints: number]
+		>(),
 
 	/* Game Cycle - Player UI Ready */
 	PlayerUIReady: Definitions.ClientToServerEvent<[]>(),

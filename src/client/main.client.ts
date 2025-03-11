@@ -1,3 +1,4 @@
+import { Players } from "@rbxts/services";
 /* Utility */
 import Logger from "shared/Utility/Logger";
 
@@ -13,6 +14,7 @@ import MovementController from "./Controllers/Input/MovementController";
 import ClientTargetController from "./Controllers/Input/ClientTargetController";
 
 /* UI Controllers */
+import GUIController from "./GUIController";
 import StartScreenController from "./Controllers/UI/StartScreenController";
 import MainMenuController from "./Controllers/UI/MainMenuController";
 import SkillBarController from "./Controllers/UI/SkillBarController";
@@ -28,6 +30,8 @@ import { Remotes } from "shared/net/Remotes";
 /* Other */
 import { PlayerGUI } from "./_Helpers/GUI_Index";
 
+
+
 class GameClient {
 	private static _instance: GameClient;
 
@@ -36,7 +40,7 @@ class GameClient {
 
 	/* Constructor */
 	constructor() {
-		Logger.Log("MAIN CLIENT", "Client Singleton: Instantiated");
+		warn("Game Client: Instantiated");
 	}
 
 	public static Start() {
@@ -66,10 +70,13 @@ class GameClient {
 			//AudioPlayer.PlayCreepyMoan();
 
 			/* Player Data Request */
-			Logger.Log("PlayerDataRequest", "Sending Request");
+			warn("Game Client: Requesting Player Data");
 			this._PlayerDataRequest.SendToServer();
 		}
 	}
 }
 
 GameClient.Start();
+GUIController.Start();
+/* Log Client Loaded */
+warn("Client: Fully Loaded");

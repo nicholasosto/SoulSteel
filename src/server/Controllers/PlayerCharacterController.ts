@@ -25,6 +25,7 @@ import {
 	GetPlayerCharacter,
 	RemovePlayerCharacter,
 } from "shared/_Registry/EntityRegistration";
+import GameStore from "shared/State/GameStore";
 
 /* Player Character Controller */
 export default class PCController {
@@ -47,7 +48,12 @@ export default class PCController {
 	public static CreatePlayerCharacter(player: Player, character: Model): IPlayerCharacter {
 		/* Create the WCS Character */
 		const wcsCharacter = new Character(character);
-
+		GameStore.initializePlayer(player, {
+			health: 100,
+			mana: 100,
+			stamina: 100,
+			level: 1,
+		});
 		/* WCS Character Destroyed */
 		wcsCharacter.Destroyed.Connect(() => {
 			this.RemovePlayerCharacter(player);

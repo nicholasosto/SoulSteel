@@ -26,6 +26,8 @@ export default interface IPlayerData {
 
 	/* Stats Data */
 	/* { Strength, Speed, Dexterity, Intelligence, Constitution } */
+	AvaliableAttributePoints: number;
+	SpentAttributePoints: number;
 	CharacterStats: ICharacterStats;
 
 	/* Quest Data */

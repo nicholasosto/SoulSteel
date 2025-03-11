@@ -1,19 +1,44 @@
 import Logger from "shared/Utility/Logger";
-import { Remotes } from "shared/net/Remotes";
-import { Teleport_Screen, TeleportButtons } from "client/_Helpers/GUI_Index";
+import { Players } from "@rbxts/services";
+import { Teleport_Screen, TeleportScrollFrame } from "client/_Helpers/GUI_Index";
+import SelectButton from "client/GUI_ComponentClasses/Buttons/SelectButton";
+import StatefulButton, { ButtonState } from "client/GUI_ComponentClasses/Buttons/StatefulButton";
+
+type TTeleportLocation = {
+	LocationName: string;
+	LocationId: string;
+	LocationImage: string;
+	LocationPivot: CFrame;
+	LocationDescription: string;
+};
+
+const TeleportLocations: Array<TTeleportLocation> = [
+	{
+		LocationName: "Bloody River",
+		LocationId: "ZBlood01",
+		LocationImage: "rbxassetid://135950973087916",
+		LocationPivot: new CFrame(-155, 291, -1725),
+		LocationDescription: "Shiver me timbers, the Bloody River!",
+	},
+	{
+		LocationName: "Mecha Factory",
+		LocationId: "ZMecha01",
+		LocationImage: "rbxassetid://128453888907363",
+		LocationPivot: new CFrame(-155, 291, -1725),
+		LocationDescription: "Zork-beebp, tzzzz, ttaaang!",
+	},
+];
 
 /*Controller Events*/
-
 export default class TeleportPanelController {
 	/* Instance */
 	private static _instance: TeleportPanelController;
 
 	/* Teleport Panel*/
 	private static _teleportPanel: ScreenGui = Teleport_Screen;
-	private static _teleportButtons: Array<TextButton> = TeleportButtons;
+	private static _teleportButtonMap: Map<string, SelectButton> = new Map();
 
-	/* Remotes - Outbound */
-	private static _TeleportRequest = Remotes.Client.Get("TeleportTo");
+	private static _selection: SelectButton | undefined;
 
 	/* Constructor */
 	private constructor() {
@@ -24,37 +49,33 @@ export default class TeleportPanelController {
 	public static Start() {
 		if (this._instance === undefined) {
 			this._instance = new TeleportPanelController();
-			this._initializeListeners();
-			Logger.Log("TeleportPanelController", "Initialized");
-			this._loadCamera();
+
+			this._initializeTeleportPanel();
 		}
 	}
 
-	/* Initialize Listeners */
-	private static _initializeListeners() {
-		TeleportButtons.forEach((button) => {
-			/* Location: CFrameValue - Comes from childProperty of the button */
-			if (button.IsA("TextButton")) {
-				const cfvLocation = button.WaitForChild("Location") as CFrameValue;
-				assert(cfvLocation, "CFrameValue not found");
-				button.Activated.Connect(() => {
-					this._TeleportRequest.SendToServer(cfvLocation.Value.Position);
-				});
-			}
+	/* Initialize Select Buttons */
+
+	private static _initializeTeleportPanel(): void {
+		Logger.Log("TeleportPanelController", "Initializing Teleport Panel");
+
+		TeleportLocations.forEach((location) => {
+			const selectButton = new SelectButton(location.LocationName, TeleportScrollFrame);
+			this._teleportButtonMap.set(location.LocationId, selectButton);
+			selectButton._activate.Connect(() => this._handleSelectButton(location.LocationPivot));
 		});
+		const specialButtonInstance = new Instance("TextButton");
+		specialButtonInstance.Name = "SpecialButton";
+		specialButtonInstance.Size = new UDim2(0, 200, 0, 50);
+		specialButtonInstance.Text = "Special Button";
+		specialButtonInstance.Parent = Teleport_Screen.FindFirstChild("Content", true) as Frame;
+
+		const specialButton = new StatefulButton(specialButtonInstance);
+		specialButton.setState(ButtonState.Default);
 	}
 
-	private static _loadCamera() {
-		const previewCamera = new Instance("Camera");
-		const worldModel = new Instance("WorldModel");
-		const viewport = Teleport_Screen.FindFirstChild("ViewportFrame",true) as ViewportFrame;
-		const destinationArea = game.Workspace.WaitForChild("Zone - Mecha Mania").Clone() as Model;
-		const destinationPosition = destinationArea.FindFirstChild("PreviewCamPos") as CFrameValue;
-		previewCamera.Parent = viewport;
-		worldModel.Parent = viewport;
-		viewport.CurrentCamera = Teleport_Screen.FindFirstChild("Mechamania_Camera") as Camera;
-		destinationArea.Parent = worldModel;
-
-		previewCamera.CFrame = destinationPosition.Value;
+	private static _handleSelectButton(location: CFrame): void {
+		Logger.Log("XXTeleportPanelController", `Teleporting to ${location}`);
+		Players.LocalPlayer.Character?.PivotTo(location);
 	}
 }

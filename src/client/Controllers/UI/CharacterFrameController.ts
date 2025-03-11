@@ -25,7 +25,6 @@ export default class CharacterFrameController {
 	private constructor() {
 		CharacterFrameController._characterFrame = new InfoFrame(CharacterFrameInstance);
 		CharacterFrameController._initializeListeners();
-
 	}
 
 	/* Start */
@@ -37,7 +36,6 @@ export default class CharacterFrameController {
 
 	/* Initialize Listeners */
 	private static _initializeListeners() {
-
 		/* Player Data Connection */
 		this._playerDataConnection?.Disconnect();
 		this._playerDataConnection = Remotes.Client.Get("SendPlayerData").Connect((playerData) => {
@@ -66,6 +64,13 @@ export default class CharacterFrameController {
 		this._progressionStatsConnection?.Disconnect();
 		this._progressionStatsConnection = Remotes.Client.Get("SendProgressionStats").Connect((progressionData) => {
 			this._characterFrame.OnProgressionStats(progressionData);
+		});
+
+		Remotes.Client.Get("StateChanged").Connect((state) => {
+			if (state === "players") {
+				warn("PPSDLPSLDPSLDPSLDPLDPSLDLDPSLDPSLD");
+			}
+			Logger.Log("CharacterFrameController", "State Changed: " + state);
 		});
 	}
 

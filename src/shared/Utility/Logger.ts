@@ -27,7 +27,7 @@ export default class Logger {
 	// Private Variables
 	private static _logger: Logger = new Logger();
 	private static _logLevel: LogLevel = LogLevel.Info;
-	private static _enabled: boolean = true;
+	private static _enabled: boolean = false;
 	private static _filterTag: string = "";
 
 	// Log: Log messages to the console

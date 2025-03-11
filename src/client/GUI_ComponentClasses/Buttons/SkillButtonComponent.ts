@@ -66,6 +66,16 @@ export default class SkillButtonComponent {
 		this._initializeCooldownBar();
 	}
 
+	public UpdateSkill(skillId: SkillId): void {
+		this._skillId = skillId;
+		this._skillDeffinition = DefinitionsManager.GetSkillDefinition(skillId) as ISkillDefinition;
+		this._setImage(this._skillDeffinition.imageId);
+		this._setDisplayName(this._skillDeffinition.displayName);
+		this._cooldownTimer.cooldownTime = this._skillDeffinition.cooldown;
+		this._cooldownTimer.cooldownRemaining = 0;
+		this._initializeCooldownBar();
+	}
+
 	private _setImage(imageId: string): void {
 		this._frameInstance.SkillButton.ImageFrame.SkillImage.Image = imageId;
 	}

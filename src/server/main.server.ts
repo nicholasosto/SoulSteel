@@ -10,6 +10,9 @@ import { CreateServer } from "@rbxts/wcs";
 // Manager Imports
 import StorageManager from "shared/Storage/StorageManager";
 
+// Subjects
+import ScoreManager from "shared/State/ScoreManager";
+
 // Controllers
 import PCController from "./Controllers/PlayerCharacterController";
 import SkillController from "./Controllers/SkillController";
@@ -26,6 +29,7 @@ import StartQuestBlockCollection from "./Collections/QuestBlock";
 
 /* Types */
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
+import { StartCollectingAntigravity } from "./Collections/AntigravityCollector";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -78,10 +82,7 @@ class GameServer {
 /* Start the Game Server */
 GameServer.Start();
 const _playerConnections: Map<Player, RBXScriptConnection> = new Map();
-const _destroyConnection: Map<Player, RBXScriptConnection> = new Map();
-
-/* Start the Listeners */
-//StartTeleportListener();
+const _destroyConnections: Map<Player, RBXScriptConnection> = new Map();
 
 /* Start the Collections */
 StartCollectingNPCs();
@@ -89,22 +90,30 @@ StartCollectingLava();
 StartCollectingResourceDrains();
 StartZoneDetection();
 StartQuestBlockCollection();
+StartCollectingAntigravity();
 
-/* Handle Player Added */
+/* Notify Collections Loaded */
+warn("Server: Collections Loaded");
+
+/* Handle Character Added */
 function HandleCharacterAdded(player: Player, character: TGameCharacter | undefined): boolean {
+	/* Check if the character exists */
 	if (character === undefined) return false;
 	if (player === undefined) return false;
 
+	/* Create the Player Character */
 	const playerCharacter = PCController.CreatePlayerCharacter(player, character);
 	if (playerCharacter === undefined) return false;
 
+	/* Handle Player Death */
 	const humanoid = character.Humanoid;
 	if (humanoid === undefined) return false;
 
-	_destroyConnection.set(
+	/* Destroy the Player Character */
+	_destroyConnections.get(player)?.Disconnect();
+	_destroyConnections.set(
 		player,
 		humanoid.Died.Connect(() => {
-			Logger.Log("Flow - Player Died: ", player.Name);
 			PCController.RemovePlayerCharacter(player);
 		}),
 	);
@@ -112,29 +121,34 @@ function HandleCharacterAdded(player: Player, character: TGameCharacter | undefi
 	return true;
 }
 
+/* Handle Player Added */
 function HandlePlayerAdded(player: Player) {
-	/* If character exists */
-
+	/* Add Character Handler */
 	const _topSuccess = HandleCharacterAdded(player, player.Character as TGameCharacter);
-	Logger.Log("Flow - Player Added [Handle Player - Existing]: " + _topSuccess);
+	if (!_topSuccess) {
+		warn("Error: Failed to handle character added");
+	}
 	_playerConnections.get(player)?.Disconnect();
 	_playerConnections.set(
 		player,
 		player.CharacterAdded.Connect((character) => {
 			const success = HandleCharacterAdded(player, character as TGameCharacter);
-			Logger.Log("Flow - Player Added [Handle Player - New]: " + success);
+			if (!success) {
+				warn("Error: Failed to handle character added");
+			}
 		}),
 	);
 }
 
 /* Player Added Event */
 Players.PlayerAdded.Connect((player) => {
-	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });
 
 /* Get Existing Players: When the player joins before the server listens */
 Players.GetPlayers().forEach((player) => {
-	Logger.Log("Flow - Player Added [Start]: Existing Player");
 	HandlePlayerAdded(player);
 });
+
+/* Log Server Loaded */
+warn("Server: Loaded");

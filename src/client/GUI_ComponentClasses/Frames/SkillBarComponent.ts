@@ -44,7 +44,8 @@ export default class SkillBarComponent {
 			/* Check if the Skill Button Exists and Destroy it */
 			const existingSkillButton = this._slotButtonsMap.get(parent);
 			if (existingSkillButton !== undefined) {
-				existingSkillButton.Destroy();
+				existingSkillButton.UpdateSkill(skillId);
+				continue;
 			}
 
 			/* Create the New Skill Button */
