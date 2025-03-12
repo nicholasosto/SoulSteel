@@ -10,6 +10,11 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { GameState } from "shared/State/GameStore";
 import Logger from "shared/Utility/Logger";
 
+interface AttributePanelData {
+	availablePoints: number;
+	spentPoints: number;
+	characterStats: IPlayerData["CharacterStats"];
+}
 /* All Payloads */
 interface Payloads {
 	/* Player Data */
@@ -20,6 +25,9 @@ interface Payloads {
 	CharacterStats: [characterStats: IPlayerData["CharacterStats"]];
 	QuestData: [questData: IPlayerData["QuestData"]];
 	Skills: [skills: IPlayerData["Skills"]];
+
+	/* Panel Data */
+	AttributePanelData: [attributePanelData: AttributePanelData];
 
 	/* Derived Data Payloads */
 	PlayerResourceData: [resourceId: ResourceId, current: number, max: number];
@@ -38,10 +46,8 @@ const Remotes = Net.CreateDefinitions({
 	StateChanged: Net.Definitions.ServerToClientEvent<[keyof GameState, unknown]>(),
 
 	/* Subject Observer - Score Manager */
-	PlayerAttributesUpdated:
-		Definitions.ServerToClientEvent<
-			[characterStats: IPlayerData["CharacterStats"], avalablePoints: number, spentPoints: number]
-		>(),
+	PlayerAttributesUpdated: Definitions.ServerToClientEvent<[AttributePanelData]>(),
+	AttributeUpdateRequest: Definitions.ClientToServerEvent<[AttributePanelData]>(),
 
 	/* Game Cycle - Player UI Ready */
 	PlayerUIReady: Definitions.ClientToServerEvent<[]>(),
@@ -72,6 +78,12 @@ const Remotes = Net.CreateDefinitions({
 	SendProgressionStats: Definitions.ServerToClientEvent<Payloads["ProgressionStats"]>(),
 	/* Data - Player Resource Update */
 	SendResourceData: Definitions.ServerToClientEvent<[Payloads["PlayerResourceData"]]>(),
+});
+
+
+const RemoteFunctions = Net.CreateDefinitions({
+	// Client-to-server remote function to initialize panel data
+	InitializeAttributePanel: Net.Definitions.ServerAsyncFunction<() => AttributePanelData>(),
 });
 
 /* ======== Client to Server Functions =========*/
@@ -130,4 +142,6 @@ export {
 	SendNotification,
 	SendResourceUpdate,
 	AssignQuestToPlayer,
+	RemoteFunctions,
+	AttributePanelData,
 };

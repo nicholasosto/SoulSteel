@@ -9,16 +9,22 @@ import ProgressBar from "shared/Epic UI/Classes/ProgressBar";
 
 /* Main Screen GUI */
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
-const HUD_Screen = PlayerGUI.WaitForChild("HUD") as ScreenGui;
-const Developer_Screen = PlayerGUI.WaitForChild("Developer") as ScreenGui;
-const Equipment_Screen = PlayerGUI.WaitForChild("Equipment") as ScreenGui;
-const Character_Screen = PlayerGUI.WaitForChild("Character") as ScreenGui;
-const Teleport_Screen = PlayerGUI.WaitForChild("Teleport") as ScreenGui;
-const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as TSkillPanel;
-const Settings_Screen = PlayerGUI.WaitForChild("Settings") as ScreenGui;
-const QuestPanelGUI = PlayerGUI.WaitForChild("Quests") as TQuestPanel;
+const HUD_Screen = PlayerGUI.WaitForChild("HUD") as GamePanelGui;
+const Developer_Screen = PlayerGUI.WaitForChild("Developer") as GamePanelGui;
+const Equipment_Screen = PlayerGUI.WaitForChild("Equipment") as GamePanelGui;
+const Character_Screen = PlayerGUI.WaitForChild("Character") as GamePanelGui;
+const Teleport_Screen = PlayerGUI.WaitForChild("Teleport") as GamePanelGui;
+const Skills_Screen = PlayerGUI.WaitForChild("Skill_Panel") as GamePanelGui;
+const Settings_Screen = PlayerGUI.WaitForChild("Settings") as GamePanelGui;
+const QuestPanelGUI = PlayerGUI.WaitForChild("Quests") as GamePanelGui;
+warn("GamePanelGUI's loaded");
 /* Store Screen */
 //const Store_Screen = PlayerGUI.WaitForChild("Store UI Pack").WaitForChild("Gui").WaitForChild("ScreenGui") as ScreenGui;
+
+/*Attributes GUI */
+const AttributesFrame = (
+	PlayerGUI.WaitForChild("GUI_ClassContainters").WaitForChild("AttributeController") as ObjectValue
+).Value as Frame;
 
 /* HUD Elements */
 const MainMenuFrame = HUD_Screen.WaitForChild("MainMenu") as Frame;
@@ -30,16 +36,29 @@ const HealthBarInstance = ResourceBarParent.WaitForChild("HealthBar") as Frame;
 const ManaBarInstance = ResourceBarParent.WaitForChild("ManaBar") as Frame;
 const StaminaBarInstance = ResourceBarParent.WaitForChild("StaminaBar") as Frame;
 const ExperienceBarInstance = ResourceBarParent.WaitForChild("ExperienceBar") as Frame;
-const ResourceBarInstanceMap = new Map<ResourceId, ProgressBar>();
 
-/* Resource Bar Map */
-ResourceBarInstanceMap.set("Health", new ProgressBar(HealthBarInstance));
-ResourceBarInstanceMap.set("Mana", new ProgressBar(ManaBarInstance));
-ResourceBarInstanceMap.set("Stamina", new ProgressBar(StaminaBarInstance));
-ResourceBarInstanceMap.set("Experience", new ProgressBar(ExperienceBarInstance));
+type GamePanelGui = ScreenGui & {
+	ObjectValues: Folder;
+};
 
-const testProgressBar = ResourceBarInstanceMap.get("Stamina");
-Logger.Log(ResourceBarInstanceMap as unknown as string);
+/* GUI Panel Map */
+const GUIPanelMap = new Map<string, GamePanelGui>([
+	["HUD", HUD_Screen],
+	["Skills", Skills_Screen],
+	["Developer", Developer_Screen],
+	["Equipment", Equipment_Screen],
+	["Character", Character_Screen],
+	["Teleport", Teleport_Screen],
+	["Settings", Settings_Screen],
+	["Quests", QuestPanelGUI],
+]);
+
+const ResourceBarInstanceMap = new Map<ResourceId, ProgressBar>([
+	["Health", new ProgressBar(HealthBarInstance)],
+	["Mana", new ProgressBar(ManaBarInstance)],
+	["Stamina", new ProgressBar(StaminaBarInstance)],
+	["Experience", new ProgressBar(ExperienceBarInstance)],
+]);
 
 /* Teleporter Buttons */
 const TeleportScrollFrame = Teleport_Screen.WaitForChild("Window")
@@ -50,58 +69,21 @@ const TeleportScrollFrame = Teleport_Screen.WaitForChild("Window")
 const TeleportButtonsChildren = TeleportScrollFrame.GetChildren();
 const TeleportButtons = TeleportButtonsChildren.map((button) => button as TextButton);
 
-/* Log Ready */
-Logger.Log(script, "Loaded: GUI_Index");
-
-/* GUI Controller */
-/* Purpose: Serves as a Registry for GUI Instances and ensures that the GUI Components are loaded to the player's screen. Notifies the server when the GUI is loaded. */
-/* Usage: GUIController.Start() */
-
-/* Panel ID */
-type panelId = "HUD" | "Skills" | "Developer" | "Equipment" | "Character" | "Teleport" | "Settings" | "Quests";
-
-export default class GUIController {
-	/* Singleton Instance */
-	private static _instance: GUIController;
-
-	/* Panel Map */
-	public static PanelMap = new Map<panelId, ScreenGui>([
-		["HUD", HUD_Screen],
-		["Skills", Skills_Screen],
-		["Developer", Developer_Screen],
-		["Equipment", Equipment_Screen],
-		["Character", Character_Screen],
-		["Teleport", Teleport_Screen],
-		["Settings", Settings_Screen],
-		["Quests", QuestPanelGUI],
-	]);
-
-	/* Constructor */
-	private constructor() {
-		warn("GUI Controller: Instantiated");
-	}
-
-	public static Start() {
-		if (this._instance === undefined) {
-			this._instance = new GUIController();
-		}
-	}
-}
-
 export {
 	PlayerGUI,
+	GUIPanelMap,
 	HUD_Screen,
 	Skills_Screen,
 	Developer_Screen,
 	Equipment_Screen,
 	Character_Screen,
-	Teleport_Screen,
 	TeleportScrollFrame,
 	Settings_Screen,
 	//Store_Screen,
 	QuestPanelGUI,
 
 	/* HUD Elements */
+	AttributesFrame,
 	MainMenuFrame,
 	CharacterFrameInstance,
 	SkillBarInstance,

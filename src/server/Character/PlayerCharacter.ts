@@ -19,7 +19,7 @@ import { QuestId } from "shared/_IDs/IDs_Quest";
 import TargetManager from "./Managers/TargetManager";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { generateCharacterName } from "shared/_Factories/NameFactory";
-import { AttributesManager } from "shared/_ObserverPattern/_Subjects/AttributesSubject";
+import { AttributesManager } from "server/Character/Managers/AttributesManager";
 
 /* Classes */
 /* Player Character */

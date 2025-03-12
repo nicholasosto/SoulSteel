@@ -14,7 +14,7 @@ export default class GUIController {
 
 	/* Constructor */
 	private constructor() {
-		warn("GUI Controller: Instantiated");
+		warn("Player GUI Controller: Started");
 	}
 
 	/* Start */
@@ -25,10 +25,11 @@ export default class GUIController {
 		}
 	}
 
+	/* Initialize Data Connection */
 	private static InitializeDataConnection() {
 		this._playerDataConnection?.Disconnect();
 		this._playerDataConnection = PlayerDataSent.Connect((playerData) => {
-			warn("GUI Controller: Player Data Received: ", playerData["CharacterStats"]);
+			//warn("GUI Controller: Player Data Received: ", playerData["CharacterStats"]);
 		});
 	}
 }

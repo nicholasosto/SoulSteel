@@ -18,7 +18,7 @@ const PanelMap = new Map<PanelName, ScreenGui>([
 	[PanelName.Developer, GUI.Developer_Screen],
 	[PanelName.Equipment, GUI.Equipment_Screen],
 	[PanelName.Character, GUI.Character_Screen],
-	[PanelName.Teleport, GUI.Teleport_Screen],
+	[PanelName.Teleport, GUI.GUIPanelMap.get("Teleport") as ScreenGui],
 	[PanelName.Skills, GUI.Skills_Screen],
 	[PanelName.Settings, GUI.Settings_Screen],
 	//	[PanelName.Store, GUI.Store_Screen],

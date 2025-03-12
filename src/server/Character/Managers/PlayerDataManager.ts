@@ -3,7 +3,7 @@ import { DataStoreService, Players } from "@rbxts/services";
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
-import { Remotes } from "shared/net/Remotes";
+import { Remotes, AttributePanelData } from "shared/net/Remotes";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -57,7 +57,7 @@ export default class PlayerDataManager implements IDataManager {
 	private _userId: string;
 	private _playerData: IPlayerData = DefualtData;
 	private _lastSaveTime: number = 0;
-	private _saveInterval = 5;
+	private _saveInterval = 15;
 	private _player: Player;
 
 	constructor(playerCharacter: IPlayerCharacter) {
@@ -71,7 +71,7 @@ export default class PlayerDataManager implements IDataManager {
 				warn("Player Data Save Service Running");
 				this._SaveData();
 				wait(this._saveInterval);
-				
+
 				Remotes.Server.Get("SendPlayerData").SendToPlayer(this._player, this._playerData);
 			}
 		});
@@ -114,6 +114,13 @@ export default class PlayerDataManager implements IDataManager {
 			this._lastSaveTime = tick();
 			PlayerDataStore.SetAsync(this._userId, this._playerData);
 		}
+	}
+
+	public UpdateAttributesData(attributePanelData: AttributePanelData): void {
+		this._playerData.CharacterStats = attributePanelData.characterStats;
+		this._playerData.AvaliableAttributePoints = attributePanelData.availablePoints;
+		this._playerData.SpentAttributePoints = attributePanelData.spentPoints;
+		this._SaveData();
 	}
 
 	/* Load Data */

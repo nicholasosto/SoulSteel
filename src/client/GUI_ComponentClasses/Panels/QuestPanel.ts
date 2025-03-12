@@ -1,9 +1,11 @@
 import IQuestPanel from "shared/Epic UI/Interfaces/IQuestPanel";
-import Quest from "shared/_Classes/Quest";
 import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
-import Logger from "shared/Utility/Logger";
+import Quest from "shared/_Classes/Quest";
 import { QuestId } from "shared/_IDs/IDs_Quest";
+import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage/StorageManager";
+
+
 import { TQuestItemFrame } from "shared/Epic UI/Types/TQuestItem";
 
 export default class QuestPanel implements IQuestPanel {

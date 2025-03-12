@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
-import { Teleport_Screen, TeleportScrollFrame } from "client/_Helpers/GUI_Index";
+import { GUIPanelMap, TeleportScrollFrame } from "client/_Helpers/GUI_Index";
 import SelectButton from "client/GUI_ComponentClasses/Buttons/SelectButton";
 import StatefulButton, { ButtonState } from "client/GUI_ComponentClasses/Buttons/StatefulButton";
 
@@ -35,7 +35,7 @@ export default class TeleportPanelController {
 	private static _instance: TeleportPanelController;
 
 	/* Teleport Panel*/
-	private static _teleportPanel: ScreenGui = Teleport_Screen;
+	private static _teleportPanel: ScreenGui = GUIPanelMap.get("Teleport") as ScreenGui;
 	private static _teleportButtonMap: Map<string, SelectButton> = new Map();
 
 	private static _selection: SelectButton | undefined;
@@ -68,7 +68,6 @@ export default class TeleportPanelController {
 		specialButtonInstance.Name = "SpecialButton";
 		specialButtonInstance.Size = new UDim2(0, 200, 0, 50);
 		specialButtonInstance.Text = "Special Button";
-		specialButtonInstance.Parent = Teleport_Screen.FindFirstChild("Content", true) as Frame;
 
 		const specialButton = new StatefulButton(specialButtonInstance);
 		specialButton.setState(ButtonState.Default);
