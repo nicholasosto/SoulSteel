@@ -17,7 +17,7 @@ import MovementController from "./Controllers/Input/MovementController";
 import ClientTargetController from "./Controllers/Input/ClientTargetController";
 
 /* UI Controllers */
-import GUIController from "./GUIController";
+import UIManager from "./UIManager";
 import StartScreenController from "./Controllers/UI/StartScreenController";
 import MainMenuController from "./Controllers/UI/MainMenuController";
 import SkillBarController from "./Controllers/UI/SkillBarController";
@@ -33,7 +33,7 @@ import { Remotes } from "shared/net/Remotes";
 
 /* Other */
 import { AttributesFrame, PlayerGUI } from "./_Helpers/GUI_Index";
-import ListItemPanel from "./GUI_ComponentClasses/Panels/ListItemPanel";
+import SkillPanelController from "./GUI_ComponentClasses/Panels/SkillPanelController";
 
 class GameClient {
 	private static _instance: GameClient;
@@ -85,9 +85,11 @@ class GameClient {
 }
 
 GameClient.Start();
-GUIController.Start();
+UIManager.Start();
 /* Log Client Loaded */
 warn("Client: Fully Loaded");
 
-const ListItemPanelTest = new ListItemPanel("Skill");
+const ListItemPanelTest = new SkillPanelController("Skill");
 warn("ListItemPanelTest: ", ListItemPanelTest);
+
+

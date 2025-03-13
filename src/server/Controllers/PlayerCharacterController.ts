@@ -26,11 +26,16 @@ import {
 	RemovePlayerCharacter,
 } from "shared/_Registry/EntityRegistration";
 import GameStore from "shared/State/GameStore";
+import { Remotes } from "shared/net/Remotes";
 
 /* Player Character Controller */
 export default class PCController {
 	/* Singleton Instance */
 	private static _instance: PCController;
+
+	/* Remotes */
+	private static _gameCharacterCreated = Remotes.Server.Get("GameCharacterCreated");
+	private static _gameCharacterDestroyed = Remotes.Server.Get("GameCharacterDestroyed");
 
 	/* Constructor */
 	private constructor() {
@@ -64,6 +69,9 @@ export default class PCController {
 
 		/* Add to Registry */
 		RegisterPlayerCharacter(playerCharacter);
+
+		/* Notify Clients */
+		this._gameCharacterCreated.SendToPlayer(player);
 
 		/* Return Player Character */
 		return playerCharacter;

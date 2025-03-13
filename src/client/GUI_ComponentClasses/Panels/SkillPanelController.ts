@@ -1,9 +1,10 @@
 import GameItemManager, { ItemType, ItemData } from "shared/GameItemManager/GameItemManager";
 import StorageManager from "shared/Storage/StorageManager";
 import { PlayerGUI } from "client/_Helpers/GUI_Index";
-import StatefulFrame, { ButtonState } from "client/GUI_ComponentClasses/Frames/StatefulFrame";
+import StatefulFrame, { GameItemFrameState } from "client/GUI_ComponentClasses/Frames/StatefulFrame";
+import GuiStateComponent from "shared/Systems/GUIStateHandlers";
 
-export default class ListItemPanel {
+export default class SkillPanelController {
 	private _screenGui: ScreenGui;
 	private _itemType: ItemType;
 	private _scrollingFrame: ScrollingFrame;
@@ -28,7 +29,7 @@ export default class ListItemPanel {
 
 		/* Load the Item Data */ //#TODO: Replace with GameItemManager
 		this._items = GameItemManager.GetItemsOfType(this._itemType);
-		warn("ListItemPanel: Instantiated");
+		warn("ListItemPanel: Instantiated with ", this._items, " items of type: ", this._itemType);
 		this._PopulateItems();
 	}
 
@@ -39,8 +40,14 @@ export default class ListItemPanel {
 			.filter((child) => child.IsA("Frame"))
 			.forEach((child) => {
 				const frame = child as Frame;
-				const statefulFrame = new StatefulFrame(frame);
-				statefulFrame.setState(ButtonState.Default);
+				const statefulFrame = new GuiStateComponent(frame)
 			});
 	}
+
+	private _SetItemDescription(itemData: ItemData) {
+		this._itemNameLabel.Text = itemData.itemDisplayName;
+		this._itemDescriptionLabel.Text = itemData.itemDescription;
+	}
+
+
 }

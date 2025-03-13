@@ -15,6 +15,27 @@ interface AttributePanelData {
 	spentPoints: number;
 	characterStats: IPlayerData["CharacterStats"];
 }
+interface SkillPanelData {
+	skillSlots: Map<number, SkillId>;
+	unlockedSkills: SkillId[];
+}
+
+interface IPanelData {
+	panelId: string;
+	data: AttributePanelData | SkillPanelData;
+}
+type PanelId = string;
+type SlotMapId = string;
+
+type SkillSlotId = string;
+type EquipmentSlotId = string;
+type EquipmentId = string;
+type SkillSlotMap = Map<SkillSlotId, SkillId>;
+type EquipmentSlotMap = Map<EquipmentSlotId, EquipmentId>;
+
+type TSlotMap = SkillSlotMap | EquipmentSlotMap;
+
+
 /* All Payloads */
 interface Payloads {
 	/* Player Data */
@@ -41,6 +62,10 @@ interface Payloads {
 
 const Remotes = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
+
+	/* Full Load and Destroy Triggers */
+	GameCharacterCreated: Definitions.ServerToClientEvent<[]>(),
+	GameCharacterDestroyed: Definitions.ServerToClientEvent<[]>(),
 
 	/* GAME STATE */
 	StateChanged: Net.Definitions.ServerToClientEvent<[keyof GameState, unknown]>(),
@@ -80,10 +105,12 @@ const Remotes = Net.CreateDefinitions({
 	SendResourceData: Definitions.ServerToClientEvent<[Payloads["PlayerResourceData"]]>(),
 });
 
-
 const RemoteFunctions = Net.CreateDefinitions({
 	// Client-to-server remote function to initialize panel data
 	InitializeAttributePanel: Net.Definitions.ServerAsyncFunction<() => AttributePanelData>(),
+
+	GetPanelData: Net.Definitions.ServerAsyncFunction<(panelId: PanelId) => IPanelData>(),
+	GetSlotMap: Net.Definitions.ServerAsyncFunction<(slotMapId: SlotMapId) => TSlotMap>(),
 });
 
 /* ======== Client to Server Functions =========*/
@@ -144,4 +171,12 @@ export {
 	AssignQuestToPlayer,
 	RemoteFunctions,
 	AttributePanelData,
+	IPanelData,
+	SkillId,
+	SkillSlotId,
+	SkillSlotMap,
+	EquipmentId,
+	EquipmentSlotId,
+	EquipmentSlotMap,
+	PanelId
 };

@@ -2,73 +2,88 @@ import { TweenService } from "@rbxts/services";
 import { Remotes } from "shared/net/Remotes";
 import Logger from "shared/Utility/Logger";
 
-export enum ButtonState {
+export enum GameItemFrameState {
 	Default,
 	Hovered,
 	Pressed,
 	Disabled,
+	Selected,
 }
 
 const HoverTweenInfo = new TweenInfo(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
 
 export default class StatefulFrame {
 	private statefulFrame: Frame;
-	private currentState: ButtonState;
+	private currentState: GameItemFrameState;
 	private hoverTween?: Tween;
+	private defaultSize: UDim2;
+	private hoverSize: UDim2;
 
 	constructor(button: Frame) {
 		this.statefulFrame = button;
-		this.currentState = ButtonState.Default;
+		this.currentState = GameItemFrameState.Default;
+		this.defaultSize = button.Size;
+		this.hoverSize = button.Size.add(new UDim2(0, 3, 0, 3));
 
 		this.setupListeners();
 		this.updateVisualState();
 	}
 
 	private setupListeners() {
-		this.statefulFrame.MouseEnter.Connect(() => this.setState(ButtonState.Hovered));
-		this.statefulFrame.MouseLeave.Connect(() => this.setState(ButtonState.Default));
-		this.statefulFrame.InputBegan.Connect(() => this.setState(ButtonState.Pressed));
-		this.statefulFrame.InputEnded.Connect(() => this.setState(ButtonState.Hovered));
+		this.statefulFrame.MouseEnter.Connect(() => this.setState(GameItemFrameState.Hovered));
+		this.statefulFrame.MouseLeave.Connect(() => this.setState(GameItemFrameState.Default));
+		this.statefulFrame.InputBegan.Connect((input) => {
+			if (input.UserInputType === Enum.UserInputType.MouseButton1) {
+				this.setState(GameItemFrameState.Pressed);
+			}
+		});
+		this.statefulFrame.InputEnded.Connect((input) => {
+			if (input.UserInputType === Enum.UserInputType.MouseButton1) {
+				this.setState(GameItemFrameState.Selected);
+			}
+		});
 	}
 
-	public setState(newState: ButtonState) {
-		if (this.currentState === ButtonState.Disabled) return;
+	public setState(newState: GameItemFrameState) {
+		if (this.currentState === GameItemFrameState.Disabled) return;
 
 		this.currentState = newState;
 		this.updateVisualState();
 	}
 
 	public disable() {
-		this.currentState = ButtonState.Disabled;
+		this.currentState = GameItemFrameState.Disabled;
 		this.updateVisualState();
 	}
 
 	public enable() {
-		this.currentState = ButtonState.Default;
+		this.currentState = GameItemFrameState.Default;
 		this.updateVisualState();
 	}
 
 	private updateVisualState() {
 		switch (this.currentState) {
-			case ButtonState.Default:
-				this.statefulFrame.BackgroundColor3 = new Color3(50, 50, 50);
-				this.statefulFrame.Transparency = 0;
-				this.statefulFrame.Active = true;
-
+			case GameItemFrameState.Default:
+				print("Default: ", this.statefulFrame.Name);
 				this.resetSize();
 				break;
 
-			case ButtonState.Hovered:
-				this.statefulFrame.BackgroundColor3 = new Color3(70, 70, 70);
-				this.animateSize(new UDim2(1.05, 0, 1.05, 0));
+			case GameItemFrameState.Hovered:
+				print("Hovered: ", this.statefulFrame.Name);
+				this.animateSize();
 				break;
 
-			case ButtonState.Pressed:
+			case GameItemFrameState.Pressed:
 				this.statefulFrame.BackgroundColor3 = new Color3(30, 30, 30);
-				this.animateSize(new UDim2(0.95, 0, 0.95, 0));
+				this.animateSize();
+				print("Pressed: ", this.statefulFrame.Name);
 				break;
 
-			case ButtonState.Disabled:
+			case GameItemFrameState.Selected:
+				this.statefulFrame.BackgroundColor3 = new Color3(20, 20, 20);
+				print("Selected: ", this.statefulFrame.Name);
+				break;
+			case GameItemFrameState.Disabled:
 				this.statefulFrame.BackgroundColor3 = new Color3(40, 40, 40);
 				this.statefulFrame.Transparency = 0.5;
 				this.statefulFrame.Active = false;
@@ -78,13 +93,19 @@ export default class StatefulFrame {
 		}
 	}
 
-	private animateSize(targetSize: UDim2) {
+	private animateSize() {
+		let goalSize: UDim2;
+		if (this.currentState === GameItemFrameState.Hovered) {
+			goalSize = this.hoverSize;
+		} else {
+			goalSize = this.defaultSize;
+		}
 		this.hoverTween?.Cancel(); // Stop previous tween if running
-		this.hoverTween = TweenService.Create(this.statefulFrame, HoverTweenInfo, { Size: targetSize });
+		this.hoverTween = TweenService.Create(this.statefulFrame, HoverTweenInfo, { Size: goalSize });
 		this.hoverTween.Play();
 	}
 
 	private resetSize() {
-		this.animateSize(new UDim2(1, 0, 1, 0));
+		this.animateSize();
 	}
 }
