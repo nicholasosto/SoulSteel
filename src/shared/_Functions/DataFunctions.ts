@@ -1,5 +1,5 @@
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 
 // Player Data Interface
 function GetSkillSlotMap(playerData: IPlayerData): Map<number, string> {

@@ -11,7 +11,7 @@ import ITargetManager from "shared/_Interfaces/Character Managers/ITargetManager
 import { DamageContainer } from "@rbxts/wcs";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import IDataManager from "./Character Managers/IDataManager";
-import { AttributesManager } from "server/Character/Managers/AttributesManager";
+//import { AttributesManager } from "server/Character/Managers/AttributesManager";
 
 /* IPlayerCharacter */
 export default interface IPlayerCharacter extends IGameCharacter {
@@ -27,7 +27,7 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	resourceManager: IResourceManager;
 	skillManager: ISkillManager;
 	targetManager: ITargetManager;
-	attributesManager: AttributesManager;
+	//attributesManager: AttributesManager;
 
 	/* Event Handlers */
 	OnDeath(): void;

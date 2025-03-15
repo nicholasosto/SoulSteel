@@ -1,7 +1,7 @@
 import { EAnimationID } from "shared/Animation/AnimationIndex";
 import { ImageIds } from "shared/_Enums/EImageId";
 import { ESoundId } from "shared/Audio/Sounds";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import { DEFAULT_RESOURCE_MANA, DEFAULT_RESOURCE_STAMINA } from "./SkillConstants";
 
@@ -47,6 +47,16 @@ const SkillDefinitions: Record<SkillId, ISkillDefinition> = {
 		audio: ESoundId.BasicHold,
 		cooldown: 10,
 		resource: DEFAULT_RESOURCE_MANA,
+	},
+	Unassigned: {
+		displayName: "Unassigned",
+		itemId: "Unassigned",
+		description: "No skill assigned.",
+		imageId: ImageIds.DefaultIcon,
+		animation: EAnimationID.BasicHold,
+		audio: ESoundId.BasicHold,
+		cooldown: 0,
+		resource: DEFAULT_RESOURCE_STAMINA,
 	},
 };
 

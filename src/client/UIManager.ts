@@ -1,17 +1,15 @@
 // File: Modules/UIManager.ts
-
 import { Players } from "@rbxts/services";
-import { TGameCharacter } from "shared/_Types/TGameCharacter";
-import { Remotes } from "shared/net/Remotes";
+import HudScreen from "../shared/User Interface Classes/Classes/Screens/HudScreen";
+import { SkillSlotMap } from "shared/_IDs/SkillIndex";
+import { InfoFramePayload } from "shared/net/RemoteIndex";
 
 export default class UIManager {
 	private static _instance: UIManager;
-	private static guiInstances: Instance[] = [];
-	private static connections: RBXScriptConnection[] = [];
+	private static _playerGui = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
-	/* Remotes */
-	private static _gameCharacterCreated = Remotes.Client.Get("GameCharacterCreated");
-	private static _gameCharacterDestroyed = Remotes.Client.Get("GameCharacterDestroyed");
+	/*Screen Instances */
+	private static _HudScreen: HudScreen | undefined;
 
 	private constructor() {}
 
@@ -19,37 +17,30 @@ export default class UIManager {
 		if (this._instance === undefined) {
 			this._instance = new UIManager();
 		}
+		this.initialzeUI();
+		return this._instance;
 	}
 
-	private static _initializeConnections() {
-		const GameCharacterCreatedConnection = this._gameCharacterCreated.Connect(() => {
-			print("UIManager - GameCharacterCreated");
-		});
-		this.connections.push(GameCharacterCreatedConnection);
-
-		const GameCharacterDestroyedConnection = this._gameCharacterDestroyed.Connect(() => {
-			print("UIManager - GameCharacterDestroyed");
-		});
-		this.connections.push(GameCharacterDestroyedConnection);
+	/* Initialize UI */
+	private static initialzeUI() {
+		/* Create UI Objects */
+		warn("UI Manager: Initializing UI");
+		// Initialize UI elements here
+		this._HudScreen?.Destroy();
+		print("Creating new HudScreen");
+		this._HudScreen = new HudScreen();
+	}
+	public static UpdateSkillBar(newSlotMap: SkillSlotMap) {
+		this._HudScreen?._skillBar.Update(newSlotMap);
+	}
+	public static UpdateInfoFrame(payload: InfoFramePayload) {
+		print("Updating InfoFrame with payload:", payload);
+		this._HudScreen?._infoFrame.Update(payload);
 	}
 
-	public static cleanup() {
-		// Disconnect old events
-		this.connections.forEach((conn) => conn.Disconnect());
-		this.connections = [];
-
-		// Destroy old GUI instances
-		this.guiInstances.forEach((instance) => instance.Destroy());
-		this.guiInstances = [];
+	public static ClearUI() {
+		this._HudScreen?.Destroy();
+		this._HudScreen = undefined;
 	}
 }
 
-Players.LocalPlayer.CharacterAdded.Connect(() => {
-	warn("Starting UIManager - Character Added");
-	UIManager.Start();
-});
-
-Players.LocalPlayer.CharacterRemoving.Connect(() => {
-	warn("Cleaning up UIManager - Character Removed");
-	UIManager.cleanup();
-});

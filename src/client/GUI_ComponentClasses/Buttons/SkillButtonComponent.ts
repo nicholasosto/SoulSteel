@@ -1,5 +1,5 @@
-import { SkillId } from "shared/_IDs/IDs_Skill";
-import { TSkillButton } from "shared/Epic UI/EpicIndex";
+import { SkillId } from "shared/_IDs/SkillIndex";
+import { TSkillButton } from "shared/User Interface Classes/EpicIndex";
 
 import StorageManager from "shared/Storage/StorageManager";
 import DefinitionsManager from "shared/Storage/DefinitionsManager";

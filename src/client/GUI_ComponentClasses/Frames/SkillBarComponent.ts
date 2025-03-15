@@ -1,5 +1,5 @@
-import { SkillId } from "shared/_IDs/IDs_Skill";
-import { TSkillBar } from "shared/Epic UI/EpicIndex";
+import { SkillId } from "shared/_IDs/SkillIndex";
+import { TSkillBar } from "shared/User Interface Classes/EpicIndex";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import Logger from "shared/Utility/Logger";
 

@@ -11,7 +11,7 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { CreateAnimationMap } from "shared/_Functions/AnimationFunctions";
 
 import { UnknownSkill } from "@rbxts/wcs";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 
 
 

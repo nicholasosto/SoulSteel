@@ -1,1 +1,1 @@
-export type ResourceId = "Health" | "Mana" | "Stamina" | "Domain" | "Class" | "Experience";
+export type ResourceId = "Health" | "SoulPower" | "Stamina" | "Domain" | "Class" | "Experience";

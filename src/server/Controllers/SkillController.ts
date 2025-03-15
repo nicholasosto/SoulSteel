@@ -3,7 +3,7 @@ import Logger from "shared/Utility/Logger";
 import PCController from "server/Controllers/PlayerCharacterController";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import { Remotes, SendNotification, Payloads } from "shared/net/Remotes";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 
 export default class SkillController {
 	// Singleton

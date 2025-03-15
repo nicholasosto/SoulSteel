@@ -9,7 +9,7 @@ import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/Player Data/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
-
+import { ResourceBarData } from "shared/net/RemoteIndex";
 
 /* Responibilities */
 // - Create and manage resources for the character
@@ -61,7 +61,7 @@ export default class ResourceManager implements IResourceManager {
 
 	/* Resources */
 	public HealthResource: CharacterResource;
-	public ManaResource: CharacterResource;
+	public SoulPower: CharacterResource;
 	public StaminaResource: CharacterResource;
 
 	/* Constructor */
@@ -73,7 +73,7 @@ export default class ResourceManager implements IResourceManager {
 		const level = playerData.ProgressionStats.Level;
 		const characterStats = playerData.CharacterStats;
 		this.HealthResource = new CharacterResource("Health", calculateMaxHealth(characterStats, level));
-		this.ManaResource = new CharacterResource("Mana", calculateMaxMana(characterStats, level));
+		this.SoulPower = new CharacterResource("SoulPower", calculateMaxMana(characterStats, level));
 		this.StaminaResource = new CharacterResource("Stamina", calculateMaxStamina(characterStats, level));
 
 		/* Set Humanoid Stats */
@@ -87,7 +87,7 @@ export default class ResourceManager implements IResourceManager {
 	/* Notify UI */
 	private _notifyUI() {
 		const healthPL = this.HealthResource.GetPayload();
-		const manaPL = this.ManaResource.GetPayload();
+		const manaPL = this.SoulPower.GetPayload();
 		const stamPL = this.StaminaResource.GetPayload();
 		SendResourceUpdate(this._playerCharacter.player, healthPL.resourceId, healthPL.current, healthPL.max);
 		SendResourceUpdate(this._playerCharacter.player, manaPL.resourceId, manaPL.current, manaPL.max);
@@ -97,7 +97,7 @@ export default class ResourceManager implements IResourceManager {
 	public OnHeartBeat() {
 		//Logger.Log(script, `[ResourceManager]: Heartbeat`);
 		this.HealthResource.regenStep();
-		this.ManaResource.regenStep();
+		this.SoulPower.regenStep();
 		this.StaminaResource.regenStep();
 		this._notifyUI();
 	}
@@ -108,8 +108,8 @@ export default class ResourceManager implements IResourceManager {
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {
-		this.ManaResource.SetCurrent(this.ManaResource.GetCurrent() - 100);
-		this.ManaResource.RegenToggle(true);
+		this.SoulPower.SetCurrent(this.SoulPower.GetCurrent() - 100);
+		this.SoulPower.RegenToggle(true);
 		Logger.Log(script, `[ResourceManager]: Skill Started: ${skill}`);
 		this._notifyUI();
 	}
@@ -121,7 +121,7 @@ export default class ResourceManager implements IResourceManager {
 	public Destroy() {
 		Logger.Log("[Destroying]", `ResourceManager: ${this._playerCharacter.player.Name}`);
 		this.HealthResource.Destroy();
-		this.ManaResource.Destroy();
+		this.SoulPower.Destroy();
 		this.StaminaResource.Destroy();
 	}
 }

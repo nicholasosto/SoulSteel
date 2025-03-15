@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
 import DefinitionsManager from "shared/Storage/DefinitionsManager";
-import { DragableItem } from "shared/UI Classes/DragableItem";
+import { DragableItem } from "shared/User Interface Classes/Classes/DragableItem";
 
 /* Skill Panel Type */
 export type TSkillPanel = ScreenGui & {

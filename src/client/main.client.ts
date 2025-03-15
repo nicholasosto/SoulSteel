@@ -10,20 +10,24 @@ import WcsClient from "./_WCS/WCSClient";
 
 /* Audio */
 import AudioPlayer from "shared/Utility/AudioPlayer";
+import GUICollection from "shared/User Interface Classes/GUICollection";
 
 /* Input Controllers */
 import KeyboardController from "client/Controllers/Input/KeyboardController";
 import MovementController from "./Controllers/Input/MovementController";
-import ClientTargetController from "./Controllers/Input/ClientTargetController";
+import ClientTargetController from "../shared/User Interface Classes/Controllers/ClientTargetController";
+
+/*Network */
+import ClientNetManager from "./Net/ClientNetManager";
 
 /* UI Controllers */
-import UIManager from "./UIManager";
-import StartScreenController from "./Controllers/UI/StartScreenController";
-import MainMenuController from "./Controllers/UI/MainMenuController";
-import SkillBarController from "./Controllers/UI/SkillBarController";
-import CharacterFrameController from "./Controllers/UI/CharacterFrameController";
-import TeleportPanelController from "./Controllers/UI/TeleportPanelController";
-import AttributesGUIController from "shared/_ObserverPattern/_Observers/AttibutesGUIController";
+import UIManager from "client/UIManager";
+//import StartScreenController from "./Controllers/UI/StartScreenController";
+//import MainMenuController from "./Controllers/UI/MainMenuController";
+//import SkillBarController from "./Controllers/UI/SkillBarController";
+//import CharacterFrameController from "./Controllers/UI/CharacterFrameController";
+//import TeleportPanelController from "./Controllers/UI/TeleportPanelController";
+//import AttributesGUIController from "shared/_ObserverPattern/_Observers/AttibutesGUIController";
 
 /* Collections */
 import { CollectTransparencyTweens } from "./Collectors/PulseTween";
@@ -32,14 +36,14 @@ import { CollectTransparencyTweens } from "./Collectors/PulseTween";
 import { Remotes } from "shared/net/Remotes";
 
 /* Other */
-import { AttributesFrame, PlayerGUI } from "./_Helpers/GUI_Index";
-import SkillPanelController from "./GUI_ComponentClasses/Panels/SkillPanelController";
+//import { AttributesFrame, PlayerGUI } from "./_Helpers/GUI_Index";
+//import SkillUIController from "client/__PlanningVersion/SkillUIController";
 
 class GameClient {
 	private static _instance: GameClient;
 
 	/* Remotes */
-	private static _PlayerDataRequest = Remotes.Client.Get("PlayerDataRequest");
+	//private static _PlayerDataRequest = Remotes.Client.Get("PlayerDataRequest");
 
 	/* Constructor */
 	constructor() {
@@ -52,26 +56,29 @@ class GameClient {
 			/* Create the Game Client */
 			this._instance = new GameClient();
 
+			ClientNetManager.Start();
 			/* Start the Storage Managers */
-			GameItemManager.Start();
-			print("Game Client: Storage Managers Started");
+			//GameItemManager.Start();
+			//GUICollection.GetInstance();
+
+			//print("Game Client: Storage Managers Started");
 			/* Start the WCS Client */
 			WcsClient.Start();
-			print("Game Client: WCS Client Started");
+			//print("Game Client: WCS Client Started");
 			/* UI Controllers */
-			MainMenuController.Start();
-			TeleportPanelController.Start();
-			StartScreenController.Start(PlayerGUI.FindFirstChild("StartScreen") as ScreenGui);
-			CharacterFrameController.Start();
-			SkillBarController.Start();
-			AttributesGUIController.Start(AttributesFrame);
-			print("Game Client: UI Controllers Started");
+			//MainMenuController.Start();
+			//TeleportPanelController.Start();
+			//StartScreenController.Start(PlayerGUI.FindFirstChild("StartScreen") as ScreenGui);
+			//CharacterFrameController.Start();
+			//SkillBarController.Start();
+			//AttributesGUIController.Start(AttributesFrame);
+			//print("Game Client: UI Controllers Started");
 
 			/* Input Controllers */
-			KeyboardController.Start();
-			new MovementController();
-			ClientTargetController.Start();
-			print("Game Client: Input Controllers Started");
+			//KeyboardController.Start();
+			//new MovementController();
+			//ClientTargetController.Start();
+			//print("Game Client: Input Controllers Started");
 			/* Collections */
 			CollectTransparencyTweens();
 
@@ -79,17 +86,13 @@ class GameClient {
 			//AudioPlayer.PlayCreepyMoan();
 
 			/* Player Data Request */
-			this._PlayerDataRequest.SendToServer();
+			//this._PlayerDataRequest.SendToServer();
 		}
 	}
 }
 
 GameClient.Start();
+/*Test */
 UIManager.Start();
 /* Log Client Loaded */
 warn("Client: Fully Loaded");
-
-const ListItemPanelTest = new SkillPanelController("Skill");
-warn("ListItemPanelTest: ", ListItemPanelTest);
-
-

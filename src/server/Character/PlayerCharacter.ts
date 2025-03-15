@@ -19,7 +19,8 @@ import { QuestId } from "shared/_IDs/IDs_Quest";
 import TargetManager from "./Managers/TargetManager";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { generateCharacterName } from "shared/_Factories/NameFactory";
-import { AttributesManager } from "server/Character/Managers/AttributesManager";
+import { InfoFramePayload, ResourceBarData } from "shared/net/RemoteIndex";
+//import { AttributesManager } from "server/Character/Managers/AttributesManager";
 
 /* Classes */
 /* Player Character */
@@ -37,7 +38,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public resourceManager: ResourceManager;
 	public skillManager: SkillsManager;
 	public targetManager: TargetManager;
-	public attributesManager: AttributesManager;
+	//public attributesManager: AttributesManager;
 
 	/* Connections */
 	/* Humanoid */
@@ -83,7 +84,7 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.animationManager = new AnimationManager(this, playerData);
 
 		/* Attributes Subject */
-		this.attributesManager = new AttributesManager(this);
+		//this.attributesManager = new AttributesManager(this);
 
 		/* Initialize Connections */
 		this._initializeConnections();
@@ -117,14 +118,15 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			this.skillManager.OnSkillStarted(skill);
 			this.animationManager.OnSkillStarted(skill);
 			this.resourceManager.OnSkillStarted(skill);
-			this.attributesManager.updateAttribute("Strength", 5);
+			//this.attributesManager.updateAttribute("Strength", 5);
 		});
 
 		/* Skill Ended */
 		this._connectionSkillEnded?.Disconnect();
 		this._connectionSkillEnded = this.wcsCharacter.SkillEnded.Connect((skill) => {
-			Logger.Log(script, "Player Character Skill Ended");
+			print("Skill Ended");
 			this.skillManager.OnSkillEnded(skill);
+			
 		});
 
 		/* Heartbeat */
@@ -170,5 +172,21 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 				warn(" Damage Container: ", damageContainer.Source?.Character.Instance.Name, damageContainer.Damage);
 			});
 		}
+	}
+
+	public GetInfoFrameData() {
+		const infoFrameData = {
+			Level: this.dataManager.GetData().ProgressionStats.Level,
+			Name: this.dataManager.GetData().CharacterIdentity.CharacterName,
+			Health: this.resourceManager.HealthResource.GetPayload() as ResourceBarData,
+			SoulPower: this.resourceManager.SoulPower.GetPayload() as ResourceBarData,
+			Stamina: this.resourceManager.StaminaResource.GetPayload() as ResourceBarData,
+			Experience: {
+				resourceId: "Experience",
+				current: this.dataManager.GetData().ProgressionStats.Experience,
+				max: this.dataManager.GetData().ProgressionStats.ExperienceToNextLevel, // Placeholder for max experience
+			},
+		} as InfoFramePayload;
+		return infoFrameData;
 	}
 }

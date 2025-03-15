@@ -7,7 +7,7 @@ import { Character, UnknownSkill } from "@rbxts/wcs";
 import ISkillManager from "shared/_Interfaces/Character Managers/ISkillManager";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 
 /* Functions */
 import { GetSkillSlotMap } from "shared/_Functions/DataFunctions";

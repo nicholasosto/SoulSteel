@@ -2,39 +2,22 @@
 import Net, { Definitions } from "@rbxts/net";
 
 /* ID's */
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId, SkillPanelData, SkillSlotMap } from "shared/_IDs/SkillIndex";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
+import { TSlotMap, TPanelData, SlotMapId, GenericPanelData } from "./RemoteIndex";
+
+/*Payloads */
+import { InfoFramePayload } from "./RemoteIndex";
 
 /* Interfaces */
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { GameState } from "shared/State/GameStore";
-import Logger from "shared/Utility/Logger";
 
 interface AttributePanelData {
 	availablePoints: number;
 	spentPoints: number;
 	characterStats: IPlayerData["CharacterStats"];
 }
-interface SkillPanelData {
-	skillSlots: Map<number, SkillId>;
-	unlockedSkills: SkillId[];
-}
-
-interface IPanelData {
-	panelId: string;
-	data: AttributePanelData | SkillPanelData;
-}
-type PanelId = string;
-type SlotMapId = string;
-
-type SkillSlotId = string;
-type EquipmentSlotId = string;
-type EquipmentId = string;
-type SkillSlotMap = Map<SkillSlotId, SkillId>;
-type EquipmentSlotMap = Map<EquipmentSlotId, EquipmentId>;
-
-type TSlotMap = SkillSlotMap | EquipmentSlotMap;
-
 
 /* All Payloads */
 interface Payloads {
@@ -105,15 +88,23 @@ const Remotes = Net.CreateDefinitions({
 	SendResourceData: Definitions.ServerToClientEvent<[Payloads["PlayerResourceData"]]>(),
 });
 
-const RemoteFunctions = Net.CreateDefinitions({
-	// Client-to-server remote function to initialize panel data
-	InitializeAttributePanel: Net.Definitions.ServerAsyncFunction<() => AttributePanelData>(),
-
-	GetPanelData: Net.Definitions.ServerAsyncFunction<(panelId: PanelId) => IPanelData>(),
-	GetSlotMap: Net.Definitions.ServerAsyncFunction<(slotMapId: SlotMapId) => TSlotMap>(),
+const RemoteEvents = Net.CreateDefinitions({
+	UpdateSkillSlotMap: Net.Definitions.ServerToClientEvent<[skillSlotMap: SkillSlotMap]>(),
+	UpdateSkillPanel: Net.Definitions.ServerToClientEvent<[panelData: SkillPanelData]>(),
+	UpdateEquipmentPanel: Net.Definitions.ServerToClientEvent<[panelData: GenericPanelData]>(),
+	UpdateInfoFrame: Net.Definitions.ServerToClientEvent<[payload: InfoFramePayload]>(),
 });
 
-/* ======== Client to Server Functions =========*/
+const RemoteFunctions = Net.CreateDefinitions({
+	// Client-to-server remote function to initialize panel data
+	//InitializeAttributePanel: Net.Definitions.ServerAsyncFunction<() => AttributePanelData>(),
+	GetSkillPanelData: Net.Definitions.ServerAsyncFunction<() => SkillPanelData | undefined>(),
+	GetSkillSlotMap: Net.Definitions.ServerAsyncFunction<() => SkillSlotMap | undefined>(),
+	GetSlotMapData: Net.Definitions.ServerAsyncFunction<(slotMapId: SlotMapId) => TSlotMap | undefined>(),
+	GetCharacterFrameData: Net.Definitions.ServerAsyncFunction<() => InfoFramePayload | undefined>(),
+});
+
+// /* ======== Client to Server Functions =========*/
 
 /* Assign Skill Slot */
 function AssignSkillSlot(slot: number, skillId: SkillId): void {
@@ -133,7 +124,7 @@ function UnAssignSkillSlot(slot: number): void {
 	Remotes.Client.Get("AssignSkill").SendToServer(payload);
 }
 
-/* ======== Server to Client Functions =========*/
+// /* ======== Server to Client Functions =========*/
 
 /* Notify Player */
 function SendNotification(player: Player, success: boolean, title: string, message: string): void {
@@ -163,20 +154,13 @@ function SendResourceUpdate(player: Player, resourceId: ResourceId, current: num
 /* Exports */
 export {
 	Remotes,
-	Payloads,
+	RemoteFunctions,
+	RemoteEvents,
+	AttributePanelData,
+	SendResourceUpdate,
 	AssignSkillSlot,
 	UnAssignSkillSlot,
 	SendNotification,
-	SendResourceUpdate,
 	AssignQuestToPlayer,
-	RemoteFunctions,
-	AttributePanelData,
-	IPanelData,
-	SkillId,
-	SkillSlotId,
-	SkillSlotMap,
-	EquipmentId,
-	EquipmentSlotId,
-	EquipmentSlotMap,
-	PanelId
+	Payloads,
 };

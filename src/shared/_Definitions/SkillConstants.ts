@@ -1,7 +1,7 @@
 import { TSkillResource } from "shared/_Types/TSkillResource";
 
 const DEFAULT_RESOURCE_MANA: TSkillResource = {
-	resourceId: "Mana",
+	resourceId: "SoulPower",
 	amount: 30,
 };
 

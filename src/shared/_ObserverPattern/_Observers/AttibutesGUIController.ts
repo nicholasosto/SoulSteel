@@ -17,7 +17,7 @@ interface AttributePanelElements {
 /* Remote and Remote Functions */
 const EV_PlayerAttributesUpdated = Remotes.Client.Get("PlayerAttributesUpdated");
 const EV_RequestAttributeUpdate = Remotes.Client.Get("AttributeUpdateRequest");
-const RF_GetAttributePanelData = RemoteFunctions.Client.Get("InitializeAttributePanel");
+//const RF_GetAttributePanelData = RemoteFunctions.Client.Get("InitializeAttributePanel");
 
 export default class AttributesGUIController {
 	/* Singleton */
@@ -49,7 +49,7 @@ export default class AttributesGUIController {
 			);
 
 			/* Call Server for Data */
-			this.attributePanelData = RF_GetAttributePanelData.CallServerAsync().await()[1] as AttributePanelData;
+			//this.attributePanelData = RF_GetAttributePanelData.CallServerAsync().await()[1] as AttributePanelData;
 
 			/* Create Attribute Controls */
 			this.CreateAttributeControls();

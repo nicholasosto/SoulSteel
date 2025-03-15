@@ -4,7 +4,7 @@ import ICharacterResource from "shared/_Interfaces/ICharacterResource";
 export default interface IResourceManager {
 	// Skills
 	HealthResource: ICharacterResource;
-	ManaResource: ICharacterResource;
+	SoulPower: ICharacterResource;
 	StaminaResource: ICharacterResource;
 
 	// private _playerCharacter: IPlayerCharacter;

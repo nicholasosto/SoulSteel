@@ -14,6 +14,7 @@ import StorageManager from "shared/Storage/StorageManager";
 import ScoreManager from "shared/State/ScoreManager";
 
 // Controllers
+import ServerNetManager from "./Net/ServerNetManager";
 import PCController from "./Controllers/PlayerCharacterController";
 import SkillController from "./Controllers/SkillController";
 import TargetingController from "./Controllers/TargetingController";
@@ -44,6 +45,7 @@ class GameServer {
 		if (this._instance === undefined) {
 			this._instance = new GameServer();
 			StorageManager.Start();
+			ServerNetManager.Start();
 			/* Start WCS */
 			GameServer.StartWCS();
 			PlayerDataController.Start();
@@ -103,6 +105,11 @@ function HandleCharacterAdded(player: Player, character: TGameCharacter | undefi
 
 	/* Create the Player Character */
 	const playerCharacter = PCController.CreatePlayerCharacter(player, character);
+	const wcsCharacter = playerCharacter?.wcsCharacter;
+	wcsCharacter.SkillEnded.Connect(() => {
+		print("Skill Endesdsdasdd");
+		ServerNetManager.SendInfoFrameUpdate(player);
+	});
 	if (playerCharacter === undefined) return false;
 
 	/* Handle Player Death */

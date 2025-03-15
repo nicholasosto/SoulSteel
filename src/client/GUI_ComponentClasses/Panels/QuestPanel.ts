@@ -1,12 +1,12 @@
-import IQuestPanel from "shared/Epic UI/Interfaces/IQuestPanel";
-import { TQuestPanel } from "shared/Epic UI/Types/TQuestPanel";
+import IQuestPanel from "shared/User Interface Classes/Interfaces/IQuestPanel";
+import { TQuestPanel } from "shared/User Interface Classes/Types/TQuestPanel";
 import Quest from "shared/_Classes/Quest";
 import { QuestId } from "shared/_IDs/IDs_Quest";
 import Logger from "shared/Utility/Logger";
 import StorageManager from "shared/Storage/StorageManager";
 
 
-import { TQuestItemFrame } from "shared/Epic UI/Types/TQuestItem";
+import { TQuestItemFrame } from "shared/User Interface Classes/Types/TQuestItem";
 
 export default class QuestPanel implements IQuestPanel {
 	QuestMap: Map<QuestId, Quest> = new Map();

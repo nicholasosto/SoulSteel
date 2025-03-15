@@ -1,4 +1,4 @@
-import { SkillId } from "shared/_IDs/IDs_Skill";
+import { SkillId } from "shared/_IDs/SkillIndex";
 import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import IItemDefinition from "shared/_Interfaces/IItemDefinition";
 import ItemDefinitionsMap from "shared/_Definitions/ItemDefinitions";

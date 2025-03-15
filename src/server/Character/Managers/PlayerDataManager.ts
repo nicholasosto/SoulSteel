@@ -4,6 +4,8 @@ import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { Remotes, AttributePanelData } from "shared/net/Remotes";
+import { SkillId, SkillPanelData, SkillSlotId } from "shared/_IDs/SkillIndex";
+import { InfoFramePayload, TPanelData } from "shared/net/RemoteIndex";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -81,7 +83,6 @@ export default class PlayerDataManager implements IDataManager {
 	public UpdateCharacterName(newIdentity: IPlayerData["CharacterIdentity"]["CharacterName"]): void {
 		this._playerData.CharacterIdentity.CharacterName = newIdentity;
 	}
-
 	/* Update Progression Stats */
 	public UpdateProgressionStats(newStats: IPlayerData["ProgressionStats"]): void {
 		this._playerData.ProgressionStats = newStats;
@@ -134,5 +135,33 @@ export default class PlayerDataManager implements IDataManager {
 			return DefualtData;
 		}
 		return playerData;
+	}
+
+	public GetPayload(payloadId: string): unknown {
+		switch (payloadId) {
+			case "SkillPanel":
+				return this._playerData.Skills;
+			default:
+				return undefined;
+		}
+	}
+
+	public GetSkillPanelData(): SkillPanelData | undefined {
+		const skillPanelData = {
+			SlotMap: this.GetSkillSlotMap(),
+			UnlockedSkills: this._playerData.Skills.unlockedSkills,
+		};
+		return skillPanelData as SkillPanelData | undefined;
+	}
+
+	public GetSkillSlotMap(): Map<SkillSlotId, SkillId> {
+		const skillSlotMap = new Map<SkillSlotId, SkillId>();
+		const slotPrefix = "Slot_";
+		for (let i = 0; i < this._playerData.Skills.assignedSlots.size(); i++) {
+			const slotId = `${slotPrefix}${string.format("%02d", i + 1)}` as SkillSlotId;
+			const skillId = this._playerData.Skills.assignedSlots[i] as SkillId;
+			skillSlotMap.set(slotId, skillId);
+		}
+		return skillSlotMap;
 	}
 }
