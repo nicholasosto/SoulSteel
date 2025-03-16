@@ -1,12 +1,10 @@
 // File: Modules/UIManager.ts
 import { Players } from "@rbxts/services";
-import HudScreen from "../shared/User Interface Classes/Classes/Screens/HudScreen";
-import { SkillSlotMap } from "shared/_IDs/SkillIndex";
-import { InfoFramePayload } from "shared/net/RemoteIndex";
+import HudScreen from "shared/User Interface Classes/Classes/Screens/HudScreen";
+import * as Payload from "shared/net/RemoteIndex";
 
 export default class UIManager {
 	private static _instance: UIManager;
-	private static _playerGui = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
 	/*Screen Instances */
 	private static _HudScreen: HudScreen | undefined;
@@ -23,24 +21,29 @@ export default class UIManager {
 
 	/* Initialize UI */
 	private static initialzeUI() {
-		/* Create UI Objects */
-		warn("UI Manager: Initializing UI");
-		// Initialize UI elements here
-		this._HudScreen?.Destroy();
-		print("Creating new HudScreen");
+		this.ClearUI();
+		this._initializeScreens();
+	}
+
+	/* Initialize Screens */
+	private static _initializeScreens() {
 		this._HudScreen = new HudScreen();
 	}
-	public static UpdateSkillBar(newSlotMap: SkillSlotMap) {
+
+	/* Update Skill Bar */
+	public static UpdateSkillBar(newSlotMap: Payload.PSkillSlotMap) {
 		this._HudScreen?._skillBar.Update(newSlotMap);
 	}
-	public static UpdateInfoFrame(payload: InfoFramePayload) {
+
+	/* Update Character Frame */
+	public static UpdateInfoFrame(payload: Payload.PInfoFrame) {
 		print("Updating InfoFrame with payload:", payload);
 		this._HudScreen?._infoFrame.Update(payload);
 	}
 
+	/* Clear UI */
 	public static ClearUI() {
 		this._HudScreen?.Destroy();
 		this._HudScreen = undefined;
 	}
 }
-

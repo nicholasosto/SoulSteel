@@ -31,6 +31,7 @@ export class HumanoidDescriptionFactory {
 		return this;
 	}
 
+	/* Get Instance */
 	public static getInstance(): HumanoidDescriptionFactory {
 		if (HumanoidDescriptionFactory._instance === undefined) {
 			HumanoidDescriptionFactory._instance = new HumanoidDescriptionFactory();
@@ -39,6 +40,7 @@ export class HumanoidDescriptionFactory {
 		return HumanoidDescriptionFactory._instance;
 	}
 
+	/* Load Base Humanoid Descriptions */
 	private LoadBaseHumanoidDescriptions(): void {
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.RobotBase);
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.DemonBase);
@@ -49,11 +51,13 @@ export class HumanoidDescriptionFactory {
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.WolfForm);
 	}
 
-	public static getHumanoidDescription(humanoidDescription: EHumanoidDescription): HumanoidDescription {
+	/* Get Humanoid Description */
+	private static getHumanoidDescription(humanoidDescription: EHumanoidDescription): HumanoidDescription {
 		return HumanoidDescriptionFactory._humanoidDescriptions.get(humanoidDescription) as HumanoidDescription;
 	}
 
-	public static setHumanoidDescription(hdName: EHumanoidDescription): void {
+	/* Set Humanoid Description */
+	private static setHumanoidDescription(hdName: EHumanoidDescription): void {
 		const humanoidDescription = StorageManager.CloneFromStorage(hdName) as HumanoidDescription;
 		if (humanoidDescription === undefined) {
 			Logger.Log(script, "HumanoidDescriptionFactory", `Humanoid ${hdName} not found in storage.`);
@@ -63,7 +67,8 @@ export class HumanoidDescriptionFactory {
 		HumanoidDescriptionFactory._humanoidDescriptions.set(hdName, humanoidDescription);
 	}
 
-	public static ApplyHumanoidDescription(humanoid: Humanoid, hdName: EHumanoidDescription): void {
+	/* Apply Humanoid Description */
+	private static ApplyHumanoidDescription(humanoid: Humanoid, hdName: EHumanoidDescription): void {
 		const humanoidDescription = HumanoidDescriptionFactory.getHumanoidDescription(hdName);
 		const currenctDescription = humanoid.GetAppliedDescription();
 		if (currenctDescription === undefined) {

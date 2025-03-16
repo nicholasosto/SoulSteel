@@ -1,4 +1,4 @@
-import { TEpicAttributes } from "shared/User Interface Classes/EpicIndex";
+import { TEpicAttributes } from "shared/User Interface Classes/Types/EpicIndex";
 
 /* Get Attribute Value */
 function GetEpicAttribute(attribute: TEpicAttributes, instance: Instance) {

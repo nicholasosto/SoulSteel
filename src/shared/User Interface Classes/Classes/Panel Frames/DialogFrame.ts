@@ -1,5 +1,5 @@
 import { TDialog } from "shared/User Interface Classes/Types/TDialog";
-import { TEpicAttributes } from "shared/User Interface Classes/EpicIndex";
+import { TEpicAttributes } from "shared/User Interface Classes/Types/EpicIndex";
 import StorageManager from "shared/Storage/StorageManager";
 import Logger from "shared/Utility/Logger";
 //import { SendNoticationConfirmation } from "shared/net/Remotes";

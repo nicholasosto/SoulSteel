@@ -1,16 +1,15 @@
-import { ResourceId } from "shared/_IDs/IDs_Resource";
-import StorageManager from "shared/Storage/StorageManager";
 import { Players } from "@rbxts/services";
+
+/* Utility Imports */
+import StorageManager from "shared/Storage/StorageManager";
+
 /* Data Types */
-import { InfoFramePayload } from "shared/net/RemoteIndex";
-import { SkillSlotMap } from "shared/_IDs/SkillIndex";
-import { TSkillBar } from "shared/User Interface Classes/EpicIndex";
-import { TMenuButtonFrame } from "shared/User Interface Classes/Types/TMenuButtonFrame";
+import { TSkillBar } from "shared/User Interface Classes/Types/EpicIndex";
 
 /* Class Imports */
 import SkillBar from "shared/User Interface Classes/Classes/Panel Frames/SkillBar";
 import InfoFrame from "shared/User Interface Classes/Classes/Assemblies/InfoFrame";
-import { TInfoFrame } from "shared/User Interface Classes/EpicIndex";
+import { TInfoFrame } from "shared/User Interface Classes/Types/EpicIndex";
 
 /* Player GUI */
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -25,7 +24,6 @@ export default class HudScreen {
 	public _skillBar: SkillBar = new SkillBar(this.screenGUI.WaitForChild("SkillBar_Frame") as TSkillBar);
 	constructor() {
 		this.screenGUI.Parent = PlayerGUI;
-
 		warn("HudScreen: Instantiated");
 	}
 

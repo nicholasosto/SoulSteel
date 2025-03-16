@@ -1,15 +1,15 @@
 import { Players } from "@rbxts/services";
 import StorageManager from "shared/Storage/StorageManager";
-import { TSkillBar } from "shared/User Interface Classes/EpicIndex";
+import { TSkillBar } from "shared/User Interface Classes/Types/EpicIndex";
 import { SkillButton } from "../Buttons/SkillButton";
-import { SkillSlotMap } from "shared/_IDs/SkillIndex";
 import { Character } from "@rbxts/wcs";
+import * as Payloads from "shared/net/RemoteIndex";
 
 const SkillBarTemplate = StorageManager.CloneFromStorage("SkillBar_Template") as TSkillBar;
 
 export default class SkillBar {
 	private _instanceObject: TSkillBar;
-	private _skillSlotMap: SkillSlotMap | undefined;
+	private _skillSlotMap: Payloads.PSkillSlotMap | undefined;
 	//WCS Character
 	private wcsCharacter: Character | undefined;
 	constructor(parent: Instance) {
@@ -18,7 +18,7 @@ export default class SkillBar {
 		this._instanceObject.Parent = parent;
 	}
 
-	public Update(newSlotMap: SkillSlotMap) {
+	public Update(newSlotMap: Payloads.PSkillSlotMap) {
 		print("Updating Skill Bar with new slot map:", newSlotMap);
 		this._instanceObject.Visible = true;
 		this._clearSkillBar();

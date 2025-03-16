@@ -1,13 +1,13 @@
 import Logger from "shared/Utility/Logger";
 import { GetPlayerCharacter, GetGameCharacter } from "shared/_Registry/EntityRegistration";
-import { Remotes } from "shared/net/Remotes";
+import { RemoteEvents } from "shared/net/Remotes";
 
 /* Targeting Controller */
 export default class TargetingController {
 	private static _instance: TargetingController;
 
 	/* Remotes */
-	private static _TargetSelected = Remotes.Server.Get("TargetSelected");
+	private static _TargetSelected = RemoteEvents.Server.Get("ClientUpdateTarget");
 
 	/* Connections */
 	private static _connectionTargetSelected: RBXScriptConnection;

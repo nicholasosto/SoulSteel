@@ -1,7 +1,5 @@
 import Logger from "shared/Utility/Logger";
 
-import { Remotes, SendResourceUpdate } from "shared/net/Remotes";
-
 import { CharacterResource } from "../Classes/CharacterResource";
 import { UnknownSkill } from "@rbxts/wcs";
 
@@ -9,7 +7,7 @@ import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/Player Data/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
-import { ResourceBarData } from "shared/net/RemoteIndex";
+
 
 /* Responibilities */
 // - Create and manage resources for the character
@@ -80,18 +78,6 @@ export default class ResourceManager implements IResourceManager {
 		this._playerCharacter.humanoid.MaxHealth = this.HealthResource.GetMax();
 		this._playerCharacter.humanoid.Health = this.HealthResource.GetMax();
 
-		// Update UI
-		this._notifyUI();
-	}
-
-	/* Notify UI */
-	private _notifyUI() {
-		const healthPL = this.HealthResource.GetPayload();
-		const manaPL = this.SoulPower.GetPayload();
-		const stamPL = this.StaminaResource.GetPayload();
-		SendResourceUpdate(this._playerCharacter.player, healthPL.resourceId, healthPL.current, healthPL.max);
-		SendResourceUpdate(this._playerCharacter.player, manaPL.resourceId, manaPL.current, manaPL.max);
-		SendResourceUpdate(this._playerCharacter.player, stamPL.resourceId, stamPL.current, stamPL.max);
 	}
 
 	public OnHeartBeat() {
@@ -99,19 +85,18 @@ export default class ResourceManager implements IResourceManager {
 		this.HealthResource.regenStep();
 		this.SoulPower.regenStep();
 		this.StaminaResource.regenStep();
-		this._notifyUI();
+
 	}
 
 	public OnDamageTaken(damage: number): void {
 		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damage);
-		this._notifyUI();
+
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {
 		this.SoulPower.SetCurrent(this.SoulPower.GetCurrent() - 100);
 		this.SoulPower.RegenToggle(true);
 		Logger.Log(script, `[ResourceManager]: Skill Started: ${skill}`);
-		this._notifyUI();
 	}
 
 	public OnSkillEnded(skill: UnknownSkill): void {

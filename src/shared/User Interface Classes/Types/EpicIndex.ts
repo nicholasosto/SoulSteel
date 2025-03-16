@@ -1,5 +1,5 @@
 /* Interfaces */
-import { TDialog } from "./Types/TDialog";
+import { TDialog } from "./TDialog";
 import { TEpicAttributes } from "shared/User Interface Classes/Types/TEpicAttributes";
 import { TInfoFrame } from "shared/User Interface Classes/Types/TInfoFrame";
 import { TSkillBar } from "shared/User Interface Classes/Types/TSkillBar";

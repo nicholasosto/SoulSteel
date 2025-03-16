@@ -1,7 +1,7 @@
-import { CollectionService } from "@rbxts/services";
+import { CollectionService, Players } from "@rbxts/services";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { TResourceModifierPart } from "shared/_Types/Collection Types/TResourceModifierPart";
-import PCController from "server/Controllers/PlayerCharacterController";
+import { GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
 import Logger from "shared/Utility/Logger";
 import { Character, Skill } from "@rbxts/wcs";
 import StorageManager from "shared/Storage/StorageManager";
@@ -16,7 +16,7 @@ function OnResourceDrainAdded(basePart: TResourceModifierPart) {
 	basePart.Touched.Connect((hit) => {
 		const character = hit.Parent as TGameCharacter;
 		if (character === undefined) return;
-		const playerCharacter = PCController.GetPlayerCharacterFromCharacter(character);
+		const playerCharacter = GetPlayerCharacter(Players.GetPlayerFromCharacter(character) as Player);
 		//if (playerCharacter === undefined) return;
 		const resourceId = basePart.ResourceId.Value;
 		const drainRate = basePart.DrainRate.Value;

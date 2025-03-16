@@ -15,11 +15,10 @@ import ProgressionManager from "./Managers/ProgressionManager";
 
 /* Types */
 import GameCharacter from "./GameCharacter";
-import { QuestId } from "shared/_IDs/IDs_Quest";
 import TargetManager from "./Managers/TargetManager";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { generateCharacterName } from "shared/_Factories/NameFactory";
-import { InfoFramePayload, ResourceBarData } from "shared/net/RemoteIndex";
+import * as Payloads from "shared/net/RemoteIndex";
 //import { AttributesManager } from "server/Character/Managers/AttributesManager";
 
 /* Classes */
@@ -178,15 +177,15 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		const infoFrameData = {
 			Level: this.dataManager.GetData().ProgressionStats.Level,
 			Name: this.dataManager.GetData().CharacterIdentity.CharacterName,
-			Health: this.resourceManager.HealthResource.GetPayload() as ResourceBarData,
-			SoulPower: this.resourceManager.SoulPower.GetPayload() as ResourceBarData,
-			Stamina: this.resourceManager.StaminaResource.GetPayload() as ResourceBarData,
+			Health: this.resourceManager.HealthResource.GetPayload() as Payloads.PResourceBar,
+			SoulPower: this.resourceManager.SoulPower.GetPayload() as Payloads.PResourceBar,
+			Stamina: this.resourceManager.StaminaResource.GetPayload() as Payloads.PResourceBar,
 			Experience: {
 				resourceId: "Experience",
 				current: this.dataManager.GetData().ProgressionStats.Experience,
 				max: this.dataManager.GetData().ProgressionStats.ExperienceToNextLevel, // Placeholder for max experience
 			},
-		} as InfoFramePayload;
+		} as Payloads.PInfoFrame;
 		return infoFrameData;
 	}
 }

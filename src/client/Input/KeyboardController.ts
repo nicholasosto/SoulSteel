@@ -1,8 +1,7 @@
 // Begin: KeyboardController.ts
 import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
-import { AssignSkillSlot, UnAssignSkillSlot } from "shared/net/Remotes";
-import { SkillKeyMap } from "../../_Helpers/KeyboardMaps";
+import { SkillKeyMap } from "client/_Helpers/KeyboardMaps";
 import Logger from "shared/Utility/Logger";
 // Set the skills here
 export default class KeyboardController {
@@ -11,13 +10,16 @@ export default class KeyboardController {
 	private static inputEndedConnection: RBXScriptConnection;
 	private static characterAddedConnection: RBXScriptConnection;
 
+	// Start
 	public static Start() {
 		if (this.instance === undefined) {
 			this.instance = new KeyboardController();
 		}
 	}
+
 	// Constructor
 	private constructor() {
+		/* Get Player Character */
 		const Player = game.GetService("Players").LocalPlayer as Player;
 		const character = Player.Character;
 		KeyboardController.OnCharacterAdded(character as Model);
@@ -53,23 +55,6 @@ export default class KeyboardController {
 	private static InputBegan(input: InputObject, isProcessed: boolean) {
 		if (isProcessed) return; // If the input is processed by another UI, return;
 
-		switch (input.KeyCode) {
-			case Enum.KeyCode.KeypadOne:
-				AssignSkillSlot(1, "BasicMelee");
-				break;
-			case Enum.KeyCode.KeypadTwo:
-				AssignSkillSlot(5, "BasicRanged");
-				break;
-
-			case Enum.KeyCode.KeypadThree:
-				AssignSkillSlot(3, "BasicHold");
-				break;
-			case Enum.KeyCode.KeypadZero:
-				UnAssignSkillSlot(2);
-				break;
-			default:
-				break;
-		}
 		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, true);
 	}
 

@@ -1,9 +1,9 @@
 import { CollectionService } from "@rbxts/services";
 import { Players } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
-import SkillBar from "./Classes/Panel Frames/SkillBar";
-import ProgressBar from "./Classes/Assemblies/ProgressBar";
-import GamePanel from "./Classes/Panel Frames/GamePanel";
+import SkillBar from "shared/User Interface Classes/Classes/Panel Frames/SkillBar";
+import ProgressBar from "shared/User Interface Classes/Classes/Assemblies/ProgressBar";
+import GamePanel from "shared/User Interface Classes/Classes/Panel Frames/GamePanel";
 
 /**
  * A singleton class that manages a collection of UI elements.

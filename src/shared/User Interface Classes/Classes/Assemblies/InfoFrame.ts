@@ -7,9 +7,9 @@
 
 /* Module Imports */
 import { Players } from "@rbxts/services";
-import { InfoFramePayload, ResourceBarData } from "shared/net/RemoteIndex";
+import * as Payloads from "shared/net/RemoteIndex";
 /* Shared Imports */
-import { TInfoFrame } from "shared/User Interface Classes/EpicIndex";
+import { TInfoFrame } from "shared/User Interface Classes/Types/EpicIndex";
 import { ResourceId } from "shared/_IDs/IDs_Resource";
 import ProgressBar from "./ProgressBar";
 
@@ -17,7 +17,7 @@ import ProgressBar from "./ProgressBar";
 export default class InfoFrame {
 	/* instance */
 	private _instance: TInfoFrame;
-	private _payloadData: InfoFramePayload | undefined;
+	private _payloadData: Payloads.PInfoFrame | undefined;
 	private _resourceBars: Map<ResourceId, ProgressBar> = new Map();
 
 	/* Constructor */
@@ -26,7 +26,7 @@ export default class InfoFrame {
 	}
 
 	/* Update */
-	public Update(playerData: InfoFramePayload) {
+	public Update(playerData: Payloads.PInfoFrame) {
 		this._payloadData = playerData;
 		this.updateLevel();
 		this.updateName();
@@ -57,31 +57,43 @@ export default class InfoFrame {
 		this._instance.InfoFrame.ProfilePic.Image = profilePic;
 	}
 
-	private _updateResourceBar(resourceData: ResourceBarData) {
+	private _updateResourceBar(resourceData: Payloads.PResourceBar) {
 		switch (resourceData.resourceId) {
 			case "Health":
-				this._instance.Bars.Progress.Health.SetAttribute("TextValue", tostring(resourceData.resourceId) + ": " + tostring(resourceData.current));
+				this._instance.Bars.Progress.Health.SetAttribute(
+					"TextValue",
+					tostring(resourceData.resourceId) + ": " + tostring(resourceData.current),
+				);
 				this._instance.Bars.Progress.Health.SetAttribute(
 					"BarPercent",
 					tostring((resourceData.current / resourceData.max) * 100),
 				);
 				break;
 			case "Stamina":
-				this._instance.Bars.Progress.Stamina.SetAttribute("TextValue", tostring(resourceData.resourceId) + ": " + tostring(resourceData.current));
+				this._instance.Bars.Progress.Stamina.SetAttribute(
+					"TextValue",
+					tostring(resourceData.resourceId) + ": " + tostring(resourceData.current),
+				);
 				this._instance.Bars.Progress.Stamina.SetAttribute(
 					"BarPercent",
 					tostring((resourceData.current / resourceData.max) * 100),
 				);
 				break;
 			case "SoulPower":
-				this._instance.Bars.Progress.SoulPower.SetAttribute("TextValue", tostring(resourceData.resourceId) + ": " + tostring(resourceData.current));
+				this._instance.Bars.Progress.SoulPower.SetAttribute(
+					"TextValue",
+					tostring(resourceData.resourceId) + ": " + tostring(resourceData.current),
+				);
 				this._instance.Bars.Progress.SoulPower.SetAttribute(
 					"BarPercent",
 					tostring((resourceData.current / resourceData.max) * 100),
 				);
 				break;
 			case "Experience":
-				this._instance.Bars.Progress.Experience.SetAttribute("TextValue", tostring(resourceData.resourceId) + ": " + tostring(resourceData.current));
+				this._instance.Bars.Progress.Experience.SetAttribute(
+					"TextValue",
+					tostring(resourceData.resourceId) + ": " + tostring(resourceData.current),
+				);
 				this._instance.Bars.Progress.Experience.SetAttribute(
 					"BarPercent",
 					tostring((resourceData.current / resourceData.max) * 100),

@@ -1,5 +1,5 @@
 import { AttributeLabel_Template } from "../../Types/AttributeLabel_Template";
-import { TEpicAttributes } from "shared/User Interface Classes/EpicIndex";
+import { TEpicAttributes } from "shared/User Interface Classes/Types/EpicIndex";
 import StorageManager from "shared/Storage/StorageManager";
 
 export class AttributeLabelClass {

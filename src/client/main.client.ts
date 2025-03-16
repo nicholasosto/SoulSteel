@@ -6,22 +6,22 @@ import Logger from "shared/Utility/Logger";
 import GameItemManager from "shared/GameItemManager/GameItemManager";
 
 /* WCS */
-import WcsClient from "./_WCS/WCSClient";
+import WcsClient from "./_Helpers/WCSClientSetup";
 
 /* Audio */
 import AudioPlayer from "shared/Utility/AudioPlayer";
-import GUICollection from "shared/User Interface Classes/GUICollection";
+import GUICollection from "shared/Collections/GUICollection";
 
 /* Input Controllers */
-import KeyboardController from "client/Controllers/Input/KeyboardController";
-import MovementController from "./Controllers/Input/MovementController";
-import ClientTargetController from "../shared/User Interface Classes/Controllers/ClientTargetController";
+import KeyboardController from "client/Input/KeyboardController";
+import MovementController from "client/Input/MovementController";
+import ClientTargetController from "client/Input/ClientTargetController";
 
 /*Network */
 import ClientNetManager from "./Net/ClientNetManager";
 
 /* UI Controllers */
-import UIManager from "client/UIManager";
+import UIManager from "client/UI Controllers/UIManager";
 //import StartScreenController from "./Controllers/UI/StartScreenController";
 //import MainMenuController from "./Controllers/UI/MainMenuController";
 //import SkillBarController from "./Controllers/UI/SkillBarController";
@@ -30,7 +30,7 @@ import UIManager from "client/UIManager";
 //import AttributesGUIController from "shared/_ObserverPattern/_Observers/AttibutesGUIController";
 
 /* Collections */
-import { CollectTransparencyTweens } from "./Collectors/PulseTween";
+import { CollectTransparencyTweens } from "../shared/PulseTween";
 
 /* Remotes */
 import { Remotes } from "shared/net/Remotes";
@@ -55,6 +55,7 @@ class GameClient {
 			warn("Game Client: Starting");
 			/* Create the Game Client */
 			this._instance = new GameClient();
+			UIManager.Start();
 
 			ClientNetManager.Start();
 			/* Start the Storage Managers */
@@ -93,6 +94,7 @@ class GameClient {
 
 GameClient.Start();
 /*Test */
-UIManager.Start();
+
+
 /* Log Client Loaded */
 warn("Client: Fully Loaded");

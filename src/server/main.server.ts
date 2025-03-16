@@ -16,21 +16,21 @@ import ScoreManager from "shared/State/ScoreManager";
 // Controllers
 import ServerNetManager from "./Net/ServerNetManager";
 import PCController from "./Controllers/PlayerCharacterController";
-import SkillController from "./Controllers/SkillController";
+//import SkillController from "./Controllers/SkillController";
 import TargetingController from "./Controllers/TargetingController";
-import TeleportController from "./Controllers/TeleportController";
-import PlayerDataController from "./Controllers/PlayerDataController";
+//import TeleportController from "./Controllers/TeleportController";
+//import PlayerDataController from "./Controllers/PlayerDataController";
 
 // Collections
 import { StartCollectingNPCs } from "./Collections/NPCCollector";
-import { StartCollectingLava } from "./Collections/LavaCollector";
-import { StartCollectingResourceDrains } from "./Collections/ResourceDrain";
-import { StartZoneDetection } from "./Collections/ZoneCollector";
-import StartQuestBlockCollection from "./Collections/QuestBlock";
+import { StartCollectingLava } from "../shared/Collections/LavaCollector";
+import { StartCollectingResourceDrains } from "../shared/Collections/ResourceDrain";
+import { StartZoneDetection } from "../shared/Collections/ZoneCollector";
+
 
 /* Types */
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
-import { StartCollectingAntigravity } from "./Collections/AntigravityCollector";
+import { StartCollectingAntigravity } from "../shared/Collections/AntigravityCollector";
 
 class GameServer {
 	private static _instance: GameServer;
@@ -48,13 +48,13 @@ class GameServer {
 			ServerNetManager.Start();
 			/* Start WCS */
 			GameServer.StartWCS();
-			PlayerDataController.Start();
+			//PlayerDataController.Start();
 			wait(1.5); // Wait for the WCS Server and DataManager to start and register the directories
 
 			PCController.Start();
-			SkillController.Start();
+			//SkillController.Start();
 			TargetingController.Start();
-			TeleportController.Start();
+			//TeleportController.Start();
 		}
 	}
 
@@ -91,7 +91,6 @@ StartCollectingNPCs();
 StartCollectingLava();
 StartCollectingResourceDrains();
 StartZoneDetection();
-StartQuestBlockCollection();
 StartCollectingAntigravity();
 
 /* Notify Collections Loaded */

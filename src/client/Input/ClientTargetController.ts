@@ -1,6 +1,6 @@
 import { Players, Workspace, UserInputService } from "@rbxts/services";
 import Logger from "shared/Utility/Logger";
-import { Remotes } from "shared/net/Remotes";
+import { RemoteEvents } from "shared/net/Remotes";
 
 /* Client Target Controller */
 export default class ClientTargetController {
@@ -9,7 +9,7 @@ export default class ClientTargetController {
 	private static _camera = Workspace.CurrentCamera!;
 
 	/* Remotes */
-	private static _targetSelected = Remotes.Client.Get("TargetSelected");
+	private static _targetSelected = RemoteEvents.Client.Get("ClientUpdateTarget");
 
 	/* Connections */
 	private static _targetSelectedConnection: RBXScriptConnection | undefined;

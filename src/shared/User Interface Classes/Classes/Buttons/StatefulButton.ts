@@ -31,13 +31,6 @@ export default class StatefulButton {
 		this.button.MouseLeave.Connect(() => this.setState(ButtonState.Default));
 		this.button.MouseButton1Down.Connect(() => this.setState(ButtonState.Pressed));
 		this.button.MouseButton1Up.Connect(() => this.setState(ButtonState.Hovered));
-		this._gameStateListener?.Disconnect();
-		this._gameStateListener = Remotes.Client.Get("StateChanged").Connect((gameState) => {
-			Logger.Log(script, "Special Button - Game State Changed: " + gameState);
-			if (gameState === "specialButton") {
-				this.disable();
-			}
-		});
 	}
 
 	public setState(newState: ButtonState) {

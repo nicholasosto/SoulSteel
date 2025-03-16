@@ -3,7 +3,7 @@ import IGameCharacter from "shared/_Interfaces/IGameCharacter";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ITargetManager from "shared/_Interfaces/Character Managers/ITargetManager";
 import { GetNPCCharacter, GetPlayerCharacter } from "shared/_Registry/EntityRegistration";
-import { Remotes } from "shared/net/Remotes";
+import { RemoteEvents } from "shared/net/Remotes";
 
 export default class TargetManager implements ITargetManager {
 	private _playerCharacter: IPlayerCharacter;
@@ -22,17 +22,19 @@ export default class TargetManager implements ITargetManager {
 	/* Initialize Connections */
 	private _InitializeConnections(): void {
 		this._targetSelected?.Disconnect();
-		this._targetSelected = Remotes.Server.Get("TargetSelected").Connect((player: Player, targetId: string) => {
-			const npcChar = GetNPCCharacter(targetId);
-			const playerChar = GetPlayerCharacter(targetId);
-			if (npcChar) {
-				this.OnTargetSelected(npcChar);
-			} else if (playerChar) {
-				this.OnTargetSelected(playerChar);
-			} else {
-				Logger.Log(script, `[TargetManager]: Target not found`);
-			}
-		});
+		this._targetSelected = RemoteEvents.Server.Get("ClientUpdateTarget").Connect(
+			(player: Player, targetId: string) => {
+				const npcChar = GetNPCCharacter(targetId);
+				const playerChar = GetPlayerCharacter(targetId);
+				if (npcChar) {
+					this.OnTargetSelected(npcChar);
+				} else if (playerChar) {
+					this.OnTargetSelected(playerChar);
+				} else {
+					Logger.Log(script, `[TargetManager]: Target not found`);
+				}
+			},
+		);
 	}
 
 	/* Get Target */

@@ -1,6 +1,6 @@
 import Logger from "shared/Utility/Logger";
-import { TEpicAttributes } from "shared/User Interface Classes/EpicIndex";
-import { Payloads } from "shared/net/Remotes";
+import { TEpicAttributes } from "shared/User Interface Classes/Types/EpicIndex";
+import * as Payloads from "shared/net/RemoteIndex";
 
 export default class ProgressBar {
 	frame: Frame;
@@ -10,11 +10,11 @@ export default class ProgressBar {
 	}
 
 	/* Updates the GUI Element with Payload Data */
-	Update(payload: Payloads["PlayerResourceData"]) {
+	Update(payload: Payloads.PResourceBar) {
 		/* Get Payload Values */
-		const currentValue = payload[1];
-		const maxValue = payload[2];
-		const textValue = `${payload[0]}: ${currentValue}/${maxValue}`;
+		const currentValue = payload.current;
+		const maxValue = payload.max;
+		const textValue = `${payload.resourceId}: ${currentValue}/${maxValue}`;
 		const percent = (currentValue / maxValue) * 100;
 
 		/* Update the Progress Bar */
