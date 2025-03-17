@@ -76,9 +76,9 @@ class GameClient {
 			//print("Game Client: UI Controllers Started");
 
 			/* Input Controllers */
-			//KeyboardController.Start();
-			//new MovementController();
-			//ClientTargetController.Start();
+			KeyboardController.Start();
+			new MovementController();
+			ClientTargetController.Start();
 			//print("Game Client: Input Controllers Started");
 			/* Collections */
 			CollectTransparencyTweens();

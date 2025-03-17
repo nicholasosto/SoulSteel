@@ -17,15 +17,18 @@ interface AttributePanelData {
 const Remotes = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
 	/* Full Load and Destroy Triggers */
-	GameCharacterCreated: Definitions.ServerToClientEvent<[]>(),
-	GameCharacterDestroyed: Definitions.ServerToClientEvent<[]>(),
 });
 
 const RemoteEvents = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
 	ClientUpdateTarget: Net.Definitions.ClientToServerEvent<[target: string]>(),
+
 	/* ======== Server To Client Events =========*/
 	ServerTargetUpdate: Net.Definitions.ServerToClientEvent<[targetId: string]>(),
+
+	/* Character Creation */
+	GameCharacterCreated: Definitions.ServerToClientEvent<[]>(),
+	GameCharacterDestroyed: Definitions.ServerToClientEvent<[]>(),
 
 	UpdateSkillSlotMap: Net.Definitions.ServerToClientEvent<[skillSlotMap: Payload.PSkillSlotMap]>(),
 	UpdateInfoFrame: Net.Definitions.ServerToClientEvent<[payload: Payload.PInfoFrame]>(),

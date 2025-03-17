@@ -57,6 +57,7 @@ export default class ServerNetManager {
 			return skillSlotMap;
 		});
 
+		/*Get InfoFrame Data*/
 		GetInfoFrameData.SetCallback(async (player: Player) => {
 			const infoFrameData = this._getInfoFrameData(player);
 			return infoFrameData;
@@ -68,7 +69,6 @@ export default class ServerNetManager {
 		const infoFrameData = this._getInfoFrameData(player);
 		if (infoFrameData !== undefined) {
 			UpdateInfoFrameEvent.SendToPlayer(player, infoFrameData);
-			print("Sent InfoFrame Update to player:", player.Name);
 		}
 	}
 

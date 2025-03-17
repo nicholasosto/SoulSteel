@@ -42,17 +42,17 @@ export default class AnimationManager implements IAnimationManager {
 		const skillId = skill.GetName() as SkillId;
 
 		/* Get Base Walk Speed  to reset after setting to 0*/
-		const baseWalkSpeed = this._playerCharacter.humanoid.WalkSpeed;
+		//const baseWalkSpeed = this._playerCharacter.humanoid.WalkSpeed;
 
 		/* Get Animation Track */
 		const animationTrack = this._animationMap.get(skillId);
 		animationTrack?.Ended.Connect(() => {
-			this._playerCharacter.humanoid.WalkSpeed = baseWalkSpeed;
+			//this._playerCharacter.humanoid.WalkSpeed = baseWalkSpeed;
 		});
 
 		/* Play Animation */
 		if (animationTrack) {
-			this._playerCharacter.humanoid.WalkSpeed = 0;
+			//this._playerCharacter.humanoid.WalkSpeed = 0;
 			animationTrack.Play();
 		} else {
 			Logger.Log(script, "Animation Track is nil");

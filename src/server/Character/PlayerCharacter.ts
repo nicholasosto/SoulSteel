@@ -125,7 +125,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this._connectionSkillEnded = this.wcsCharacter.SkillEnded.Connect((skill) => {
 			print("Skill Ended");
 			this.skillManager.OnSkillEnded(skill);
-			
 		});
 
 		/* Heartbeat */

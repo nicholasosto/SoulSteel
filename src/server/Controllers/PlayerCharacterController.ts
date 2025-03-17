@@ -26,7 +26,9 @@ import {
 	RemovePlayerCharacter,
 } from "shared/_Registry/EntityRegistration";
 
-import { Remotes } from "shared/net/Remotes";
+import ServerNetManager from "server/Net/ServerNetManager";
+
+import { RemoteEvents } from "shared/net/Remotes";
 
 /* Player Character Controller */
 export default class PCController {
@@ -34,8 +36,8 @@ export default class PCController {
 	private static _instance: PCController;
 
 	/* Remotes */
-	private static _gameCharacterCreated = Remotes.Server.Get("GameCharacterCreated");
-	private static _gameCharacterDestroyed = Remotes.Server.Get("GameCharacterDestroyed");
+	private static _gameCharacterCreated = RemoteEvents.Server.Get("GameCharacterCreated");
+	private static _gameCharacterDestroyed = RemoteEvents.Server.Get("GameCharacterDestroyed");
 
 	/* Constructor */
 	private constructor() {
@@ -66,6 +68,8 @@ export default class PCController {
 
 		/* Notify Clients */
 		this._gameCharacterCreated.SendToPlayer(player);
+		ServerNetManager.SendInfoFrameUpdate(player);
+		ServerNetManager.SendSkillSlotMapUpdate(player);
 
 		/* Return Player Character */
 		return playerCharacter;
@@ -77,6 +81,9 @@ export default class PCController {
 		const playerCharacter = GetPlayerCharacter(player) as PlayerCharacter;
 
 		playerCharacter?.OnDeath();
+
+		/* Notify Clients */
+		this._gameCharacterDestroyed.SendToPlayer(player);
 
 		/* Remove from Registry */
 		RemovePlayerCharacter(player);
