@@ -15,19 +15,20 @@ import { TInfoFrame } from "shared/User Interface Classes/Types/EpicIndex";
 const PlayerGUI = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
 /* Screen GUI */
-const HUDTemplate = StorageManager.CloneFromStorage("HUD_ScreenGUI") as ScreenGui;
 
 export default class HudScreen {
-	public screenGUI: ScreenGui = HUDTemplate.Clone() as ScreenGui;
-	public _infoFrame: InfoFrame = new InfoFrame(this.screenGUI.WaitForChild("Player_InfoFrame") as TInfoFrame);
-	public _targetFrame: InfoFrame = new InfoFrame(this.screenGUI.WaitForChild("Target_InfoFrame") as TInfoFrame);
-	public _skillBar: SkillBar = new SkillBar(this.screenGUI.WaitForChild("SkillBar_Frame") as TSkillBar);
-	constructor() {
-		this.screenGUI.Parent = PlayerGUI;
-		warn("HudScreen: Instantiated");
-	}
+	public screenGUI: ScreenGui;
+	public _infoFrame: InfoFrame;
+	public _targetFrame: InfoFrame;
+	public _skillBar: SkillBar;
+	public _menuBar: Frame;
 
-	public Destroy() {
-		this.screenGUI.Destroy();
+	constructor(screenGUI: ScreenGui) {
+		this.screenGUI = screenGUI;
+
+		this._infoFrame = new InfoFrame(this.screenGUI.WaitForChild("Player_InfoFrame") as TInfoFrame);
+		this._targetFrame = new InfoFrame(this.screenGUI.WaitForChild("Target_InfoFrame") as TInfoFrame);
+		this._skillBar = new SkillBar(this.screenGUI.WaitForChild("SkillBar_Frame") as TSkillBar);
+		this._menuBar = this.screenGUI.WaitForChild("MenuButton_Frame") as Frame;
 	}
 }

@@ -11,7 +11,7 @@ import { CreateServer } from "@rbxts/wcs";
 import StorageManager from "shared/Storage/StorageManager";
 
 // Subjects
-import ScoreManager from "shared/State/ScoreManager";
+//import ScoreManager from "shared/State/ScoreManager";
 
 // Controllers
 import ServerNetManager from "./Net/ServerNetManager";

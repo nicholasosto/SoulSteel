@@ -4,6 +4,8 @@ import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { SkillId, SkillPanelData, SkillSlotId } from "shared/_IDs/SkillIndex";
+import ServerNetManager from "server/Net/ServerNetManager";
+import { EquipmentId, EquipmentSlotId } from "shared/_IDs/EquipmentIndex";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -71,6 +73,7 @@ export default class PlayerDataManager implements IDataManager {
 				warn("Player Data Save Service Running");
 				this._SaveData();
 				wait(this._saveInterval);
+				ServerNetManager.SendPlayerData(this._player, this._playerData);
 			}
 		});
 	}
@@ -159,5 +162,16 @@ export default class PlayerDataManager implements IDataManager {
 			skillSlotMap.set(slotId, skillId);
 		}
 		return skillSlotMap;
+	}
+
+	public GetEquipmentSlotMap(): Map<EquipmentSlotId, EquipmentId> {
+		// #TODO: Load from player data
+		const equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
+		equipmentSlotMap.set("Head", "Helmet_01");
+		equipmentSlotMap.set("Chest", "Armor_01");
+		equipmentSlotMap.set("Legs", "Leggings_01");
+		equipmentSlotMap.set("Feet", "Boots_01");
+		equipmentSlotMap.set("Hands", "Gloves_01");
+		return equipmentSlotMap;
 	}
 }

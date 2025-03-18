@@ -10,7 +10,7 @@ import WcsClient from "./_Helpers/WCSClientSetup";
 
 /* Audio */
 import AudioPlayer from "shared/Utility/AudioPlayer";
-import GUICollection from "shared/Collections/GUICollection";
+//import GUICollection from "shared/Collections/GUICollection";
 
 /* Input Controllers */
 import KeyboardController from "client/Input/KeyboardController";
@@ -22,6 +22,7 @@ import ClientNetManager from "./Net/ClientNetManager";
 
 /* UI Controllers */
 import UIManager from "client/UI Controllers/UIManager";
+import GUIStateController from "shared/State/GUI State/GUIStateController";
 //import StartScreenController from "./Controllers/UI/StartScreenController";
 //import MainMenuController from "./Controllers/UI/MainMenuController";
 //import SkillBarController from "./Controllers/UI/SkillBarController";
@@ -58,6 +59,7 @@ class GameClient {
 			UIManager.Start();
 
 			ClientNetManager.Start();
+			GUIStateController.Start();
 			/* Start the Storage Managers */
 			//GameItemManager.Start();
 			//GUICollection.GetInstance();
@@ -94,7 +96,6 @@ class GameClient {
 
 GameClient.Start();
 /*Test */
-
 
 /* Log Client Loaded */
 warn("Client: Fully Loaded");

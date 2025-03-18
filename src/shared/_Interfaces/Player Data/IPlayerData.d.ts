@@ -37,4 +37,7 @@ export default interface IPlayerData {
 	/* Skills Data */
 	/* { unlockedSkills, assignedSlots } */
 	Skills: IPlayerSkillsData;
+	Equipment: {
+		EquipmentSlots: string[];
+	};
 }

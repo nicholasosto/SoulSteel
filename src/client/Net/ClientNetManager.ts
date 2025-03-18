@@ -13,14 +13,15 @@ import UIManager from "client/UI Controllers/UIManager";
 
 /* Payloads */
 
-
 /* Remote Functions */
 const GetSkillSlotMap = RemoteFunctions.Client.Get("GetSkillSlotMap"); // HUD - Skill Bar
 const GetCharacterFrameData = RemoteFunctions.Client.Get("GetCharacterFrameData"); // Character Frame
+const GetEquipmentSlotMap = RemoteFunctions.Client.Get("GetEquipmentSlotMap"); // Equipment Frame
 
 /* Update Events */
 const UpdateInfoFrame = RemoteEvents.Client.Get("UpdateInfoFrame"); // Info Frame
 const UpdateSkillSlotMap = RemoteEvents.Client.Get("UpdateSkillSlotMap"); // HUD - Skill Bar
+const SendPlayerData = RemoteEvents.Client.Get("SendPlayerData"); // Player Data Loaded
 
 /* Skill Bar */
 
@@ -28,6 +29,9 @@ const UpdateSkillSlotMap = RemoteEvents.Client.Get("UpdateSkillSlotMap"); // HUD
 
 export default class ClientNetManager {
 	private static _instance: ClientNetManager;
+
+	/* Data Connections */
+	private static _onSendPlayerData: RBXScriptConnection | undefined;
 
 	/* Panel Connections */
 	private static _updateSkillPanel: RBXScriptConnection | undefined;
@@ -45,15 +49,36 @@ export default class ClientNetManager {
 		if (this._instance === undefined) {
 			/* Client Network Manager */
 			this._instance = new ClientNetManager();
-			warn("NetManager: Pre-Initialized");
 			this.InitializeListeners();
-			warn("NetManager: Initialized Listeners");
-
 			this._InitializePanelData();
-			warn("NetManager: Initialized Panel Data");
 		}
 	}
 
+	/* Initialize Listeners */
+	private static InitializeListeners() {
+		/* Player Data Loaded */
+		this._onSendPlayerData?.Disconnect();
+		this._onSendPlayerData = SendPlayerData.Connect((playerData) => {
+			// Handle the player data received
+			warn("NetManager: Received player data:", playerData);
+			UIManager.OnPlayerDataLoaded(playerData);
+		});
+		/* Update Skill Slot Map */
+		this._updateSkillSlotMap?.Disconnect();
+		this._updateSkillSlotMap = UpdateSkillSlotMap.Connect((slotMap) => {
+			warn("NetManager: Received skill slot map:", slotMap);
+			UIManager.UpdateSkillBar(slotMap);
+		});
+
+		/* Resource Bar Connection */
+		this._updateCharacterFrame?.Disconnect();
+		this._updateCharacterFrame = UpdateInfoFrame.Connect((payload) => {
+			// Handle the update info frame event
+			UIManager.UpdateInfoFrame(payload);
+		});
+	}
+
+	/* Initialize Panel Data */
 	private static async _InitializePanelData() {
 		/* Skill Slot Map */
 		const skillSlotMap = await this.GetSkillSlotMap();
@@ -75,29 +100,27 @@ export default class ClientNetManager {
 		});
 		return slotMap;
 	}
+
+	/* Get Equipment Slot Map */
+	public static async GetEquippedItems() {
+		const equipmentSlotMap = await GetEquipmentSlotMap.CallServerAsync().then((result) => {
+			return result as Payload.PEquipmentSlotMap | undefined;
+		});
+		return equipmentSlotMap;
+	}
+
+	/* Get Equipment Inventory */
+	public static async GetEquipmentInventory() {
+		//TODO: Implement
+		// StorageManager GetEquipmentInventory??
+	}
+
 	/* Get Character Frame Data */
 	public static async GetCharacterFrameData() {
 		const characterFrameData = await GetCharacterFrameData.CallServerAsync().then((result) => {
 			return result as Payload.PInfoFrame | undefined;
 		});
 		return characterFrameData;
-	}
-
-	/* Initialize Listeners */
-	private static InitializeListeners() {
-		/* Update Skill Slot Map */
-		this._updateSkillSlotMap?.Disconnect();
-		this._updateSkillSlotMap = UpdateSkillSlotMap.Connect((slotMap) => {
-			warn("NetManager: Received skill slot map:", slotMap);
-			UIManager.UpdateSkillBar(slotMap);
-		});
-
-		/* Resource Bar Connection */
-		this._updateCharacterFrame?.Disconnect();
-		this._updateCharacterFrame = UpdateInfoFrame.Connect((payload) => {
-			// Handle the update info frame event
-			UIManager.UpdateInfoFrame(payload);
-		});
 	}
 }
 
@@ -117,5 +140,4 @@ Players.LocalPlayer.CharacterAdded.Connect(() => {
 
 Players.LocalPlayer.CharacterRemoving.Connect(() => {
 	warn("Cleaning up UIManager - Character Removed");
-	UIManager.ClearUI();
 });
