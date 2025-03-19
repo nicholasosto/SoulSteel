@@ -1,4 +1,4 @@
-// PanelProfile.ts
+// PanelSkills.ts
 import Fusion, { Computed } from "@rbxts/fusion";
 
 interface PanelProps {
@@ -7,12 +7,11 @@ interface PanelProps {
 
 const { New } = Fusion;
 
-export function PanelProfile(props: PanelProps) {
-	// Compute the visibility based on whether the active panel matches this panel's id ("Profile")
-	const isVisible = Computed(() => props.activePanel.get() === "Profile");
+export function PanelTeleport(props: PanelProps) {
+	const isVisible = Computed(() => props.activePanel.get() === "Teleport");
 
 	return New("Frame")({
-		Name: "PanelProfile",
+		Name: "PanelTeleport",
 		Size: new UDim2(0, 300, 0, 400),
 		AnchorPoint: new Vector2(0.5, 0.5),
 		Position: new UDim2(0.5, 0, 0.5, 0),
@@ -21,7 +20,7 @@ export function PanelProfile(props: PanelProps) {
 		[Fusion.Children]: [
 			// Your panel's UI elements here
 			New("TextLabel")({
-				Text: "Profile Panel",
+				Text: "Teleport Panel",
 				Size: new UDim2(1, 0, 1, 0),
 				BackgroundTransparency: 1,
 				TextColor3: new Color3(1, 1, 1),

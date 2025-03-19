@@ -12,8 +12,9 @@ export function PanelSkills(props: PanelProps) {
 
 	return New("Frame")({
 		Name: "PanelSkills",
-		Size: new UDim2(0, 400, 0, 300),
-		Position: new UDim2(0.1, 0, 0.2, 0),
+		Size: new UDim2(0, 300, 0, 400),
+		AnchorPoint: new Vector2(0.5, 0.5),
+		Position: new UDim2(0.5, 0, 0.5, 0),
 		BackgroundColor3: new Color3(0.1, 0.1, 0.1),
 		Visible: isVisible,
 		[Fusion.Children]: [

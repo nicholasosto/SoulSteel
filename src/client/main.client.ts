@@ -14,7 +14,7 @@ import ClientTargetController from "client/Input/ClientTargetController";
 import ClientNetManager from "./Net/ClientNetManager";
 
 /* UI Controllers */
-import UIManager from "client/UI Controllers/UIManager";
+//import UIManager from "client/UI Controllers/UIManager";
 import GUIStateController from "shared/State/GUI State/GUIStateController";
 
 /* Collections */
@@ -42,7 +42,7 @@ class GameClient {
 			this._instance = new GameClient();
 
 			/* UI Controllers */
-			UIManager.Start();
+			//UIManager.Start();
 			GUIStateController.Start();
 			ClientNetManager.Start();
 			EquipmentManager.Start();

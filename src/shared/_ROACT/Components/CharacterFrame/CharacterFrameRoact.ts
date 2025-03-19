@@ -91,8 +91,8 @@ function createBar(color: Color3, percentage: Computed<number>, labelText?: Comp
 }
 
 const CharacterFrame = New("Frame")({
-	Size: new UDim2(0, 420, 0, 110),
-	Position: new UDim2(0.05, 0, 0.05, 0), // Example position; adjust as needed
+	Size: new UDim2(1, 0, 1, 0 ),
+	Position: new UDim2(0, 0, 0, 0), // Example position; adjust as needed
 	BackgroundColor3: new Color3(0.07, 0.07, 0.07),
 	BorderSizePixel: 0,
 	[Children]: [

@@ -24,14 +24,22 @@ type PCurrentResourceAmounts = {
 };
 
 /* Payload - InfoFrame */
-interface PInfoFrame {
-	Level: number;
-	Name: string;
-	Health: PResourceBar;
-	Stamina: PResourceBar;
-	SoulPower: PResourceBar;
-	DomainEssence: PResourceBar;
-	Experience: PResourceBar;
+// interface PInfoFrame {
+// 	Level: number;
+// 	Name: string;
+// 	Health: PResourceBar;
+// 	Stamina: PResourceBar;
+// 	SoulPower: PResourceBar;
+// 	DomainEssence: PResourceBar;
+// 	Experience: PResourceBar;
+// }
+
+interface PDerivedStats {
+	MaxHealth: number;
+	MaxStamina: number;
+	MaxSoulPower: number;
+	MaxDomainResource: number;
+	ExperienceToNextLevel: number;
 }
 
 /* Payload - Generic Slot Map */
@@ -43,7 +51,7 @@ export {
 	SkillId,
 	PResourceBar,
 	PResourceBars,
-	PInfoFrame,
+	PDerivedStats,
 	PSkillSlotMap,
 	PEquipmentSlotMap,
 	PCurrentResourceAmounts,

@@ -27,6 +27,7 @@ const playerStrength = Value(10);
 const playerDexteriy = Value(10);
 const playerIntelligence = Value(10);
 const playerConstitution = Value(10);
+const PlayerSpeed = Value(10);
 /* Attribute Points */
 const playerAttributePoints = Value(0);
 const playerSpentAttributePoints = Value(0);
@@ -36,6 +37,7 @@ const PlayerStats = {
 	playerDexteriy,
 	playerIntelligence,
 	playerConstitution,
+	PlayerSpeed,
 
 	playerAttributePoints,
 	playerSpentAttributePoints,

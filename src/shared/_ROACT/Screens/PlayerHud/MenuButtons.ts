@@ -17,7 +17,7 @@ const menuItems = [
 
 const UIListLayout = New("UIListLayout")({
 	SortOrder: Enum.SortOrder.LayoutOrder,
-    FillDirection: Enum.FillDirection.Horizontal,
+	FillDirection: Enum.FillDirection.Horizontal,
 	HorizontalAlignment: Enum.HorizontalAlignment.Center,
 	VerticalAlignment: Enum.VerticalAlignment.Center,
 });
@@ -27,7 +27,9 @@ export function MenuButtons(props: MenuButtonsProps) {
 	const MenuButtons_Buttons = New("Frame")({
 		Name: "MenuButtons",
 		Size: new UDim2(0, 300, 0, 50), // Adjust as needed
+		Position: new UDim2(0, 60, 0, 160), // Center the frame
 		BackgroundTransparency: 1,
+		ZIndex: 100,
 
 		[Fusion.Children]: menuItems.map((item) =>
 			New("ImageButton")({

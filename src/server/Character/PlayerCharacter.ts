@@ -3,13 +3,15 @@ import Logger from "shared/Utility/Logger";
 /* WCS Modules */
 import { Character, DamageContainer } from "@rbxts/wcs";
 
+/* Helpers */
+import { CalculateDerivedStats } from "./Helpers/StatsHelper";
+
 /* Character Index */
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
 /* Managers */
 import SkillsManager from "server/Character/Managers/SkillsManager";
 import AnimationManager from "server/Character/Managers/AnimationManager";
-import ResourceManager from "server/Character/Managers/ResourceManager";
 import PlayerDataManager from "server/Character/Managers/PlayerDataManager";
 import ProgressionManager from "./Managers/ProgressionManager";
 
@@ -18,8 +20,6 @@ import GameCharacter from "./GameCharacter";
 import TargetManager from "./Managers/TargetManager";
 import { TGameCharacter } from "shared/_Types/TGameCharacter";
 import { generateCharacterName } from "shared/_Factories/NameFactory";
-import * as Payloads from "shared/net/RemoteIndex";
-//import { AttributesManager } from "server/Character/Managers/AttributesManager";
 
 /* Classes */
 /* Player Character */
@@ -34,7 +34,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public animationManager: AnimationManager;
 	public dataManager: PlayerDataManager;
 	public progressionManager: ProgressionManager;
-	public resourceManager: ResourceManager;
 	public skillManager: SkillsManager;
 	public targetManager: TargetManager;
 	//public attributesManager: AttributesManager;
@@ -65,9 +64,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		const playerData = this.dataManager.GetData();
 		this.dataManager.UpdateCharacterName(player.Name + generateCharacterName());
 
-		/* Resource Manager */
-		this.resourceManager = new ResourceManager(this, playerData);
-
 		/* Skills Manager */
 		this.skillManager = new SkillsManager(this);
 		this.skillManager.InitializeSkillMap(playerData);
@@ -81,9 +77,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		/* Animation Manager */
 		assert(this.characterModel, "Character Model is nil");
 		this.animationManager = new AnimationManager(this, playerData);
-
-		/* Attributes Subject */
-		//this.attributesManager = new AttributesManager(this);
 
 		/* Initialize Connections */
 		this._initializeConnections();
@@ -108,7 +101,6 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this._connectionDealDamage?.Disconnect();
 		this._connectionDealDamage = this.wcsCharacter.DamageDealt.Connect((enemy, damageContainer) => {
 			Logger.Log(script, ("Player Character Dealt Damage" + enemy) as unknown as string);
-			this.OnDamageDealt(enemy, damageContainer);
 		});
 
 		/* Skill Started */
@@ -116,14 +108,11 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this._connectionSkillStarted = this.wcsCharacter.SkillStarted.Connect((skill) => {
 			this.skillManager.OnSkillStarted(skill);
 			this.animationManager.OnSkillStarted(skill);
-			this.resourceManager.OnSkillStarted(skill);
-			//this.attributesManager.updateAttribute("Strength", 5);
 		});
 
 		/* Skill Ended */
 		this._connectionSkillEnded?.Disconnect();
 		this._connectionSkillEnded = this.wcsCharacter.SkillEnded.Connect((skill) => {
-			print("Skill Ended");
 			this.skillManager.OnSkillEnded(skill);
 		});
 
@@ -134,15 +123,10 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 			if (deltaTime < 1) {
 				return;
 			} else {
-				this.resourceManager.OnHeartBeat();
+				print("Player Character Heartbeat");
 				this._lastUpdate = tick();
 			}
 		});
-	}
-
-	/* Dealt Damage */
-	public OnDamageDealt(enemy: Character | undefined, damageContainer: DamageContainer): void {
-		Logger.Log(script, "Player Character Dealt Damage");
 	}
 
 	/* Died */
@@ -152,14 +136,12 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.humanoid.Health = 0;
 		this.skillManager.Destroy();
 		this.animationManager.Destroy();
-		this.resourceManager.Destroy();
 		this._heartbeatConnection?.Disconnect();
 	}
 
 	/* Take Damage */
 	public OnTakeDamage(damageContainer: DamageContainer): void {
 		this._damageContainers.push(damageContainer);
-		this.resourceManager.OnDamageTaken(damageContainer.Damage);
 		this.skillManager.OnDamageTaken();
 		this.animationManager.OnDamageTaken();
 	}

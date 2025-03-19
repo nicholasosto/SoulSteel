@@ -6,7 +6,7 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { SkillId, SkillPanelData, SkillSlotId } from "shared/_IDs/SkillIndex";
 import ServerNetManager from "server/Net/ServerNetManager";
 import { EquipmentId, EquipmentSlotId } from "shared/_IDs/EquipmentIndex";
-import ResourceManager from "./ResourceManager";
+import StatsManager from "./ResourceManager";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 

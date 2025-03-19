@@ -24,7 +24,6 @@ export default interface IPlayerCharacter extends IGameCharacter {
 	dataManager: IDataManager;
 	animationManager: IAnimationManager;
 	progressionManager: IProgressionManager;
-	resourceManager: IResourceManager;
 	skillManager: ISkillManager;
 	targetManager: ITargetManager;
 	//attributesManager: AttributesManager;

@@ -8,13 +8,13 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 /* Remote Functions */
 const GetSlotMapData = RemoteFunctions.Server.Get("GetSkillSlotMap");
 const GetEquipmentSlotMap = RemoteFunctions.Server.Get("GetEquipmentSlotMap");
-const GetInfoFrameData = RemoteFunctions.Server.Get("GetCharacterFrameData");
+//const GetInfoFrameData = RemoteFunctions.Server.Get("GetCharacterFrameData");
 
 /* Remote Events */
-const UpdateSkillSlotMapEvent = RemoteEvents.Server.Get("UpdateSkillSlotMap");
-const UpdateInfoFrameEvent = RemoteEvents.Server.Get("UpdateInfoFrame");
-const SendPlayerData = RemoteEvents.Server.Get("SendPlayerData");
-const TestSendEvent = RemoteEvents.Server.Get("TestSendEvent");
+const ClientUpdateTarget = RemoteEvents.Server.Get("ClientUpdateTarget"); // Target Update
+const UpdateSkillSlotMapEvent = RemoteEvents.Server.Get("UpdateSkillSlotMap"); // Skill Slot Map Update
+//const UpdateInfoFrameEvent = RemoteEvents.Server.Get("UpdateInfoFrame"); // Info Frame Update
+const SendPlayerData = RemoteEvents.Server.Get("SendPlayerData"); // Player Data Update
 
 /* Fusion Updates */
 const SendResourceData = RemoteEvents.Server.Get("SendResourceData");
@@ -25,7 +25,7 @@ export default class ServerNetManager {
 	private static _instance: ServerNetManager;
 
 	/* Data Connections */
-	private static _onTestSend: RBXScriptConnection | undefined;
+	private static _clientUpdateTarget: RBXScriptConnection | undefined;
 
 	/* Constructor */
 	private constructor() {
@@ -43,31 +43,11 @@ export default class ServerNetManager {
 	}
 
 	private static initializeListeners() {
-		/* Test Send Event */
-		this._onTestSend?.Disconnect();
-		this._onTestSend = TestSendEvent.Connect((player: Player, eventName: string) => {
-			this._HandleTestSend(player, eventName);
+		/* Client Update Target */
+		this._clientUpdateTarget?.Disconnect();
+		this._clientUpdateTarget = ClientUpdateTarget.Connect((player: Player, target: string) => {
+			print(`Client Target Updated: ${target}`);
 		});
-	}
-
-	private static _HandleTestSend(player: Player, eventName: string) {
-		switch (eventName) {
-			case "EquipSkill":
-				print(`TestSendEvent: ${player.Name} triggered EquipSkill`);
-				break;
-			case "UnequipSkill":
-				print(`TestSendEvent: ${player.Name} triggered UnequipSkill`);
-				break;
-			default:
-				print(`TestSendEvent: ${player.Name} triggered an unknown event: ${eventName}`);
-				break;
-		}
-	}
-
-	private static _getSkillPanelData(player: Player): SkillPanelData | undefined {
-		const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
-		const skillPanelData = character?.dataManager?.GetSkillPanelData() as SkillPanelData | undefined;
-		return skillPanelData;
 	}
 
 	private static _getSkillSlotMap(player: Player): Payloads.PSkillSlotMap | undefined {
@@ -84,49 +64,33 @@ export default class ServerNetManager {
 		return equipmentSlotMap;
 	}
 
-	// private static _getInfoFrameData(player: Player): Payloads.PInfoFrame | undefined {
-	// 	const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
-	// 	const infoFrameData = character?.GetInfoFrameData() as Payloads.PInfoFrame | undefined;
-	// 	return infoFrameData;
-	// }
-
 	/* Initialize Callbacks */
 	private static InitializeCallbacks() {
 		/*Get Skill Slot Map*/
 		GetSlotMapData.SetCallback(async (player: Player) => {
+			warn("ServerNetManager: Callback - GetSkillSlotMap");
 			const skillSlotMap = this._getSkillSlotMap(player);
 			return skillSlotMap;
 		});
 
 		/*Get Equipment Slot Map*/
 		GetEquipmentSlotMap.SetCallback(async (player: Player) => {
+			warn("ServerNetManager: Callback - GetEquipmentSlotMap");
 			const skillPanelData = this._getEquipmentSlotMap(player);
 			return skillPanelData;
 		});
-
-		/*Get InfoFrame Data*/
-		// GetInfoFrameData.SetCallback(async (player: Player) => {
-		// 	const infoFrameData = this._getInfoFrameData(player);
-		// 	return infoFrameData;
-		// });
 	}
 
 	public static SendPlayerData(player: Player, playerData: IPlayerData) {
+		warn("ServerNetManager: Called from another script to send player data");
 		SendPlayerData.SendToPlayer(player, playerData);
 	}
 
 	/* Fusion Updates */
 	public static SendResourceData(player: Player, resourceData: Payloads.PCurrentResourceAmounts) {
+		warn("ServerNetManager: Called from another script to send resource data");
 		SendResourceData.SendToPlayer(player, resourceData);
 	}
-
-	/* Send InfoFrame Update */
-	// public static SendInfoFrameUpdate(player: Player) {
-	// 	const infoFrameData = this._getInfoFrameData(player);
-	// 	if (infoFrameData !== undefined) {
-	// 		UpdateInfoFrameEvent.SendToPlayer(player, infoFrameData);
-	// 	}
-	// }
 
 	/* Skill Slot Map (SkillBar) */
 	public static SendSkillSlotMapUpdate(player: Player) {

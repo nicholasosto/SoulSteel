@@ -4,22 +4,16 @@ import Logger from "shared/Utility/Logger";
 
 // Character Resource Class
 class CharacterResource implements ICharacterResource {
-	// Resource Name
-	public ResourceId: ResourceId = "Health";
-
-	//
-
-	// Resource Values
-	public MaxValue: number;
-	public Current: number;
+	/* Properties */
+	public ResourceId: ResourceId; // Resource Identifier
+	public MaxValue: number; // Maximum Value
+	public Current: number; // Current Value
 
 	// Regen Values
 	private _regenAmount: number = 10;
 	private _regenRate: number = 1;
 	private _lastRegen: number = tick();
 	private _regenActive: boolean = false;
-
-	// Regen Rate
 
 	// Constructor
 	constructor(resourceId: ResourceId, maxValue: number) {

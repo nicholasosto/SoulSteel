@@ -1,8 +1,8 @@
 import Fusion from "@rbxts/fusion";
 
 /* Custom Components */
-import { CharacterFrame } from "shared/_ROACT/Components/CharacterFrame/CharacterFrameRoact";
 import { PanelManager } from "shared/_ROACT/Screens/PanelManager";
+import PlayerHudGui from "client/_Fusions/PlayerHudGui";
 
 const { New, Children } = Fusion;
 
@@ -15,7 +15,7 @@ const FusionApplication = New("ScreenGui")({
 	Name: "FusionApp",
 	IgnoreGuiInset: true,
 	ResetOnSpawn: false,
-	[Children]: [CharacterFrame, PanelManager()],
+	[Children]: [PlayerHudGui],
 });
 
 print("Roact Client: Starting...", FusionApplication);

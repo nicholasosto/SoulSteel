@@ -10,7 +10,7 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 const RemoteEvents = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
 	ClientUpdateTarget: Net.Definitions.ClientToServerEvent<[target: string]>(),
-	TestSendEvent: Net.Definitions.ClientToServerEvent<[eventName: string]>(),
+	//TestSendEvent: Net.Definitions.ClientToServerEvent<[eventName: string]>(),
 
 	/* ======== Server To Client Events =========*/
 	SendResourceData: Net.Definitions.ServerToClientEvent<[resourceData: Payload.PCurrentResourceAmounts]>(),
@@ -24,14 +24,14 @@ const RemoteEvents = Net.CreateDefinitions({
 	GameCharacterDestroyed: Definitions.ServerToClientEvent<[]>(),
 
 	UpdateSkillSlotMap: Net.Definitions.ServerToClientEvent<[skillSlotMap: Payload.PSkillSlotMap]>(),
-	UpdateInfoFrame: Net.Definitions.ServerToClientEvent<[payload: Payload.PInfoFrame]>(),
 });
 
 const RemoteFunctions = Net.CreateDefinitions({
 	// Client-to-server remote function to initialize panel data
 	GetSkillSlotMap: Net.Definitions.ServerAsyncFunction<() => Payload.PSkillSlotMap | undefined>(),
 	GetEquipmentSlotMap: Net.Definitions.ServerAsyncFunction<() => Payload.PEquipmentSlotMap | undefined>(),
-	GetCharacterFrameData: Net.Definitions.ServerAsyncFunction<() => Payload.PInfoFrame | undefined>(),
+	GetDerivedStats: Net.Definitions.ServerAsyncFunction<() => Payload.PDerivedStats | undefined>(),
+	//GetCharacterFrameData: Net.Definitions.ServerAsyncFunction<() => Payload.PInfoFrame | undefined>(),
 });
 
 /* Exports */
