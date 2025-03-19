@@ -1,6 +1,4 @@
 import { TweenService } from "@rbxts/services";
-import { Remotes } from "shared/net/Remotes";
-import Logger from "shared/Utility/Logger";
 
 export enum GameItemFrameState {
 	Default,

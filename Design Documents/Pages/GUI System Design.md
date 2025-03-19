@@ -1,10 +1,11 @@
 # GUI System Design
 
-This document provides a detailed overview of the graphical user interface (GUI) system for our game. It is intended to inform an LLM (or any reader) about the various panels, components, and design considerations of our GUI system.
+This document provides a detailed overview of the graphical user interface (GUI) system for our game. It is intended to inform an LLM (or any reader) about the various panels, components, and design considerations of our GUI system. The UI sytem will be coded using the ```Fusion``` API for typescript.
 
 ## Table of Contents
 
 1. [Overview](#overview)
+   1. [Skill Panel](#front-end)
 2. [Panels](#panels)
    - [Skill Panel](#skill-panel)
    - [Class Panel](#class-panel)
@@ -24,6 +25,16 @@ This document provides a detailed overview of the graphical user interface (GUI)
 The GUI system is designed to provide interactive and intuitive interfaces for different gameplay aspects, including skill management, class customization, inventory control, teleportation, and shop interactions. Each panel is built with modularity and scalability in mind, allowing for easy updates and future expansion.
 
 ---
+
+### Front End
+
+The front end will be desined using the ```Fusion``` Library.
+1. MainScreenUI
+
+```ts
+sdasdasd
+```
+
 
 ## Panels
 

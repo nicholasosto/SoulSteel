@@ -24,9 +24,7 @@ export default class GamePanel {
 		if (backgroundTextureId !== undefined) {
 			this.updateBackgroundTexture(backgroundTextureId);
 		}
-		
 	}
-
 
 	public updateTitle(newTitle: string) {
 		const titleLabel = this.config.EUITitleOV.Value as TextLabel;

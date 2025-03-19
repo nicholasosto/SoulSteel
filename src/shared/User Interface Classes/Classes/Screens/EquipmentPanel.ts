@@ -1,3 +1,5 @@
+import { CollectionService } from "@rbxts/services";
+import { EquipmentConfiguration } from "shared/_IDs/EquipmentIndex";
 import GUIStateComponent from "shared/State/GUI State/GUIStateComponent";
 import GameScreenBase from "./GameScreenBase";
 
@@ -34,10 +36,14 @@ export default class EquipmentPanel extends GameScreenBase {
 		print("EquipmentPanel: Initialized");
 	}
 
+	private _StartCollectionService() {
+		/* Connection to ArmorAdded */
+	}
+
+
 	private _handleChestSlotClick() {
 		print("Chest Slot Clicked");
 		/*Get Grid items available */
-
 	}
 
 	private _handleHeadSlotClick() {

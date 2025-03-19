@@ -104,11 +104,8 @@ function HandleCharacterAdded(player: Player, character: TGameCharacter | undefi
 
 	/* Create the Player Character */
 	const playerCharacter = PCController.CreatePlayerCharacter(player, character);
-	const wcsCharacter = playerCharacter?.wcsCharacter;
-	wcsCharacter.SkillEnded.Connect(() => {
-		print("Skill Endesdsdasdd");
-		ServerNetManager.SendInfoFrameUpdate(player);
-	});
+
+
 	if (playerCharacter === undefined) return false;
 
 	/* Handle Player Death */

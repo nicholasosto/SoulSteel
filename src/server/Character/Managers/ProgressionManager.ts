@@ -1,5 +1,6 @@
 import IDataManager from "shared/_Interfaces/Character Managers/IDataManager";
 import IProgressionManager from "shared/_Interfaces/Character Managers/IProgressionManager";
+import ServerNetManager from "server/Net/ServerNetManager";
 import Logger from "shared/Utility/Logger";
 
 export default class ProgressionManager implements IProgressionManager {

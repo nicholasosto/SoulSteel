@@ -9,7 +9,6 @@ import ISkillDefinition from "shared/_Interfaces/ISkillDefinition";
 import ProgressBar from "shared/User Interface Classes/Classes/Assemblies/ProgressBar";
 
 // Functions
-//import { getSkillDefinition } from "shared/_Functions/SkillFunctions";
 import DefinitionsManager from "shared/Storage/DefinitionsManager";
 
 export class SkillButton {
@@ -30,7 +29,6 @@ export class SkillButton {
 	// Constructor
 	constructor(skillId: SkillId) {
 		// Set the Skill Definition
-		//this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
 		this._skillDefinition = DefinitionsManager.GetSkillDefinition(skillId) as ISkillDefinition;
 
 		// Set the Cooldown Time
@@ -91,16 +89,4 @@ export class SkillButton {
 	private _setImage(image: string) {
 		this._instance.SkillButton.ImageFrame.SkillImage.Image = image;
 	}
-
-	// // Set Text
-	// public SetText(text: string) {
-	// 	this._cooldownBar.SetEpicAttribute("TextValue", text);
-	// }
-
-	// Set Skill
-	// private SetSkill(skillId: SkillId) {
-	// 	this._skillDefinition = getSkillDefinition(skillId) as ISkillDefinition;
-	// 	this._setImage(this._skillDefinition.icon);
-	// 	this._cooldownTime = this._skillDefinition.cooldown;
-	// }
 }

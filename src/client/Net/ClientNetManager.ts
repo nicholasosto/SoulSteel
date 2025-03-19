@@ -7,11 +7,15 @@
 import { Players } from "@rbxts/services";
 import { RemoteEvents, RemoteFunctions } from "shared/net/Remotes";
 import * as Payload from "shared/net/RemoteIndex";
+import { PlayerCurrency, PlayerStats, PlayerProgression, ResourceBars } from "shared/_ROACT/Components/DataValueObjects";
 
 /* GUI Controllers */
 import UIManager from "client/UI Controllers/UIManager";
 
 /* Payloads */
+
+/* FusionUpdates */
+const OnSendResourceData = RemoteEvents.Client.Get("SendResourceData");
 
 /* Remote Functions */
 const GetSkillSlotMap = RemoteFunctions.Client.Get("GetSkillSlotMap"); // HUD - Skill Bar
@@ -32,6 +36,9 @@ export default class ClientNetManager {
 
 	/* Data Connections */
 	private static _onSendPlayerData: RBXScriptConnection | undefined;
+
+	/*Fusion Updates */
+	private static _onResourceData: RBXScriptConnection | undefined;
 
 	/* Panel Connections */
 	private static _updateSkillPanel: RBXScriptConnection | undefined;
@@ -56,12 +63,29 @@ export default class ClientNetManager {
 
 	/* Initialize Listeners */
 	private static InitializeListeners() {
+		/* Fusion Updates */
+		this._onResourceData?.Disconnect();
+		this._onResourceData = OnSendResourceData.Connect((resourceData) => {
+			// Handle the resource data received
+			warn("NetManager: Received resource data:", resourceData);
+			ResourceBars.PlayerHealth.playerCurrentHealth.set(resourceData.Health);
+		});
 		/* Player Data Loaded */
 		this._onSendPlayerData?.Disconnect();
 		this._onSendPlayerData = SendPlayerData.Connect((playerData) => {
 			// Handle the player data received
 			warn("NetManager: Received player data:", playerData);
 			UIManager.OnPlayerDataLoaded(playerData);
+			PlayerProgression.playerLevel.set(playerData.ProgressionStats.Level);
+			PlayerProgression.playerExperience.set(playerData.ProgressionStats.Experience);
+			PlayerStats.playerAttributePoints.set(playerData.AvaliableAttributePoints);
+			PlayerStats.playerStrength.set(playerData.CharacterStats.Strength);
+			PlayerStats.playerDexteriy.set(playerData.CharacterStats.Dexterity);
+			PlayerStats.playerIntelligence.set(playerData.CharacterStats.Intelligence);
+			PlayerStats.playerConstitution.set(playerData.CharacterStats.Constitution);
+			PlayerCurrency.playerSoulChips.set(100);
+			PlayerCurrency.playerSoulShards.set(50);
+			PlayerCurrency.playerSoulGems.set(10);
 		});
 		/* Update Skill Slot Map */
 		this._updateSkillSlotMap?.Disconnect();

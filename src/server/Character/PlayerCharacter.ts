@@ -162,29 +162,5 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 		this.resourceManager.OnDamageTaken(damageContainer.Damage);
 		this.skillManager.OnDamageTaken();
 		this.animationManager.OnDamageTaken();
-
-		if (this.resourceManager.HealthResource.GetCurrent() <= 0) {
-			Logger.LogFlow("[Player Character Flow][Death][OnTakeDamage]", 1, script);
-			this.OnDeath();
-			this._damageContainers.forEach((damageContainer) => {
-				warn(" Damage Container: ", damageContainer.Source?.Character.Instance.Name, damageContainer.Damage);
-			});
-		}
-	}
-
-	public GetInfoFrameData() {
-		const infoFrameData = {
-			Level: this.dataManager.GetData().ProgressionStats.Level,
-			Name: this.dataManager.GetData().CharacterIdentity.CharacterName,
-			Health: this.resourceManager.HealthResource.GetPayload() as Payloads.PResourceBar,
-			SoulPower: this.resourceManager.SoulPower.GetPayload() as Payloads.PResourceBar,
-			Stamina: this.resourceManager.StaminaResource.GetPayload() as Payloads.PResourceBar,
-			Experience: {
-				resourceId: "Experience",
-				current: this.dataManager.GetData().ProgressionStats.Experience,
-				max: this.dataManager.GetData().ProgressionStats.ExperienceToNextLevel, // Placeholder for max experience
-			},
-		} as Payloads.PInfoFrame;
-		return infoFrameData;
 	}
 }

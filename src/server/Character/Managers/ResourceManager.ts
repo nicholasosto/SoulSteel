@@ -1,4 +1,5 @@
 import Logger from "shared/Utility/Logger";
+import { ResourceBars, PlayerStats } from "shared/_ROACT/Components/DataValueObjects";
 
 import { CharacterResource } from "../Classes/CharacterResource";
 import { UnknownSkill } from "@rbxts/wcs";
@@ -6,96 +7,78 @@ import { UnknownSkill } from "@rbxts/wcs";
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 import ICharacterStats from "shared/_Interfaces/Player Data/ICharacterStats";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
-import IResourceManager from "shared/_Interfaces/Character Managers/IResourceManager";
-
-
-/* Responibilities */
-// - Create and manage resources for the character
-// - Listen for skill events and update resources accordingly
-// - Listen for combat events and update resources accordingly
-
-function calculateMaxHealth(characterStats: ICharacterStats, level: number): number {
-	const baseHealth = 100;
-	const healthPerConstitution = 10;
-	const healthPerStrength = 5;
-
-	const levelBonus = baseHealth * level;
-	const constitutionBonus = healthPerConstitution * characterStats.Constitution;
-	const strengthBonus = healthPerStrength * characterStats.Strength;
-
-	const totalHealth = levelBonus + constitutionBonus + strengthBonus;
-
-	return totalHealth;
-}
-
-function calculateMaxMana(characterStats: IPlayerData["CharacterStats"], level: number): number {
-	const baseMana = 100;
-	const manaPerIntelligence = 10;
-
-	const levelBonus = baseMana * level;
-	const intelligenceBonus = manaPerIntelligence * characterStats.Intelligence;
-
-	const totalMana = levelBonus + intelligenceBonus;
-
-	return totalMana;
-}
-
-function calculateMaxStamina(characterStats: ICharacterStats, level: number): number {
-	const baseStamina = 100;
-	const staminaPerDexterity = 10;
-
-	const levelBonus = baseStamina * level;
-	const dexterityBonus = staminaPerDexterity * characterStats.Dexterity;
-
-	const totalStamina = levelBonus + dexterityBonus;
-
-	return totalStamina;
-}
+import ServerNetManager from "server/Net/ServerNetManager";
 
 /* Resource Manager */
-export default class ResourceManager implements IResourceManager {
+export default class ResourceManager {
 	/* Player Character */
 	private _playerCharacter: IPlayerCharacter;
 
 	/* Resources */
-	public HealthResource: CharacterResource;
-	public SoulPower: CharacterResource;
-	public StaminaResource: CharacterResource;
+	public ResourceBars = ResourceBars;
 
 	/* Constructor */
 	constructor(PlayerCharacter: IPlayerCharacter, playerData: IPlayerData) {
 		/* Set Player Character */
 		this._playerCharacter = PlayerCharacter;
-
+		PlayerStats.playerAttributePoints.set(playerData.AvaliableAttributePoints);
+		PlayerStats.playerSpentAttributePoints.set(playerData.SpentAttributePoints);
+		PlayerStats.playerConstitution.set(playerData.CharacterStats.Constitution);
+		PlayerStats.playerIntelligence.set(playerData.CharacterStats.Intelligence);
+		PlayerStats.playerStrength.set(playerData.CharacterStats.Strength);
+		PlayerStats.playerDexteriy.set(playerData.CharacterStats.Dexterity);
 		/* Initialize Resources */
-		const level = playerData.ProgressionStats.Level;
-		const characterStats = playerData.CharacterStats;
-		this.HealthResource = new CharacterResource("Health", calculateMaxHealth(characterStats, level));
-		this.SoulPower = new CharacterResource("SoulPower", calculateMaxMana(characterStats, level));
-		this.StaminaResource = new CharacterResource("Stamina", calculateMaxStamina(characterStats, level));
 
 		/* Set Humanoid Stats */
-		this._playerCharacter.humanoid.MaxHealth = this.HealthResource.GetMax();
-		this._playerCharacter.humanoid.Health = this.HealthResource.GetMax();
-
+		this._playerCharacter.humanoid.MaxHealth = this.ResourceBars.PlayerHealth.playerMaxHealth.get();
+		this._playerCharacter.humanoid.Health = this.ResourceBars.PlayerHealth.playerCurrentHealth.get();
 	}
 
 	public OnHeartBeat() {
 		//Logger.Log(script, `[ResourceManager]: Heartbeat`);
-		this.HealthResource.regenStep();
-		this.SoulPower.regenStep();
-		this.StaminaResource.regenStep();
+		const playerCurrentHealth = ResourceBars.PlayerHealth.playerCurrentHealth.get();
+		const playerMaxHealth = ResourceBars.PlayerHealth.playerCurrentHealth.get();
 
+		if (playerCurrentHealth < playerMaxHealth) {
+			ResourceBars.PlayerHealth.playerCurrentHealth.set(playerCurrentHealth + 1);
+		}
+
+		const missingStamina =
+			ResourceBars.PlayerStamina.playerMaxStamina.get() - ResourceBars.PlayerStamina.playerCurrentStamina.get();
+		if (missingStamina > 0) {
+			ResourceBars.PlayerStamina.playerCurrentStamina.set(
+				ResourceBars.PlayerStamina.playerCurrentStamina.get() + 1,
+			);
+		}
+	}
+
+	private updateClientResourceBars() {
+		const HealthCurrent = this.ResourceBars.PlayerHealth.playerCurrentHealth.get();
+		const SoulPowerCurrent = this.ResourceBars.PlayerSoulPower.playerCurrentSoulPower.get();
+		const StaminaCurrent = this.ResourceBars.PlayerStamina.playerCurrentStamina.get();
+
+		ServerNetManager.SendResourceData(this._playerCharacter.player, {
+			Health: HealthCurrent,
+			SoulPower: SoulPowerCurrent,
+			Stamina: StaminaCurrent,
+			DomainEssence: ResourceBars.PlayerDomainResource.playerDomainResourceCurrent.get(),
+			Experience: this._playerCharacter.dataManager.GetData().ProgressionStats.Experience,
+		});
 	}
 
 	public OnDamageTaken(damage: number): void {
-		this.HealthResource.SetCurrent(this.HealthResource.GetCurrent() - damage);
-
+		this.ResourceBars.PlayerHealth.playerCurrentHealth.set(
+			this.ResourceBars.PlayerHealth.playerCurrentHealth.get() - damage,
+		);
+		print(`Damage Taken: ${damage}`);
 	}
 
 	public OnSkillStarted(skill: UnknownSkill): void {
-		this.SoulPower.SetCurrent(this.SoulPower.GetCurrent() - 100);
-		this.SoulPower.RegenToggle(true);
+		this.ResourceBars.PlayerSoulPower.playerCurrentSoulPower.set(
+			this.ResourceBars.PlayerSoulPower.playerCurrentSoulPower.get() - 11,
+		);
+
+		this.ResourceBars.PlayerStamina.playerCurrentStamina.set(9);
 		Logger.Log(script, `[ResourceManager]: Skill Started: ${skill}`);
 	}
 
@@ -105,8 +88,5 @@ export default class ResourceManager implements IResourceManager {
 
 	public Destroy() {
 		Logger.Log("[Destroying]", `ResourceManager: ${this._playerCharacter.player.Name}`);
-		this.HealthResource.Destroy();
-		this.SoulPower.Destroy();
-		this.StaminaResource.Destroy();
 	}
 }

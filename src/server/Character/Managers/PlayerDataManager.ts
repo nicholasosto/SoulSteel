@@ -6,6 +6,7 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 import { SkillId, SkillPanelData, SkillSlotId } from "shared/_IDs/SkillIndex";
 import ServerNetManager from "server/Net/ServerNetManager";
 import { EquipmentId, EquipmentSlotId } from "shared/_IDs/EquipmentIndex";
+import ResourceManager from "./ResourceManager";
 
 const PlayerDataStore = DataStoreService.GetDataStore("PlayerData-X01");
 
@@ -62,6 +63,7 @@ export default class PlayerDataManager implements IDataManager {
 	private _saveInterval = 15;
 	private _player: Player;
 
+
 	constructor(playerCharacter: IPlayerCharacter) {
 		this._player = playerCharacter.player;
 		this._userId = tostring(playerCharacter.player.UserId);
@@ -85,6 +87,7 @@ export default class PlayerDataManager implements IDataManager {
 	/* Update Progression Stats */
 	public UpdateProgressionStats(newStats: IPlayerData["ProgressionStats"]): void {
 		this._playerData.ProgressionStats = newStats;
+		ServerNetManager.SendPlayerData(this._player, this._playerData);
 	}
 
 	/* Get Data */
@@ -167,11 +170,11 @@ export default class PlayerDataManager implements IDataManager {
 	public GetEquipmentSlotMap(): Map<EquipmentSlotId, EquipmentId> {
 		// #TODO: Load from player data
 		const equipmentSlotMap = new Map<EquipmentSlotId, EquipmentId>();
-		equipmentSlotMap.set("Head", "Helmet_01");
-		equipmentSlotMap.set("Chest", "Armor_01");
-		equipmentSlotMap.set("Legs", "Leggings_01");
-		equipmentSlotMap.set("Feet", "Boots_01");
-		equipmentSlotMap.set("Hands", "Gloves_01");
+		equipmentSlotMap.set("Weapon", "Helmet_01");
+		equipmentSlotMap.set("Helmet", "Armor_01");
+		equipmentSlotMap.set("Armor", "Leggings_01");
+		equipmentSlotMap.set("Accessory", "Boots_01");
+		equipmentSlotMap.set("Familiar", "Gloves_01");
 		return equipmentSlotMap;
 	}
 }

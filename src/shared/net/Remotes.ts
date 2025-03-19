@@ -6,18 +6,6 @@ import * as Payload from "shared/net/RemoteIndex";
 
 /* Interfaces */
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
-import { TGameCharacter } from "shared/_Types/TGameCharacter";
-
-interface AttributePanelData {
-	availablePoints: number;
-	spentPoints: number;
-	characterStats: IPlayerData["CharacterStats"];
-}
-
-const Remotes = Net.CreateDefinitions({
-	/* ======== Client To Server Events =========*/
-	/* Full Load and Destroy Triggers */
-});
 
 const RemoteEvents = Net.CreateDefinitions({
 	/* ======== Client To Server Events =========*/
@@ -25,6 +13,9 @@ const RemoteEvents = Net.CreateDefinitions({
 	TestSendEvent: Net.Definitions.ClientToServerEvent<[eventName: string]>(),
 
 	/* ======== Server To Client Events =========*/
+	SendResourceData: Net.Definitions.ServerToClientEvent<[resourceData: Payload.PCurrentResourceAmounts]>(),
+
+	/* Player Data */
 	ServerTargetUpdate: Net.Definitions.ServerToClientEvent<[targetId: string]>(),
 	SendPlayerData: Net.Definitions.ServerToClientEvent<[playerData: IPlayerData]>(),
 
@@ -44,4 +35,4 @@ const RemoteFunctions = Net.CreateDefinitions({
 });
 
 /* Exports */
-export { Remotes, RemoteFunctions, RemoteEvents };
+export { RemoteFunctions, RemoteEvents };

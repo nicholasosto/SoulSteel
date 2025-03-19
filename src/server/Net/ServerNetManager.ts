@@ -16,6 +16,9 @@ const UpdateInfoFrameEvent = RemoteEvents.Server.Get("UpdateInfoFrame");
 const SendPlayerData = RemoteEvents.Server.Get("SendPlayerData");
 const TestSendEvent = RemoteEvents.Server.Get("TestSendEvent");
 
+/* Fusion Updates */
+const SendResourceData = RemoteEvents.Server.Get("SendResourceData");
+
 /*Singleton*/
 export default class ServerNetManager {
 	/*Instance*/
@@ -75,15 +78,17 @@ export default class ServerNetManager {
 
 	private static _getEquipmentSlotMap(player: Player): Payloads.PEquipmentSlotMap | undefined {
 		const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
-		const equipmentSlotMap = character?.dataManager?.GetEquipmentSlotMap() as Payloads.PEquipmentSlotMap | undefined;
+		const equipmentSlotMap = character?.dataManager?.GetEquipmentSlotMap() as
+			| Payloads.PEquipmentSlotMap
+			| undefined;
 		return equipmentSlotMap;
 	}
 
-	private static _getInfoFrameData(player: Player): Payloads.PInfoFrame | undefined {
-		const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
-		const infoFrameData = character?.GetInfoFrameData() as Payloads.PInfoFrame | undefined;
-		return infoFrameData;
-	}
+	// private static _getInfoFrameData(player: Player): Payloads.PInfoFrame | undefined {
+	// 	const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
+	// 	const infoFrameData = character?.GetInfoFrameData() as Payloads.PInfoFrame | undefined;
+	// 	return infoFrameData;
+	// }
 
 	/* Initialize Callbacks */
 	private static InitializeCallbacks() {
@@ -100,23 +105,28 @@ export default class ServerNetManager {
 		});
 
 		/*Get InfoFrame Data*/
-		GetInfoFrameData.SetCallback(async (player: Player) => {
-			const infoFrameData = this._getInfoFrameData(player);
-			return infoFrameData;
-		});
+		// GetInfoFrameData.SetCallback(async (player: Player) => {
+		// 	const infoFrameData = this._getInfoFrameData(player);
+		// 	return infoFrameData;
+		// });
 	}
 
 	public static SendPlayerData(player: Player, playerData: IPlayerData) {
 		SendPlayerData.SendToPlayer(player, playerData);
 	}
 
-	/* Send InfoFrame Update */
-	public static SendInfoFrameUpdate(player: Player) {
-		const infoFrameData = this._getInfoFrameData(player);
-		if (infoFrameData !== undefined) {
-			UpdateInfoFrameEvent.SendToPlayer(player, infoFrameData);
-		}
+	/* Fusion Updates */
+	public static SendResourceData(player: Player, resourceData: Payloads.PCurrentResourceAmounts) {
+		SendResourceData.SendToPlayer(player, resourceData);
 	}
+
+	/* Send InfoFrame Update */
+	// public static SendInfoFrameUpdate(player: Player) {
+	// 	const infoFrameData = this._getInfoFrameData(player);
+	// 	if (infoFrameData !== undefined) {
+	// 		UpdateInfoFrameEvent.SendToPlayer(player, infoFrameData);
+	// 	}
+	// }
 
 	/* Skill Slot Map (SkillBar) */
 	public static SendSkillSlotMapUpdate(player: Player) {

@@ -1,6 +1,4 @@
 import { TweenService } from "@rbxts/services";
-import { Remotes } from "shared/net/Remotes";
-import Logger from "shared/Utility/Logger";
 
 export enum ButtonState {
 	Default,
@@ -15,8 +13,6 @@ export default class StatefulButton {
 	private button: TextButton;
 	private currentState: ButtonState;
 	private hoverTween?: Tween;
-
-	private _gameStateListener?: RBXScriptConnection;
 
 	constructor(button: TextButton) {
 		this.button = button;

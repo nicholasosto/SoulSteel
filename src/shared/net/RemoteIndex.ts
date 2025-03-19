@@ -1,12 +1,7 @@
-import { SkillId } from "shared/_IDs/SkillIndex";
+import { SkillId, SkillSlotId } from "shared/_IDs/SkillIndex";
+import { EquipmentId, EquipmentSlotId } from "shared/_IDs/EquipmentIndex";
 
-/* IDs */
-type PanelId = "SkillPanel" | "CharacterPanel" | "EquipmentPanel";
-type SlotMapId = "SkillSlotMap" | "EquipmentSlotMap";
 type ResourceId = "Health" | "Stamina" | "SoulPower" | "DomainEssence" | "Experience";
-type SkillSlotId = "Slot_01" | "Slot_02" | "Slot_03" | "Slot_04" | "Slot_05";
-type EquipmentSlotId = "Head" | "Chest" | "Legs";
-type EquipmentId = "Helmet_01" | "Armor_01" | "Leggings_01";
 
 /* Payloads */
 /* Resource Bars */
@@ -18,6 +13,14 @@ type PResourceBar = {
 /* Resource Bars */
 type PResourceBars = {
 	[resourceId: string]: PResourceBar;
+};
+
+type PCurrentResourceAmounts = {
+	Health: number;
+	Stamina: number;
+	SoulPower: number;
+	DomainEssence: number;
+	Experience: number;
 };
 
 /* Payload - InfoFrame */
@@ -36,8 +39,6 @@ type PSkillSlotMap = Map<SkillSlotId, SkillId>;
 type PEquipmentSlotMap = Map<EquipmentSlotId, EquipmentId>;
 
 export {
-	PanelId,
-	SlotMapId,
 	ResourceId,
 	SkillId,
 	PResourceBar,
@@ -45,4 +46,5 @@ export {
 	PInfoFrame,
 	PSkillSlotMap,
 	PEquipmentSlotMap,
+	PCurrentResourceAmounts,
 };

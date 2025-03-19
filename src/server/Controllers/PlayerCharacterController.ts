@@ -68,7 +68,7 @@ export default class PCController {
 
 		/* Notify Clients */
 		this._gameCharacterCreated.SendToPlayer(player);
-		ServerNetManager.SendInfoFrameUpdate(player);
+
 		ServerNetManager.SendSkillSlotMapUpdate(player);
 
 		/* Return Player Character */
