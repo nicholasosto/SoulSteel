@@ -1,0 +1,8 @@
+[package]
+name = "nicho/soulsteel"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+onyx-ui = "imavafe/onyx-ui@0.5.3"

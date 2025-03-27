@@ -3,9 +3,6 @@ import Logger from "shared/Utility/Logger";
 /* WCS Modules */
 import { Character, DamageContainer } from "@rbxts/wcs";
 
-/* Helpers */
-import { CalculateDerivedStats } from "./Helpers/StatsHelper";
-
 /* Character Index */
 import IPlayerCharacter from "shared/_Interfaces/IPlayerCharacter";
 
@@ -37,6 +34,11 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 	public skillManager: SkillsManager;
 	public targetManager: TargetManager;
 	//public attributesManager: AttributesManager;
+
+	private _healthAmount = 100;
+	private _staminaAmount = 100;
+	private _soulPowerAmount = 100;
+	private _domainResourceAmount = 100;
 
 	/* Connections */
 	/* Humanoid */
@@ -127,6 +129,15 @@ export default class PlayerCharacter extends GameCharacter implements IPlayerCha
 				this._lastUpdate = tick();
 			}
 		});
+	}
+
+	public GetResourceAmounts() {
+		return {
+			Health: this._healthAmount,
+			Stamina: this._staminaAmount,
+			SoulPower: this._soulPowerAmount,
+			DomainResource: this._domainResourceAmount,
+		};
 	}
 
 	/* Died */

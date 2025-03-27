@@ -9,9 +9,11 @@ import { RemoteEvents, RemoteFunctions } from "shared/net/Remotes";
 import {
 	PlayerClassVO,
 	PlayerCoreStatsVO,
+	PlayerDisplayNameVO,
 	PlayerProgressionVO,
 	PlayerResourceVO,
 } from "client/_Fusions/PlayerDataObjects";
+import { Observer } from "@rbxts/fusion";
 
 /* GUI Controllers */
 //import UIManager from "client/UI Controllers/UIManager";
@@ -20,6 +22,8 @@ import {
 
 /* FusionUpdates */
 const OnSendResourceData = RemoteEvents.Client.Get("SendResourceData");
+const UpdateDerivedStats = RemoteEvents.Client.Get("UpdateDerivedStats");
+const GetDerivedStats = RemoteFunctions.Client.Get("GetDerivedStats");
 
 /* Remote Functions */
 const GetSkillSlotMap = RemoteFunctions.Client.Get("GetSkillSlotMap"); // HUD - Skill Bar
@@ -70,17 +74,25 @@ export default class ClientNetManager {
 		this._onDerivedStats?.Disconnect();
 		this._onDerivedStats = OnSendResourceData.Connect((resourceData) => {
 			warn("ClientNetManager: Received Resource Data");
+			print(resourceData);
 			PlayerResourceVO.MaxHealth.set(resourceData.Health);
 			PlayerResourceVO.MaxStamina.set(resourceData.Stamina);
 			PlayerResourceVO.MaxSoulPower.set(resourceData.SoulPower);
 			PlayerResourceVO.MaxDomainResource.set(resourceData.DomainEssence);
 			PlayerProgressionVO.ExperienceToNextLevel.set(resourceData.Experience);
 		});
+
+		/* Derived Stats */
+		GetDerivedStats.CallServerAsync().then((derivedStats) => {
+			warn("ClientNetManager: Received Derived Stats");
+			print(derivedStats);
+			if (derivedStats) {
+				PlayerResourceVO.MaxHealth.set(derivedStats.MaxHealth);
+				PlayerResourceVO.MaxStamina.set(derivedStats.MaxStamina);
+				PlayerResourceVO.MaxSoulPower.set(derivedStats.MaxSoulPower);
+				PlayerResourceVO.MaxDomainResource.set(derivedStats.MaxDomainResource);
+				PlayerProgressionVO.ExperienceToNextLevel.set(derivedStats.ExperienceToNextLevel);
+			}
+		});
 	}
 }
-
-Players.LocalPlayer.CharacterAdded.Connect(() => {});
-
-Players.LocalPlayer.CharacterRemoving.Connect(() => {
-	warn("Cleaning up UIManager - Character Removed");
-});

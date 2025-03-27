@@ -1,6 +1,7 @@
 import { RemoteEvents, RemoteFunctions } from "shared/net/Remotes";
 import { SkillPanelData, SkillSlotMap } from "shared/_IDs/SkillIndex";
 import { GetGameCharacter } from "shared/_Registry/EntityRegistration";
+import { ReCalculateDerivedStats } from "server/Character/Helpers/StatsHelper";
 import PlayerCharacter from "server/Character/PlayerCharacter";
 import * as Payloads from "shared/net/RemoteIndex";
 import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
@@ -8,11 +9,13 @@ import IPlayerData from "shared/_Interfaces/Player Data/IPlayerData";
 /* Remote Functions */
 const GetSlotMapData = RemoteFunctions.Server.Get("GetSkillSlotMap");
 const GetEquipmentSlotMap = RemoteFunctions.Server.Get("GetEquipmentSlotMap");
+const GetDerivedStats = RemoteFunctions.Server.Get("GetDerivedStats");
 //const GetInfoFrameData = RemoteFunctions.Server.Get("GetCharacterFrameData");
 
 /* Remote Events */
 const ClientUpdateTarget = RemoteEvents.Server.Get("ClientUpdateTarget"); // Target Update
 const UpdateSkillSlotMapEvent = RemoteEvents.Server.Get("UpdateSkillSlotMap"); // Skill Slot Map Update
+const UpdateDerivedStatsEvent = RemoteEvents.Server.Get("UpdateDerivedStats"); // Derived Stats Update
 //const UpdateInfoFrameEvent = RemoteEvents.Server.Get("UpdateInfoFrame"); // Info Frame Update
 const SendPlayerData = RemoteEvents.Server.Get("SendPlayerData"); // Player Data Update
 
@@ -79,6 +82,23 @@ export default class ServerNetManager {
 			const skillPanelData = this._getEquipmentSlotMap(player);
 			return skillPanelData;
 		});
+
+		/*Get Derived Stats*/
+		GetDerivedStats.SetCallback(async (player: Player) => {
+			warn("ServerNetManager: Callback - GetDerivedStats");
+			const character = GetGameCharacter(tostring(player.UserId)) as PlayerCharacter | undefined;
+			const playerData = character?.dataManager?.GetData() as IPlayerData;
+			if (playerData === undefined) {
+				return undefined;
+			}
+			const derivedStats = ReCalculateDerivedStats(playerData);
+			return derivedStats;
+		});
+	}
+
+	public static SendDerivedStats(player: Player, derivedStats: Payloads.PDerivedStats) {
+		warn("ServerNetManager: Called from another script to send derived stats");
+		UpdateDerivedStatsEvent.SendToPlayer(player, derivedStats);
 	}
 
 	public static SendPlayerData(player: Player, playerData: IPlayerData) {

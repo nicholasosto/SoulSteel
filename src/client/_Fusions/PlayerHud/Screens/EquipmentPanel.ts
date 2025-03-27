@@ -1,7 +1,7 @@
 import Fusion, { Observer, OnEvent } from "@rbxts/fusion";
 import { PanelTitleLabel } from "shared/_ROACT/Components/TextLabelComponents";
-import { PanelBackgroundImage } from "../Components/ImageComponents";
-import { Sizes, FusionColors, TextureIds } from "../ComponentIndex";
+import { PanelBackgroundImage } from "../../../../shared/_ROACT/Components/ImageComponents";
+import { Sizes, FusionColors, TextureIds } from "../../../../shared/_ROACT/ComponentIndex";
 
 const { New, Children, Value, Computed } = Fusion;
 

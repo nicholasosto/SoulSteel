@@ -16,7 +16,7 @@ export function PanelEquipment(props: PanelProps) {
 		AnchorPoint: new Vector2(0.5, 0.5),
 		Position: new UDim2(0.5, 0, 0.5, 0),
 		BackgroundColor3: new Color3(0.1, 0.1, 0.1),
-		Visible: isVisible,
+		Visible: isVisible ,
 		[Fusion.Children]: [
 			// Your panel's UI elements here
 			New("TextLabel")({

@@ -1,6 +1,6 @@
 // PanelManager.ts
 import Fusion, { Value, Children } from "@rbxts/fusion";
-import { MenuButtons } from "./PlayerHud/MenuButtons";
+import { MenuButtons } from "../MenuButtons";
 import { PanelProfile } from "./PanelProfile";
 import { PanelSkills } from "./PanelSkills";
 import { PanelEquipment } from "./PanelEquipment";
@@ -13,18 +13,22 @@ const { New } = Fusion;
 export function PanelManager() {
 	// Reactive state for the active panel (default can be "Profile", for example)
 	const activePanel = Value("None");
+	const enabled = Value(true);
+	const PanelMap = {
+		Profile: PanelProfile({ activePanel }),
+		Equipment: PanelEquipment({ activePanel }),
+		Skills: PanelSkills({ activePanel }),
+		Teleport: PanelTeleport({ activePanel }),
+	};
 
 	return New("ScreenGui")({
 		ResetOnSpawn: false,
 		[Children]: [
-			// Pass the state to the menu buttons so they can update it
+			PanelMap.Profile,
+			PanelMap.Equipment,
+			PanelMap.Skills,
+			PanelMap.Teleport,
 			MenuButtons({ activePanel }),
-			PanelEquipment({ activePanel }),
-			PanelProfile({ activePanel }),
-			PanelSkills({ activePanel }),
-			PanelTeleport({ activePanel }),
-			// Each panel receives the state so it can control its own visibility
-			// ... add other panels here
 		],
 	});
 }

@@ -24,6 +24,8 @@ const UIListLayout = New("UIListLayout")({
 
 export function MenuButtons(props: MenuButtonsProps) {
 	const { activePanel } = props;
+
+	/* === Menu Buttons Frame === */
 	const MenuButtons_Buttons = New("Frame")({
 		Name: "MenuButtons",
 		Size: new UDim2(0, 300, 0, 50), // Adjust as needed
@@ -31,6 +33,7 @@ export function MenuButtons(props: MenuButtonsProps) {
 		BackgroundTransparency: 1,
 		ZIndex: 100,
 
+		/* === Menu Button Creation === */
 		[Fusion.Children]: menuItems.map((item) =>
 			New("ImageButton")({
 				Name: item.name,
@@ -38,9 +41,18 @@ export function MenuButtons(props: MenuButtonsProps) {
 				BackgroundTransparency: 1,
 				Image: item.icon,
 				[OnEvent("Activated")]: () => {
-					// Set the active panel to the one corresponding to the button clicked
+					/* === Menu Button Click Handler === */
+
+					/* Check if the clicked button is already selected */
+					/* If it is, deselect it */
+					/* If it's not, select it and update the active panel */
+					const currentPanel = activePanel.get();
+					if (currentPanel === item.name) {
+						activePanel.set("None"); // Deselect if the same button is clicked
+						print(item.name + " button deselected");
+						return;
+					}
 					activePanel.set(item.name);
-					print(item.name + " button clicked");
 				},
 			}),
 		),

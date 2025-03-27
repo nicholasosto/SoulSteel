@@ -119,6 +119,16 @@ export default class PlayerDataManager implements IDataManager {
 		}
 	}
 
+	public GetDerivedStats() {
+		const testStats = {
+			MaxHealth: 100,
+			MaxStamina: 100,
+			MaxSoulPower: 100,
+			MaxDomainResource: 100,
+		};
+		return testStats;
+	}
+
 	// public UpdateAttributesData(attributePanelData: AttributePanelData): void {
 	// 	this._playerData.CharacterStats = attributePanelData.characterStats;
 	// 	this._playerData.AvaliableAttributePoints = attributePanelData.availablePoints;

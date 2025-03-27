@@ -14,6 +14,7 @@ const RemoteEvents = Net.CreateDefinitions({
 
 	/* ======== Server To Client Events =========*/
 	SendResourceData: Net.Definitions.ServerToClientEvent<[resourceData: Payload.PCurrentResourceAmounts]>(),
+	UpdateDerivedStats: Net.Definitions.ServerToClientEvent<[derivedStats: Payload.PDerivedStats]>(),
 
 	/* Player Data */
 	ServerTargetUpdate: Net.Definitions.ServerToClientEvent<[targetId: string]>(),

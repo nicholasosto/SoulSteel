@@ -1,7 +1,6 @@
 import Fusion from "@rbxts/fusion";
 
 /* Custom Components */
-import { PanelManager } from "shared/_ROACT/Screens/PanelManager";
 import PlayerHudGui from "client/_Fusions/PlayerHudGui";
 
 const { New, Children } = Fusion;

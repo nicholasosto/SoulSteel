@@ -1,7 +1,8 @@
 // MenuButtons.ts
 import Fusion from "@rbxts/fusion";
-import { CharacterFrame } from "shared/_ROACT/Components/CharacterFrame/CharacterFrameRoact";
-import { PanelManager } from "../../shared/_ROACT/Screens/PanelManager";
+import { CharacterFrame } from "client/_Fusions/Components/CharacterFrameRoact";
+import { PanelManager } from "./PlayerHud/Screens/PanelManager";
+import { DataItemViewer } from "client/_Fusions/Components/DataItemViewer";
 
 const { New, Children } = Fusion;
 
@@ -29,7 +30,7 @@ const PlayerHudGui = New("ScreenGui")({
 	Name: "PlayerHudGui",
 	ResetOnSpawn: false,
 	IgnoreGuiInset: true,
-	[Children]: [HudContainerFrame, PanelManager()],
+	[Children]: [HudContainerFrame, PanelManager(), DataItemViewer],
 });
 
 export default PlayerHudGui;

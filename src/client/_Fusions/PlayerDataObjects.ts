@@ -22,6 +22,8 @@ const PlayerClassVO = {
 	Domain: Value("Blood"),
 };
 
+const PlayerDisplayNameVO = Value("PlayerName");
+
 /* Core Stats */
 const PlayerCoreStatsVO = {
 	Strength: Value(10),
@@ -38,4 +40,4 @@ const PlayerProgressionVO = {
 	PlayerLevel: Value(1),
 };
 
-export { PlayerResourceVO, PlayerClassVO, PlayerCoreStatsVO, PlayerProgressionVO };
+export { PlayerResourceVO, PlayerClassVO, PlayerCoreStatsVO, PlayerProgressionVO, PlayerDisplayNameVO };
