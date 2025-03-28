@@ -75,7 +75,7 @@ export default class PlayerDataManager implements IDataManager {
 				warn("Player Data Save Service Running");
 				this._SaveData();
 				wait(this._saveInterval);
-				ServerNetManager.SendPlayerData(this._player, this._playerData);
+				//ServerNetManager.SendPlayerData(this._player, this._playerData);
 			}
 		});
 	}
@@ -87,7 +87,7 @@ export default class PlayerDataManager implements IDataManager {
 	/* Update Progression Stats */
 	public UpdateProgressionStats(newStats: IPlayerData["ProgressionStats"]): void {
 		this._playerData.ProgressionStats = newStats;
-		ServerNetManager.SendPlayerData(this._player, this._playerData);
+		//ServerNetManager.SendPlayerData(this._player, this._playerData);
 	}
 
 	/* Get Data */

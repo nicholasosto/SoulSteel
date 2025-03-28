@@ -29,11 +29,14 @@ const GetDerivedStats = RemoteFunctions.Client.Get("GetDerivedStats");
 const GetSkillSlotMap = RemoteFunctions.Client.Get("GetSkillSlotMap"); // HUD - Skill Bar
 //const GetCharacterFrameData = RemoteFunctions.Client.Get("GetCharacterFrameData"); // Character Frame
 const GetEquipmentSlotMap = RemoteFunctions.Client.Get("GetEquipmentSlotMap"); // Equipment Frame
+const GetPlayerData = RemoteFunctions.Client.Get("GetPlayerData"); // Player Data
 
 /* Update Events */
 //const UpdateInfoFrame = RemoteEvents.Client.Get("UpdateInfoFrame"); // Info Frame
 const UpdateSkillSlotMap = RemoteEvents.Client.Get("UpdateSkillSlotMap"); // HUD - Skill Bar
 const SendPlayerData = RemoteEvents.Client.Get("SendPlayerData"); // Player Data Loaded
+const CreateGameCharacter = RemoteEvents.Client.Get("CreateCharacter"); // Create Character
+const TestLevelUp = RemoteEvents.Client.Get("ClientTestLevelUp"); // Test Level Up
 
 /* Skill Bar */
 
@@ -94,5 +97,30 @@ export default class ClientNetManager {
 				PlayerProgressionVO.ExperienceToNextLevel.set(derivedStats.ExperienceToNextLevel);
 			}
 		});
+	}
+	public static CreateGameCharacter(displayName: string, selectedRace: string): void {
+		warn("ClientNetManager: Create Game Character");
+
+		/* Create Game Character */
+		CreateGameCharacter.SendToServer(displayName, selectedRace);
+		print("ClientNetManager: Create Game Character: ", displayName, selectedRace);
+	}
+	public static LevelUpTest() {
+		const currentLevel = PlayerProgressionVO.PlayerLevel.get();
+		PlayerProgressionVO.PlayerLevel.set(currentLevel + 1);
+		TestLevelUp.SendToServer();
+		print("ClientNetManager: Level Up Test: ", currentLevel + 1);
+	}
+
+	public static UpdateData() {
+		warn("ClientNetManager: Update Data");
+		const playerData = GetPlayerData.CallServerAsync().await();
+		if (playerData !== undefined) {
+			/* Player Data */
+			warn("ClientNetManager: Received Player Data");
+			print(playerData);
+		}
+
+		print("ClientNetManager: Update Data");
 	}
 }

@@ -1,6 +1,6 @@
 print("Preloading assets...");
 
-import { ReplicatedStorage, ContentProvider, Workspace } from "@rbxts/services";
+import { ContentProvider, Workspace } from "@rbxts/services";
 function preloadAssets(): void {
 	// Wait for the folder to exist (in case it hasn't replicated yet)
 	const assetsFolder = Workspace.WaitForChild("AOE_ORC_Camp_01") as Folder;

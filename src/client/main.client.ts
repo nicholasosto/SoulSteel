@@ -58,7 +58,6 @@ class GameClient {
 			/* Collections */
 			CollectTransparencyTweens();
 			StartCollectingCloseButtons();
-
 		}
 	}
 }

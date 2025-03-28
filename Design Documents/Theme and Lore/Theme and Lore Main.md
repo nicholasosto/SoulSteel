@@ -1,4 +1,3 @@
-**SoulSteel: World Lore, Theme, and Game Design Guide**
 
 ## **Introduction**
 
